@@ -1,0 +1,201 @@
+name: Validate and deploy APCOSYS
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    permissions:
+      contents: read
+      pages: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Audit production dependencies
+        run: npm run audit:production
+      - name: Lint and typecheck
+        run: npm run check
+      - name: Resolve Pages base
+        id: pages-base
+        shell: bash
+        env:
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+          BASE_OVERRIDE: ${{ vars.APCO_SITE_BASE }}
+        run: |
+          if [ -n "$BASE_OVERRIDE" ]; then
+            base="$BASE_OVERRIDE"
+          elif [[ "$REPOSITORY_NAME" == *.github.io ]]; then
+            base="/"
+          else
+            base="/$REPOSITORY_NAME/"
+          fi
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+      - name: Build
+        run: npm run build -- --base="${{ steps.pages-base.outputs.base }}"
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+      - name: Browser regression suite
+        run: npm run test:release
+        env:
+          APCO_TEST_BASE_PATH: ${{ steps.pages-base.outputs.base }}
+      - name: Configure Pages
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
+      - name: Upload static output
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
+        with:
+          path: dist
+
+
+  handoff-package:
+    if: github.event_name == 'pull_request'
+    needs: validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out the actual candidate commit
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Export source without Git history
+        run: npm run handoff:package
+      - name: Verify archive boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive=$(find .work -maxdepth 1 -name 'apcosys-web-source-*.zip' -print -quit)
+          test -n "$archive"
+          mkdir -p .work/isolated
+          unzip -q "$archive" -d .work/isolated
+          source=.work/isolated/apcosys-web
+          test -f "$source/package-lock.json"
+          test -f "$source/public/assets/brand/logo.svg"
+          test -f "$source/public/fonts/LICENSE-Instrument-Sans.txt"
+          test -f "$source/public/fonts/LICENSE-IBM-Plex-Mono.txt"
+          test -f "$source/src/visuals/api/GSAP-NOTICE.txt"
+          test -f "$source/docs/legal-sources/privacy-policy.md"
+          test ! -e "$source/.git"
+          test ! -e "$source/docs/archive"
+          test ! -e "$source/tests/review"
+          test ! -e "$source/node_modules"
+          test ! -e "$source/dist"
+          test ! -e "$source/.env"
+      - name: Install and check the extracted source
+        working-directory: .work/isolated/apcosys-web
+        run: |
+          npm ci
+          npm run check
+          npm run build -- --base=/recipient-site/
+      - name: Install Chromium for isolated route checks
+        working-directory: .work/isolated/apcosys-web
+        run: npx playwright install --with-deps chromium
+      - name: Smoke-test a renamed repository path
+        working-directory: .work/isolated/apcosys-web
+        env:
+          APCO_TEST_BASE_PATH: /recipient-site/
+        run: npx playwright test --config=playwright.release.config.ts handoff.spec.ts routes.spec.ts
+      - name: Verify root-domain relocation
+        working-directory: .work/isolated/apcosys-web
+        run: npm run build:root
+      - name: Smoke-test root-domain routes
+        working-directory: .work/isolated/apcosys-web
+        env:
+          APCO_TEST_BASE_PATH: /
+        run: npx playwright test --config=playwright.release.config.ts handoff.spec.ts routes.spec.ts
+      - name: Check custom SaaS origin in static no-JavaScript fallback
+        working-directory: .work/isolated/apcosys-web
+        env:
+          VITE_APCO_PRODUCT_URL: https://product.example.org
+        run: |
+          npm run build:root
+          grep -F 'href="https://product.example.org/search"' dist/index.html
+          ! grep -q '__APCO_PUBLIC_SEARCH_URL__' dist/index.html
+      - name: Publish verified handoff archive
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v4
+        with:
+          name: apcosys-web-clean-source-${{ github.event.pull_request.head.sha }}
+          retention-days: 14
+          path: .work/apcosys-web-source-*.zip
+          include-hidden-files: true
+          if-no-files-found: error
+
+  deploy:
+    # A clean repository import only validates code. Publishing requires an explicit workflow dispatch.
+    if: github.event_name == 'workflow_dispatch'
+    needs: validate
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5
+
+  production-smoke:
+    if: github.event_name != 'pull_request'
+    needs: deploy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Check out published source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+      - name: Check actual Pages deployment
+        run: npm run test:release
+        env:
+          APCO_BASE_URL: ${{ needs.deploy.outputs.page_url }}
+      - name: Preserve production evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: production-review-${{ github.sha }}
+          retention-days: 7
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
