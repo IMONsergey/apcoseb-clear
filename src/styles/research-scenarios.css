@@ -1,0 +1,102 @@
+.stage-case-evidence {
+  background: var(--surface-card);
+  color: var(--text-primary);
+}
+.stage-case-evidence--technology {
+  background: var(--surface-elevated);
+}
+.stage-case-evidence__heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.65fr);
+  gap: 5%;
+  align-items: end;
+  margin-bottom: clamp(28px, 4vw, 54px);
+}
+.stage-case-evidence__heading .eyebrow {
+  grid-column: 1/-1;
+  margin: 0;
+}
+.stage-case-evidence__heading h2 {
+  max-width: 900px;
+  font-size: var(--type-page-size);
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+}
+.stage-case-evidence__heading p:not(.eyebrow) {
+  max-width: 550px;
+  color: var(--color-text-body);
+  font-size: var(--font-size-20);
+  line-height: 1.5;
+}
+.stage-example-journey {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(var(--space-4), 2.4vw, var(--space-8));
+  margin-bottom: clamp(36px, 4vw, 62px);
+  border-top: 1px solid var(--border-subtle);
+}
+.stage-example-journey > div {
+  padding-top: 19px;
+  min-width: 0;
+}
+.stage-example-journey span {
+  color: var(--color-text-body);
+  font: 400 var(--font-size-12)/1.5 var(--font-mono);
+}
+.stage-example-journey p {
+  margin-top: 15px;
+  font-size: var(--font-size-16);
+  line-height: 1.5;
+  color: var(--color-text-body);
+}
+.stage-case-evidence > .container > .product-evidence {
+  width: 100%;
+}
+.stage-example-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-6);
+  padding-top: 19px;
+}
+.stage-example-footer p {
+  max-width: 700px;
+  color: var(--text-muted);
+  font-size: var(--font-size-14);
+}
+.stage-example-footer a {
+  flex: 0 0 auto;
+  color: var(--color-text-body);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-size: var(--font-size-14);
+}
+@media (max-width: 1199px) {
+  .stage-case-evidence__heading {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+@media (max-width: 899px) {
+  .stage-example-journey {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 599px) {
+  .stage-case-evidence__heading h2 {
+    font-size: var(--type-subsection-size);
+  }
+  .stage-example-journey {
+    gap: var(--space-5);
+  }
+  .stage-example-journey p {
+    font-size: var(--font-size-14);
+  }
+  .stage-example-footer {
+    display: block;
+  }
+  .stage-example-footer a {
+    display: inline-block;
+    margin-top: 18px;
+  }
+}

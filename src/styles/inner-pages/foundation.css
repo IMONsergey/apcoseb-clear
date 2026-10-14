@@ -1,0 +1,580 @@
+/* Internal pages: one surface, a clear reading order, and space instead of stacked frames. */
+.site .inner-pages {
+  --inner-space: clamp(72px, 7.5vw, 112px);
+  --reading-columns: var(--layout-half);
+  --reading-lead: calc((100% - var(--layout-gap)) / 2);
+  background: var(--surface-page);
+  --reading-gap: var(--layout-gap);
+  --type-section-size: clamp(34px, 3.35vw, 48px);
+  --editorial-padding: clamp(24px, 2.3vw, 32px);
+  --type-section-leading: 1.1;
+}
+.site .inner-pages > :is(header, section, nav),
+.site .inner-pages .stage-team-operations__business {
+  background: transparent;
+  border-block: 0;
+}
+.site .inner-pages .stage-page-hero {
+  /* One first-screen measure for every route; min-size lets enlarged text reflow. */
+  --hero-min-height: clamp(560px, 44vw, 640px);
+  --hero-padding-start: clamp(56px, 6vw, 88px);
+  --hero-padding-end: var(--hero-padding-start);
+  padding-block: var(--hero-padding-start) var(--hero-padding-end);
+}
+.site .inner-pages .stage-page-hero__grid {
+  min-block-size: calc(
+    var(--hero-min-height) - var(--hero-padding-start) - var(--hero-padding-end)
+  );
+  display: grid;
+  grid-template-columns: var(--layout-half);
+  gap: var(--layout-gap);
+  align-items: center;
+}
+.site .inner-pages .stage-page-hero h1 {
+  letter-spacing: var(--tracking-heading);
+  max-width: 14ch;
+  text-wrap: balance;
+  font: var(--type-page);
+}
+.site .inner-pages .page-artwork {
+  width: 100%;
+  max-width: 600px;
+  justify-self: center;
+}
+.site .inner-pages .stage-page-hero__aside {
+  padding: 0;
+}
+.site .inner-pages .stage-page-hero__description {
+  font-size: var(--font-size-18);
+  line-height: 1.6;
+  max-width: 48ch;
+  margin-top: 28px;
+  color: var(--color-text-body);
+}
+.site .inner-pages .stage-actions {
+  gap: var(--space-3);
+  margin-top: 30px;
+}
+.site .inner-pages .stage-actions .double-button {
+  font-size: var(--font-size-16);
+}
+.site .inner-pages .stage-concept-label {
+  font: 400 var(--font-size-12)/1.5 var(--font-sans);
+  margin-top: var(--space-4);
+}
+.page-artwork {
+  position: relative;
+  margin: 0;
+  min-width: 0;
+}
+.page-artwork img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  mask-image: radial-gradient(ellipse 70% 74% at 50% 50%, #000 40%, transparent 74%);
+}
+html[data-theme='dark'] .page-artwork img {
+  mix-blend-mode: normal;
+}
+.page-artwork__trace {
+  position: absolute;
+  inset: auto 8% 0;
+  width: 84%;
+  height: 60px;
+  pointer-events: none;
+}
+.site .inner-pages h2 {
+  font-size: var(--type-subsection-size);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-heading);
+  font-weight: 500;
+  max-width: 24ch;
+  text-wrap: balance;
+}
+.site
+  .inner-pages
+  :is(.stage-workbench__intro, .stage-monitor-concept__heading, .stage-case-evidence__heading) {
+  display: grid;
+  grid-template-columns: var(--reading-columns);
+  gap: var(--layout-gap);
+  align-items: start;
+  margin-bottom: var(--space-8);
+}
+.site
+  .inner-pages
+  :is(.stage-workbench__intro, .stage-monitor-concept__heading, .stage-case-evidence__heading)
+  p {
+  font-size: var(--font-size-16);
+  line-height: 1.7;
+  max-width: 54ch;
+}
+.site .inner-pages .stage-note {
+  border: 0;
+  padding: 0;
+  margin-top: var(--space-6);
+  max-width: 80ch;
+  color: var(--text-muted);
+  font-size: var(--font-size-14);
+  line-height: 1.6;
+}
+.site .inner-pages .stage-related__inner {
+  border: 0;
+  padding-block: 0;
+  display: grid;
+  grid-template-columns: var(--layout-half);
+  gap: var(--layout-gap);
+  align-items: center;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-9);
+}
+.site .inner-pages .stage-related__links {
+  gap: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+/* Search: one working example; the explanation is subordinate to the record. */
+.site .inner-pages .stage-workbench__stage {
+  max-width: none;
+  grid-template-columns: 240px minmax(0, 1fr);
+}
+.site .inner-pages .stage-workbench__steps {
+  background: transparent;
+  padding: var(--space-3) 0;
+}
+.site .inner-pages .stage-workbench__step {
+  padding: var(--space-5);
+  min-height: 68px;
+}
+.site .inner-pages .stage-workbench__step span {
+  font-size: var(--font-size-12);
+}
+.site .inner-pages .stage-workbench__insight {
+  padding: var(--space-6);
+  background: transparent;
+}
+.site .inner-pages .stage-workbench__insight h3 {
+  font-size: var(--font-size-24);
+  margin: 0 0 var(--space-3);
+}
+.site .inner-pages .stage-workbench__insight p {
+  font-size: var(--font-size-16);
+  line-height: 1.7;
+  max-width: 70ch;
+}
+.site .inner-pages .stage-workbench__bottom {
+  gap: var(--space-7);
+  padding-top: var(--space-5);
+}
+.site .inner-pages .stage-workbench__bottom p {
+  max-width: 65ch;
+  line-height: 1.6;
+}
+/* Methodology: plain evidence levels, then readable definitions and a real table. */
+.site .inner-pages .evidence-levels {
+  padding: var(--space-3) 0;
+  border: 0;
+  gap: var(--layout-gap);
+}
+.site .inner-pages .evidence-levels article {
+  border: 0;
+  padding: var(--space-6) 0 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.site .inner-pages .evidence-levels h3 {
+  font-size: var(--font-size-24);
+  margin: var(--space-4) 0;
+}
+.site .inner-pages .evidence-levels code {
+  font-size: var(--font-size-18);
+  padding-block: var(--space-3);
+  background: transparent;
+  border: 0;
+  padding-left: 0;
+  display: block;
+  color: var(--accent-text);
+}
+.site .inner-pages .evidence-levels p {
+  font-size: var(--font-size-16);
+  line-height: 1.6;
+}
+.site .inner-pages .stage-table-scroll {
+  border: 0;
+  border-radius: 0;
+}
+.site .inner-pages .stage-data-table :is(th, td) {
+  padding: var(--space-5) 18px;
+  padding-block: var(--space-5);
+  line-height: 1.5;
+}
+.site .inner-pages .stage-data-table thead th {
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-14);
+}
+.site .inner-pages .stage-data-table th:first-child {
+  padding-left: 0;
+}
+.site .inner-pages .stage-plan-table th:first-child {
+  background: var(--surface-page);
+}
+/* Use cases: narrative and evidence share a section; deeper guidance has its own rhythm. */
+.site .inner-pages .stage-case-experience {
+  grid-template-columns: var(--layout-half);
+  gap: var(--layout-gap);
+  align-items: start;
+}
+.site .inner-pages .stage-example-journey {
+  border: 0;
+  gap: var(--space-6) var(--layout-gap);
+  margin: 0;
+  grid-template-columns: 1fr 1fr;
+}
+.site .inner-pages .stage-example-journey > div {
+  padding: 0;
+  padding-top: 18px;
+}
+.site .inner-pages .stage-example-journey span {
+  font: 500 var(--font-size-16)/1.5 var(--font-sans);
+  color: var(--text-primary);
+  font-size: var(--font-size-18);
+  line-height: 1.5;
+}
+.site .inner-pages .case-fragment {
+  padding: 28px;
+}
+.site .inner-pages .stage-example-footer {
+  padding-top: 28px;
+  gap: var(--space-8);
+}
+.site .inner-pages .stage-example-footer p {
+  max-width: 70ch;
+  font-size: var(--font-size-12);
+  line-height: 1.6;
+}
+/* Monitoring: horizontal stages and one concise observation workspace. */
+.site .inner-pages .stage-monitor-console {
+  max-width: none;
+  background: var(--surface-card);
+}
+.site .inner-pages .stage-monitor-console__body {
+  display: block;
+}
+.site .inner-pages .stage-monitor-console__sidebar {
+  display: flex;
+  flex-direction: row;
+  padding: 0 var(--space-6);
+  gap: var(--space-6);
+  border: 0;
+  border-bottom: 1px solid var(--border-subtle);
+  background: transparent;
+  overflow-x: auto;
+}
+.site .inner-pages .stage-monitor-console__nav {
+  flex: 0 0 auto;
+  width: auto;
+  padding: var(--space-5) 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  font: 500 var(--font-size-16)/1.5 var(--font-sans);
+  color: var(--color-text-body);
+}
+.site .inner-pages .stage-monitor-console__nav[aria-pressed='true'] {
+  color: var(--accent-text);
+  border-bottom-color: var(--accent-text);
+}
+.site .inner-pages .stage-monitor-console__main {
+  padding: var(--space-7);
+}
+.site .inner-pages .stage-monitor-console__main h3 {
+  font-size: var(--font-size-24);
+  margin: 0 0 14px;
+}
+.site .inner-pages .stage-monitor-console__main > p {
+  max-width: 68ch;
+  line-height: 1.7;
+}
+.site .inner-pages .stage-monitor-assets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-7);
+  margin-block: 28px;
+  padding: 0;
+  border: 0;
+}
+.site .inner-pages .stage-monitor-assets__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.site .inner-pages .stage-monitor-assets__list button {
+  padding: var(--space-4);
+}
+.site .inner-pages .stage-monitor-assets__details {
+  padding: var(--space-3) 0;
+  border: 0;
+  background: transparent;
+}
+.site .inner-pages .stage-monitor-assets__details > strong {
+  font-size: var(--font-size-20);
+}
+.site .inner-pages .stage-monitor-console__summary {
+  gap: var(--space-8);
+  margin-block: var(--space-5);
+}
+.site .inner-pages .stage-monitor-console__summary > div {
+  border: 0;
+  padding: var(--space-5) 0;
+}
+.site .inner-pages .stage-monitor-console__summary strong {
+  font-size: var(--font-size-20);
+}
+.site .inner-pages .stage-monitor-console__footer {
+  padding: 18px var(--space-7);
+  font: 400 var(--font-size-12)/1.5 var(--font-sans);
+  color: var(--text-muted);
+}
+/* Teams: the handoff is the interaction; commercial details have no second workflow. */
+.site .inner-pages .team-workflow__layout {
+  gap: var(--layout-gap);
+  margin-top: 0;
+  align-items: start;
+}
+.site .inner-pages .team-workflow__visual {
+  background: var(--surface-card);
+  padding: 0;
+}
+.site .inner-pages .team-workflow__tabs {
+  gap: 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.site .inner-pages .team-workflow__tabs button {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  padding: 14px var(--space-3);
+  padding-left: 0;
+}
+.site .inner-pages .team-workflow__tabs button[aria-pressed='true'] {
+  border-bottom-color: var(--accent-text);
+  color: var(--accent-text);
+}
+.site .inner-pages .team-workflow__detail {
+  padding: 28px 0 0;
+}
+.site .inner-pages .team-workflow__detail h3 {
+  font-size: var(--font-size-24);
+}
+.site .inner-pages .stage-team-operations__business {
+  padding: 0;
+  border: 0;
+}
+.site .inner-pages .stage-team-operations__business h3 {
+  font-size: var(--font-size-24);
+}
+/* Commercial: keep the familiar plan controls; give detail sections consistent hierarchy. */
+.site .inner-pages .pricing-head h2 {
+  font-size: var(--font-size-40);
+}
+.site .inner-pages .stage-usage-guide__questions {
+  border: 0;
+  padding: 0;
+}
+.site .inner-pages .stage-usage-guide__questions article {
+  grid-template-columns: 1fr;
+  padding: 0 0 28px;
+  border: 0;
+  padding-block: 26px;
+  border-top: 1px solid var(--border-subtle);
+}
+.site .inner-pages .stage-code-window {
+  margin: 0;
+  max-width: none;
+}
+.site .inner-pages .stage-api-limits .stage-data-table {
+  min-width: 0;
+  table-layout: fixed;
+}
+.site .inner-pages .stage-code-window pre {
+  font-size: var(--font-size-14);
+  padding: 28px;
+}
+/* Corporate: readable editorial columns and a direct, honest contact form. */
+.site .inner-pages .stage-contact-layout {
+  grid-template-columns: var(--reading-columns);
+  gap: var(--layout-gap);
+}
+.site .inner-pages .stage-contact-aside h2 {
+  margin-bottom: var(--space-6);
+}
+.site .inner-pages .stage-contact-aside p {
+  line-height: 1.6;
+  font-size: var(--font-size-16);
+}
+.site .inner-pages .stage-contact-form {
+  gap: var(--space-6);
+  background: transparent;
+  border-radius: 0;
+  border-top: 1px solid var(--border-subtle);
+  padding: 28px 0 0;
+}
+.site .inner-pages .stage-contact-form .stage-note {
+  margin: 0;
+  font-size: var(--font-size-12);
+}
+@media (max-width: 1000px) {
+  .site .inner-pages .stage-page-hero {
+    /* Reserve the longest typographed copy at the two-column tablet breakpoint. */
+    --hero-min-height: 600px;
+  }
+  .site .inner-pages .stage-page-hero__grid {
+    grid-template-columns: var(--layout-half);
+    gap: var(--space-6);
+  }
+  .site .inner-pages .stage-page-hero h1 {
+    font-size: var(--type-page-size);
+  }
+  .site .inner-pages .stage-case-experience,
+  .site .inner-pages .team-workflow__layout,
+  .site .inner-pages .stage-contact-layout {
+    gap: var(--layout-gap);
+  }
+}
+@media (max-width: 767px) {
+  .site .inner-pages .stage-api-limits .stage-data-table :is(th, td) {
+    padding: 18px var(--space-2);
+    font-size: var(--font-size-14);
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .site .inner-pages .stage-page-hero {
+    --hero-min-height: 800px;
+    --hero-padding-start: 40px;
+    --hero-padding-end: 32px;
+  }
+  .site .inner-pages .stage-page-hero__grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(auto, 1fr) auto;
+    gap: var(--space-5);
+  }
+  .site .inner-pages .stage-page-hero h1 {
+    font-size: var(--type-page-size);
+    max-width: 18ch;
+  }
+  .site .inner-pages .stage-page-hero__description {
+    font-size: var(--font-size-18);
+    margin-top: 22px;
+  }
+  .site .inner-pages .stage-actions {
+    flex-direction: row;
+    gap: var(--space-3);
+  }
+  .site .inner-pages .stage-actions .double-button {
+    max-width: 100%;
+  }
+  .site .inner-pages .stage-actions .double-button__label {
+    white-space: normal;
+  }
+  .site .inner-pages .page-artwork {
+    max-width: 400px;
+    width: 100%;
+    margin-inline: auto;
+  }
+  .site .inner-pages h2 {
+    font-size: var(--font-size-32);
+  }
+  .site
+    .inner-pages
+    :is(
+      .stage-workbench__intro,
+      .stage-monitor-concept__heading,
+      .stage-case-evidence__heading,
+      .stage-contact-layout,
+      .stage-case-experience,
+      .team-workflow__layout
+    ) {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  .site .inner-pages .stage-workbench__stage {
+    grid-template-columns: 1fr;
+  }
+  .site .inner-pages .stage-workbench__steps {
+    display: flex;
+    overflow-x: auto;
+    padding: 0;
+    border-right: 0;
+  }
+  .site .inner-pages .stage-workbench__step {
+    min-height: 60px;
+    padding: var(--space-4);
+    flex: 0 0 150px;
+  }
+  .site .inner-pages .stage-workbench__insight {
+    padding: var(--space-5);
+  }
+  .site .inner-pages .stage-example-footer {
+    display: block;
+  }
+  .site .inner-pages .stage-example-footer a {
+    margin-top: var(--space-4);
+  }
+  .site .inner-pages .stage-monitor-console__sidebar {
+    padding-inline: var(--space-5);
+    gap: var(--space-6);
+  }
+  .site .inner-pages .stage-monitor-console__main {
+    padding: var(--space-6) var(--space-5);
+  }
+  .site .inner-pages .stage-monitor-console__main h3 {
+    font-size: var(--font-size-24);
+  }
+  .site .inner-pages .stage-monitor-assets {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+  .site .inner-pages .stage-monitor-console__summary {
+    gap: var(--space-5);
+  }
+  .site .inner-pages .stage-monitor-console__summary strong {
+    font-size: var(--font-size-18);
+  }
+  .site .inner-pages .stage-usage-guide__questions {
+    margin-top: var(--space-3);
+  }
+  .site .inner-pages .evidence-levels p {
+    margin-top: 10px;
+  }
+  .site .inner-pages .stage-token-grid strong {
+    font-size: var(--font-size-24);
+  }
+}
+.site .inner-pages .team-evaluation {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-8);
+  margin-bottom: var(--space-10);
+}
+.site .inner-pages .team-evaluation h3 {
+  font-size: var(--font-size-24);
+  line-height: 1.25;
+  margin-bottom: var(--space-4);
+}
+.site .inner-pages .team-evaluation p {
+  font-size: var(--font-size-16);
+  line-height: 1.6;
+  color: var(--color-text-body);
+}
+@media (max-width: 767px) {
+  .site .inner-pages .team-evaluation {
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+    margin-bottom: var(--space-8);
+  }
+}

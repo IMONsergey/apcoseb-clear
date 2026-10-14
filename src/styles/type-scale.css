@@ -1,0 +1,75 @@
+/* Ten public text roles. Page families may adjust their measures, not invent another font stack.
+   Compact product previews use the two smallest shared steps, not editorial body sizing. */
+:root {
+  /* Discrete sizes: compact product labels through display numerals. Fluid headings use the roles below. */
+  --font-size-10: 10px;
+  --font-size-12: 12px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-20: 20px;
+  --font-size-24: 24px;
+  --font-size-32: 32px;
+  --font-size-40: 40px;
+  --font-size-48: 48px;
+  --font-size-64: 64px;
+  --font-size-80: 80px;
+  --tracking-display: -0.05em;
+  --tracking-heading: -0.04em;
+  --tracking-compact: -0.025em;
+  --tracking-label: 0.04em;
+  --type-display-size: clamp(72px, 7.3611vw, 106px);
+  --type-page-size: clamp(42px, 4.25vw, 66px);
+  --type-section-size: clamp(48px, 5.9722vw, 86px);
+  --type-section-leading: 1;
+  --type-subsection-size: clamp(28px, 3.35vw, 48px);
+  --type-page-leading: 1.1;
+}
+:root,
+.inner-pages,
+.legal-page {
+  --type-display: 500 var(--type-display-size)/1 var(--font-sans);
+  --type-page: 500 var(--type-page-size)/var(--type-page-leading) var(--font-sans);
+  --type-section: 500 var(--type-section-size)/var(--type-section-leading) var(--font-sans);
+  --type-card: 500 var(--font-size-24)/1.25 var(--font-sans);
+  --type-lead: 400 var(--font-size-20)/1.6 var(--font-sans);
+  --type-body: 400 var(--font-size-18)/1.7 var(--font-sans);
+  --type-small: 400 var(--font-size-14)/1.5 var(--font-sans);
+  --type-control: 500 var(--font-size-14)/1.5 var(--font-sans);
+  --type-code: 400 var(--font-size-14)/1.5 var(--font-mono);
+  --type-metric: 500 var(--font-size-24)/1.5 var(--font-mono);
+}
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-mono);
+}
+@media (max-width: 599px) {
+  :root {
+    --type-section-size: 40px;
+    --type-section-leading: 1;
+  }
+}
+@media (max-width: 375px) {
+  :root {
+    --type-section-size: 38px;
+  }
+}
+@media (max-width: 340px) {
+  :root {
+    --type-section-size: 36px;
+  }
+}
+
+/* One responsive page-title role, shared by every non-legal internal hero. */
+@media (max-width: 1000px) {
+  .inner-pages {
+    --type-page-size: clamp(38px, 5vw, 52px);
+  }
+}
+@media (max-width: 767px) {
+  .inner-pages {
+    --type-page-size: clamp(36px, 8.5vw, 52px);
+  }
+}

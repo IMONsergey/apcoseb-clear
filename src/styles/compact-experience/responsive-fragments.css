@@ -1,0 +1,269 @@
+@media (max-width: 899px) {
+  .site .stage-page-hero__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  .site .stage-workbench__stage {
+    grid-template-columns: 1fr;
+  }
+  .site .stage-workbench__steps {
+    padding: 0;
+    flex-direction: row;
+  }
+  .site .stage-workbench__step {
+    flex: 1 0 145px;
+    min-height: 78px;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+  .site .stage-case-experience,
+  .team-workflow__layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+  }
+}
+@media (max-width: 599px) {
+  .site .search-scene {
+    width: 100%;
+    padding: 92px var(--space-3) var(--space-6);
+  }
+  .site .search-scene__content {
+    gap: var(--space-4);
+  }
+  .site .search-scene__heading h2 {
+    font-size: var(--font-size-24);
+  }
+  .site .product-evidence .product-evidence__layout {
+    grid-template-columns: 1fr;
+  }
+  .site .product-evidence .product-evidence__results {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .site .product-evidence .product-evidence__results > .product-evidence__eyebrow {
+    width: 100%;
+  }
+  .site .product-evidence .product-evidence__result {
+    flex: 1 1 140px;
+    display: block;
+    padding: 10px var(--space-3);
+  }
+  .site .product-evidence .product-evidence__result-meta {
+    display: none;
+  }
+  .site .product-evidence .product-evidence__query {
+    gap: var(--space-2);
+  }
+  .site .product-evidence .product-evidence__hint {
+    font-size: var(--font-size-10);
+  }
+  .site .product-evidence .product-evidence__footer {
+    display: none;
+  }
+  .query-fragment {
+    padding: 18px;
+  }
+  .site .stage-page-hero {
+    padding-block: var(--space-8);
+  }
+  .site .stage-page-hero h1 {
+    font-size: var(--type-page-size);
+  }
+  .site .stage-monitor-console__main {
+    padding: var(--space-5) var(--space-4);
+  }
+  .site .stage-monitor-console__main h3 {
+    font-size: var(--font-size-32);
+  }
+  .team-workflow__tabs {
+    gap: 0 var(--space-3);
+  }
+  .team-workflow__tabs button {
+    font-size: var(--font-size-14);
+  }
+  .scope-boundary {
+    margin: 18px;
+  }
+  .scope-boundary > div > span:last-child {
+    display: none;
+  }
+}
+@container (max-width: 600px) {
+  .data-lens__body {
+    padding: 18px;
+    min-height: 220px;
+  }
+  .data-lens__columns,
+  .data-lens__service {
+    grid-template-columns: 42px 60px 1fr;
+    gap: var(--space-2);
+    font-size: var(--font-size-12);
+  }
+  .query-fragment__options button {
+    gap: var(--space-2);
+  }
+  .query-fragment__options code {
+    font-size: var(--font-size-10);
+  }
+}
+.team-sequence {
+  padding: 28px;
+}
+.team-sequence > div {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  position: relative;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: color 0.4s ease;
+  color: var(--text-muted);
+}
+.team-sequence > div:last-child {
+  border: 0;
+}
+.team-sequence > div > span {
+  font: 400 var(--font-size-12)/1.5 var(--font-mono);
+}
+.team-sequence strong {
+  display: block;
+  font-size: var(--font-size-18);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.team-sequence small {
+  display: block;
+  font-size: var(--font-size-12);
+  margin-top: 6px;
+}
+.team-sequence i {
+  margin-left: auto;
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-detail);
+  transition:
+    background 0.4s ease,
+    transform 0.4s ease;
+}
+.team-sequence .is-current {
+  color: var(--accent-text);
+}
+.team-sequence .is-current i {
+  background: currentColor;
+  transform: rotate(45deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .team-sequence > div,
+  .team-sequence i {
+    transition: none;
+  }
+}
+.site .search-scene__results .product-evidence__details > .product-evidence__eyebrow,
+.site .search-scene__results .product-evidence__details h3,
+.site .search-scene__results .product-evidence__services > .product-evidence__mono {
+  display: none;
+}
+.site .search-scene__results .product-evidence__meta {
+  margin-top: 14px;
+}
+.site .stage-workbench__record .product-evidence__context-note {
+  display: none;
+}
+.site .stage-workbench__bottom p {
+  font-size: var(--font-size-12);
+  line-height: 1.5;
+}
+.evidence-levels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-7);
+  border-top: 1px solid var(--border-subtle);
+}
+.evidence-levels article {
+  padding: var(--space-6) 0;
+}
+.evidence-levels article > span {
+  font: 400 var(--font-size-12)/1.5 var(--font-mono);
+  color: var(--accent-text);
+}
+.evidence-levels h3 {
+  font-size: var(--font-size-24);
+  letter-spacing: var(--tracking-heading);
+  margin: 18px 0;
+}
+.evidence-levels code {
+  display: block;
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  font-size: var(--font-size-14);
+}
+.evidence-levels p {
+  margin-top: 18px;
+  font-size: var(--font-size-16);
+  line-height: 1.5;
+  color: var(--color-text-body);
+  max-width: 340px;
+}
+.monitor-context {
+  margin: var(--space-6) 0;
+  padding: var(--space-5);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-control);
+}
+.monitor-context h4 {
+  font-size: var(--font-size-18);
+  font-weight: 500;
+  margin-bottom: var(--space-4);
+}
+.monitor-context dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 10px 0;
+  border-top: 1px solid var(--border-subtle);
+  font-size: var(--font-size-12);
+}
+.monitor-context dt {
+  color: var(--text-muted);
+}
+.monitor-context dd {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.monitor-context p {
+  margin-top: var(--space-4);
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+  color: var(--color-text-body);
+}
+@media (max-width: 699px) {
+  .evidence-levels {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .evidence-levels article {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .evidence-levels p {
+    max-width: none;
+  }
+}
+
+.site .stage-case-experience .stage-example-journey {
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin: 0;
+  border: 0;
+}
+.site .stage-case-experience .stage-example-journey > div {
+  border-top: 1px solid var(--border-subtle);
+  padding: var(--space-4) 0;
+}
+.site .stage-case-experience .stage-example-journey p {
+  margin-top: var(--space-2);
+  font-size: var(--font-size-14);
+}

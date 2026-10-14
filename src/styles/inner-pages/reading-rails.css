@@ -1,0 +1,125 @@
+/* Continuous reading rails: shared headings, detail rows and the next section agree. */
+.site .inner-pages .editorial-heading + .related-reading {
+  margin-top: 0;
+}
+.site .inner-pages .pricing-heading {
+  display: grid;
+  grid-template-columns: var(--reading-columns);
+  gap: var(--layout-gap);
+  align-items: start;
+  margin-bottom: var(--space-8);
+}
+.site .inner-pages .pricing-heading .billing {
+  justify-self: start;
+  margin: 0;
+}
+.site .inner-pages .pricing-heading .billing > p {
+  margin: 0;
+}
+.site .inner-pages .stage-token-grid b {
+  font-weight: 500;
+  font-size: var(--font-size-24);
+}
+.site .inner-pages .contact-topics button:nth-child(n) {
+  background: var(--surface-card);
+  padding: var(--editorial-padding);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-panel);
+  text-align: left;
+}
+.site .inner-pages .contact-topics button[aria-pressed='true'] {
+  border-top-color: var(--accent-text);
+  border-color: var(--accent-text);
+  outline: 1px solid var(--accent-text);
+}
+.site .inner-pages .page-contents a[aria-current='location'] {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+.site
+  .inner-pages
+  :is(.collection-layout, .team-handoff, .api-access-layout, .scanning-request)
+  > * {
+  min-width: 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-subtle);
+}
+.site
+  .inner-pages
+  :is(.collection-layout, .team-handoff, .api-usage, .indicator-approach, .scanning-request)
+  p {
+  max-width: 60ch;
+}
+.site .inner-pages .stage-contact-form :is(input:not([type='checkbox']), textarea, select) {
+  background: var(--surface-card);
+}
+@media (max-width: 767px) {
+  .site .inner-pages .pricing-heading {
+    grid-template-columns: 1fr;
+    margin-bottom: 28px;
+  }
+  .site .inner-pages .stage-token-grid {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+  .site .inner-pages .page-contents {
+    gap: 0 var(--space-6);
+    padding-block: var(--space-3);
+  }
+  .site .inner-pages .contact-topics button + button {
+    border-top: 0;
+  }
+}
+
+.site .inner-pages .evidence-flow {
+  display: block;
+  width: 100%;
+  height: 36px;
+  margin-bottom: var(--space-4);
+  pointer-events: none;
+}
+/* Parallel content shares natural row heights, even when one title wraps. */
+@supports (grid-template-rows: subgrid) {
+  .site .inner-pages :is(.feature-columns, .query-guide, .change-ledger, .evidence-levels) {
+    row-gap: var(--space-5);
+  }
+  .site
+    .inner-pages
+    :is(.feature-columns, .query-guide, .change-ledger, .evidence-levels)
+    > article {
+    display: grid;
+    grid-template-rows: subgrid;
+    align-content: start;
+  }
+  .site .inner-pages :is(.query-guide, .change-ledger, .evidence-levels) > article {
+    grid-row: span 4;
+  }
+  .site
+    .inner-pages
+    :is(.feature-columns, .query-guide, .change-ledger, .evidence-levels)
+    > article
+    > :is(p, h3, h4, code, span) {
+    margin-block: 0;
+    padding-block: 0;
+    align-self: start;
+  }
+}
+@media (max-width: 767px) {
+  .site .inner-pages .evidence-flow {
+    display: none;
+  }
+  .site
+    .inner-pages
+    :is(.feature-columns, .query-guide, .change-ledger, .evidence-levels)
+    > article {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+}
+@media (min-width: 768px) {
+  .site .inner-pages .team-workflow__layout {
+    grid-template-columns: var(--reading-columns);
+  }
+}

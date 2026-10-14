@@ -1,0 +1,354 @@
+{
+  "/legal/api-data-license-agreement": {
+    "title": "Apcosys API & Data License Agreement",
+    "updated": "August 4, 2025",
+    "updatedISO": "2025-08-04",
+    "sourceUrl": "https://apcosys.net/legal/api-data-license-agreement",
+    "sourceSha256": "b24ab848d215a20f1d51b19f9b1706e114da01854470e76f27853f36380a0ecf",
+    "headings": [
+      { "id": "1-license-grant", "title": "1. License Grant", "level": 2 },
+      {
+        "id": "2-usage-restrictions",
+        "title": "2. Usage Restrictions",
+        "level": 2
+      },
+      {
+        "id": "3-data-retention--compliance",
+        "title": "3. Data Retention & Compliance",
+        "level": 2
+      },
+      {
+        "id": "4-api-access--limitations",
+        "title": "4. API Access & Limitations",
+        "level": 2
+      },
+      {
+        "id": "5-intellectual-property",
+        "title": "5. Intellectual Property",
+        "level": 2
+      },
+      { "id": "6-fees--payment", "title": "6. Fees & Payment", "level": 2 },
+      { "id": "7-termination", "title": "7. Termination", "level": 2 },
+      {
+        "id": "8-disclaimer--limitation-of-liability",
+        "title": "8. Disclaimer & Limitation of Liability",
+        "level": 2
+      },
+      {
+        "id": "9-governing-law--dispute-resolution",
+        "title": "9. Governing Law & Dispute Resolution",
+        "level": 2
+      },
+      { "id": "10-amendments", "title": "10. Amendments", "level": 2 }
+    ],
+    "html": "<p>This API &amp; Data License Agreement (“Agreement”) is a legally binding contract between you (“Licensee”) and Apcosys LLC (“Apcosys,” “we,” “us,” or “our”). It governs your access to and use of the Apcosys API (“API”) and any data provided through the API or as standalone datasets (“Data”). By accessing or using the API or Data, you agree to be bound by this Agreement. If you do not agree, you must immediately cease use.</p>\n<h2 id=\"1-license-grant\" tabindex=\"-1\">1. License Grant</h2>\n<p>Apcosys grants you a <strong>non-exclusive, non-transferable, revocable, limited license</strong> to access and use the API to retrieve Data, subject to this Agreement and the Apcosys Terms of Service. Different pricing plans provide varying rights for Data usage:</p>\n<ul>\n<li><strong>Personal &amp; Free Plans:</strong> Data is restricted to personal, non-commercial use and cannot be resold or shared.</li>\n<li><strong>Business &amp; Enterprise Plans:</strong> Data may be used for commercial purposes, subject to additional terms for resale.</li>\n</ul>\n<p>Unless explicitly permitted in writing by Apcosys, you may not resell, sublicense, distribute, or publicly display the Data.</p>\n<h2 id=\"2-usage-restrictions\" tabindex=\"-1\">2. Usage Restrictions</h2>\n<p>You agree <strong>not</strong> to:</p>\n<ul>\n<li>Use the API or Data in violation of any applicable laws or regulations.</li>\n<li>Exceed rate limits or bypass technical restrictions on API access.</li>\n<li>Store, modify, or redistribute Data for resale unless expressly allowed by your pricing plan.</li>\n<li>Share API keys or access credentials with third parties.</li>\n<li>Develop a competing product or service using the API or Data.</li>\n<li>Use the Data in ways that harm individuals, breach privacy laws, or support illegal activities.</li>\n</ul>\n<p><strong>Prohibited Free Account Misuse:</strong></p>\n<ul>\n<li>Free accounts are subject to strict usage limits and may not be used to circumvent restrictions.</li>\n<li>Creating multiple free accounts to bypass limits is strictly forbidden.</li>\n<li>Violations may lead to account suspension or permanent exclusion from Apcosys services.</li>\n</ul>\n<h2 id=\"3-data-retention--compliance\" tabindex=\"-1\">3. Data Retention &amp; Compliance</h2>\n<ul>\n<li>You may retain Apcosys Data only for as long as necessary to achieve your legitimate business or research objectives.</li>\n<li>You must comply with <strong>GDPR, CCPA, and other relevant privacy laws</strong> when handling personal or sensitive data.</li>\n<li>Upon Apcosys’s request, you must delete all Data obtained from Apcosys, unless legally required to retain it.</li>\n</ul>\n<h2 id=\"4-api-access--limitations\" tabindex=\"-1\">4. API Access &amp; Limitations</h2>\n<ul>\n<li>Usage quotas and rate limits depend on your pricing plan.</li>\n<li>Apcosys may modify, suspend, or terminate API access at its discretion without prior notice.</li>\n<li>You are responsible for securing API access credentials and any actions taken using your API key.</li>\n</ul>\n<h2 id=\"5-intellectual-property\" tabindex=\"-1\">5. Intellectual Property</h2>\n<p>All rights, title, and interest in the API and Data remain with <strong>Apcosys</strong>. This Agreement does not confer ownership of the API, Data, or any related intellectual property rights.</p>\n<h2 id=\"6-fees--payment\" tabindex=\"-1\">6. Fees &amp; Payment</h2>\n<ul>\n<li>Access to specific API endpoints or datasets may require a paid subscription or one-time payment.</li>\n<li>Payment terms are outlined in your subscription plan or purchase agreement.</li>\n<li><strong>All payments are final, and chargebacks are not permitted.</strong></li>\n<li>Non-payment of required fees may result in suspension or termination of access.</li>\n</ul>\n<h2 id=\"7-termination\" tabindex=\"-1\">7. Termination</h2>\n<p>Apcosys may terminate this Agreement immediately if you:</p>\n<ul>\n<li>Violate any terms of this Agreement.</li>\n<li>Engage in unauthorized use of the API or Data.</li>\n<li>Fail to comply with applicable laws.</li>\n</ul>\n<p>Upon termination, you must stop using the API and <strong>permanently delete all stored Data</strong>.</p>\n<h2 id=\"8-disclaimer--limitation-of-liability\" tabindex=\"-1\">8. Disclaimer &amp; Limitation of Liability</h2>\n<ul>\n<li>The API and Data are provided <strong>“as is”</strong> without any warranties.</li>\n<li>Apcosys is <strong>not liable</strong> for any damages arising from your use of the API or Data.</li>\n<li>Apcosys does not guarantee continuous or error-free access to the API.</li>\n</ul>\n<h2 id=\"9-governing-law--dispute-resolution\" tabindex=\"-1\">9. Governing Law &amp; Dispute Resolution</h2>\n<p>This Agreement is governed by the laws of <strong>Armenia</strong>. Any disputes will be resolved in the courts of Armenia.</p>\n<h2 id=\"10-amendments\" tabindex=\"-1\">10. Amendments</h2>\n<p>Apcosys may update this Agreement at any time. Continued use of the API or Data after changes are posted signifies your acceptance of the revised terms.</p>\n"
+  },
+  "/legal/cookie-policy": {
+    "title": "Apcosys Cookie Policy",
+    "updated": "August 4, 2025",
+    "updatedISO": "2025-08-04",
+    "sourceUrl": "https://apcosys.net/legal/cookie-policy",
+    "sourceSha256": "f94e749e96992207de3dc7398c996fad305dee1fda8005f8f7a98b00e318976a",
+    "headings": [
+      { "id": "introduction", "title": "Introduction", "level": 2 },
+      { "id": "use-of-cookies", "title": "Use of Cookies", "level": 2 },
+      { "id": "cookies-we-may-use", "title": "Cookies We May Use", "level": 2 },
+      {
+        "id": "strictly-necessary-cookies",
+        "title": "Strictly Necessary Cookies",
+        "level": 3
+      },
+      {
+        "id": "personalization-cookies",
+        "title": "Personalization Cookies",
+        "level": 3
+      },
+      { "id": "analytics-cookies", "title": "Analytics Cookies", "level": 3 },
+      {
+        "id": "advertising-cookies",
+        "title": "Advertising Cookies",
+        "level": 3
+      },
+      { "id": "control-of-cookies", "title": "Control of Cookies", "level": 2 },
+      {
+        "id": "other-tracking-technologies",
+        "title": "Other Tracking Technologies",
+        "level": 2
+      },
+      { "id": "privacy-policy", "title": "Privacy Policy", "level": 2 }
+    ],
+    "html": "<h2 id=\"introduction\" tabindex=\"-1\">Introduction</h2>\n<p>Apcosys LLC (“we,” “us,” or “our”) uses cookies, web beacons, pixel tags, and other tracking technologies when you visit our website <a href=\"https://apcosys.net/\">https://apcosys.net/</a>, including any related media forms, channels, mobile websites, or applications (collectively, the “Site”). These technologies help us enhance your experience and personalize the Site’s functionality.</p>\n<p>We may update this Cookie Policy at any time. Changes will be reflected by updating the “Last Updated” date. Updates take effect immediately upon posting on the Site, and your continued use of the Site signifies your acceptance of the revised policy. We recommend reviewing this Cookie Policy periodically to stay informed.</p>\n<h2 id=\"use-of-cookies\" tabindex=\"-1\">Use of Cookies</h2>\n<p>A cookie is a small data file that assigns you a unique identifier stored on your device. When you interact with the Site, your browser uses this identifier to facilitate your requests.</p>\n<p>Cookies enable us to:</p>\n<ul>\n<li>Track services used.</li>\n<li>Store registration details.</li>\n<li>Remember preferences.</li>\n<li>Maintain login sessions.</li>\n<li>Streamline purchases.</li>\n<li>Monitor page visits.</li>\n</ul>\n<p>They help us analyze Site usage and improve your experience.</p>\n<p>We use the following cookie types to optimize your experience:</p>\n<ul>\n<li><strong>Strictly Necessary Cookies:</strong> Essential for the Site’s core functionality, including security, authentication, and payment processing.</li>\n<li><strong>Personalization Cookies:</strong> Tailor your experience by saving preferences and settings.</li>\n<li><strong>Analytics Cookies:</strong> Provide insights into Site usage to enhance our services.</li>\n<li><strong>Advertising Cookies:</strong> Deliver relevant ads and measure their effectiveness.</li>\n</ul>\n<h2 id=\"cookies-we-may-use\" tabindex=\"-1\">Cookies We May Use</h2>\n<h3 id=\"strictly-necessary-cookies\" tabindex=\"-1\">Strictly Necessary Cookies</h3>\n<p>These cookies are vital for security, network management, and accessibility. Disabling them via browser settings may impair Site functionality.</p>\n<ul>\n<li><strong>Landing Page Cookies:</strong> Store preferences for privacy settings, login, or form submissions.</li>\n<li><strong>CSRF Protection Cookie:</strong> Safeguards your data during Site interactions.</li>\n<li><strong>Google reCAPTCHA Service Cookie:</strong> Protects against spam and abuse.</li>\n<li><strong>Google Storage Cookie:</strong> Supports security features like authentication and fraud prevention.</li>\n<li><strong>Payment Service Provider Cookie:</strong> Facilitates secure transactions via our payment provider, Paddle.com.</li>\n</ul>\n<h3 id=\"personalization-cookies\" tabindex=\"-1\">Personalization Cookies</h3>\n<p>These cookies recognize returning visitors and support features like language settings.</p>\n<ul>\n<li><strong>Google Functionality Storage Cookie:</strong> Enhances Site functionality, such as language preferences.</li>\n<li><strong>Google Personalization Storage Cookie:</strong> Personalizes content, like video recommendations.</li>\n</ul>\n<h3 id=\"analytics-cookies\" tabindex=\"-1\">Analytics Cookies</h3>\n<p>Analytics cookies help us understand Site usage to improve performance, including Google Analytics cookies.</p>\n<h3 id=\"advertising-cookies\" tabindex=\"-1\">Advertising Cookies</h3>\n<p>These cookies deliver tailored advertisements and track ad performance, including:</p>\n<ul>\n<li><strong>Google Storage Cookies for Advertising:</strong> Support ad delivery.</li>\n<li><strong>Google Consent Cookie for Advertising Data:</strong> Manages user data sent to Google for ads.</li>\n<li><strong>Google Consent Cookie for Personalized Advertising:</strong> Enables customized ad experiences.</li>\n</ul>\n<h2 id=\"control-of-cookies\" tabindex=\"-1\">Control of Cookies</h2>\n<p>You can manage cookie preferences through the Site’s cookie consent settings, except for <strong>Strictly Necessary Cookies</strong>, which are required for service delivery.</p>\n<p>Most browsers accept cookies by default, but you can modify settings to reject or remove cookies. Note that this may impact Site functionality.</p>\n<p>For guidance on managing cookies, check your browser or device settings or visit:</p>\n<ul>\n<li>Apple Safari</li>\n<li>Google Chrome </li>\n<li>Mozilla Firefox</li>\n<li>Opera</li>\n<li>Android (Chrome)</li>\n<li>iPhone or iPad (Chrome)</li>\n<li>iPhone or iPad (Safari)</li>\n</ul>\n<h2 id=\"other-tracking-technologies\" tabindex=\"-1\">Other Tracking Technologies</h2>\n<p>We may use web beacons, pixel tags, or similar technologies to customize the Site and improve your experience.</p>\n<p>These tools, embedded in pages or emails, track metrics like page visits or email views, collecting limited data such as cookie numbers, timestamps, and page details.</p>\n<p>While you cannot decline web beacons or pixel tags, <strong>controlling cookies that interact with them</strong> can limit their functionality.</p>\n<h2 id=\"privacy-policy\" tabindex=\"-1\">Privacy Policy</h2>\n<p>For details on how we handle data collected via cookies and tracking technologies, refer to our <strong><a href=\"/legal/privacy-policy\">Privacy Policy</a></strong> on the Site.</p>\n<p>This Cookie Policy is part of and incorporated into our Privacy Policy. By using the Site, you agree to both policies.</p>\n"
+  },
+  "/legal/data-collection-policy": {
+    "title": "Apcosys Data Collection Policy",
+    "updated": "August 4, 2025",
+    "updatedISO": "2025-08-04",
+    "sourceUrl": "https://apcosys.net/legal/data-collection-policy",
+    "sourceSha256": "f3a0996ed230291486f4c3c342f4ac5c26937b8fd1a1fed0732a7c47085f5a3a",
+    "headings": [
+      {
+        "id": "what-and-how-apcosys-collects",
+        "title": "What and How Apcosys Collects",
+        "level": 2
+      },
+      { "id": "purpose", "title": "Purpose", "level": 2 },
+      { "id": "legislation", "title": "Legislation", "level": 2 },
+      {
+        "id": "how-to-make-information-private",
+        "title": "How to Make Information Private",
+        "level": 2
+      }
+    ],
+    "html": "<h2 id=\"what-and-how-apcosys-collects\" tabindex=\"-1\">What and How Apcosys Collects</h2>\n<p>The Apcosys app collects only <strong>publicly available, externally accessible data</strong> using <strong>nonintrusive</strong> methods. Our algorithms employ standardized, open network protocols to query hosts and retrieve specific attributes. Examples of collected data include:</p>\n<ul>\n<li><p><strong>Exposed Ports:</strong><br>Networked applications use specific ports for communication, such as TCP ports 80 or 443 for web traffic. Security best practices recommend limiting open ports to only those necessary. Services behind these ports often share public metadata known as <strong>“banners.”</strong></p>\n</li>\n<li><p><strong>SSL Certificates:</strong><br>These enable encrypted communications and contain <strong>public information</strong> like public keys, domain names, and details about the certificate’s issuer, ensuring secure connections.</p>\n</li>\n<li><p><strong>Whois Database:</strong><br>This includes <strong>public information</strong> about domains, registrants, and registrars, as required by the Internet Corporation for Assigned Names and Numbers (ICANN) for public access via Whois directories.</p>\n</li>\n</ul>\n<p>These data types are nonintrusive, as they are publicly accessible to anyone using standard web tools.</p>\n<h2 id=\"purpose\" tabindex=\"-1\">Purpose</h2>\n<p>Our goal is to assist users in <strong>research, marketing, and enhancing cybersecurity</strong>. We aim to contribute to a safer, more robust Internet, aligning with principles like those outlined at <a href=\"https://www.mozilla.org/en-US/about/manifesto/\">https://www.mozilla.org/en-US/about/manifesto/</a>. Apcosys supports this vision by providing tools for informed decision-making.</p>\n<p>We <strong>do not</strong> use intrusive techniques, conduct penetration testing, bypass security measures, or access private data <strong>without explicit consent and verified ownership</strong>. Upon request, we can perform detailed scans of hosts you own using intrusive methods, with results provided exclusively to you.</p>\n<h2 id=\"legislation\" tabindex=\"-1\">Legislation</h2>\n<p>Apcosys complies with applicable laws, including the <strong>U.S. Computer Fraud and Abuse Act (CFAA)</strong>, by collecting only public data without unauthorized access. Our operations are designed to respect the <strong>confidentiality, integrity, and availability</strong> of digital assets.</p>\n<h2 id=\"how-to-make-information-private\" tabindex=\"-1\">How to Make Information Private</h2>\n<p>If Apcosys reveals information about your host that you prefer to keep private, you can restrict access by <strong>reconfiguring your software</strong>. Use Apcosys to <strong>rescan your hosts</strong> and verify changes to your security perimeter.</p>\n"
+  },
+  "/legal/data-processing-agreement": {
+    "title": "Apcosys Data Processing Agreement",
+    "updated": "August 4, 2025",
+    "updatedISO": "2025-08-04",
+    "sourceUrl": "https://apcosys.net/legal/data-processing-agreement",
+    "sourceSha256": "7e5c2ae1ca5a338c09311b98dbe8084a1eb95420b1e43b295a830e217bb7261a",
+    "headings": [
+      { "id": "1-definitions", "title": "1. Definitions", "level": 2 },
+      {
+        "id": "2-scope-of-this-agreement",
+        "title": "2. Scope of This Agreement",
+        "level": 2
+      },
+      {
+        "id": "3-what-data-we-process",
+        "title": "3. What Data We Process",
+        "level": 2
+      },
+      {
+        "id": "4-how-we-protect-your-data",
+        "title": "4. How We Protect Your Data",
+        "level": 2
+      },
+      { "id": "5-subprocessors", "title": "5. Subprocessors", "level": 2 },
+      { "id": "6-data-transfers", "title": "6. Data Transfers", "level": 2 },
+      { "id": "7-your-rights", "title": "7. Your Rights", "level": 2 },
+      { "id": "8-data-breaches", "title": "8. Data Breaches", "level": 2 },
+      { "id": "9-data-retention", "title": "9. Data Retention", "level": 2 },
+      {
+        "id": "10-changes-to-this-agreement",
+        "title": "10. Changes to This Agreement",
+        "level": 2
+      },
+      { "id": "11-contact-us", "title": "11. Contact Us", "level": 2 },
+      {
+        "id": "acceptance-of-terms",
+        "title": "Acceptance of Terms",
+        "level": 2
+      }
+    ],
+    "html": "<p>This Data Processing Agreement (“Agreement”) outlines how Apcosys LLC (“we,” “us,” or “our”) processes personal data on behalf of users of our services (“you” or “your”). It ensures compliance with the <strong>General Data Protection Regulation (GDPR)</strong> and other applicable data protection laws. By using our services, you agree to this Agreement.</p>\n<h2 id=\"1-definitions\" tabindex=\"-1\">1. Definitions</h2>\n<ul>\n<li><strong>GDPR:</strong> The General Data Protection Regulation (EU) 2016/679.</li>\n<li><strong>Personal Data:</strong> Information that can identify an individual, such as names, email addresses, or IP addresses.</li>\n<li><strong>Processing:</strong> Any operation performed on Personal Data, including collection, storage, or sharing.</li>\n<li><strong>Subprocessor:</strong> A third-party provider we engage to process Personal Data.</li>\n</ul>\n<h2 id=\"2-scope-of-this-agreement\" tabindex=\"-1\">2. Scope of This Agreement</h2>\n<ul>\n<li>This Agreement applies to all Personal Data you provide while using our services.</li>\n<li>We process your Personal Data to deliver and enhance our services, as described in our <strong><a href=\"/legal/privacy-policy\">Privacy Policy</a></strong>.</li>\n<li>We act as the <strong>Data Processor</strong> for your Personal Data, while you, as the <strong>Data Controller</strong>, determine the purpose and means of data collection and processing.</li>\n</ul>\n<h2 id=\"3-what-data-we-process\" tabindex=\"-1\">3. What Data We Process</h2>\n<p>We may process the following Personal Data:</p>\n<ul>\n<li>Names, email addresses, and contact information.</li>\n<li>IP addresses and metadata generated from your use of our services.</li>\n<li>Other data you submit through your account or communications with us.</li>\n</ul>\n<h2 id=\"4-how-we-protect-your-data\" tabindex=\"-1\">4. How We Protect Your Data</h2>\n<p>We prioritize your privacy and employ robust measures to safeguard your data, including:</p>\n<ul>\n<li><strong>Encryption:</strong> Data is encrypted during transmission.</li>\n<li><strong>Access Control:</strong> Only authorized personnel can access Personal Data.</li>\n<li><strong>Monitoring:</strong> Continuous assessments to detect and address vulnerabilities.</li>\n</ul>\n<h2 id=\"5-subprocessors\" tabindex=\"-1\">5. Subprocessors</h2>\n<p>We engage trusted third-party Subprocessors to support our services, including:</p>\n<ul>\n<li><strong>Paddle.com:</strong> Handles payment processing.</li>\n<li><strong>Pipedrive:</strong> Manages customer relationships.</li>\n<li><strong>Postmark (ActiveCampaign):</strong> Facilitates email delivery.</li>\n</ul>\n<p>A current list of Subprocessors is available at <strong>Subprocessors List</strong>.</p>\n<h2 id=\"6-data-transfers\" tabindex=\"-1\">6. Data Transfers</h2>\n<ul>\n<li>Personal Data may be transferred outside the European Economic Area (EEA) when necessary, with safeguards like <strong>Standard Contractual Clauses (SCCs)</strong> to comply with GDPR.</li>\n<li>For users in other regions, we adhere to local data protection laws to ensure security.</li>\n</ul>\n<h2 id=\"7-your-rights\" tabindex=\"-1\">7. Your Rights</h2>\n<p>Under GDPR and other privacy laws, you have the following rights:</p>\n<ul>\n<li><strong>Access:</strong> Obtain a copy of your Personal Data.</li>\n<li><strong>Correction:</strong> Rectify inaccurate data.</li>\n<li><strong>Erasure:</strong> Request deletion of your data.</li>\n<li><strong>Restriction:</strong> Limit the use of your data.</li>\n<li><strong>Portability:</strong> Transfer your data to another provider.</li>\n</ul>\n<p>To exercise these rights, contact <strong><a href=\"mailto:info@apcosys.net\">info@apcosys.net</a></strong>.</p>\n<h2 id=\"8-data-breaches\" tabindex=\"-1\">8. Data Breaches</h2>\n<p>In the event of a data breach affecting your Personal Data, we will notify you promptly, detailing:</p>\n<ul>\n<li>The nature of the breach.</li>\n<li>Its potential impact.</li>\n<li>Mitigation measures taken.</li>\n</ul>\n<h2 id=\"9-data-retention\" tabindex=\"-1\">9. Data Retention</h2>\n<p>We retain Personal Data only as long as necessary to:</p>\n<ul>\n<li>Provide our services.</li>\n<li>Comply with legal obligations.</li>\n</ul>\n<p>Data no longer needed is securely deleted.</p>\n<h2 id=\"10-changes-to-this-agreement\" tabindex=\"-1\">10. Changes to This Agreement</h2>\n<p>We may revise this Agreement to reflect updates to our services or legal requirements. Changes will be posted here with the effective date clearly indicated.</p>\n<h2 id=\"11-contact-us\" tabindex=\"-1\">11. Contact Us</h2>\n<p>For questions about this Agreement or our data processing practices, please contact us.</p>\n<h2 id=\"acceptance-of-terms\" tabindex=\"-1\">Acceptance of Terms</h2>\n<p>By using our services, you accept the terms of this Data Processing Agreement. If you do not agree, please stop using our services.</p>\n"
+  },
+  "/legal/privacy-policy": {
+    "title": "Apcosys Privacy Policy",
+    "updated": "August 4, 2025",
+    "updatedISO": "2025-08-04",
+    "sourceUrl": "https://apcosys.net/legal/privacy-policy",
+    "sourceSha256": "540d9f98c4e26d6e4425bc69e72b3853f7fe849c6177ff2532f11cc21eb59964",
+    "headings": [
+      { "id": "introduction", "title": "Introduction", "level": 2 },
+      {
+        "id": "collection-of-your-information",
+        "title": "Collection of Your Information",
+        "level": 2
+      },
+      { "id": "personal-data", "title": "Personal Data", "level": 3 },
+      { "id": "derivative-data", "title": "Derivative Data", "level": 3 },
+      { "id": "financial-data", "title": "Financial Data", "level": 3 },
+      { "id": "mobile-device-data", "title": "Mobile Device Data", "level": 3 },
+      { "id": "third-party-data", "title": "Third-Party Data", "level": 3 },
+      {
+        "id": "data-from-contests-giveaways-and-surveys",
+        "title": "Data From Contests, Giveaways, and Surveys",
+        "level": 3
+      },
+      {
+        "id": "use-of-your-information",
+        "title": "Use of Your Information",
+        "level": 2
+      },
+      {
+        "id": "disclosure-of-your-information",
+        "title": "Disclosure of Your Information",
+        "level": 2
+      },
+      {
+        "id": "by-law-or-to-protect-rights",
+        "title": "By Law or to Protect Rights",
+        "level": 3
+      },
+      {
+        "id": "third-party-service-providers",
+        "title": "Third-Party Service Providers",
+        "level": 3
+      },
+      {
+        "id": "marketing-communications",
+        "title": "Marketing Communications",
+        "level": 3
+      },
+      { "id": "affiliates", "title": "Affiliates", "level": 3 },
+      {
+        "id": "other-third-parties",
+        "title": "Other Third Parties",
+        "level": 3
+      },
+      { "id": "sale-or-bankruptcy", "title": "Sale or Bankruptcy", "level": 3 },
+      {
+        "id": "tracking-technologies",
+        "title": "Tracking Technologies",
+        "level": 2
+      },
+      {
+        "id": "cookies-and-web-beacons",
+        "title": "Cookies and Web Beacons",
+        "level": 3
+      },
+      {
+        "id": "internet-based-advertising",
+        "title": "Internet-Based Advertising",
+        "level": 3
+      },
+      { "id": "website-analytics", "title": "Website Analytics", "level": 3 },
+      {
+        "id": "third-party-websites",
+        "title": "Third-Party Websites",
+        "level": 2
+      },
+      {
+        "id": "security-of-your-information",
+        "title": "Security of Your Information",
+        "level": 2
+      },
+      {
+        "id": "policy-for-children",
+        "title": "Policy for Children",
+        "level": 2
+      },
+      {
+        "id": "controls-for-do-not-track-features",
+        "title": "Controls for Do-Not-Track Features",
+        "level": 2
+      },
+      {
+        "id": "options-regarding-your-information",
+        "title": "Options Regarding Your Information",
+        "level": 2
+      },
+      {
+        "id": "account-information",
+        "title": "Account Information",
+        "level": 3
+      },
+      {
+        "id": "emails-and-communications",
+        "title": "Emails and Communications",
+        "level": 3
+      },
+      {
+        "id": "california-privacy-rights",
+        "title": "California Privacy Rights",
+        "level": 2
+      },
+      { "id": "contact-us", "title": "Contact Us", "level": 2 }
+    ],
+    "html": "<h2 id=\"introduction\" tabindex=\"-1\">Introduction</h2>\n<p>Apcosys LLC (“we,” “us,” or “our”) is committed to protecting the privacy of our users (“you” or “your”). This Privacy Policy outlines how we collect, use, share, and safeguard your information when you visit our website <a href=\"https://apcosys.net/\">https://apcosys.net/</a>, including related media forms, channels, mobile websites, or applications (collectively, the “Site”). Please review this policy carefully. If you do not agree with its terms, please do not use the Site.</p>\n<p>We may update this Privacy Policy at any time. Changes will be indicated by updating the “Last updated” date. Updates take effect immediately upon posting, and your continued use of the Site signifies acceptance of the revised policy. We encourage you to review this policy periodically.</p>\n<h2 id=\"collection-of-your-information\" tabindex=\"-1\">Collection of Your Information</h2>\n<p>We collect information about you in various ways, including:</p>\n<h3 id=\"personal-data\" tabindex=\"-1\">Personal Data</h3>\n<p>Information you voluntarily provide, such as your name, email address, or phone number, when you register, engage in Site activities like chat or message boards, or interact with our services. Providing this information is optional, but refusal may limit access to certain features.</p>\n<h3 id=\"derivative-data\" tabindex=\"-1\">Derivative Data</h3>\n<p>Data automatically collected by our servers, such as your IP address, browser type, operating system, access times, and pages viewed before and after accessing the Site.</p>\n<h3 id=\"financial-data\" tabindex=\"-1\">Financial Data</h3>\n<p>Payment-related information (e.g., credit card number, card brand, expiration date) collected during purchases or service inquiries. This data is stored by our payment processor, and we recommend reviewing their privacy policy for details.</p>\n<h3 id=\"mobile-device-data\" tabindex=\"-1\">Mobile Device Data</h3>\n<p>Device details, such as mobile device ID, model, or manufacturer, if you access the Site from a mobile device.</p>\n<h3 id=\"third-party-data\" tabindex=\"-1\">Third-Party Data</h3>\n<p>Information obtained from third parties, such as marketing leads or personal data, with your consent.</p>\n<h3 id=\"data-from-contests-giveaways-and-surveys\" tabindex=\"-1\">Data From Contests, Giveaways, and Surveys</h3>\n<p>Information you provide when participating in contests, giveaways, or surveys.</p>\n<h2 id=\"use-of-your-information\" tabindex=\"-1\">Use of Your Information</h2>\n<p>Accurate information enables us to deliver a seamless, efficient, and personalized experience. We may use your information to:</p>\n<ul>\n<li>Manage contests, promotions, or sweepstakes.</li>\n<li>Compile anonymous statistical data for internal or third-party analysis.</li>\n<li>Create and maintain your account.</li>\n<li>Deliver targeted ads, newsletters, or promotional updates.</li>\n<li>Communicate about your account or orders.</li>\n<li>Process purchases, payments, and refunds.</li>\n<li>Build a personalized profile to enhance future Site visits.</li>\n<li>Optimize Site performance and functionality.</li>\n<li>Analyze usage trends to improve user experience.</li>\n<li>Notify you of Site updates or new offerings.</li>\n<li>Prevent fraud, monitor for theft, or protect against illegal activity.</li>\n<li>Address disputes, troubleshoot issues, or respond to service requests.</li>\n<li>Send newsletters or solicit Site support.</li>\n</ul>\n<h2 id=\"disclosure-of-your-information\" tabindex=\"-1\">Disclosure of Your Information</h2>\n<p>We may share your information in the following cases:</p>\n<h3 id=\"by-law-or-to-protect-rights\" tabindex=\"-1\">By Law or to Protect Rights</h3>\n<p>We may disclose your information if required by law, to address policy violations, or to protect the rights, property, or safety of others, including sharing with entities for fraud prevention or credit risk reduction.</p>\n<h3 id=\"third-party-service-providers\" tabindex=\"-1\">Third-Party Service Providers</h3>\n<p>We may share your information with third parties providing services like payment processing, data analysis, email delivery, hosting, customer support, or marketing.</p>\n<h3 id=\"marketing-communications\" tabindex=\"-1\">Marketing Communications</h3>\n<p>With your consent, we may share your information with third parties for marketing purposes, as permitted by law. You may withdraw consent at any time.</p>\n<h3 id=\"affiliates\" tabindex=\"-1\">Affiliates</h3>\n<p>We may share your information with affiliates, who are required to adhere to this Privacy Policy. Affiliates include our parent company, subsidiaries, or entities under common control.</p>\n<h3 id=\"other-third-parties\" tabindex=\"-1\">Other Third Parties</h3>\n<p>We may share your information with third parties, such as investors, for general business analysis.</p>\n<h3 id=\"sale-or-bankruptcy\" tabindex=\"-1\">Sale or Bankruptcy</h3>\n<p>In the event of a merger, asset sale, or bankruptcy, your information may be transferred to a successor entity, which may not honor commitments made in this policy.</p>\n<blockquote>\n<p>We are not responsible for third parties’ actions regarding your data. To stop receiving third-party communications, contact them directly.</p>\n</blockquote>\n<h2 id=\"tracking-technologies\" tabindex=\"-1\">Tracking Technologies</h2>\n<h3 id=\"cookies-and-web-beacons\" tabindex=\"-1\">Cookies and Web Beacons</h3>\n<p>We use cookies, web beacons, and other tracking technologies to enhance and personalize your Site experience. See our Cookie Policy for details, which is incorporated into this Privacy Policy. Using the Site signifies agreement to the Cookie Policy.</p>\n<h3 id=\"internet-based-advertising\" tabindex=\"-1\">Internet-Based Advertising</h3>\n<p>We may use third-party software for email marketing or interactive campaigns, which may employ cookies or similar technologies to optimize your experience. You can opt out of interest-based ads via the Digital Advertising Alliance Opt-Out Tool.</p>\n<h3 id=\"website-analytics\" tabindex=\"-1\">Website Analytics</h3>\n<p>We partner with third-party vendors, such as Google Analytics, to track Site usage and content popularity using first- and third-party cookies. By accessing the Site, you consent to this data collection. Review the vendors’ privacy policies for details or opt out via their settings or the Digital Advertising Alliance Opt-Out Tool. Changing devices or browsers may affect opt-out settings.</p>\n<h2 id=\"third-party-websites\" tabindex=\"-1\">Third-Party Websites</h2>\n<p>The Site may link to third-party websites, ads, or services not affiliated with us. Information you provide to these parties is not covered by this Privacy Policy, and we cannot guarantee its safety. Review their privacy policies before sharing data. We are not responsible for third-party content or practices.</p>\n<h2 id=\"security-of-your-information\" tabindex=\"-1\">Security of Your Information</h2>\n<p>We implement administrative, technical, and physical safeguards to protect your personal information. However, no security measures are infallible, and data transmission risks interception or misuse. We cannot guarantee absolute security for information you provide.</p>\n<h2 id=\"policy-for-children\" tabindex=\"-1\">Policy for Children</h2>\n<p>We do not knowingly collect data from or market to children under 13. If we learn we have collected such data, please contact us, and we will take appropriate action.</p>\n<h2 id=\"controls-for-do-not-track-features\" tabindex=\"-1\">Controls for Do-Not-Track Features</h2>\n<p>Most browsers and mobile devices offer a Do-Not-Track (DNT) feature to signal your preference against online tracking. As no universal DNT standard exists, we do not currently respond to DNT signals. If a standard is adopted, we will update this policy accordingly.</p>\n<h2 id=\"options-regarding-your-information\" tabindex=\"-1\">Options Regarding Your Information</h2>\n<h3 id=\"account-information\" tabindex=\"-1\">Account Information</h3>\n<p>You can review, update, or terminate your account by:</p>\n<ul>\n<li>Accessing your account settings to modify your information.</li>\n<li>Contacting us using the information below.</li>\n</ul>\n<p>Upon account termination, we will deactivate or delete your account and data from active databases, though some information may be retained for fraud prevention, troubleshooting, investigations, or legal compliance.</p>\n<h3 id=\"emails-and-communications\" tabindex=\"-1\">Emails and Communications</h3>\n<p>To stop receiving our communications, you can:</p>\n<ul>\n<li>Update preferences during account registration or in account settings.</li>\n<li>Contact us using the information below.</li>\n</ul>\n<p>For third-party communications, contact the third party directly.</p>\n<h2 id=\"california-privacy-rights\" tabindex=\"-1\">California Privacy Rights</h2>\n<p>Under California’s “Shine The Light” law (Civil Code Section 1798.83), California residents may request, once per year, free information about personal data shared with third parties for direct marketing in the prior calendar year. Submit requests using the contact information below.</p>\n<p>California residents under 18 with registered accounts may request removal of publicly posted data. Contact us with your account email and a statement of California residency. We will ensure the data is not publicly displayed, though complete removal from our systems is not guaranteed.</p>\n<h2 id=\"contact-us\" tabindex=\"-1\">Contact Us</h2>\n<p>For questions or concerns about this Privacy Policy, please contact us <a href=\"mailto:info@apcosys.net\">info@apcosys.net</a>.</p>\n"
+  },
+  "/legal/terms": {
+    "title": "Apcosys Terms and Conditions",
+    "updated": "August 4, 2025",
+    "updatedISO": "2025-08-04",
+    "sourceUrl": "https://apcosys.net/legal/terms",
+    "sourceSha256": "0af4e10b34b92fc30b09975b2e49c8da7370ccfe7b324709156b0650ae160d4a",
+    "headings": [
+      {
+        "id": "intellectual-property-rights",
+        "title": "Intellectual Property Rights",
+        "level": 2
+      },
+      {
+        "id": "user-representations",
+        "title": "User Representations",
+        "level": 2
+      },
+      { "id": "user-registration", "title": "User Registration", "level": 2 },
+      {
+        "id": "data-processing-agreement",
+        "title": "Data Processing Agreement",
+        "level": 2
+      },
+      {
+        "id": "payments-and-refunds",
+        "title": "Payments and Refunds",
+        "level": 2
+      },
+      {
+        "id": "prohibited-activities",
+        "title": "Prohibited Activities",
+        "level": 2
+      },
+      {
+        "id": "user-generated-contributions",
+        "title": "User-Generated Contributions",
+        "level": 2
+      },
+      {
+        "id": "contribution-license",
+        "title": "Contribution License",
+        "level": 2
+      },
+      {
+        "id": "guidelines-for-reviews",
+        "title": "Guidelines for Reviews",
+        "level": 2
+      },
+      { "id": "social-media", "title": "Social Media", "level": 2 },
+      { "id": "submissions", "title": "Submissions", "level": 2 },
+      {
+        "id": "third-party-websites-and-content",
+        "title": "Third-Party Websites and Content",
+        "level": 2
+      },
+      { "id": "site-management", "title": "Site Management", "level": 2 },
+      { "id": "privacy-policy", "title": "Privacy Policy", "level": 2 },
+      {
+        "id": "copyright-infringements",
+        "title": "Copyright Infringements",
+        "level": 2
+      },
+      {
+        "id": "term-and-termination",
+        "title": "Term and Termination",
+        "level": 2
+      },
+      {
+        "id": "modifications-and-interruptions",
+        "title": "Modifications and Interruptions",
+        "level": 2
+      },
+      { "id": "governing-law", "title": "Governing Law", "level": 2 },
+      { "id": "dispute-resolution", "title": "Dispute Resolution", "level": 2 },
+      { "id": "corrections", "title": "Corrections", "level": 2 },
+      { "id": "disclaimer", "title": "Disclaimer", "level": 2 },
+      {
+        "id": "limitations-of-liability",
+        "title": "Limitations of Liability",
+        "level": 2
+      },
+      { "id": "indemnification", "title": "Indemnification", "level": 2 },
+      { "id": "user-data", "title": "User Data", "level": 2 },
+      {
+        "id": "electronic-communications-transactions-and-signatures",
+        "title": "Electronic Communications, Transactions, and Signatures",
+        "level": 2
+      },
+      { "id": "miscellaneous", "title": "Miscellaneous", "level": 2 },
+      { "id": "contact-us", "title": "Contact Us", "level": 2 }
+    ],
+    "html": "<p>These Terms and Conditions form a legally binding agreement between you, whether an individual or entity (“you”), and Apcosys LLC (“we,” “us,” or “our”) regarding your access to and use of the <a href=\"https://apcosys.net\">https://apcosys.net</a> website, including any related media forms, channels, mobile websites, or applications (collectively, the “Site”).</p>\n<p>By accessing the Site, you confirm that you have read, understood, and agree to be bound by these Terms and Conditions, including our <strong><a href=\"/legal/data-processing-agreement\">Data Processing Agreement</a></strong>. If you do not agree, you are prohibited from using the Site and must stop immediately.</p>\n<p>Supplemental terms, such as the <strong><a href=\"/legal/privacy-policy\">Privacy Policy</a></strong> and <strong><a href=\"/legal/cookie-policy\">Cookie Policy</a></strong>, are incorporated by reference and detail how we handle your data. We may modify these Terms and Conditions at any time, with changes effective upon posting and indicated by an updated “Last updated” date. Continued use of the Site after changes signifies your acceptance. You are responsible for reviewing these terms periodically.</p>\n<p>The Site’s information is not intended for use in jurisdictions where it would violate laws or require our registration. Users accessing the Site from such locations are responsible for local law compliance. The Site is for users 18 and older; those under 18 may not register.</p>\n<h2 id=\"intellectual-property-rights\" tabindex=\"-1\">Intellectual Property Rights</h2>\n<p>The Site, including all source code, databases, functionality, software, designs, audio, video, text, photographs, and graphics (“Content”), and trademarks, service marks, and logos (“Marks”), is our proprietary property or licensed to us, protected by U.S., foreign, and international copyright, trademark, and other intellectual property laws.</p>\n<p>Content and Marks are provided “AS IS” for your personal, informational use only. Except as permitted herein, no part of the Site, Content, or Marks may be copied, reproduced, republished, uploaded, posted, displayed, encoded, translated, transmitted, distributed, sold, licensed, or exploited commercially without our prior written consent.</p>\n<p>Eligible users are granted a limited, non-commercial license to access and use the Site and download or print Content you have rightfully accessed. We reserve all rights not expressly granted.</p>\n<h2 id=\"user-representations\" tabindex=\"-1\">User Representations</h2>\n<p>By using the Site, you represent and warrant that:</p>\n<ol>\n<li>All registration information is true, accurate, current, and complete, and you will maintain its accuracy.</li>\n<li>You have legal capacity and agree to comply with these Terms and Conditions.</li>\n<li>You are at least 18 years old and not a minor in your jurisdiction.</li>\n<li>You will not access the Site via automated or non-human means (e.g., bots, scripts).</li>\n<li>You will not use the Site for illegal or unauthorized purposes or violate applicable laws.</li>\n<li>You are responsible for any violations of these Terms and Conditions.</li>\n</ol>\n<p>Providing false, inaccurate, or incomplete information may result in account suspension or termination.</p>\n<h2 id=\"user-registration\" tabindex=\"-1\">User Registration</h2>\n<p>Registration may be required. You agree to keep your password confidential and are responsible for all account activity. We may remove or change usernames deemed inappropriate, obscene, or objectionable.</p>\n<h2 id=\"data-processing-agreement\" tabindex=\"-1\">Data Processing Agreement</h2>\n<p>By using the Site, you agree to our <strong><a href=\"/legal/data-processing-agreement\">Data Processing Agreement</a></strong>, which details how we process, store, and protect your personal data in compliance with laws like GDPR and CCPA. It covers:</p>\n<ul>\n<li>Types of data processed (e.g., names, email addresses, IP addresses, usage metadata).</li>\n<li>Data processing methods and security measures.</li>\n<li>Your rights to access, correct, delete, or port your data.</li>\n<li>Use of third-party subprocessors.</li>\n</ul>\n<h2 id=\"payments-and-refunds\" tabindex=\"-1\">Payments and Refunds</h2>\n<p>Payments for digital services are final. By purchasing, you acknowledge that the service begins immediately and you waive your statutory right of withdrawal, except where required by law. Refunds may be provided only at the sole discretion of Paddle, our Merchant of Record, and in accordance with Paddle’s Refund Policy and applicable consumer protection laws. If a refund is approved, it will be processed without undue delay and no later than 14 days after submission.</p>\n<h2 id=\"prohibited-activities\" tabindex=\"-1\">Prohibited Activities</h2>\n<p>The Site is for its intended purpose only and may not be used for unapproved commercial endeavors. You agree not to:</p>\n<ol>\n<li>Systematically collect data to create collections or databases without permission.</li>\n<li>Make unauthorized use, such as collecting user information for unsolicited emails or creating accounts under false pretenses.</li>\n<li>Use purchasing agents for Site transactions.</li>\n<li>Advertise or sell goods/services on the Site.</li>\n<li>Bypass security features or restrictions on Content use.</li>\n<li>Engage in unauthorized framing or linking.</li>\n<li>Attempt to deceive us or users, especially to access sensitive information.</li>\n<li>Misuse support services or submit false reports.</li>\n<li>Use automated systems (e.g., scripts, data mining tools) to interact with the Site.</li>\n<li>Disrupt or burden the Site or its networks.</li>\n<li>Impersonate another user or use their credentials.</li>\n<li>Sell or transfer your profile.</li>\n<li>Harass or harm others using Site information.</li>\n<li>Use the Site to compete with us or for commercial revenue generation.</li>\n<li>Reverse engineer Site software.</li>\n<li>Bypass access restrictions.</li>\n<li>Harass or threaten our employees or agents.</li>\n<li>Remove copyright or proprietary notices.</li>\n<li>Copy or adapt Site software (e.g., Flash, PHP, HTML, JavaScript).</li>\n<li>Upload viruses, Trojan horses, or disruptive material, including spamming.</li>\n<li>Use automated systems (e.g., spiders, robots) beyond standard search engine use.</li>\n<li>Disparage or harm us or the Site.</li>\n<li>Use the Site in violation of laws or for illegal activities.</li>\n</ol>\n<h2 id=\"user-generated-contributions\" tabindex=\"-1\">User-Generated Contributions</h2>\n<p>The Site may allow contributions via chats, blogs, forums, or other features, including text, videos, photos, or other materials (“Contributions”). Contributions may be public and non-confidential. By submitting Contributions, you represent and warrant that:</p>\n<ol>\n<li>They do not infringe third-party proprietary rights (e.g., copyright, trademark).</li>\n<li>You own or have rights to use and authorize use of Contributions.</li>\n<li>You have consent for any identifiable individuals in Contributions.</li>\n<li>Contributions are accurate and not misleading.</li>\n<li>They are not unsolicited advertising, spam, or objectionable content.</li>\n<li>They do not violate laws, privacy, or publicity rights.</li>\n<li>They do not exploit minors or contain offensive comments related to protected characteristics.</li>\n</ol>\n<p>Violations may lead to termination or suspension of Site access.</p>\n<h2 id=\"contribution-license\" tabindex=\"-1\">Contribution License</h2>\n<p>By posting Contributions, you grant us an unrestricted, perpetual, non-exclusive, transferable, royalty-free, worldwide license to use, reproduce, distribute, display, and create derivative works of your Contributions for any purpose, in any media format. This includes your name, company name, or trademarks provided. You waive moral rights and confirm you have the right to grant this license. We may edit, re-categorize, or remove Contributions at our discretion and are not liable for their content. You remain responsible for your Contributions.</p>\n<h2 id=\"guidelines-for-reviews\" tabindex=\"-1\">Guidelines for Reviews</h2>\n<p>If you post reviews or ratings, they must:</p>\n<ol>\n<li>Be based on firsthand experience.</li>\n<li>Avoid offensive, abusive, or discriminatory language.</li>\n<li>Not reference illegal activities or competitors’ affiliations.</li>\n<li>Be accurate and not misleading.</li>\n<li>Not be part of organized review campaigns.</li>\n</ol>\n<p>We may accept, reject, or remove reviews at our discretion and are not liable for them. By posting a review, you grant us a perpetual, non-exclusive, worldwide license to use and distribute it.</p>\n<h2 id=\"social-media\" tabindex=\"-1\">Social Media</h2>\n<p>You may link your Site account to third-party accounts (e.g., social media) by providing login details or granting access, per the third party’s terms. You confirm you have the right to disclose this information without breaching third-party agreements. We may access and display your Third-Party Account content (e.g., friend lists) on the Site, subject to your privacy settings. If a Third-Party Account becomes unavailable, its content may no longer appear on the Site. You can disconnect accounts via settings or by contacting us. We are not responsible for Third-Party Account content or agreements.</p>\n<h2 id=\"submissions\" tabindex=\"-1\">Submissions</h2>\n<p>Questions, comments, suggestions, or feedback about the Site (“Submissions”) are non-confidential and become our property. We may use Submissions for any lawful purpose without compensation or acknowledgment, and you waive moral rights. You confirm Submissions are original or you have the right to submit them.</p>\n<h2 id=\"third-party-websites-and-content\" tabindex=\"-1\">Third-Party Websites and Content</h2>\n<p>The Site may include links to third-party websites or content (e.g., articles, images, software). We do not verify their accuracy or appropriateness and are not responsible for them. Accessing third-party websites or content is at your risk, and these Terms and Conditions no longer apply. Review third-party terms and privacy policies before use. We do not endorse third-party products or services and are not liable for related harm or losses.</p>\n<h2 id=\"site-management\" tabindex=\"-1\">Site Management</h2>\n<p>We may, but are not obligated to:</p>\n<ol>\n<li>Monitor the Site for violations.</li>\n<li>Take legal action against violators, including reporting to authorities.</li>\n<li>Restrict or remove Contributions.</li>\n<li>Remove excessive or burdensome content.</li>\n<li>Manage the Site to protect our rights and ensure proper operation.</li>\n</ol>\n<h2 id=\"privacy-policy\" tabindex=\"-1\">Privacy Policy</h2>\n<p>We prioritize data privacy and security. Review our <strong><a href=\"/legal/privacy-policy\">Privacy Policy</a></strong>, incorporated herein. We do not knowingly collect data from children under 13, in compliance with the U.S. Children’s Online Privacy Protection Act.</p>\n<h2 id=\"copyright-infringements\" tabindex=\"-1\">Copyright Infringements</h2>\n<p>If you believe Site content infringes your copyright, notify us with details. False claims may lead to liability, so consult an attorney if unsure.</p>\n<h2 id=\"term-and-termination\" tabindex=\"-1\">Term and Termination</h2>\n<p>These Terms and Conditions apply while you use the Site. We may deny access or terminate your account without notice for any reason, including violations or legal breaches. Terminated users may not create new accounts. We may pursue legal action for violations.</p>\n<h2 id=\"modifications-and-interruptions\" tabindex=\"-1\">Modifications and Interruptions</h2>\n<p>We may modify or discontinue the Site or its content without notice and are not liable for resulting losses. The Site may experience interruptions due to technical issues or maintenance, and we are not obligated to maintain or update it.</p>\n<h2 id=\"governing-law\" tabindex=\"-1\">Governing Law</h2>\n<p>These Terms and Conditions are governed by the laws of Armenia, with exclusive jurisdiction in Armenian courts for disputes.</p>\n<h2 id=\"dispute-resolution\" tabindex=\"-1\">Dispute Resolution</h2>\n<p>Disputes must first be negotiated informally upon written notice. Any legal action must be filed in Armenian courts.</p>\n<h2 id=\"corrections\" tabindex=\"-1\">Corrections</h2>\n<p>We may correct errors or inaccuracies on the Site without notice.</p>\n<h2 id=\"disclaimer\" tabindex=\"-1\">Disclaimer</h2>\n<p>The Site is provided “AS IS” and “AS AVAILABLE.” We disclaim all warranties, express or implied, including merchantability, fitness for purpose, and non-infringement. We are not liable for:</p>\n<ol>\n<li>Content errors or inaccuracies.</li>\n<li>Personal injury or property damage from Site use.</li>\n<li>Unauthorized access to our servers or data.</li>\n<li>Site interruptions or cessations.</li>\n<li>Third-party viruses or harmful materials.</li>\n<li>Losses from Site content use.</li>\n</ol>\n<p>We do not endorse or warrant third-party products or services advertised on the Site.</p>\n<h2 id=\"limitations-of-liability\" tabindex=\"-1\">Limitations of Liability</h2>\n<p>We, our directors, employees, or agents are not liable for direct, indirect, consequential, or other damages from Site use, limited to the amount you paid us in the six months prior to any claim. Some jurisdictions may not allow these limitations.</p>\n<h2 id=\"indemnification\" tabindex=\"-1\">Indemnification</h2>\n<p>You agree to indemnify us, our subsidiaries, affiliates, and personnel against claims, damages, or losses, including legal fees, arising from your Contributions, Site use, breaches of these Terms, or violations of third-party rights.</p>\n<h2 id=\"user-data\" tabindex=\"-1\">User Data</h2>\n<p>We maintain data you transmit for Site management, but you are responsible for its loss or corruption. We are not liable for such issues.</p>\n<h2 id=\"electronic-communications-transactions-and-signatures\" tabindex=\"-1\">Electronic Communications, Transactions, and Signatures</h2>\n<p>Site interactions, emails, and forms constitute electronic communications. You consent to electronic notices and agreements, satisfying legal writing requirements. You waive requirements for non-electronic records or signatures.</p>\n<h2 id=\"miscellaneous\" tabindex=\"-1\">Miscellaneous</h2>\n<p>These Terms and Conditions, along with posted policies, form the entire agreement. Our failure to enforce provisions is not a waiver. We may assign our rights, and we are not liable for delays beyond our control. Unenforceable provisions are severable, and no joint venture or agency is created. These terms are not construed against us for drafting them.</p>\n<h2 id=\"contact-us\" tabindex=\"-1\">Contact Us</h2>\n<p>For questions, please contact us <a href=\"mailto:info@apcosys.net\">info@apcosys.net</a>.</p>\n"
+  }
+}

@@ -1,0 +1,15 @@
+.git/
+.github/
+.vercel/
+node_modules/
+dist/
+.work/
+test-results/
+playwright-report/
+tests/
+docs/*
+!docs/legal-sources/
+!docs/legal-sources/**
+*.log
+*.tsbuildinfo
+.DS_Store

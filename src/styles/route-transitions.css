@@ -1,0 +1,60 @@
+.route-error {
+  min-height: 60vh;
+  padding-block: var(--section-space, 96px);
+}
+.route-error h1 {
+  font-size: var(--type-page-size);
+  max-width: 16ch;
+}
+.route-error p {
+  margin-block: var(--space-6) var(--space-7);
+  color: var(--text-muted);
+}
+
+/* Keep navigation anchored while complete page surfaces dissolve into one another. */
+.site > header {
+  view-transition-name: site-header;
+}
+::view-transition-group(root),
+::view-transition-group(site-header) {
+  animation-duration: 0.46s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+::view-transition-old(root) {
+  animation: route-out 0.46s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+::view-transition-new(root) {
+  animation: route-in 0.46s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+::view-transition-old(site-header) {
+  animation: none;
+  opacity: 0;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+::view-transition {
+  pointer-events: none;
+}
+@keyframes route-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes route-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+  }
+}
+/* Reserve the viewport during a cold route import; the footer never flashes above content. */
+.route-fallback {
+  min-block-size: calc(100svh - var(--header-height));
+}

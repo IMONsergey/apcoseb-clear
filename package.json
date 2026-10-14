@@ -1,0 +1,61 @@
+{
+  "name": "apcosys-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "node scripts/build.mjs",
+    "build:root": "node scripts/build.mjs --base=/",
+    "preview": "vite preview --host 127.0.0.1",
+    "typecheck": "tsc -b --pretty false",
+    "lint": "eslint .",
+    "format": "prettier --write src tests scripts docs README.md *.json *.ts *.js *.html",
+    "test": "playwright test",
+    "test:smoke": "playwright test --config=playwright.release.config.ts",
+    "check": "npm run legal:check && npm run verify:assets && npm run verify:source && npm run verify:visuals && npm run verify:styles && npm run verify:architecture && npm run format:check && npm run lint && npm run typecheck",
+    "format:check": "prettier --check src tests scripts docs README.md *.json *.ts *.js *.html",
+    "test:production": "playwright test --config=playwright.release.config.ts",
+    "verify:visuals": "node scripts/verify-visuals.mjs",
+    "verify:assets": "node scripts/verify-assets.mjs",
+    "verify:bundle": "node scripts/verify-bundle.mjs",
+    "audit:production": "npm audit --omit=dev --audit-level=high",
+    "legal:compile": "node scripts/compile-legal.mjs",
+    "legal:check": "node scripts/compile-legal.mjs --check",
+    "test:release": "playwright test --config=playwright.release.config.ts",
+    "test:cross-browser": "playwright test --config=playwright.cross-browser.config.ts",
+    "handoff:package": "node scripts/export-handoff.mjs",
+    "verify:styles": "node scripts/verify-styles.mjs",
+    "verify:architecture": "node --test scripts/tests/*.test.mjs && node scripts/verify-architecture.mjs",
+    "measure:performance": "node scripts/measure-performance.mjs",
+    "verify:source": "node scripts/verify-source-tree.mjs"
+  },
+  "dependencies": {
+    "gsap": "3.13.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "typograf": "7.8.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.63.0",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "eslint": "10.12.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.7",
+    "globals": "17.13.0",
+    "marked": "17.0.1",
+    "postcss": "8.5.29",
+    "prettier": "3.9.9",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.1",
+    "vite": "8.3.4"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

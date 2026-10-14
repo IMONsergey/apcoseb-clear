@@ -1,0 +1,107 @@
+/* A single inset for the handoff: outer and inner padding must not compound. */
+.site .inner-pages .team-sequence {
+  padding: var(--space-2) var(--editorial-padding);
+}
+.site .inner-pages .team-sequence > div {
+  padding-block: 22px;
+}
+.site .inner-pages .team-sequence small {
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+}
+.site .inner-pages .team-workflow__record {
+  padding: 22px var(--editorial-padding);
+}
+.site .inner-pages .team-workflow__record span {
+  font-size: var(--font-size-14);
+}
+.site .inner-pages .team-workflow__detail p {
+  max-width: 50ch;
+  font: var(--type-body);
+}
+
+/* Section titles and the plan grid use the same scale and rails as the editorial sections. */
+.site .inner-pages :is(.pricing-heading, .stage-contact-aside) h2 {
+  letter-spacing: var(--tracking-heading);
+  text-wrap: balance;
+  font: var(--type-section);
+}
+.site .inner-pages .plan-grid {
+  gap: var(--layout-gap);
+  margin-top: 0;
+}
+.site .inner-pages .stage-data-table {
+  font-size: var(--font-size-16);
+}
+@media (min-width: 1001px) {
+  .site .inner-pages .stage-plan-table th:first-child {
+    background: transparent;
+  }
+}
+/* Do not squeeze three prose columns into a tablet. Keep one ordered group,
+   with the same insets and horizontal separators used on the phone. */
+@media (max-width: 1000px) {
+  .site
+    .inner-pages
+    :is(.feature-columns, .query-guide, .change-ledger, .evidence-levels, .scanning-records) {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-block: 0;
+  }
+  .site
+    .inner-pages
+    :is(.feature-columns, .query-guide, .change-ledger, .evidence-levels, .scanning-records)
+    > article:nth-child(n) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    grid-row: auto;
+    padding: 26px var(--editorial-padding);
+    border-left: 0;
+  }
+  .site
+    .inner-pages
+    :is(.feature-columns, .query-guide, .change-ledger, .evidence-levels, .scanning-records)
+    > article:nth-child(n + 2) {
+    border-top: 1px solid var(--border-subtle);
+  }
+  .site .inner-pages .scanning-records p {
+    margin-top: 0;
+  }
+  .site .inner-pages .contact-topics {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  .site .inner-pages .contact-topics button {
+    min-width: 0;
+  }
+  .site .inner-pages .reading-rows--3 {
+    grid-template-columns: 1fr;
+  }
+  .site .inner-pages .reading-rows--3 .reading-row {
+    grid-row: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .site .inner-pages .evidence-flow {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .site .inner-pages .research-pairs > article,
+  .site .inner-pages .related-reading > a {
+    grid-row: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+  .site .inner-pages .related-reading > a > * {
+    margin-block: 0;
+  }
+}
+.site .inner-pages .stage-example-journey p {
+  font-size: var(--font-size-18);
+  line-height: 1.6;
+  margin-top: var(--space-3);
+}

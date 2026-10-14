@@ -1,0 +1,26 @@
+[
+  {
+    "path": "src/visuals/flow/turquoise-flow.js",
+    "sha256": "eaa2b8dadb3307b3c2b39873a5076289632954da03819c6cc651d73364128ecc"
+  },
+  {
+    "path": "src/visuals/waves/ice-sphere-waves.js",
+    "sha256": "753c71d369102d66f79498164cae549381ed42da59f543382580aa9af15d570d"
+  },
+  {
+    "path": "src/visuals/globe/land-data.js",
+    "sha256": "9ebf673b7b9257fe2f2d3e3ce218784281e807a475744a7ff8e32f4a4bcc3e08"
+  },
+  {
+    "path": "src/visuals/globe/signal-globe.js",
+    "sha256": "c9b3a320e97b1095dedcf5b32ac2c3cb82523874a38b04006fbabd710a844ed1"
+  },
+  {
+    "path": "src/visuals/dots/dot-cascade.js",
+    "sha256": "1ac6947120825af5fc8bedcdf1d44169bb96f17f6466ae6c91816df27c9c55fe"
+  },
+  {
+    "path": "src/visuals/shapes/animated-shapes.js",
+    "sha256": "b45d6a0776796f864ccf60f514bf1020975af7dd18c40cff6f261c022a773e6f"
+  }
+]

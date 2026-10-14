@@ -1,0 +1,15 @@
+.animated-shape {
+  width: 100%;
+  background: transparent;
+}
+.animated-shape__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: var(--shape-opacity, 0.3);
+  stroke-width: var(--shape-stroke, 2);
+  pointer-events: none;
+}

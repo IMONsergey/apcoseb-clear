@@ -1,0 +1,99 @@
+/* Language control remains visible while the public landing ships English-only content. */
+:root:has(.language-panel[data-open='true']) {
+  scroll-behavior: auto;
+}
+
+.language-control {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  border-radius: var(--radius-control);
+}
+.language-control .language {
+  display: flex;
+  height: 44px;
+  gap: var(--space-2);
+  padding: 10px;
+  background: transparent;
+  transition: background-color 180ms var(--ease);
+}
+.language-control .language > svg:last-child {
+  flex: 0 0 10px;
+  width: 10px;
+  height: 10px;
+  transition: transform 220ms var(--ease);
+}
+.language-control .language:hover,
+.language-control .language[aria-expanded='true'] {
+  background: var(--surface-elevated);
+}
+.language-control .language[aria-expanded='true'] > svg:last-child {
+  transform: rotate(180deg);
+}
+.language-panel {
+  left: auto;
+  right: 0;
+}
+.language-panel button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 44px;
+  padding: 10px;
+  border: 0;
+  border-radius: var(--radius-panel);
+  background: transparent;
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+  text-align: left;
+  white-space: nowrap;
+  transition:
+    background-color 180ms var(--ease),
+    opacity 180ms ease;
+}
+.language-flag {
+  flex: 0 0 16px;
+}
+.language-panel button[aria-checked='true'],
+.language-panel button:not(:disabled):hover,
+.language-panel button:not(:disabled):focus-visible {
+  background: var(--surface-card);
+}
+.language-panel button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+.language-panel button:disabled .language-flag {
+  filter: saturate(0.75);
+}
+
+@media (max-width: 599px) {
+  .header-signin {
+    display: none;
+  }
+  .header-row,
+  .header-actions {
+    gap: var(--space-3);
+  }
+  .language-control .language {
+    font-size: var(--font-size-14);
+    padding: 10px var(--space-2);
+  }
+}
+@media (max-width: 340px) {
+  .header-actions {
+    gap: var(--space-2);
+  }
+  .language-control .language {
+    padding-inline: 7px;
+    gap: var(--space-1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .language-control .language,
+  .language-control .language > svg:last-child,
+  .language-panel button {
+    transition: none;
+  }
+}

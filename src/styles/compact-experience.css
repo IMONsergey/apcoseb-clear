@@ -1,0 +1,5 @@
+/* Ordered composition: keep imports in this order to preserve the cascade.
+   Ownership and editing guidance: docs/STYLES.md. */
+@import './compact-experience/product-fragments.css';
+@import './compact-experience/responsive-fragments.css';
+@import './compact-experience/search-contour.css';

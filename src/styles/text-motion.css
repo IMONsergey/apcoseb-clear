@@ -1,0 +1,10 @@
+/* Inline text keeps its natural wrapping; the language handoff changes opacity only. */
+/* Explicit inheritance invalidates WebKit's inline font cache when language changes. */
+.locale-text[lang='en'],
+.locale-text[lang='ru'] {
+  font: inherit;
+  letter-spacing: inherit;
+}
+.locale-text--lines {
+  white-space: pre-line;
+}

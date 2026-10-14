@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.work/
+test-results/
+playwright-report/
+*.tsbuildinfo
+.DS_Store
+.env*
+!.env.example
+.vercel
+**/*-snapshots/*-darwin.png
+**/*-snapshots/*-darwin-arm64.png
+**/*-snapshots/*-win32.png

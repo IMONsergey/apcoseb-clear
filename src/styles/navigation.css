@@ -1,0 +1,127 @@
+/* Approved soft disclosure treatment. Pointer state and keyboard focus are distinct. */
+.nav-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border: 0;
+  min-height: 42px;
+  padding: var(--space-3);
+  line-height: 1.5;
+  background: transparent;
+  border-radius: var(--radius-frame);
+  white-space: nowrap;
+  transition: background-color 200ms var(--ease);
+}
+.nav-trigger svg {
+  width: 12px;
+  transition: transform 220ms var(--ease);
+}
+.nav-trigger[aria-expanded='true'],
+.nav-trigger:hover {
+  background: var(--surface-elevated);
+}
+.nav-trigger[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+.nav-panel {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 6px);
+  width: max-content;
+  min-width: 182px;
+  max-width: 320px;
+  padding: 6px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-frame);
+  background: var(--surface-elevated);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transform-origin: top left;
+  transition:
+    opacity 200ms var(--ease),
+    transform 240ms var(--ease),
+    visibility 0s linear 240ms;
+}
+.nav-panel[data-open='true'] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  /* Opening visibility must be immediate so keyboard focus can enter the panel. */
+  transition-property: opacity, transform;
+  transition-delay: 0s;
+}
+.nav-panel a {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 10px;
+  border-radius: var(--radius-panel);
+  line-height: 1.5;
+  white-space: nowrap;
+  transition:
+    background-color 180ms var(--ease),
+    color 180ms var(--ease);
+}
+.nav-panel__default,
+.nav-panel a:hover,
+.nav-panel a:focus {
+  background: var(--surface-card);
+}
+.nav-panel:has(a:not(.nav-panel__default):hover) .nav-panel__default,
+.nav-panel:has(a:not(.nav-panel__default):focus) .nav-panel__default {
+  background: transparent;
+}
+.language {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 42px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-control);
+  white-space: nowrap;
+}
+.language svg {
+  flex: 0 0 16px;
+}
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .desktop-nav {
+    gap: var(--space-2);
+  }
+  .nav-trigger {
+    padding-inline: var(--space-2);
+  }
+  .header-row {
+    gap: var(--space-4);
+  }
+}
+@media (max-width: 1199px) {
+  .language {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-trigger,
+  .nav-trigger svg,
+  .nav-panel,
+  .nav-panel a {
+    transition: none;
+  }
+}
+
+/* Let the registration label wrap only when enlarged text exhausts desktop space. */
+@media (min-width: 1200px) {
+  .header-actions {
+    min-width: 0;
+  }
+  .header-signup {
+    flex-shrink: 1;
+  }
+  .header-signin {
+    flex-shrink: 0;
+  }
+}

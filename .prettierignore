@@ -1,0 +1,9 @@
+node_modules
+dist
+.work
+public
+package-lock.json
+src/visuals/**/*.js
+
+# Verbatim published legal sources; preserve audit hashes.
+docs/legal-sources/*.md

@@ -1,0 +1,13 @@
+/* Ordered composition: keep imports in this order to preserve the cascade.
+   Ownership and editing guidance: docs/STYLES.md. */
+@import './home-layout/frame.css';
+@import './home-layout/search-preview.css';
+@import './home-layout/trust-marquee.css';
+@import './home-layout/interaction-feedback.css';
+@import './home-layout/closing.css';
+@import './home-layout/responsive-frame.css';
+@import './home-layout/search-composition.css';
+@import './home-layout/research-carousel.css';
+@import './home-layout/audience.css';
+@import './home-layout/data.css';
+@import './home-layout/theme.css';

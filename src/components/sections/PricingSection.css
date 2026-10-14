@@ -1,0 +1,524 @@
+.pricing {
+  padding-block: 160px;
+}
+.pricing-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-9);
+}
+.pricing-heading h2 {
+  flex: 1 1 0;
+  max-width: 1100px;
+}
+.pricing-heading h2 > span:not(.locale-text) {
+  font-weight: 400;
+  line-height: 1;
+}
+.billing {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: var(--space-5);
+}
+.billing > p {
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+  color: var(--action-fill);
+}
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--layout-gap);
+  margin-top: 80px;
+}
+.plan-card {
+  container-type: inline-size;
+  border-radius: var(--radius-control);
+  border-top: 1px solid var(--text-primary);
+  background: white;
+  padding: var(--space-5);
+  min-height: 384px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  scroll-margin-top: 32px;
+  transition:
+    box-shadow 220ms var(--ease),
+    border-color 220ms var(--ease);
+}
+.plan-card h3 {
+  font: 500 var(--font-size-18)/1.5 var(--font-mono);
+  color: var(--text-muted);
+}
+.plan-description {
+  margin-top: var(--space-2);
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+  color: var(--text-muted);
+  min-height: 18px;
+}
+.plan-price {
+  font-size: clamp(56px, 31cqi, 70px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: var(--tracking-compact);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+.plan-card dl {
+  margin-top: auto;
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+}
+.plan-card dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+.plan-card dd {
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.plan-button {
+  min-height: 48px;
+  border: 1px solid var(--border-strong);
+  background: white;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-control);
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+  font-weight: 500;
+  text-align: center;
+  transition:
+    background-color 220ms var(--ease),
+    border-color 220ms var(--ease),
+    color 220ms var(--ease),
+    opacity 200ms ease;
+}
+.plan-button:hover {
+  background: var(--surface-elevated);
+}
+.plan-card--featured {
+  border-top: 2px solid var(--action-fill);
+  padding-top: 19px;
+}
+.plan-card--featured .plan-button {
+  background: var(--action-fill);
+  color: white;
+  border-color: var(--action-fill);
+}
+.plan-card--featured .plan-button:hover {
+  background: var(--action-hover-fill);
+}
+.comparison-action {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-9);
+}
+.contact-banner {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-7);
+  min-height: 144px;
+  padding: var(--space-7) var(--space-8);
+  background: var(--action-fill);
+  color: white;
+  border-radius: var(--radius-control);
+  margin-top: 128px;
+}
+.contact-banner > .visual {
+  z-index: -1;
+}
+.contact-banner p {
+  margin-top: var(--space-2);
+}
+.comparison-modal {
+  width: min(900px, calc(100vw - 32px));
+}
+.plan-summary {
+  margin-top: var(--space-6);
+}
+.plan-summary > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+@media (max-width: 1399px) {
+  .pricing-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .billing {
+    align-self: flex-end;
+    margin-top: -16px;
+  }
+}
+@media (max-width: 1199px) {
+  .billing--desktop {
+    display: none;
+  }
+  .plan-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: var(--space-9);
+  }
+  .pricing {
+    padding-block: 100px;
+  }
+  .plan-card {
+    min-height: 348px;
+  }
+  .contact-banner {
+    margin-top: 80px;
+  }
+}
+@media (max-width: 899px) {
+  .pricing-heading h2 {
+    font-size: var(--font-size-48);
+  }
+  .pricing-heading .desktop-break {
+    display: none;
+  }
+  .billing {
+    align-self: flex-start;
+    margin-top: 0;
+  }
+  .contact-banner {
+    padding: var(--space-7);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+}
+@media (max-width: 599px) {
+  .pricing {
+    padding-block: var(--space-10);
+  }
+  .pricing-heading {
+    gap: var(--space-6);
+  }
+  .pricing-heading h2 {
+    font-size: var(--font-size-40);
+    line-height: 1;
+  }
+  .billing {
+    flex-wrap: wrap;
+  }
+  .billing p {
+    font-size: var(--font-size-12);
+  }
+  .plan-grid {
+    grid-template-columns: 1fr;
+    margin-top: var(--space-7);
+    gap: var(--space-4);
+  }
+  .plan-card {
+    min-height: 320px;
+    gap: var(--space-6);
+  }
+  .plan-price {
+    font-size: var(--font-size-48);
+  }
+  .comparison-action {
+    margin-top: var(--space-7);
+  }
+  .comparison-action .double-button {
+    width: 100%;
+  }
+  .comparison-action .double-button__label {
+    flex: 1;
+  }
+  .contact-banner {
+    margin-top: var(--space-9);
+    padding: var(--space-6);
+  }
+  .contact-banner > .double-button {
+    width: 100%;
+  }
+  .contact-banner .double-button__label {
+    flex: 1;
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 340px) {
+  .pricing-heading h2 {
+    line-height: 1.1;
+  }
+}
+.contact-banner h3 {
+  font-size: var(--font-size-40);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-heading);
+  text-wrap: balance;
+}
+.billing-switch {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.segmented {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  isolation: isolate;
+  border-radius: var(--radius-control);
+  background: white;
+}
+.segmented::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 50%;
+  background: var(--text-primary);
+  border-radius: var(--radius-control);
+  transform: translateX(100%);
+  transition: transform 280ms var(--ease);
+  z-index: -1;
+}
+.segmented[data-period='annually']::before {
+  transform: translateX(0);
+}
+.segmented label {
+  position: relative;
+  cursor: pointer;
+}
+.segmented input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.segmented label > span {
+  display: block;
+  padding: 13px var(--space-4);
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: color 200ms ease;
+}
+.segmented input:checked + span {
+  color: white;
+}
+.segmented input:focus-visible + span {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.plan-price-block {
+  min-height: 102px;
+}
+.price-unit {
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+.plan-billing-note {
+  font-size: var(--font-size-12);
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+.selected-plan-price {
+  font-size: var(--font-size-32);
+  margin-top: var(--space-5);
+  letter-spacing: var(--tracking-heading);
+}
+@keyframes price-settle {
+  from {
+    opacity: 0.3;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 899px) and (min-width: 600px) {
+  .contact-banner h3 {
+    font-size: var(--font-size-32);
+  }
+}
+@media (max-width: 599px) {
+  .contact-banner h3 {
+    font-size: var(--font-size-24);
+  }
+  .plan-price-block {
+    min-height: 86px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .segmented::before,
+  .segmented label > span {
+    transition: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plan-button {
+    transition: none;
+  }
+}
+.price-amount {
+  display: inline-block;
+  animation: none;
+  font-variant-numeric: tabular-nums;
+}
+.price-odometer {
+  display: inline-flex;
+  align-items: flex-start;
+  vertical-align: baseline;
+  line-height: 1;
+}
+.price-digit {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  width: 1ch;
+}
+.price-digit__reel {
+  display: block;
+}
+.price-digit__reel > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+.price-symbol::before,
+.price-digit__reel > span::before {
+  content: attr(data-numeral);
+}
+/* Responsive component adjustments. */
+.comparison-action .double-button__label {
+  justify-content: flex-start;
+}
+@media (min-width: 1600px) {
+  .plan-billing-note {
+    font-size: var(--font-size-14);
+  }
+}
+
+/* Pricing feedback, responsive dock and theme. */
+
+@media (hover: hover) {
+  .plan-card:has(.plan-button:hover) {
+    box-shadow: var(--shadow-low);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plan-card {
+    transition: none;
+  }
+}
+.billing-dock__offer strong,
+.billing-dock__offer > span {
+  color: var(--action-fill);
+}
+.billing-dock__offer {
+  flex: 1 1 auto;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+}
+.billing-dock__offer > span {
+  min-height: 0;
+}
+.billing-dock {
+  min-height: 76px;
+}
+@media (max-width: 375px) {
+  .billing-dock {
+    min-height: 72px;
+  }
+}
+html[data-theme-transition]
+  :where(
+    body,
+    .site,
+    .site-header,
+    .hero,
+    .plain-button,
+    .icon-button,
+    .nav-trigger,
+    .nav-panel,
+    .modal,
+    .audience-card,
+    .step-card,
+    .step-media,
+    .metric-card,
+    .api-section,
+    .api-demo-frame,
+    .plan-card,
+    .plan-button,
+    .faq-list details,
+    .faq-icon,
+    .footer,
+    .search-form,
+    .search-chrome__surface,
+    .search-chrome__filters > span,
+    .search-chrome__account > span
+  ) {
+  transition-property: background-color, color, border-color, box-shadow, fill, stroke;
+  transition-duration: 220ms;
+  transition-timing-function: var(--ease);
+}
+html[data-theme='dark'] .plan-card,
+html[data-theme='dark'] .plan-button {
+  background: var(--surface-card);
+}
+html[data-theme='dark'] .plan-card {
+  border-top-color: var(--text-muted);
+  box-shadow: var(--shadow-inset);
+}
+html[data-theme='dark'] .plan-card--featured {
+  border-top-color: var(--accent-text);
+}
+html[data-theme='dark'] .plan-button:hover {
+  background: var(--surface-elevated);
+}
+html[data-theme='dark'] .plan-card--featured .plan-button {
+  background: var(--action-fill);
+  color: var(--on-action);
+  border-color: var(--action-fill);
+}
+html[data-theme='dark'] .billing > p {
+  color: var(--accent-text);
+}
+html[data-theme='dark'] .segmented {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+}
+html[data-theme='dark'] .segmented::before {
+  background: var(--action-fill);
+  box-shadow: var(--shadow-inset);
+}
+html[data-theme='dark'] .segmented label > span {
+  color: var(--color-text-body);
+}
+html[data-theme='dark'] .segmented input:checked + span {
+  color: var(--on-action);
+}
+html[data-theme='dark'] .billing-dock {
+  background: var(--surface-card);
+  border-color: var(--border-subtle);
+  box-shadow: var(--shadow-popover);
+}
+html[data-theme='dark'] .billing-dock__offer strong {
+  color: var(--accent-text);
+}
+html[data-theme='dark'] .contact-banner .double-button--inverse {
+  --button-bg: #ffffff;
+  --button-hover: var(--surface-tint);
+  --button-color: #121314;
+}

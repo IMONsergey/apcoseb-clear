@@ -1,0 +1,43 @@
+/* Small, interruptible feedback; no scroll-jacking or moving the page's layout. */
+.mobile-nav-group a,
+.nav-link {
+  transition: color 180ms ease;
+}
+.nav-link {
+  transition:
+    background-color 200ms var(--ease),
+    color 180ms ease;
+}
+
+.faq-icon {
+  transition:
+    background-color 260ms var(--ease),
+    color 260ms var(--ease);
+}
+.faq-icon__glyph::before,
+.faq-icon__glyph::after {
+  transition:
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 220ms ease;
+}
+.faq-list details[data-expanded='true'] .faq-icon__glyph::after {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(90deg) scaleX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-group a,
+  .nav-link,
+  .faq-icon,
+  .faq-icon__glyph::before,
+  .faq-icon__glyph::after {
+    transition: none;
+  }
+}
+
+.skip-link {
+  opacity: 0;
+}
+.skip-link:focus {
+  opacity: 1;
+}

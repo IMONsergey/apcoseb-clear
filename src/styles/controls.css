@@ -1,0 +1,166 @@
+/* Shared buttons: geometry, variants and feedback. Keep page-specific placement in its owner. */
+.plain-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  min-height: 42px;
+  background: var(--surface-elevated);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-control);
+  font-size: var(--font-size-14);
+  font-weight: 500;
+}
+.plain-button:hover {
+  background: var(--surface-strong);
+}
+.double-button {
+  --button-height: 46px;
+  --button-bg: var(--action-fill);
+  --button-hover: var(--action-hover-fill);
+  --button-color: var(--on-action);
+  display: inline-flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  position: relative;
+  flex: 0 0 auto;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--button-color);
+  min-height: var(--button-height);
+  text-decoration: none;
+  text-align: left;
+  border-radius: var(--radius-control);
+  max-width: 100%;
+  transition:
+    filter 180ms ease,
+    box-shadow 220ms var(--ease);
+  font: var(--type-control);
+}
+.double-button__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-4);
+  min-height: var(--button-height);
+  min-width: 0;
+  background: var(--button-bg);
+  border-radius: var(--radius-control);
+}
+.double-button__icon {
+  width: var(--button-height);
+  flex: 0 0 var(--button-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--button-bg);
+  border-radius: var(--radius-control);
+}
+.double-button:hover {
+  --button-bg: var(--button-hover);
+}
+.double-button:active {
+  filter: brightness(0.95);
+}
+.double-button:disabled {
+  --button-bg: var(--surface-elevated);
+  color: var(--text-muted);
+}
+.double-button--compact {
+  --button-height: 42px;
+}
+.double-button--compact .double-button__label {
+  padding-block: 10px;
+}
+.double-button--secondary {
+  --button-bg: var(--surface-elevated);
+  --button-hover: var(--surface-strong);
+  --button-color: var(--text-primary);
+}
+.double-button--inverse {
+  --button-bg: var(--surface-card);
+  --button-hover: var(--surface-tint);
+  --button-color: var(--text-primary);
+}
+.double-button--dark {
+  --button-bg: var(--text-primary);
+  --button-hover: #303234;
+  --button-color: var(--surface-card);
+}
+.icon-button {
+  min-width: 46px;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-elevated);
+  border: 0;
+  border-radius: var(--radius-control);
+  padding: 14px;
+}
+.icon-button:hover:not(:disabled) {
+  background: var(--surface-strong);
+}
+.icon-button:disabled {
+  opacity: 0.42;
+}
+@media (max-width: 340px) {
+  .double-button {
+    font-size: var(--font-size-14);
+  }
+}
+.double-button__label,
+.double-button__icon {
+  transition:
+    background-color 220ms var(--ease),
+    color 220ms var(--ease);
+}
+.double-button__icon svg {
+  transition: transform 240ms var(--ease);
+}
+.plain-button,
+.icon-button {
+  transition:
+    background-color 220ms var(--ease),
+    border-color 220ms var(--ease),
+    color 220ms var(--ease),
+    opacity 200ms ease;
+}
+
+@media (hover: hover) {
+  .double-button:hover .double-button__icon svg {
+    transform: translateX(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .double-button,
+  .double-button__label,
+  .double-button__icon,
+  .double-button__icon svg,
+  .plain-button,
+  .icon-button {
+    transition: none;
+  }
+  .double-button:hover .double-button__icon svg {
+    transform: none;
+  }
+}
+.double-button:not(:disabled):active .double-button__icon svg {
+  transform: translateX(1px) scale(0.94);
+}
+@media (prefers-reduced-motion: reduce) {
+  .double-button:not(:disabled):active .double-button__icon svg {
+    transform: none;
+  }
+}
+html[data-theme='dark'] .double-button--inverse {
+  --button-hover: var(--surface-strong);
+}
+html[data-theme='dark'] .double-button--dark {
+  --button-bg: var(--action-fill);
+  --button-hover: var(--action-hover-fill);
+  --button-color: var(--on-action);
+}

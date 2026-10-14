@@ -1,0 +1,210 @@
+.api-section {
+  /* This cyan product/API composition is intentionally theme-invariant. */
+  --action-fill: #037a8f;
+  --action-hover-fill: #036c7f;
+  --surface-card: #ffffff;
+  --text-primary: #121314;
+  --color-text-body: #3a3e43;
+  --text-muted: #62666b;
+  --surface-elevated: #eceef1;
+  --border-subtle: #dde1e5;
+  --surface-tint: #d3eaee;
+  --on-action: #ffffff;
+  position: relative;
+  isolation: isolate;
+  background: var(--action-fill);
+  color: white;
+  overflow: hidden;
+  container-type: inline-size;
+  container-name: api;
+}
+.api-section > .visual {
+  z-index: 0;
+  opacity: 0.75;
+}
+.api-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-items: center;
+  min-height: calc(796px * var(--media-density));
+  padding-block: clamp(48px, calc(100px * var(--space-density)), 100px);
+  grid-template-columns: var(--layout-half);
+  gap: var(--layout-gap);
+}
+.api-copy {
+  min-width: 0;
+}
+.api-copy h2 {
+  font-size: var(--type-section-size);
+  line-height: 1;
+}
+.api-copy > svg {
+  margin: clamp(28px, calc(48px * var(--space-density)), 48px) 0 24px;
+}
+.api-copy p {
+  max-width: 478px;
+  margin: 0 0 clamp(24px, calc(40px * var(--space-density)), 40px) 0;
+  color: white;
+  text-shadow: 0 1px 4px #014b58a0;
+}
+.api-copy > .double-button {
+  margin-left: 0;
+}
+.api-visual {
+  position: relative;
+  width: calc(100% * var(--media-density));
+  justify-self: end;
+  min-width: 0;
+  padding: 0 var(--space-4) var(--space-4) 0;
+}
+.api-visual img {
+  width: 100%;
+  height: auto;
+  max-width: none;
+}
+.api-demo-frame {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  aspect-ratio: 2048 / 1511;
+  background: white;
+  pointer-events: none;
+  border-radius: var(--radius-frame);
+}
+.api-demo-frame::before,
+.api-demo-frame::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  background: #fff;
+  inset: 8px -8px -8px 8px;
+  opacity: 0.3;
+  border-radius: var(--radius-frame);
+}
+.api-demo-frame::after {
+  opacity: 0.14;
+  inset: 16px -16px -16px 16px;
+}
+.api-demo-frame .api-demo-fallback,
+.api-demo-host {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.api-demo-frame .api-demo-fallback {
+  /* The poster includes a 28 px painted layer stack below its 526 px window. */
+  height: auto;
+  object-fit: contain;
+  opacity: 1;
+}
+.api-demo-host {
+  height: 100%;
+  opacity: 0;
+  --api-font: var(--font-sans);
+  --api-mono: var(--font-mono);
+}
+.api-demo-frame[data-ready='true'] .api-demo-fallback {
+  opacity: 0;
+}
+.api-demo-frame[data-ready='true'] .api-demo-host {
+  opacity: 1;
+}
+.api-demo-host > api-developer-demo {
+  width: 100%;
+  display: block;
+}
+.api-demo-poster {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+@container api (max-width: 1199px) {
+  .api-grid {
+    min-height: 0;
+    padding-block: 72px;
+  }
+  .api-copy {
+    padding-left: 0;
+  }
+  .api-copy h2 {
+    font-size: var(--font-size-48);
+  }
+  .api-break {
+    display: none;
+  }
+  .api-copy > svg {
+    margin: var(--space-7) 0 var(--space-5);
+  }
+  .api-copy p,
+  .api-copy > .double-button {
+    margin-left: 0;
+  }
+}
+@container api (max-width: 899px) {
+  .api-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .api-copy h2 {
+    max-width: 680px;
+    font-size: var(--font-size-48);
+  }
+  .api-copy p {
+    max-width: 620px;
+  }
+  .api-visual {
+    max-width: 712px;
+    margin-inline: auto;
+  }
+}
+@container api (max-width: 599px) {
+  .api-grid {
+    padding-block: var(--space-9);
+  }
+  .api-copy h2 {
+    font-size: var(--font-size-40);
+    line-height: 1;
+  }
+  .api-copy > svg {
+    margin-block: 28px var(--space-5);
+  }
+  .api-copy p {
+    margin-bottom: 28px;
+  }
+  .api-copy .double-button {
+    width: 100%;
+  }
+  .api-copy .double-button__label {
+    flex: 1;
+    justify-content: flex-start;
+  }
+  .api-demo-frame,
+  .api-demo-frame::before,
+  .api-demo-frame::after {
+    border-radius: var(--radius-panel);
+  }
+}
+@container api (max-width: 375px) {
+  .api-copy h2 {
+    font-size: var(--font-size-40);
+    line-height: 1;
+  }
+}
+@container api (max-width: 340px) {
+  .api-copy h2 {
+    font-size: var(--font-size-40);
+    line-height: 1.1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .api-demo-frame .api-demo-fallback,
+  .api-demo-host {
+    transition: none;
+  }
+}

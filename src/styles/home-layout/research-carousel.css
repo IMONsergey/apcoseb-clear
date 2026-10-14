@@ -1,0 +1,278 @@
+/* Research carousel */
+/* Component layout, including its original responsive and locale rules. */
+.steps {
+  padding-top: clamp(64px, calc(128px * var(--space-density)), 128px);
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+  container-name: research;
+}
+.section-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-10);
+}
+.steps-intro {
+  width: 440px;
+  flex: 0 0 440px;
+  padding: clamp(24px, calc(32px * var(--space-density)), 32px);
+  background: var(--surface-card);
+  border-radius: var(--radius-control);
+}
+.steps-intro > svg {
+  color: var(--action-fill);
+  margin-bottom: clamp(12px, calc(20px * var(--space-density)), 20px);
+}
+.steps-intro p {
+  line-height: 1.5;
+}
+.carousel-controls {
+  margin-top: clamp(24px, calc(48px * var(--space-density)), 48px);
+  margin-bottom: clamp(16px, calc(32px * var(--space-density)), 32px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.counter {
+  font: 500 var(--font-size-18)/1.5 var(--font-mono);
+}
+.carousel-arrows {
+  display: flex;
+  gap: var(--space-4);
+}
+.carousel-bleed {
+  padding-left: max(var(--gutter), calc((100cqw - var(--layout-max)) / 2));
+}
+.step-track {
+  --card-width: calc((min(100cqw - 2 * var(--gutter), var(--layout-max)) - 40px) / 3);
+  display: flex;
+  gap: var(--space-5);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  padding-right: max(var(--gutter), calc((100cqw - var(--layout-max)) / 2));
+  padding-bottom: 6px;
+  scroll-padding-inline: 0;
+}
+.step-track::-webkit-scrollbar {
+  display: none;
+}
+.step-card {
+  width: var(--card-width);
+  flex: 0 0 var(--card-width);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-card);
+  border-radius: var(--radius-control);
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+.step-copy {
+  padding: clamp(24px, calc(32px * var(--space-density)), 32px) 40px 0;
+  min-height: calc(194px * var(--media-density));
+  flex: 0 0 auto;
+}
+.step-copy h3 {
+  font-size: var(--type-section-size);
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+.step-copy p {
+  color: var(--color-text-body);
+  margin-top: clamp(20px, calc(34px * var(--space-density)), 34px);
+  min-height: 50px;
+}
+.step-media {
+  position: relative;
+  isolation: isolate;
+  margin-top: auto;
+  padding: clamp(20px, calc(40px * var(--space-density)), 40px) 0
+    clamp(18px, calc(34px * var(--space-density)), 34px) 32px;
+  background: linear-gradient(180deg, white, var(--surface-tint));
+  min-height: calc(345px * var(--media-density));
+}
+.step-media > .visual {
+  z-index: 0;
+}
+.step-illustration {
+  position: relative;
+  width: calc(103% * var(--media-density));
+  margin-inline-start: auto;
+  height: auto;
+  max-width: none;
+  aspect-ratio: 1.49;
+  object-fit: cover;
+  border-radius: var(--radius-panel) 0 0 var(--radius-panel);
+  z-index: 1;
+  overflow: clip;
+  transition: transform 320ms var(--ease);
+}
+.step-illustration > img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1.49;
+  object-fit: cover;
+}
+.step-demo-host {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.step-demo-host > apcosys-product-demo {
+  width: 100%;
+  height: 100%;
+}
+@container research (min-width: 1800px) {
+  .step-media {
+    min-height: calc(395px * var(--media-density));
+  }
+}
+@container research (max-width: 1199px) {
+  .section-heading-row {
+    gap: var(--space-7);
+  }
+  .steps-intro {
+    width: 40%;
+    flex-basis: 40%;
+    padding: var(--space-6);
+  }
+  .step-track {
+    --card-width: calc((100cqw - 2 * var(--gutter) - 20px) / 2);
+  }
+  .step-copy h3 {
+    font-size: var(--font-size-48);
+  }
+  .step-copy {
+    min-height: 218px;
+    padding-inline: var(--space-7);
+  }
+  .step-media {
+    min-height: 320px;
+  }
+}
+@container research (max-width: 899px) {
+  .section-heading-row {
+    display: block;
+  }
+  .steps-intro {
+    width: 100%;
+    margin-top: var(--space-7);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+  .steps-intro > svg {
+    flex: 0 0 25px;
+    margin-bottom: 0;
+  }
+  .steps-intro p {
+    max-width: 680px;
+  }
+  .step-copy {
+    padding: 28px var(--space-6) 0;
+    min-height: 230px;
+  }
+  .step-copy p {
+    margin-top: var(--space-6);
+  }
+  .step-media {
+    padding: var(--space-7) 0 var(--space-6) var(--space-6);
+    min-height: 246px;
+  }
+}
+@media (max-width: 599px) {
+  .steps {
+    padding-top: var(--space-10);
+  }
+}
+@container research (max-width: 599px) {
+  .steps-intro {
+    gap: var(--space-4);
+  }
+  .steps-intro > svg {
+    width: 20px;
+    height: 20px;
+    flex-basis: 20px;
+  }
+  .carousel-controls {
+    margin-block: var(--space-7) var(--space-6);
+  }
+  .counter {
+    font-size: var(--font-size-14);
+  }
+  .step-track {
+    --card-width: calc(100cqw - 2 * var(--gutter) - 16px);
+    gap: var(--space-4);
+  }
+  .step-copy {
+    padding: var(--space-6) var(--space-6) 0;
+    min-height: 200px;
+  }
+  .step-copy p {
+    min-height: 72px;
+  }
+  .step-media {
+    padding-top: var(--space-6);
+    min-height: 0;
+  }
+}
+@container research (max-width: 340px) {
+  .step-copy h3 {
+    font-size: var(--font-size-40);
+  }
+  .step-copy {
+    padding-inline: var(--space-5);
+  }
+}
+.carousel-arrows .icon-button svg {
+  transition: transform 220ms var(--ease);
+}
+@media (hover: hover) {
+  .carousel-arrows .icon-button:not(:disabled):first-child:hover svg {
+    transform: translateX(-2px);
+  }
+  .carousel-arrows .icon-button:not(:disabled):last-child:hover svg {
+    transform: translateX(2px);
+  }
+  .step-card:hover .step-illustration {
+    transform: translateY(-3px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .step-illustration,
+  .carousel-arrows .icon-button svg {
+    transition: none;
+  }
+  .step-card:hover .step-illustration,
+  .carousel-arrows .icon-button:hover svg {
+    transform: none;
+  }
+}
+@container research (min-width: 1200px) and (max-width: 1279px) {
+  .step-copy {
+    padding-inline: var(--space-7);
+  }
+}
+.step-evidence-note {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+.step-evidence-note p {
+  font-size: var(--font-size-14);
+  color: var(--text-muted);
+}
+@media (max-width: 599px) {
+  .step-evidence-note {
+    display: block;
+  }
+  .step-evidence-note a {
+    margin-top: var(--space-4);
+  }
+}

@@ -1,0 +1,179 @@
+/* Keep product-demo motion legible and respect reduced-motion settings. */
+.product-evidence__query strong,
+.product-evidence__result,
+.product-evidence__service,
+.evidence-response,
+.product-evidence__cve,
+.product-evidence__next {
+  --evidence-focus: 0;
+  outline: 1px solid
+    color-mix(in srgb, var(--accent-text) calc(var(--evidence-focus) * 55%), transparent);
+  outline-offset: -1px;
+}
+.product-evidence__query strong {
+  display: inline-block;
+}
+.evidence-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 19px;
+  height: 26px;
+  opacity: 0;
+  z-index: 4;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 3px #0002);
+}
+.evidence-cursor svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--text-primary);
+  stroke: var(--surface-card);
+  stroke-width: 1.6;
+}
+.evidence-response {
+  margin: 22px var(--space-6) 0;
+  padding: 18px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-control);
+}
+.evidence-response > span:first-child {
+  display: block;
+  margin-bottom: 14px;
+}
+.evidence-response code {
+  display: block;
+  font: 400 clamp(11px, 1.7cqi, 14px)/1.7 var(--font-mono);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+.evidence-response__caption {
+  display: block;
+  margin-top: var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--font-size-12);
+}
+.evidence-playback {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+  padding: 14px var(--space-6);
+  color: var(--text-muted);
+  font: 400 var(--font-size-12)/1.5 var(--font-mono);
+}
+.evidence-playback__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-round);
+  background: var(--accent-text);
+  flex: none;
+}
+.evidence-playback__track {
+  margin-left: auto;
+  width: 56px;
+  height: 2px;
+  background: var(--border-subtle);
+  flex: none;
+}
+.evidence-playback__track i {
+  display: block;
+  height: 100%;
+  background: var(--accent-text);
+  transform-origin: left;
+}
+.evidence-playback-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  padding: var(--space-2) 0 var(--space-2) 10px;
+  min-height: 32px;
+}
+.evidence-playback-toggle:hover {
+  color: var(--accent-text);
+}
+.evidence-playback-toggle svg {
+  width: 10px;
+  height: 12px;
+  fill: currentColor;
+}
+.stage-case-experience {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr);
+  gap: clamp(var(--space-7), 4vw, var(--space-10));
+  align-items: center;
+  margin-bottom: clamp(var(--space-8), 6vw, 80px);
+}
+.stage-case-experience .stage-example-journey {
+  grid-template-columns: 1fr;
+  margin: 0;
+  gap: 0;
+  border-top: 0;
+}
+.stage-case-experience .stage-example-journey > div {
+  padding: var(--space-5) 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.stage-case-experience .stage-example-journey p {
+  margin-top: 10px;
+}
+.stage-page-hero,
+.stage-team-operations__flow article {
+  position: relative;
+}
+@media (max-width: 899px) {
+  .stage-case-experience {
+    grid-template-columns: 1fr;
+  }
+  .stage-case-experience .stage-example-journey {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--space-6);
+  }
+}
+@media (max-width: 599px) {
+  .evidence-playback {
+    padding: 14px var(--space-5);
+    font-size: var(--font-size-10);
+  }
+  .evidence-response {
+    margin-inline: var(--space-5);
+    padding: 14px;
+  }
+  .evidence-playback-toggle {
+    min-height: 36px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .evidence-cursor,
+  .evidence-playback-toggle,
+  .evidence-playback__track {
+    display: none;
+  }
+}
+
+.product-evidence__service {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--border-subtle);
+  text-align: left;
+  background: transparent;
+  color: inherit;
+  transition: background 240ms var(--ease);
+}
+.product-evidence__service[aria-pressed='true'],
+.product-evidence__service:hover {
+  background: var(--surface-tint);
+}
+.product-evidence__service:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.product-evidence__service[aria-pressed='true'] .product-evidence__port {
+  color: var(--text-primary);
+}

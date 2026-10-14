@@ -1,0 +1,209 @@
+/* Audience section */
+.audiences {
+  container-type: inline-size;
+  container-name: audiences;
+}
+.audiences h2 {
+  margin-bottom: clamp(32px, calc(64px * var(--space-density)), 64px);
+}
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--layout-gap);
+}
+.audience-card {
+  position: relative;
+  isolation: isolate;
+  min-height: calc(538px * var(--media-density));
+  padding: clamp(24px, calc(40px * var(--space-density)), 40px) 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(var(--space-6), calc(var(--space-8) * var(--space-density)), var(--space-8));
+  background: var(--surface-card);
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+}
+.audience-art {
+  position: absolute;
+  width: min(650px, calc(81.2% * var(--media-density)));
+  aspect-ratio: 1;
+  left: 48.9%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 0;
+  pointer-events: none;
+}
+.audience-art .visual {
+  overflow: visible;
+  scale: 0.93;
+}
+.audience-art .visual > div {
+  height: auto;
+}
+.audience-copy,
+.audience-actions {
+  position: relative;
+  z-index: 1;
+}
+.audience-copy {
+  width: min(58%, 336px);
+}
+.audience-copy h3 {
+  font-size: var(--font-size-48);
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  margin-bottom: clamp(20px, calc(28px * var(--space-density)), 28px);
+}
+.audience-copy p {
+  color: var(--color-text-body);
+}
+.use-case-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+.use-case-tags li {
+  background: var(--surface-tint);
+  padding: 6px var(--space-2);
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+}
+.audience-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+@container audiences (min-width: 1600px) {
+  .use-case-tags li {
+    font-size: var(--font-size-14);
+  }
+}
+@container audiences (max-width: 1399px) {
+  .audience-copy {
+    width: 62%;
+  }
+  .audience-copy h3 {
+    font-size: var(--font-size-40);
+  }
+  .audience-card {
+    padding: clamp(24px, calc(32px * var(--space-density)), 32px) 32px;
+  }
+}
+/* Preserve the original fallback in fractional gaps between the bounded states. */
+@container audiences (max-width: 1199px) {
+  .audience-copy {
+    width: 100%;
+  }
+  .audience-copy h3 {
+    padding-right: 100px;
+  }
+  .audience-card {
+    min-height: 530px;
+  }
+}
+@container audiences (min-width: 900px) and (max-width: 1199px) {
+  .audience-grid {
+    grid-template-columns: 1fr;
+  }
+  .audience-card {
+    min-height: 480px;
+  }
+  .audience-copy {
+    width: 52%;
+    max-width: 430px;
+  }
+  .audience-copy h3 {
+    padding-right: 0;
+  }
+  .audience-art {
+    width: 65%;
+    max-width: 610px;
+    left: 49%;
+  }
+}
+@container audiences (max-width: 899px) {
+  .audience-grid {
+    grid-template-columns: 1fr;
+    gap: var(--layout-gap);
+  }
+  .audience-card {
+    min-height: 470px;
+    padding: var(--space-8);
+  }
+  .audience-copy {
+    max-width: 60%;
+  }
+  .audience-copy h3 {
+    padding-right: 0;
+  }
+}
+@container audiences (max-width: 899px) and (min-width: 600px) {
+  .audience-art {
+    width: 81.2%;
+    left: 48.9%;
+  }
+}
+@container audiences (max-width: 599px) {
+  .audiences h2 {
+    margin-bottom: var(--space-7);
+  }
+  .audience-card {
+    min-height: 0;
+    padding: var(--space-6);
+    gap: var(--space-7);
+  }
+  .audience-copy {
+    width: 100%;
+    max-width: none;
+  }
+  .audience-copy h3 {
+    padding: 0 92px 0 0;
+    min-height: 140px;
+    font-size: var(--font-size-24);
+    line-height: 1.1;
+    margin-bottom: var(--space-5);
+  }
+  .audience-copy p {
+    max-width: none;
+  }
+  .audience-art {
+    width: 176px;
+    top: 12px;
+    left: auto;
+    right: -36px;
+    transform: none;
+  }
+  .audience-actions {
+    gap: var(--space-3);
+  }
+  .audience-actions > .double-button {
+    width: 100%;
+  }
+  .audience-actions > .double-button .double-button__label {
+    flex: 1;
+    justify-content: flex-start;
+  }
+  .use-case-tags li {
+    font-size: var(--font-size-12);
+    line-height: 1.5;
+  }
+  .site[lang='ru'] .audience-copy h3 {
+    font-size: var(--font-size-24);
+    line-height: 1.1;
+  }
+}
+@container audiences (max-width: 340px) {
+  .audience-art {
+    width: 156px;
+    right: -32px;
+  }
+  .audience-copy h3 {
+    padding: 0 76px 0 0;
+    min-height: 128px;
+    font-size: var(--font-size-24);
+    line-height: 1.1;
+  }
+}

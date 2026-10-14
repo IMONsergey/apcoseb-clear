@@ -1,0 +1,62 @@
+/* The fixed header reserves layout space here. Match the hero surface, not
+   the page background, so returning to the top never reveals a contrasting band. */
+.header-spacer {
+  height: var(--header-height);
+  background: var(--surface-card);
+}
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  width: 100%;
+  transform: translateY(0);
+  transition: transform 240ms var(--ease);
+}
+.site-header[data-compact='true'] {
+  --header-surface-height: 72px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.site-header[data-hidden='true'] {
+  transform: translateY(calc(-100% - 1px));
+  pointer-events: none;
+}
+.header-row {
+  min-height: var(--header-surface-height, var(--header-height));
+}
+html {
+  --anchor-header-height: 72px;
+  scroll-padding-top: calc(var(--anchor-header-height, var(--header-height)) + 24px);
+}
+.language-panel {
+  min-width: 0;
+  width: max-content;
+}
+.language-panel button {
+  padding-inline: 10px 14px;
+}
+.double-button:active {
+  filter: brightness(0.97);
+}
+@media (min-width: 1600px) {
+  .double-button {
+    font-size: var(--font-size-14);
+  }
+  .site-header .nav-trigger,
+  .site-header .plain-button,
+  .site-header .double-button {
+    font-size: var(--font-size-16);
+  }
+}
+@media (max-width: 599px) {
+  .site-header[data-compact='true'] {
+    --header-surface-height: 64px;
+  }
+  html {
+    --anchor-header-height: 64px;
+  }
+  /* Show only the preserved brand/menu region, never the baked body under live copy. */
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header {
+    transition: none;
+  }
+}

@@ -1,0 +1,260 @@
+/* Theme-dependent color surfaces. Loaded after base styles to preserve cascade priority. */
+html[data-theme='light'] {
+  color-scheme: light;
+}
+html[data-theme='dark'] {
+  --shadow-low: 0 2px 8px rgb(0 0 0 / 20%);
+  --shadow-popover: 0 8px 24px rgb(0 0 0 / 28%);
+  --shadow-modal: 0 20px 100px rgb(0 0 0 / 48%);
+  color-scheme: dark;
+  --surface-page: #0d1113;
+  --surface-card: #151b1f;
+  --surface-elevated: #1c252a;
+  --surface-strong: #263239;
+  --text-primary: #f4f7f8;
+  --color-text-body: #cbd3d6;
+  --text-muted: #9ca8ae;
+  --brand-mark: #43c0d0;
+  --accent-text: #43c0d0;
+  --focus: var(--accent-text);
+  --action-fill: #04768a;
+  --action-hover-fill: #0b778b;
+  --on-action: #ffffff;
+  --surface-tint: #173b42;
+  --border-subtle: #344148;
+  --border-strong: #617078;
+  --api-surface: #075462;
+  --visual-ink: #b4c2c7;
+}
+
+body,
+.site {
+  background: var(--surface-page);
+  color: var(--text-primary);
+}
+.apcosys-logo {
+  display: block;
+  width: 134px;
+  height: auto;
+  color: var(--text-primary);
+}
+.footer-logo {
+  width: 100%;
+  height: auto;
+}
+
+/* Appearance control: compact icon only where the desktop header has room. */
+.theme-control {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+.theme-trigger {
+  width: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: var(--space-3);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+}
+.theme-trigger:hover,
+.theme-trigger[aria-expanded='true'] {
+  background: var(--surface-elevated);
+}
+.theme-panel {
+  left: auto;
+  right: 0;
+  min-width: 184px;
+  padding: var(--space-2);
+}
+.theme-panel > .eyebrow {
+  padding: 7px var(--space-2) 6px;
+}
+.theme-menu-options {
+  display: grid;
+  gap: 2px;
+}
+.theme-menu-options button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: var(--radius-panel);
+  background: transparent;
+  color: var(--text-primary);
+  font-size: var(--font-size-14);
+  text-align: left;
+}
+.theme-menu-options button:hover,
+.theme-menu-options button:focus-visible,
+.theme-menu-options button[data-active='true'] {
+  background: var(--surface-card);
+}
+.theme-check {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  color: var(--accent-text);
+}
+.theme-check svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+.mobile-theme-control {
+  margin: 28px 0 0;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-subtle);
+}
+.mobile-theme-control > .eyebrow {
+  margin-bottom: 10px;
+}
+.theme-segmented {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius-panel);
+  background: var(--surface-elevated);
+}
+.theme-segmented label {
+  position: relative;
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--font-size-14);
+}
+.theme-segmented label[data-active='true'] {
+  background: var(--surface-card);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-low);
+}
+.theme-segmented input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.theme-segmented label:has(input:focus-visible) > span:first-of-type {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@media (max-width: 1199px) {
+  .theme-control--desktop {
+    display: none;
+  }
+}
+
+/* Disabled languages communicate intent instead of resembling broken controls. */
+.language-panel .language-soon {
+  margin-left: auto;
+  font: 500 var(--font-size-10)/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  opacity: 0.9;
+}
+html[data-theme='dark'] .language-panel button:disabled {
+  opacity: 0.64;
+}
+
+/* Hit-area expansion is limited to isolated footer actions. List links use real padding. */
+.footer-email,
+.footer-brand {
+  position: relative;
+}
+.footer-email::before,
+.footer-brand::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+}
+.footer-email::before {
+  inset: -11px -8px;
+}
+.footer-brand::before {
+  inset: -4px;
+}
+
+/* Drawer keeps iPhone safe-area and hints when more navigation remains below. */
+.mobile-navigation {
+  padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
+}
+.mobile-nav-scroll-cue {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  width: min(560px, 100vw);
+  height: calc(30px + env(safe-area-inset-bottom));
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(to bottom, transparent, var(--surface-card) 72%);
+  transition: opacity 180ms ease;
+}
+.mobile-navigation[data-scroll-cue='true'] .mobile-nav-scroll-cue {
+  opacity: 1;
+}
+
+/* Theme handoff animates only paint properties and never geometry. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme-transition] * {
+    transition-duration: 0s !important;
+  }
+  .mobile-nav-scroll-cue {
+    transition: none;
+  }
+}
+
+/* ----- Dark art direction ----- */
+html[data-theme='dark'] .nav-panel {
+  background: var(--surface-elevated);
+  border-color: var(--border-subtle);
+  box-shadow: var(--shadow-popover);
+}
+html[data-theme='dark'] .nav-panel__default,
+html[data-theme='dark'] .nav-panel a:hover,
+html[data-theme='dark'] .nav-panel a:focus,
+html[data-theme='dark'] .language-panel button[aria-checked='true'],
+html[data-theme='dark'] .language-panel button:not(:disabled):hover,
+html[data-theme='dark'] .language-panel button:not(:disabled):focus-visible {
+  background: var(--surface-card);
+}
+
+html[data-theme='dark'] .faq-list details {
+  background: var(--surface-card);
+  box-shadow: var(--shadow-inset);
+}
+html[data-theme='dark'] .faq-list details[open] .faq-icon {
+  background: var(--surface-elevated);
+  color: var(--text-muted);
+}
+html[data-theme='dark'] .faq-answer a {
+  color: var(--accent-text);
+}
+html[data-theme='dark'] .modal {
+  box-shadow: var(--shadow-modal);
+}
+html[data-theme='dark'] .modal::backdrop {
+  background: rgb(1 11 14 / 62%);
+}
+html[data-theme='dark'] .mobile-navigation .modal__header {
+  background: var(--surface-card);
+}
+
+/* Dark theme refinements for nested surfaces. */

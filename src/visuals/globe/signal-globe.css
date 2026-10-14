@@ -1,0 +1,11 @@
+.signal-globe {
+  width: 100%;
+  background: transparent;
+}
+.signal-globe canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2048 / 1739;
+  background: transparent;
+}

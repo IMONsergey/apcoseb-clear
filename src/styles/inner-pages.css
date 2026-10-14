@@ -1,0 +1,7 @@
+/* Ordered composition: keep imports in this order to preserve the cascade.
+   Ownership and editing guidance: docs/STYLES.md. */
+@import './inner-pages/foundation.css';
+@import './inner-pages/editorial-components.css';
+@import './inner-pages/reading-rails.css';
+@import './inner-pages/editorial-surfaces.css';
+@import './inner-pages/content-adaptations.css';

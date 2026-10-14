@@ -1,0 +1,140 @@
+/* Homepage dark theme */
+.search-chrome__mobile-brand .apcosys-logo {
+  width: 29cqw;
+  height: auto;
+}
+html[data-theme='dark'] .search-preview,
+html[data-theme='dark'] .search-preview .visual-fallback--flow,
+html[data-theme='dark'] .search-preview .turquoise-flow {
+  background:
+    linear-gradient(
+      180deg,
+      rgb(0 154 180 / 0%) 36%,
+      rgb(0 145 170 / 50%) 48%,
+      #007a92 60%,
+      #005567 70%,
+      #003440 80%,
+      #0b1c21 90%,
+      #0c1113 98%
+    ),
+    radial-gradient(ellipse at 49% 42%, #91dce6 0%, transparent 58%),
+    linear-gradient(110deg, #0c4150 0%, #419cab 67%, #2996ab 100%);
+}
+@media (min-width: 600px) {
+  html[data-theme='dark'] .search-chrome {
+    mask-image: linear-gradient(
+      180deg,
+      #000 0%,
+      #000 58%,
+      rgb(0 0 0 / 88%) 70%,
+      rgb(0 0 0 / 42%) 84%,
+      transparent 98%
+    );
+  }
+}
+html[data-theme='dark'] .search-chrome__surface {
+  background: var(--surface-card);
+  border-color: #2c363c;
+}
+html[data-theme='dark'] .search-chrome__rail {
+  border-color: #2c363c;
+}
+html[data-theme='dark'] .search-chrome__rail .is-selected {
+  background: var(--surface-elevated);
+}
+html[data-theme='dark'] .search-chrome__filters > span {
+  border-color: #3a464c;
+  background: var(--surface-card);
+}
+html[data-theme='dark'] .search-chrome__account > span {
+  background: var(--surface-elevated);
+}
+html[data-theme='dark'] .search-chrome__account .search-chrome__upgrade {
+  background: #17373d;
+  color: var(--accent-text);
+}
+html[data-theme='dark'] .search-chrome__account b {
+  color: var(--accent-text);
+}
+html[data-theme='dark'] .search-form {
+  box-shadow: var(--shadow-low);
+}
+html[data-theme='dark'] .search-error {
+  color: #f0a6a0;
+  box-shadow: var(--shadow-popover);
+}
+html[data-theme='dark'] .step-media {
+  background: linear-gradient(180deg, var(--surface-card), var(--surface-tint));
+}
+html[data-theme='dark'] .step-illustration {
+  background: #101619;
+}
+html[data-theme='dark'] .use-case-tags li {
+  color: var(--surface-tint);
+}
+html[data-theme='dark'] .metric-card {
+  border-color: var(--border-subtle);
+}
+html[data-theme='dark'] .metric-card--ipv4,
+html[data-theme='dark'] .metric-card--protocols {
+  background: var(--api-surface);
+  color: #f4f7f8;
+}
+html[data-theme='dark'] .metric-card--ipv4 dt,
+html[data-theme='dark'] .metric-card--protocols dt {
+  color: #d7e3e6;
+}
+html[data-theme='dark'] .closing-scene::before,
+html[data-theme='dark'] .closing-scene::after {
+  background: #17373d;
+}
+@media (max-width: 599px) {
+  html[data-theme='dark'] .search-chrome__surface {
+    background: var(--surface-card);
+  }
+  html[data-theme='dark'] .search-free-note {
+    color: var(--accent-text);
+  }
+  html[data-theme='dark'] .closing-scene--compact,
+  html[data-theme='dark'] .closing-scene--compact .closing-copy {
+    background: var(--surface-card);
+    color: var(--text-primary);
+  }
+  html[data-theme='dark'] .closing-account {
+    color: var(--color-text-body);
+  }
+  html[data-theme='dark'] .closing-account > span {
+    background: var(--surface-elevated);
+  }
+  html[data-theme='dark'] .closing-account b,
+  html[data-theme='dark'] .closing-account .closing-account__upgrade {
+    color: var(--accent-text);
+  }
+  html[data-theme='dark'] .closing-account .closing-account__upgrade {
+    background: var(--surface-tint);
+  }
+  html[data-theme='dark'] .closing-copy > .eyebrow,
+  html[data-theme='dark'] .closing-copy__note {
+    color: var(--color-text-body);
+  }
+}
+html[data-theme='dark'] .search-chrome__fog {
+  /* The chrome mask already performs the fade. Blurring the live cyan canvas here
+     produced the muddy grey band visible in dark mode. */
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: none;
+  mask-image: none;
+}
+html[data-theme='dark'] .trust-mark img {
+  filter: brightness(0) invert(1);
+  opacity: 0.78;
+}
+html[data-theme='dark'] .step-card {
+  --button-bg: #ffffff;
+  --button-hover: var(--surface-tint);
+  --button-color: #121314;
+}
+html[data-theme='dark'] .audience-card {
+  box-shadow: var(--shadow-inset);
+}
