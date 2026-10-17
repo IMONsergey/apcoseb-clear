@@ -1,7 +1,7 @@
 import '../../styles/theme-demos.css';
 import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import '../../visuals/api/api-developer-demo.js';
+import '../../visuals/api/api-developer-demo.ts';
 
 declare global {
   interface Window {
