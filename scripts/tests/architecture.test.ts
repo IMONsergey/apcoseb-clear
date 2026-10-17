@@ -3,9 +3,10 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
-import { inspectArchitecture } from '../verify-architecture.mjs';
+import type { TestContext } from 'node:test';
+import { inspectArchitecture } from '../verify-architecture.ts';
 
-function inspect(t, files) {
+function inspect(t: TestContext, files: Readonly<Record<string, string>>) {
   const root = mkdtempSync(join(tmpdir(), 'apcosys-architecture-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   for (const [name, source] of Object.entries({ 'tsconfig.app.json': '{}', ...files })) {

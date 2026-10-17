@@ -8,7 +8,7 @@
 | Root domain `/` (including Vercel) | `npm run build:root`             | `npm run preview -- --base=/`      |
 | Other subdirectory `/site/`        | `npm run build -- --base=/site/` | `npm run preview -- --base=/site/` |
 
-All three use `scripts/build.mjs`: legal-source parity, TypeScript, Vite with the requested base, route metadata, then bundle budgets. Deploy the contents of `dist/` at exactly that path. Do not open the output with `file://`. A second build replaces `dist/`; never rebuild while browser tests are using it.
+All three use `scripts/build.ts`: legal-source parity, TypeScript, Vite with the requested base, route metadata, then bundle budgets. Deploy the contents of `dist/` at exactly that path. Do not open the output with `file://`. A second build replaces `dist/`; never rebuild while browser tests are using it.
 
 `APCO_PUBLIC_SITE_ORIGIN=https://example.com npm run build:root` writes static canonical and Open Graph URLs for all routes, including the homepage. The variable may also be put in a local `.env` or the hosting build environment. It must be an HTTPS origin without credentials or a path. Client navigation keeps canonical and `og:url` aligned with the current route.
 

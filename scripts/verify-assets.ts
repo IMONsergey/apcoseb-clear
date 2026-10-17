@@ -2,15 +2,54 @@ import ts from 'typescript';
 import { readdir, stat, access, readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 
+interface AssetGroup {
+  directory: string;
+  files: string[];
+}
+
+interface ArtworkEntry {
+  responsive: boolean;
+}
+
+interface AssetManifest {
+  groups: Record<string, AssetGroup>;
+  artwork: Record<string, ArtworkEntry>;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function isAssetGroup(value: unknown): value is AssetGroup {
+  return (
+    isRecord(value) &&
+    typeof value.directory === 'string' &&
+    Array.isArray(value.files) &&
+    value.files.every((file) => typeof file === 'string')
+  );
+}
+
+function isAssetManifest(value: unknown): value is AssetManifest {
+  if (!isRecord(value) || !isRecord(value.groups) || !isRecord(value.artwork)) return false;
+  return (
+    Object.values(value.groups).every(isAssetGroup) &&
+    Object.values(value.artwork).every(
+      (entry) => isRecord(entry) && typeof entry.responsive === 'boolean',
+    )
+  );
+}
+
 const root = 'public';
 const source = await readFile('src/content/asset-manifest.ts', 'utf8');
 const compiled = ts.transpileModule(source, {
   compilerOptions: { module: ts.ModuleKind.CommonJS },
 }).outputText;
-const module = { exports: {} };
-new Function('exports', 'module', compiled)(module.exports, module);
-const manifest = module.exports.default;
-const expected = new Set([
+const compiledModule: { exports: unknown } = { exports: {} };
+new Function('exports', 'module', compiled)(compiledModule.exports, compiledModule);
+const exported = isRecord(compiledModule.exports) ? compiledModule.exports.default : undefined;
+if (!isAssetManifest(exported)) throw new Error('Asset manifest has an unexpected shape.');
+const manifest = exported;
+const expected = new Set<string>([
   ...Object.values(manifest.groups).flatMap(({ directory, files }) =>
     files.map((name) => `${directory}/${name}`),
   ),
@@ -22,8 +61,8 @@ const expected = new Set([
   }),
 ]);
 
-async function allFiles(directory) {
-  const output = [];
+async function allFiles(directory: string): Promise<string[]> {
+  const output: string[] = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const pathname = join(directory, entry.name);
     if (entry.isDirectory()) output.push(...(await allFiles(pathname)));
@@ -33,7 +72,7 @@ async function allFiles(directory) {
 }
 
 const actual = new Set(await allFiles(join(root, 'assets')));
-const corrupt = [];
+const corrupt: string[] = [];
 for (const filename of actual) {
   const data = await readFile(join(root, filename));
   if (filename.endsWith('.webp')) {

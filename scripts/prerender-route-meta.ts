@@ -2,43 +2,80 @@ import { readFile, mkdir, writeFile, copyFile } from 'node:fs/promises';
 import { resolve, join, dirname } from 'node:path';
 import ts from 'typescript';
 
+interface CommonJsModule {
+  exports: unknown;
+}
+
+interface SiteRoute {
+  path: string;
+  title: string;
+  description: string;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function isSiteRoute(value: unknown): value is SiteRoute {
+  return (
+    isRecord(value) &&
+    typeof value.path === 'string' &&
+    typeof value.title === 'string' &&
+    typeof value.description === 'string'
+  );
+}
+
+function isSiteRoutes(value: unknown): value is SiteRoute[] {
+  return Array.isArray(value) && value.every(isSiteRoute);
+}
+
 const source = await readFile(resolve('src/content/routes.ts'), 'utf8');
 const compiled = ts.transpileModule(source, {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
 }).outputText;
-const module = { exports: {} };
-const legalModule = { exports: {} };
+const routeModule: CommonJsModule = { exports: {} };
+const legalModule: CommonJsModule = { exports: {} };
 const legalCompiled = ts.transpileModule(
   await readFile(resolve('src/content/legal-routes.ts'), 'utf8'),
   { compilerOptions: { module: ts.ModuleKind.CommonJS } },
 ).outputText;
 new Function('exports', 'module', legalCompiled)(legalModule.exports, legalModule);
-new Function('exports', 'module', 'require', compiled)(module.exports, module, (specifier) => {
-  if (specifier !== './legal-routes')
-    throw new Error(`Unexpected route-manifest dependency: ${specifier}`);
-  return legalModule.exports;
-});
-const routes = module.exports.siteRoutes;
+new Function('exports', 'module', 'require', compiled)(
+  routeModule.exports,
+  routeModule,
+  (specifier: string): unknown => {
+    if (specifier !== './legal-routes') {
+      throw new Error(`Unexpected route-manifest dependency: ${specifier}`);
+    }
+    return legalModule.exports;
+  },
+);
+const routesValue = isRecord(routeModule.exports) ? routeModule.exports.siteRoutes : undefined;
 if (
-  !Array.isArray(routes) ||
-  !routes.length ||
-  new Set(routes.map((route) => route.path)).size !== routes.length ||
-  !routes.every(
+  !isSiteRoutes(routesValue) ||
+  !routesValue.length ||
+  new Set(routesValue.map((route) => route.path)).size !== routesValue.length ||
+  !routesValue.every(
     (route) =>
       /^\/(?:[a-z0-9-]+(?:\/[a-z0-9-]+)*)?$/.test(route.path) && route.title && route.description,
   )
 )
   throw new Error('Route manifest must contain unique safe paths, titles and descriptions');
+const routes = routesValue;
 const dist = resolve('dist');
 const template = await readFile(join(dist, 'index.html'), 'utf8');
-const escape = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
-const replaceMeta = (html, attribute, key, value) => {
+const escape = (s: string): string =>
+  s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+const replaceMeta = (html: string, attribute: string, key: string, value: string): string => {
   const selector = new RegExp(
     '(<meta\\s+' + attribute + '="' + key + '"\\s+content=")[^"]*(")',
     'i',
   );
   if (!selector.test(html)) throw new Error('Missing metadata ' + key);
-  return html.replace(selector, (_, before, after) => before + escape(value) + after);
+  return html.replace(
+    selector,
+    (_match: string, before: string, after: string) => before + escape(value) + after,
+  );
 };
 const origin = process.env.APCO_PUBLIC_SITE_ORIGIN?.replace(/\/+$/, '') ?? '';
 if (origin) {

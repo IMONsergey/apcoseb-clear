@@ -1,18 +1,70 @@
-/* global window, document, requestAnimationFrame */
 import { spawn } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { chromium } from '@playwright/test';
+import type { Browser } from '@playwright/test';
+
+interface PerformanceSampleState {
+  lcp: number;
+  longTasks: number[];
+  events: number[];
+  firstResponse: number;
+}
+
+declare global {
+  interface Window {
+    __performanceSample: PerformanceSampleState;
+  }
+}
+
+interface PerformanceProfile {
+  name: string;
+  width: number;
+  cpu: number;
+  latency: number;
+  download: number;
+}
+
+interface PerformanceSample {
+  profile: string;
+  route: string;
+  run: number;
+  lcpMs: number;
+  longTaskCount: number;
+  blockingMs: number;
+  longestTaskMs: number;
+  resourceBytes: number;
+  clickToFrameMs: number;
+  observedEventMs: number;
+}
+
+type MetricKey =
+  'lcpMs' | 'blockingMs' | 'longestTaskMs' | 'clickToFrameMs' | 'observedEventMs' | 'resourceBytes';
+
+const metricKeys: readonly MetricKey[] = [
+  'lcpMs',
+  'blockingMs',
+  'longestTaskMs',
+  'clickToFrameMs',
+  'observedEventMs',
+  'resourceBytes',
+];
 
 const args = process.argv.slice(2);
-const options = new Set(['--output', '--dist', '--runs']);
+const options = new Set<string>(['--output', '--dist', '--runs']);
 for (let i = 0; i < args.length; i += 2) {
-  if (!options.has(args[i]) || !args[i + 1] || args[i + 1].startsWith('--'))
+  const name = args[i];
+  const value = args[i + 1];
+  if (!name || !options.has(name) || !value || value.startsWith('--')) {
     throw new Error('Use --output <file>, --dist <directory>, or --runs <1–10>.');
+  }
 }
-const option = (name, fallback) => {
+const option = (name: string, fallback: string): string => {
   const index = args.indexOf(name);
-  return index < 0 ? fallback : args[index + 1];
+  if (index < 0) return fallback;
+  const value = args[index + 1];
+  if (!value) throw new Error(`Missing value for ${name}.`);
+  return value;
 };
 const output = option('--output', '.work/performance.json');
 const dist = option('--dist', 'dist');
@@ -41,7 +93,7 @@ const server = process.env.APCO_BASE_URL
       ],
       { stdio: 'ignore' },
     );
-let browser;
+let browser: Browser | undefined;
 try {
   let ready = false;
   for (let attempt = 0; attempt < 100; attempt++) {
@@ -57,21 +109,22 @@ try {
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
   if (!ready) throw new Error('Preview did not become available.');
-  browser = await chromium.launch({
+  const activeBrowser = await chromium.launch({
     ...(process.env.APCO_CHROMIUM_EXECUTABLE
       ? { executablePath: process.env.APCO_CHROMIUM_EXECUTABLE }
       : {}),
     args: ['--no-sandbox', '--disable-dev-shm-usage'],
   });
-  const samples = [];
-  const profiles = [
+  browser = activeBrowser;
+  const samples: PerformanceSample[] = [];
+  const profiles: readonly PerformanceProfile[] = [
     { name: 'desktop', width: 1440, cpu: 1, latency: 0, download: -1 },
     { name: 'mobile-constrained', width: 390, cpu: 4, latency: 80, download: 200000 },
   ];
   for (const profile of profiles)
     for (const route of ['', 'about/', 'legal/privacy-policy/']) {
       for (let run = 1; run <= runs; run++) {
-        const context = await browser.newContext({
+        const context = await activeBrowser.newContext({
           viewport: { width: profile.width, height: 900 },
           reducedMotion: 'no-preference',
           serviceWorkers: 'block',
@@ -88,7 +141,12 @@ try {
           uploadThroughput: profile.download,
         });
         await page.addInitScript(() => {
-          const report = { lcp: 0, longTasks: [], events: [], firstResponse: 0 };
+          const report: PerformanceSampleState = {
+            lcp: 0,
+            longTasks: [],
+            events: [],
+            firstResponse: 0,
+          };
           window.__performanceSample = report;
           new PerformanceObserver((list) => {
             for (const entry of list.getEntries()) report.lcp = entry.startTime;
@@ -97,13 +155,28 @@ try {
             for (const entry of list.getEntries()) report.longTasks.push(entry.duration);
           }).observe({ type: 'longtask', buffered: true });
           new PerformanceObserver((list) => {
-            for (const entry of list.getEntries())
-              if (entry.interactionId) report.events.push(entry.duration);
-          }).observe({ type: 'event', durationThreshold: 16, buffered: true });
+            for (const entry of list.getEntries()) {
+              if (
+                'interactionId' in entry &&
+                typeof entry.interactionId === 'number' &&
+                entry.interactionId
+              ) {
+                report.events.push(entry.duration);
+              }
+            }
+          }).observe({
+            type: 'event',
+            durationThreshold: 16,
+            buffered: true,
+          } as PerformanceObserverInit & { durationThreshold: number });
           document.addEventListener(
             'click',
             (event) => {
-              if (!event.target.closest('.theme-trigger, .menu-toggle')) return;
+              if (
+                !(event.target instanceof Element) ||
+                !event.target.closest('.theme-trigger, .menu-toggle')
+              )
+                return;
               const start = event.timeStamp;
               requestAnimationFrame(() =>
                 requestAnimationFrame(() => {
@@ -127,7 +200,11 @@ try {
             longestTaskMs: Math.max(0, ...r.longTasks),
             resourceBytes: performance
               .getEntriesByType('resource')
-              .reduce((sum, e) => sum + e.transferSize, 0),
+              .reduce(
+                (sum, entry) =>
+                  sum + (entry instanceof PerformanceResourceTiming ? entry.transferSize : 0),
+                0,
+              ),
           };
         });
         await page.locator(profile.width < 1200 ? '.menu-toggle' : '.theme-trigger').click();
@@ -141,7 +218,11 @@ try {
       }
       console.log(`${profile.name} ${route || '/'}: ${runs} cold runs complete`);
     }
-  const median = (values) => [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
+  const median = (values: readonly number[]): number => {
+    const value = [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
+    if (value === undefined) throw new Error('Cannot calculate a median without samples.');
+    return value;
+  };
   const summary = profiles.flatMap(({ name }) =>
     ['', 'about/', 'legal/privacy-policy/'].map((route) => {
       const rows = samples.filter(
@@ -151,21 +232,14 @@ try {
         profile: name,
         route: route || '/',
         ...Object.fromEntries(
-          [
-            'lcpMs',
-            'blockingMs',
-            'longestTaskMs',
-            'clickToFrameMs',
-            'observedEventMs',
-            'resourceBytes',
-          ].map((key) => [key, Math.round(median(rows.map((row) => row[key])))]),
+          metricKeys.map((key) => [key, Math.round(median(rows.map((row) => row[key])))]),
         ),
       };
     }),
   );
   const report = {
     collectedAt: new Date().toISOString(),
-    browser: browser.version(),
+    browser: activeBrowser.version(),
     runs,
     profiles,
     scope:

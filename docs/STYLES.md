@@ -95,6 +95,6 @@ Keep global viewport queries for navigation, shell composition, input-device pre
 3. Edit the owning rule, including its responsive states. A selector absent from literal JSX may be generated dynamically; do not delete it without checking consumers.
 4. Run `npm run check`, `npm run build` and `npm run test:release`. The style gate rejects raw screen font sizes, new size steps, unapproved line heights (including font shorthands), local shadows and arbitrary radii outside documented exceptions.
 5. `design-system.spec.ts` compares cold and client-navigated pages in both themes. `style-contract.spec.ts` checks legal alignment and Sign In; `inner-hero-layout.spec.ts` checks 12 viewport widths and doubled text.
-6. For a measurable before/after report: `node scripts/verify-styles.mjs --ref <commit>`. Its totals count source expressions, not computed styles or semantic roles. Fewer files or replacing every number with a variable is not proof of a simpler system.
+6. For a measurable before/after report: `tsx scripts/verify-styles.ts --ref <commit>`. Its totals count source expressions, not computed styles or semantic roles. Fewer files or replacing every number with a variable is not proof of a simpler system.
 
 Large composition files remain explicit CSS, rather than a new utility framework or runtime style library. The application retains four runtime dependencies. Original engine checksums, reduced-motion behavior and interruption-safe transitions remain release gates.

@@ -2,11 +2,13 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trim();
+const git = (...args: string[]): string => execFileSync('git', args, { encoding: 'utf8' }).trim();
 if (git('status', '--porcelain', '--untracked-files=all')) {
   throw new Error('Commit source changes before exporting a reproducible snapshot.');
 }
-execFileSync(process.execPath, ['scripts/verify-source-tree.mjs'], { stdio: 'inherit' });
+execFileSync(process.execPath, ['--import', 'tsx', 'scripts/verify-source-tree.ts'], {
+  stdio: 'inherit',
+});
 
 const sha = git('rev-parse', 'HEAD');
 const output = resolve('.work', `apcosys-web-source-${sha.slice(0, 12)}.zip`);

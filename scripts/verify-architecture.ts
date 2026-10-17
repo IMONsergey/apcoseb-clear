@@ -3,9 +3,22 @@ import { relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import ts from 'typescript';
 
-const projectPath = (root, file) => relative(root, file).split(sep).join('/');
+interface ImportEdge {
+  from: string;
+  to: string;
+  runtime: boolean;
+}
 
-function sourceFiles(directory) {
+export interface ArchitectureReport {
+  modules: number;
+  runtimeImports: number;
+  failures: string[];
+}
+
+const projectPath = (root: string, file: string): string =>
+  relative(root, file).split(sep).join('/');
+
+function sourceFiles(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const file = resolve(directory, entry.name);
     return entry.isDirectory()
@@ -17,16 +30,18 @@ function sourceFiles(directory) {
 }
 
 /** Read the working tree, including new files; Git staging must not affect the gate. */
-export function inspectArchitecture(root = process.cwd()) {
+export function inspectArchitecture(root = process.cwd()): ArchitectureReport {
   const config = ts.readConfigFile(resolve(root, 'tsconfig.app.json'), ts.sys.readFile);
   if (config.error)
     throw new Error(ts.flattenDiagnosticMessageText(config.error.messageText, '\n'));
   const { options } = ts.parseJsonConfigFileContent(config.config, ts.sys, root);
   const files = sourceFiles(resolve(root, 'src'));
-  const graph = new Map(files.map((file) => [projectPath(root, file), new Set()]));
-  const failures = [];
+  const graph = new Map<string, Set<string>>(
+    files.map((file) => [projectPath(root, file), new Set<string>()]),
+  );
+  const failures: string[] = [];
   // Extensionless imports can resolve to the wrong module on case-insensitive systems.
-  const moduleNames = new Map();
+  const moduleNames = new Map<string, string>();
   for (const file of files) {
     const filename = projectPath(root, file);
     const normalized = filename
@@ -37,7 +52,7 @@ export function inspectArchitecture(root = process.cwd()) {
     if (previous) failures.push(`Ambiguous module names: ${previous} and ${filename}`);
     else moduleNames.set(normalized, filename);
   }
-  const allEdges = [];
+  const allEdges: ImportEdge[] = [];
   for (const file of files) {
     const from = projectPath(root, file);
     const source = ts.createSourceFile(
@@ -46,15 +61,15 @@ export function inspectArchitecture(root = process.cwd()) {
       ts.ScriptTarget.Latest,
       true,
     );
-    function add(specifier, runtime) {
+    function add(specifier: string, runtime: boolean): void {
       if (!specifier.startsWith('.')) return;
       const module = ts.resolveModuleName(specifier, file, options, ts.sys).resolvedModule;
       if (!module) return; // TypeScript handles unresolved modules; CSS is outside this graph.
       const to = projectPath(root, module.resolvedFileName);
       allEdges.push({ from, to, runtime });
-      if (runtime && graph.has(to)) graph.get(from).add(to);
+      if (runtime && graph.has(to)) graph.get(from)?.add(to);
     }
-    function visit(node) {
+    function visit(node: ts.Node): void {
       if (ts.isImportDeclaration(node)) {
         const clause = node.importClause;
         const bindings = clause?.namedBindings;
@@ -64,7 +79,9 @@ export function inspectArchitecture(root = process.cwd()) {
           ts.isNamedImports(bindings) &&
           bindings.elements.length > 0 &&
           bindings.elements.every((item) => item.isTypeOnly);
-        add(node.moduleSpecifier.text, !clause?.isTypeOnly && !namedTypesOnly);
+        if (ts.isStringLiteralLike(node.moduleSpecifier)) {
+          add(node.moduleSpecifier.text, !clause?.isTypeOnly && !namedTypesOnly);
+        }
       }
       if (ts.isExportDeclaration(node) && node.moduleSpecifier) {
         const bindings = node.exportClause;
@@ -73,7 +90,9 @@ export function inspectArchitecture(root = process.cwd()) {
           ts.isNamedExports(bindings) &&
           bindings.elements.length > 0 &&
           bindings.elements.every((item) => item.isTypeOnly);
-        add(node.moduleSpecifier.text, !node.isTypeOnly && !namedTypesOnly);
+        if (ts.isStringLiteralLike(node.moduleSpecifier)) {
+          add(node.moduleSpecifier.text, !node.isTypeOnly && !namedTypesOnly);
+        }
       }
       if (
         ts.isCallExpression(node) &&
@@ -110,10 +129,10 @@ export function inspectArchitecture(root = process.cwd()) {
     const other = to.match(/^src\/pages\/(corporate|commercial|platform|research)\//)?.[1];
     if (group && other && group !== other) failures.push(`${from} crosses page groups (${to})`);
   }
-  const visited = new Set();
-  const active = new Set();
-  const stack = [];
-  function walk(file) {
+  const visited = new Set<string>();
+  const active = new Set<string>();
+  const stack: string[] = [];
+  function walk(file: string): void {
     if (active.has(file)) {
       failures.push(`Runtime cycle: ${[...stack.slice(stack.indexOf(file)), file].join(' → ')}`);
       return;
@@ -122,7 +141,7 @@ export function inspectArchitecture(root = process.cwd()) {
     visited.add(file);
     active.add(file);
     stack.push(file);
-    for (const imported of graph.get(file)) walk(imported);
+    for (const imported of graph.get(file) ?? []) walk(imported);
     stack.pop();
     active.delete(file);
   }

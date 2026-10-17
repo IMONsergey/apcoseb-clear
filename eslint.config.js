@@ -33,5 +33,5 @@ export default tseslint.config(
   },
   { files: ['src/visuals/**/*.tsx'], rules: { 'react-hooks/exhaustive-deps': 'off' } },
   { files: ['src/visuals/**/*.js'], languageOptions: { globals: globals.browser } },
-  { files: ['*.js', 'scripts/**/*.mjs'], languageOptions: { globals: globals.node } },
+  { files: ['*.js'], languageOptions: { globals: globals.node } },
 );

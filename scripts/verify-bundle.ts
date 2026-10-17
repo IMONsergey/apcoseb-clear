@@ -1,10 +1,43 @@
 import { readFile } from 'node:fs/promises';
 import { gzipSync } from 'node:zlib';
 
+interface ManifestChunk {
+  file: string;
+  css?: string[];
+  imports?: string[];
+}
+
+type BuildManifest = Record<string, ManifestChunk>;
+type AssetKind = 'js' | 'css';
+type BundleLimit = readonly [entry: string, jsLimit: number, cssLimit: number, compressed: boolean];
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === 'string');
+}
+
+function isBuildManifest(value: unknown): value is BuildManifest {
+  return (
+    isRecord(value) &&
+    Object.values(value).every(
+      (chunk) =>
+        isRecord(chunk) &&
+        typeof chunk.file === 'string' &&
+        (chunk.css === undefined || isStringArray(chunk.css)) &&
+        (chunk.imports === undefined || isStringArray(chunk.imports)),
+    )
+  );
+}
+
 // Follow static imports, including shared CSS. Optional scenes are deliberately excluded:
 // their mount/scroll behavior belongs to the browser contract. Typograf stays in the entry.
-const manifest = JSON.parse(await readFile('dist/.vite/manifest.json', 'utf8'));
-const limits = [
+const manifestValue: unknown = JSON.parse(await readFile('dist/.vite/manifest.json', 'utf8'));
+if (!isBuildManifest(manifestValue)) throw new Error('Build manifest has an unexpected shape.');
+const manifest = manifestValue;
+const limits: readonly BundleLimit[] = [
   ['index.html', 335, 32, false],
   ['src/pages/HomePage.tsx', 132, 29, true],
   ['src/pages/LegalPages.tsx', 120, 10, true],
@@ -13,11 +46,11 @@ const limits = [
   ['src/pages/ResearchPages.tsx', 120, 24, true],
   ['src/pages/CommercialPages.tsx', 122, 25, true],
 ];
-const problems = [];
+const problems: string[] = [];
 for (const [entry, jsLimit, cssLimit, compressed] of limits) {
-  const visited = new Set();
-  const files = new Set();
-  function visit(key) {
+  const visited = new Set<string>();
+  const files = new Set<string>();
+  function visit(key: string): void {
     if (visited.has(key)) return;
     visited.add(key);
     const chunk = manifest[key];
@@ -27,17 +60,18 @@ for (const [entry, jsLimit, cssLimit, compressed] of limits) {
     for (const imported of chunk.imports ?? []) visit(imported);
   }
   visit(entry);
-  const sizes = { js: 0, css: 0 };
+  const sizes: Record<AssetKind, number> = { js: 0, css: 0 };
   for (const file of files) {
     const kind = file.endsWith('.js') ? 'js' : file.endsWith('.css') ? 'css' : undefined;
     if (!kind) continue;
     const content = await readFile(`dist/${file}`);
     sizes[kind] += compressed ? gzipSync(content).length : content.length;
   }
-  for (const [kind, limit] of [
+  const budgets: readonly (readonly [AssetKind, number])[] = [
     ['js', jsLimit],
     ['css', cssLimit],
-  ]) {
+  ];
+  for (const [kind, limit] of budgets) {
     const kib = sizes[kind] / 1024;
     console.log(
       `${entry} ${kind.toUpperCase()} (${compressed ? 'gzip static graph' : 'raw'}): ${kib.toFixed(1)} / ${limit} KiB`,

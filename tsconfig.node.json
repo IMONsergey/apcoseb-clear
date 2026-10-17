@@ -17,5 +17,5 @@
     "types": ["node"],
     "jsx": "react-jsx"
   },
-  "include": ["*.config.ts", "playwright.suites.ts", "tests/**/*.ts"]
+  "include": ["*.config.ts", "playwright.suites.ts", "tests/**/*.ts", "scripts/**/*.ts"]
 }

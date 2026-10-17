@@ -15,11 +15,16 @@ const excludedRoots = new Set([
 const invalidWindowsNames = /^(?:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i;
 const invalidCharacters = /[<>:"\\|?*]/;
 
-export function inspectSourceTree(root = process.cwd()) {
-  const failures = [];
-  const names = new Map();
+export interface SourceTreeReport {
+  files: number;
+  failures: string[];
+}
+
+export function inspectSourceTree(root = process.cwd()): SourceTreeReport {
+  const failures: string[] = [];
+  const names = new Map<string, string>();
   let files = 0;
-  function scan(directory, isRoot = false) {
+  function scan(directory: string, isRoot = false): void {
     for (const entry of readdirSync(directory, { withFileTypes: true })) {
       if (isRoot && excludedRoots.has(entry.name)) continue;
       const absolute = resolve(directory, entry.name);
@@ -28,7 +33,7 @@ export function inspectSourceTree(root = process.cwd()) {
       const previous = names.get(portableName);
       if (previous) failures.push(`Case or Unicode path collision: ${previous} / ${name}`);
       else names.set(portableName, name);
-      const base = entry.name.split('.')[0];
+      const base = entry.name.split('.')[0] ?? '';
       if (
         entry.name !== entry.name.normalize('NFC') ||
         invalidCharacters.test(entry.name) ||
@@ -55,7 +60,7 @@ export function inspectSourceTree(root = process.cwd()) {
     );
     if (tracked.status !== 0) failures.push('Cannot inspect the Git source index.');
     else {
-      const indexedNames = new Map();
+      const indexedNames = new Map<string, string>();
       for (const name of tracked.stdout.split('\0').filter(Boolean)) {
         const key = name.normalize('NFC').toLowerCase();
         const previous = indexedNames.get(key);
