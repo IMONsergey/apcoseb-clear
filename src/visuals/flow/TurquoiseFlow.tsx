@@ -3,7 +3,7 @@ import {
   createTurquoiseFlow,
   type FlowController,
   type FlowOptions,
-} from './turquoise-flow-themed.js';
+} from './turquoise-flow-themed';
 import { observeFirstPaint } from '../firstPaint';
 import './turquoise-flow.css';
 
