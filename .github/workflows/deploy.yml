@@ -86,6 +86,8 @@ jobs:
         with:
           node-version: '22'
           cache: npm
+      - name: Install locked dependencies
+        run: npm ci
       - name: Export source without Git history
         run: npm run handoff:package
       - name: Verify archive boundaries

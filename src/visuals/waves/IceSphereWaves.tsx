@@ -1,5 +1,5 @@
 import { useEffect, useRef, type CSSProperties } from 'react';
-import { createIceWaves, type IceWavesController } from './ice-sphere-waves-themed.js';
+import { createIceWaves, type IceWavesController } from './ice-sphere-waves-themed';
 import './ice-sphere-waves.css';
 
 export interface IceSphereWavesProps {

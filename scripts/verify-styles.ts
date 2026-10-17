@@ -1,6 +1,7 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import postcss from 'postcss';
+import type { AtRule, Node } from 'postcss';
 
 const properties = [
   'font-size',
@@ -9,8 +10,23 @@ const properties = [
   'gap',
   'border-radius',
   'box-shadow',
-];
-const failures = [];
+] as const;
+type InventoryProperty = (typeof properties)[number];
+type CssSource = readonly [file: string, source: string];
+
+interface StyleInventory {
+  files: number;
+  mediaQueries: number;
+  uniqueMediaConditions: number;
+  containerQueries: number;
+  rules: number;
+  declarations: number;
+  bytes: number;
+  distinctValues: Record<InventoryProperty, number>;
+  colorLiterals: number;
+}
+
+const failures: string[] = [];
 const sizeSteps = new Set([10, 12, 14, 16, 18, 20, 24, 32, 40, 48, 64, 80]);
 const sizeValues = new Set([
   ...[...sizeSteps].map((size) => `var(--font-size-${size})`),
@@ -20,9 +36,17 @@ const sizeValues = new Set([
 const printSizes = new Set(['11pt', '12pt', '14pt', '18pt', '30pt']);
 const leadingSteps = new Set(['1', '1.1', '1.25', '1.5', '1.6', '1.7']);
 const shadowRoles = new Set(['low', 'popover', 'modal', 'inset', 'accent']);
-async function cssFiles(directory) {
+function isInventoryProperty(value: string): value is InventoryProperty {
+  return (properties as readonly string[]).includes(value);
+}
+
+function isAtRule(node: Node): node is AtRule {
+  return node.type === 'atrule';
+}
+
+async function cssFiles(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true });
-  const nested = await Promise.all(
+  const nested: string[][] = await Promise.all(
     entries.map(async (entry) => {
       const path = `${directory}/${entry.name}`;
       if (path === 'src/visuals') return [];
@@ -31,10 +55,18 @@ async function cssFiles(directory) {
   );
   return nested.flat().sort();
 }
-function inventory(sources, validate) {
-  const values = Object.fromEntries(properties.map((property) => [property, new Set()]));
-  const colors = new Set();
-  const mediaConditions = new Set();
+function sourceLine(node: Node): number {
+  const line = node.source?.start?.line;
+  if (!line) throw new Error('Parsed CSS node is missing source location.');
+  return line;
+}
+
+function inventory(sources: readonly CssSource[], validate: boolean): StyleInventory {
+  const values = Object.fromEntries(
+    properties.map((property) => [property, new Set<string>()]),
+  ) as Record<InventoryProperty, Set<string>>;
+  const colors = new Set<string>();
+  const mediaConditions = new Set<string>();
   let mediaQueries = 0,
     containerQueries = 0;
   let rules = 0,
@@ -53,37 +85,41 @@ function inventory(sources, validate) {
     });
     if (validate) {
       root.walk((parent) => {
-        if (!parent.nodes) return;
+        if (!('nodes' in parent) || !parent.nodes) return;
         for (let i = 1; i < parent.nodes.length; i++) {
           const previous = parent.nodes[i - 1];
           const current = parent.nodes[i];
           if (
-            previous.type === 'atrule' &&
-            current.type === 'atrule' &&
+            previous &&
+            current &&
+            isAtRule(previous) &&
+            isAtRule(current) &&
             previous.name === 'media' &&
             current.name === 'media' &&
             previous.params === current.params
           ) {
             failures.push(
-              `${file}:${current.source.start.line}: merge adjacent identical media queries (${current.params}).`,
+              `${file}:${sourceLine(current)}: merge adjacent identical media queries (${current.params}).`,
             );
           }
         }
       });
     }
-    root.walkRules(() => rules++);
+    root.walkRules(() => {
+      rules++;
+    });
     root.walkDecls((declaration) => {
       const { prop, value } = declaration;
       declarations++;
-      values[prop]?.add(value);
+      if (isInventoryProperty(prop)) values[prop].add(value);
       for (const match of value.matchAll(/#[\da-f]{3,8}\b|(?:rgba?|hsla?)\([^)]*\)/gi)) {
         colors.add(match[0].toLowerCase().replace(/\s+/g, ' '));
       }
       if (!validate || file.endsWith('theme-demos.css')) return;
-      let parent = declaration.parent;
+      let parent: Node | undefined = declaration.parent;
       let print = false;
       while (parent) {
-        if (parent.type === 'atrule' && parent.name === 'media' && /\bprint\b/.test(parent.params))
+        if (isAtRule(parent) && parent.name === 'media' && /\bprint\b/.test(parent.params))
           print = true;
         parent = parent.parent;
       }
@@ -94,17 +130,18 @@ function inventory(sources, validate) {
         !(print && printSizes.has(value)) &&
         !(
           file.endsWith('PricingSection.css') &&
+          declaration.parent?.type === 'rule' &&
           declaration.parent.selector === '.plan-price' &&
           value === 'clamp(56px, 31cqi, 70px)'
         )
       ) {
         failures.push(
-          `${file}:${declaration.source.start.line}: font-size must use a shared role or scale token (${value}).`,
+          `${file}:${sourceLine(declaration)}: font-size must use a shared role or scale token (${value}).`,
         );
       }
       if (prop === 'font' && /(?:^|\s)\d+px(?=\/|\s)/.test(value)) {
         failures.push(
-          `${file}:${declaration.source.start.line}: font shorthand must reuse the size scale.`,
+          `${file}:${sourceLine(declaration)}: font shorthand must reuse the size scale.`,
         );
       }
       if (
@@ -112,7 +149,7 @@ function inventory(sources, validate) {
         !/^(var\(|0$|inherit$)/.test(value) &&
         !value.includes('cqw')
       ) {
-        failures.push(`${file}:${declaration.source.start.line}: use a shared radius (${value}).`);
+        failures.push(`${file}:${sourceLine(declaration)}: use a shared radius (${value}).`);
       }
       if (
         prop.startsWith('--font-size-') &&
@@ -158,19 +195,21 @@ function inventory(sources, validate) {
     bytes,
     distinctValues: Object.fromEntries(
       properties.map((property) => [property, values[property].size]),
-    ),
+    ) as Record<InventoryProperty, number>,
     colorLiterals: colors.size,
   };
 }
 
 const files = await cssFiles('src');
 const current = inventory(
-  await Promise.all(files.map(async (file) => [file, await readFile(file, 'utf8')])),
+  await Promise.all(
+    files.map(async (file): Promise<CssSource> => [file, await readFile(file, 'utf8')]),
+  ),
   true,
 );
 const args = process.argv.slice(2);
 const refIndex = args.indexOf('--ref');
-let baseline;
+let baseline: StyleInventory | undefined;
 if (refIndex >= 0) {
   const ref = args[refIndex + 1];
   if (!ref || ref.startsWith('-')) throw new Error('Provide a Git ref after --ref.');
@@ -181,7 +220,7 @@ if (refIndex >= 0) {
     .split('\n')
     .filter((file) => file.endsWith('.css') && !file.startsWith('src/visuals/'));
   baseline = inventory(
-    oldFiles.map((file) => [
+    oldFiles.map((file): CssSource => [
       file,
       execFileSync('git', ['show', `${ref}:${file}`], { encoding: 'utf8' }),
     ]),

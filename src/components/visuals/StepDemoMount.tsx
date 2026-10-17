@@ -2,7 +2,7 @@ import '../../styles/theme-demos.css';
 import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import type { ResearchScene } from '../../content/research';
-import '../../visuals/product/product-scenes.js';
+import '../../visuals/product/product-scenes.ts';
 
 declare global {
   interface Window {

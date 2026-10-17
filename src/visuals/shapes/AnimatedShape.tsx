@@ -4,7 +4,7 @@ import {
   getShapeGeometry,
   type ShapeOptions,
   type ShapeController,
-} from './animated-shapes.js';
+} from './animated-shapes';
 import './animated-shapes.css';
 
 export interface AnimatedShapeProps extends ShapeOptions {

@@ -3,9 +3,10 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
-import { inspectSourceTree } from '../verify-source-tree.mjs';
+import type { TestContext } from 'node:test';
+import { inspectSourceTree } from '../verify-source-tree.ts';
 
-function fixture(t, files) {
+function fixture(t: TestContext, files: readonly string[]) {
   const root = mkdtempSync(join(tmpdir(), 'apcosys-source-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   for (const name of files) {

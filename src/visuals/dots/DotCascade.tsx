@@ -1,5 +1,5 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
-import { createDotCascade, type DotOptions, type DotController } from './dot-cascade-themed.js';
+import { createDotCascade, type DotOptions, type DotController } from './dot-cascade-themed';
 import { observeFirstPaint } from '../firstPaint';
 import './dot-cascade.css';
 

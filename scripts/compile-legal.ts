@@ -11,7 +11,7 @@ const slugs = [
   'privacy-policy',
   'terms',
 ];
-const references = {
+const references: Readonly<Record<string, string>> = {
   'API & Data License Agreement': 'api-data-license-agreement',
   'Cookie Policy': 'cookie-policy',
   'Data Collection Policy': 'data-collection-policy',
@@ -20,18 +20,34 @@ const references = {
   'Terms and Conditions': 'terms',
   'Terms of Service': 'terms',
 };
-const escape = (s) =>
+const escape = (s: string): string =>
   s
     .replaceAll('&', '&amp;')
     .replaceAll('"', '&quot;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;');
-const slugify = (s) =>
+const slugify = (s: string): string =>
   s
     .toLowerCase()
     .replace(/[^\w\s-]/g, '')
     .replace(/\s/g, '-');
-const documents = {};
+interface Heading {
+  id: string;
+  title: string;
+  level: number;
+}
+
+interface LegalDocument {
+  title: string;
+  updated: string;
+  updatedISO: string;
+  sourceUrl: string;
+  sourceSha256: string;
+  headings: Heading[];
+  html: string;
+}
+
+const documents: Record<string, LegalDocument> = {};
 for (const slug of slugs) {
   const source = await readFile(`docs/legal-sources/${slug}.md`, 'utf8');
   // Comments are deliberately unpublished in the source; do not resurrect them.
@@ -43,8 +59,11 @@ for (const slug of slugs) {
     .replace(/^# .+\n+/, '')
     .replace(/_Last updated: .*?_\n+/, '')
     .replace(/^## Table of Contents\n[\s\S]*?(?=^## |$(?![\s\S]))/m, '');
-  const ids = new Set();
-  const headings = [];
+  const updated = date[1];
+  const documentTitle = title[1];
+  if (!updated || !documentTitle) throw new Error(`Missing source metadata: ${slug}`);
+  const ids = new Set<string>();
+  const headings: Heading[] = [];
   const marked = new Marked({
     renderer: {
       html() {
@@ -64,9 +83,17 @@ for (const slug of slugs) {
       link({ href, tokens }) {
         if (!/^(https:\/\/|mailto:|#)/.test(href)) throw new Error(`Unexpected link: ${href}`);
         const internal = href.match(/^https:\/\/apcosys.net(\/legal\/[^#/?]+)(.*)$/);
-        if (internal && !slugs.includes(internal[1].split('/').pop()))
-          throw new Error('Unknown legal route');
-        return `<a href="${escape(internal ? internal[1] + internal[2] : href)}">${this.parser.parseInline(tokens)}</a>`;
+        let targetHref = href;
+        if (internal) {
+          const legalPath = internal[1];
+          const suffix = internal[2];
+          const targetSlug = legalPath?.split('/').pop();
+          if (!legalPath || suffix === undefined || !targetSlug || !slugs.includes(targetSlug)) {
+            throw new Error('Unknown legal route');
+          }
+          targetHref = legalPath + suffix;
+        }
+        return `<a href="${escape(targetHref)}">${this.parser.parseInline(tokens)}</a>`;
       },
       strong({ tokens, text }) {
         const target = references[text];
@@ -78,10 +105,11 @@ for (const slug of slugs) {
     },
   });
   const html = marked.parse(content);
+  if (typeof html !== 'string') throw new Error(`Unexpected asynchronous render: ${slug}`);
   documents['/legal/' + slug] = {
-    title: title[1],
-    updated: date[1],
-    updatedISO: new Date(date[1] + ' UTC').toISOString().slice(0, 10),
+    title: documentTitle,
+    updated,
+    updatedISO: new Date(updated + ' UTC').toISOString().slice(0, 10),
     sourceUrl: 'https://apcosys.net/legal/' + slug,
     sourceSha256: createHash('sha256').update(source).digest('hex'),
     headings,

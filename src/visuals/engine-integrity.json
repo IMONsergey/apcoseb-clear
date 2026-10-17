@@ -1,26 +1,26 @@
 [
   {
-    "path": "src/visuals/flow/turquoise-flow.js",
-    "sha256": "eaa2b8dadb3307b3c2b39873a5076289632954da03819c6cc651d73364128ecc"
+    "path": "src/visuals/flow/turquoise-flow.ts",
+    "sha256": "21eb5e0aa67a131363c4574ec4616d9f2b36891f2b30b125c27234998e0f8262"
   },
   {
-    "path": "src/visuals/waves/ice-sphere-waves.js",
-    "sha256": "753c71d369102d66f79498164cae549381ed42da59f543382580aa9af15d570d"
+    "path": "src/visuals/waves/ice-sphere-waves.ts",
+    "sha256": "4dfdf79445bdbcde2c6ff30dd25edd7e2ec42b826731169abdd1fb0624f14bdb"
   },
   {
-    "path": "src/visuals/globe/land-data.js",
-    "sha256": "9ebf673b7b9257fe2f2d3e3ce218784281e807a475744a7ff8e32f4a4bcc3e08"
+    "path": "src/visuals/globe/land-data.ts",
+    "sha256": "93d50af19c6b22cfd74d82aaf58299110eb9642f68892e470d206e8530704ce8"
   },
   {
-    "path": "src/visuals/globe/signal-globe.js",
-    "sha256": "c9b3a320e97b1095dedcf5b32ac2c3cb82523874a38b04006fbabd710a844ed1"
+    "path": "src/visuals/globe/signal-globe.ts",
+    "sha256": "d34faaa5a8be17d729a8f23fa0d8560cf1646428090976f879635b2056ed7edd"
   },
   {
-    "path": "src/visuals/dots/dot-cascade.js",
-    "sha256": "1ac6947120825af5fc8bedcdf1d44169bb96f17f6466ae6c91816df27c9c55fe"
+    "path": "src/visuals/dots/dot-cascade.ts",
+    "sha256": "1d62c27ddcbf282e49f3a73551f00e24989a642f510d3e681973d913f45c524a"
   },
   {
-    "path": "src/visuals/shapes/animated-shapes.js",
-    "sha256": "b45d6a0776796f864ccf60f514bf1020975af7dd18c40cff6f261c022a773e6f"
+    "path": "src/visuals/shapes/animated-shapes.ts",
+    "sha256": "1de13b2221e569014dace0c9eb4611d41d0dd625efe67d293e3a71ac0076600c"
   }
 ]

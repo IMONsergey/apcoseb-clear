@@ -43,7 +43,7 @@ Optional `APCO_PUBLIC_SITE_ORIGIN` sets static canonical/OG URLs for the final H
 - Edit subscription allowances only in `content/plans.ts`; the comparison, API and Business summaries derive from that record.
 - Preserve shared container edges, right-aligned closing actions/footer metadata, natural content height and reduced-motion support.
 - Use paired illustration assets; never derive the dark edition with CSS inversion.
-- Preserve the six checksum-protected visual originals and font/GSAP notices.
+- Preserve the integrity checks for the six TypeScript visual engines and retain all font/GSAP notices.
 - Edit legal Markdown, run `npm run legal:compile`, review the generated diff. Do not edit the JSON by hand.
 - Keep demos marked as synthetic. Do not substitute invented production endpoints or credentials.
 

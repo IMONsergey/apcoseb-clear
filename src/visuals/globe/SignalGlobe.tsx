@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, type CSSProperties } from 'react';
-import { createSignalGlobe, type GlobeOptions, type GlobeController } from './signal-globe.js';
+import { createSignalGlobe, type GlobeOptions, type GlobeController } from './signal-globe';
 import './signal-globe.css';
 export interface SignalGlobeProps extends Omit<GlobeOptions, 'renderer'> {
   renderer?: 'auto' | 'canvas2d';
