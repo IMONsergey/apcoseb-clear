@@ -88,10 +88,16 @@ test('distinct use-case evidence is accessible in each research journey', async 
 
 test('pricing monthly and annual values follow documented discount', async ({ page }) => {
   await page.goto('./pricing');
-  await expect(page.locator('#plan-plus .plan-price')).toContainText('$40');
+  await expect(page.locator('#plan-plus .plan-price')).toContainText('$50');
+  await expect(page.locator('#plan-expert .plan-price')).toContainText('$300');
+  await expect(page.locator('#plan-business .plan-price')).toContainText('$900');
   await page.locator('.billing--desktop').getByRole('radio', { name: 'Annually' }).check();
-  await expect(page.locator('#plan-plus .plan-price')).toContainText('$32');
-  await expect(page.locator('#plan-expert .plan-price')).toContainText('$192');
+  await expect(page.locator('#plan-plus .plan-price')).toContainText('$40');
+  await expect(page.locator('#plan-expert .plan-price')).toContainText('$240');
+  await expect(page.locator('#plan-business .plan-price')).toContainText('$720');
+  await expect(page.locator('#plan-plus .plan-billing-note')).toContainText('$480');
+  await expect(page.locator('#plan-expert .plan-billing-note')).toContainText('$2,880');
+  await expect(page.locator('#plan-business .plan-billing-note')).toContainText('$8,640');
   await page.getByRole('button', { name: 'Choose Business' }).click();
   const dialog = page.getByRole('dialog', { name: 'BUSINESS plan' });
   await expect(dialog).toBeVisible();

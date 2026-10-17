@@ -3,7 +3,12 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Text } from '../../src/components/ui/Text';
 import { plans, businessPlan } from '../../src/content/plans';
-import { formatApiRate, formatCredits, planComparison } from '../../src/lib/pricing';
+import {
+  calculatePrice,
+  formatApiRate,
+  formatCredits,
+  planComparison,
+} from '../../src/lib/pricing';
 import { markRouteReady, waitForRouteReady } from '../../src/app/routeReadiness';
 
 test('ordinary authored text is formatted without changing its semantic element or link', () => {
@@ -54,6 +59,24 @@ test('pricing comparison and API limits use the same product allowances', () => 
     );
     expect(Number.isInteger(plan.credits) && plan.credits > 0).toBe(true);
     expect(Number.isInteger(plan.users) && plan.users > 0).toBe(true);
+  }
+});
+
+test('subscription prices use monthly list rates and a 20% annual discount', () => {
+  const expected = [
+    { id: 'free', monthly: 0, annualMonthly: 0, annualTotal: 0 },
+    { id: 'plus', monthly: 50, annualMonthly: 40, annualTotal: 480 },
+    { id: 'expert', monthly: 300, annualMonthly: 240, annualTotal: 2880 },
+    { id: 'business', monthly: 900, annualMonthly: 720, annualTotal: 8640 },
+  ];
+  for (const { id, monthly, annualMonthly, annualTotal } of expected) {
+    const plan = plans.find((item) => item.id === id);
+    expect(plan).toBeDefined();
+    expect(calculatePrice(plan!.price, 'monthly')).toEqual({ monthly, total: monthly });
+    expect(calculatePrice(plan!.price, 'annually')).toEqual({
+      monthly: annualMonthly,
+      total: annualTotal,
+    });
   }
 });
 

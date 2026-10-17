@@ -82,19 +82,19 @@ test('prices retain the digit-reel animation in both directions and rapid switch
   const monthly = page.getByRole('radio', { name: 'Monthly', exact: true });
 
   await annual.check();
-  await expect(page.locator('.price-amount')).toHaveText(['$0', '$32', '$192', '$576']);
+  await expect(page.locator('.price-amount')).toHaveText(['$0', '$40', '$240', '$720']);
   await expect.poll(starts).toBeGreaterThan(0);
   const annualStarts = await starts();
   expect(await page.locator('.price-digit__reel').count()).toBeGreaterThan(0);
 
   await monthly.check();
-  await expect(page.locator('.price-amount')).toHaveText(['$0', '$40', '$240', '$720']);
+  await expect(page.locator('.price-amount')).toHaveText(['$0', '$50', '$300', '$900']);
   await expect.poll(starts).toBeGreaterThan(annualStarts);
 
   await annual.check();
   await monthly.check();
   await annual.check();
-  await expect(page.locator('.price-amount')).toHaveText(['$0', '$32', '$192', '$576']);
+  await expect(page.locator('.price-amount')).toHaveText(['$0', '$40', '$240', '$720']);
 });
 
 test('reduced motion preserves the selected price without a running reel', async ({ page }) => {
@@ -103,7 +103,7 @@ test('reduced motion preserves the selected price without a running reel', async
   await page.locator('#pricing').scrollIntoViewIfNeeded();
 
   await page.getByRole('radio', { name: 'Annually', exact: true }).check();
-  await expect(page.locator('.price-amount')).toHaveText(['$0', '$32', '$192', '$576']);
+  await expect(page.locator('.price-amount')).toHaveText(['$0', '$40', '$240', '$720']);
   expect(await priceAnimations(page)).toBe(0);
 });
 

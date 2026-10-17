@@ -59,7 +59,7 @@
   min-height: 18px;
 }
 .plan-price {
-  font-size: clamp(56px, 31cqi, 70px);
+  font-size: var(--font-size-48);
   font-weight: 400;
   line-height: 1;
   letter-spacing: var(--tracking-compact);
@@ -68,19 +68,24 @@
   gap: var(--space-2);
 }
 .plan-card dl {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--space-4);
   margin-top: auto;
-  font-size: var(--font-size-14);
-  line-height: 1.5;
 }
 .plan-card dl > div {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin-top: var(--space-2);
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+}
+.plan-card dt {
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+  color: var(--text-muted);
 }
 .plan-card dd {
-  font-family: var(--font-mono);
-  color: var(--text-muted);
+  font: 500 var(--font-size-24)/1.25 var(--font-mono);
+  color: var(--text-primary);
   white-space: nowrap;
 }
 .plan-button {
@@ -225,7 +230,7 @@
     gap: var(--space-6);
   }
   .plan-price {
-    font-size: var(--font-size-48);
+    font-size: var(--font-size-40);
   }
   .comparison-action {
     margin-top: var(--space-7);
