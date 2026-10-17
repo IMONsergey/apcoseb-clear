@@ -3,7 +3,7 @@
 }
 .pricing-heading {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-9);
 }
@@ -164,7 +164,7 @@
   }
   .billing {
     align-self: flex-end;
-    margin-top: -16px;
+    margin-top: 0;
   }
 }
 @media (max-width: 1199px) {

@@ -86,6 +86,42 @@ test('distinct use-case evidence is accessible in each research journey', async 
   await expect(page.getByRole('heading', { name: /Follow attributes/ })).toBeVisible();
 });
 
+test('homepage plan prices follow the selected billing period', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('./');
+  await page.locator('#pricing').scrollIntoViewIfNeeded();
+  await expect(page.locator('.plan-grid .price-amount')).toHaveText(['$0', '$50', '$300', '$900']);
+  await page.locator('.billing--desktop').getByRole('radio', { name: 'Annually' }).check();
+  await expect(page.locator('.plan-grid .price-amount')).toHaveText(['$0', '$40', '$240', '$720']);
+  await expect(page.locator('#plan-plus .plan-billing-note')).toContainText('$480');
+  await expect(page.locator('#plan-expert .plan-billing-note')).toContainText('$2,880');
+  await expect(page.locator('#plan-business .plan-billing-note')).toContainText('$8,640');
+});
+
+test('pricing billing switch aligns with the card grid and heading', async ({ page }) => {
+  for (const width of [1200, 1280, 1440, 1856]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('./pricing');
+    await expect(page.locator('.pricing-heading')).toBeVisible();
+    await expect(page.locator('.billing--desktop')).toBeVisible();
+    await expect(page.locator('.plan-grid')).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const bounds = await page.evaluate(() => {
+      const heading = document.querySelector('.pricing-heading')!.getBoundingClientRect();
+      const controls = document.querySelector('.billing--desktop')!.getBoundingClientRect();
+      const cards = document.querySelector('.plan-grid')!.getBoundingClientRect();
+      return {
+        rightEdgeGap: Math.abs(controls.right - cards.right),
+        centerlineGap: Math.abs(
+          controls.top + controls.height / 2 - (heading.top + heading.height / 2),
+        ),
+      };
+    });
+    expect(bounds.rightEdgeGap, `billing right edge at ${width}px`).toBeLessThanOrEqual(2);
+    expect(bounds.centerlineGap, `billing vertical center at ${width}px`).toBeLessThanOrEqual(2);
+  }
+});
+
 test('pricing monthly and annual values follow documented discount', async ({ page }) => {
   await page.goto('./pricing');
   await expect(page.locator('#plan-plus .plan-price')).toContainText('$50');
