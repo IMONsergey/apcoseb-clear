@@ -5,19 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 export default tseslint.config(
   {
-    // Only the six checksum-protected supplied originals are excluded. Adaptations are linted.
-    ignores: [
-      'dist',
-      '.work',
-      'playwright-report',
-      'test-results',
-      'src/visuals/flow/turquoise-flow.js',
-      'src/visuals/waves/ice-sphere-waves.js',
-      'src/visuals/globe/land-data.js',
-      'src/visuals/globe/signal-globe.js',
-      'src/visuals/dots/dot-cascade.js',
-      'src/visuals/shapes/animated-shapes.js',
-    ],
+    ignores: ['dist', '.work', 'playwright-report', 'test-results'],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -32,6 +20,5 @@ export default tseslint.config(
     },
   },
   { files: ['src/visuals/**/*.tsx'], rules: { 'react-hooks/exhaustive-deps': 'off' } },
-  { files: ['src/visuals/**/*.js'], languageOptions: { globals: globals.browser } },
   { files: ['*.js'], languageOptions: { globals: globals.node } },
 );

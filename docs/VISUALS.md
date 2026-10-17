@@ -16,6 +16,6 @@ The rendering modules in `src/visuals/` are integrated through React components 
 
 Rendering components mount near the viewport, pause when appropriate and dispose listeners, observers and controller instances on unmount. Reduced-motion preferences must remain supported. The underlying engines do not manage navigation, forms or page content.
 
-Six original JavaScript rendering/data files are checked against `src/visuals/engine-integrity.json` by `scripts/verify-visuals.ts`. These files are deliberately not converted to TypeScript in order to preserve verified behavior. Adjustments belong in the typed React wrappers and themed adapter modules. If an original engine must change, update the integrity manifest only after a deliberate review and runtime test.
+All rendering and product-demo modules are written in TypeScript. The six original Canvas/SVG rendering and data implementations are checksum-verified by `scripts/verify-visuals.ts` against `src/visuals/engine-integrity.json`. Any changes to these engines require an explicit review, updated checksums and a visual regression test; TypeScript types alone do not establish rendering equivalence.
 
 A GSAP notice is retained in `src/visuals/api/GSAP-NOTICE.txt`. Dependencies and notices must accompany the final source distribution.
