@@ -1,12 +1,4 @@
-/* Localized documents use script-complete system fallbacks and neutral tracking. */
-html[lang='ru'] {
-  --font-sans: Arial, 'Segoe UI', sans-serif;
-  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
-  --tracking-display: 0;
-  --tracking-heading: 0;
-  --tracking-compact: 0;
-  --tracking-label: 0;
-}
+/* Shared language controls and Traditional Chinese font fallbacks. */
 html[lang='zh-Hant'] {
   --font-sans: 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
   --font-mono: 'PingFang TC', 'Noto Sans Mono CJK TC', monospace;

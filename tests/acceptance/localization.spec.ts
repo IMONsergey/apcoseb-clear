@@ -4,6 +4,7 @@ import zhHant from '../../src/i18n/translations/zh-Hant';
 import { openLanguageMenu } from '../helpers/locale';
 import { localizedMetadata } from '../../src/i18n/route-metadata';
 import { localizedRoutes } from '../../src/i18n/localized-routes';
+import { formatTypography } from '../../src/i18n/typography';
 
 const catalogs: Record<'ru' | 'zh-Hant', Record<string, string>> = { ru, 'zh-Hant': zhHant };
 const translated = (locale: keyof typeof catalogs, source: string) =>
@@ -39,8 +40,8 @@ for (const locale of ['ru', 'zh-Hant'] as const) {
     expect(response.ok()).toBe(true);
     const html = await response.text();
     const source = localizedMetadata['/platform/search-investigation'];
-    const title = translated(locale, source.title) + ' | Apcosys';
-    const description = translated(locale, source.description);
+    const title = formatTypography(translated(locale, source.title), locale) + ' | Apcosys';
+    const description = formatTypography(translated(locale, source.description), locale);
     expect(html).toContain(`<html lang="${locale}"`);
     expect(html).toContain(`<title>${escapeHtml(title)}</title>`);
     expect(html).toContain(`content="${escapeHtml(description)}"`);
@@ -52,7 +53,7 @@ for (const locale of ['ru', 'zh-Hant'] as const) {
       '/platform/search-investigation',
     );
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-      translated(locale, 'Every investigation starts with a question.'),
+      formatTypography(translated(locale, 'Every investigation starts with a question.'), locale),
     );
     await expect(page).toHaveTitle(title);
   });

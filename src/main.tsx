@@ -24,6 +24,9 @@ const element = document.getElementById('root');
 if (!element) throw new Error('The application root was not found.');
 const locale = getLocale();
 document.documentElement.lang = locale;
+if (locale === 'ru') {
+  await Promise.all([import('./styles/onest.css'), import('./styles/russian-type.css')]);
+}
 await loadLocale(locale);
 createRoot(element).render(
   <StrictMode>

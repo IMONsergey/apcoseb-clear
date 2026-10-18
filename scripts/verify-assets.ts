@@ -98,6 +98,11 @@ const localFonts = [
   'fonts/ibm-plex-mono-latin-1.woff2',
   'fonts/LICENSE-Instrument-Sans.txt',
   'fonts/LICENSE-IBM-Plex-Mono.txt',
+  'fonts/onest-cyrillic.woff2',
+  'fonts/onest-latin.woff2',
+  'fonts/ibm-plex-mono-cyrillic-400.woff2',
+  'fonts/ibm-plex-mono-cyrillic-500.woff2',
+  'fonts/LICENSE-Onest.txt',
 ];
 for (const filename of localFonts) {
   try {

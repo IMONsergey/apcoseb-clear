@@ -1,0 +1,61 @@
+/* Cyrillic copy uses its own font metrics and responsive type scale. */
+html[lang='ru'] {
+  --font-sans: 'Onest', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Onest', monospace;
+  --tracking-display: -0.025em;
+  --tracking-heading: -0.02em;
+  --tracking-compact: -0.01em;
+  --tracking-label: 0.025em;
+  --type-display-size: clamp(52px, 5.75vw, 82px);
+  --type-page-size: clamp(34px, 3.75vw, 54px);
+  --type-section-size: clamp(36px, 4.75vw, 66px);
+  --type-subsection-size: clamp(26px, 2.75vw, 40px);
+  --type-page-leading: 1.1;
+  --type-section-leading: 1.1;
+}
+
+html[lang='ru'] .site .inner-pages {
+  --type-page-size: clamp(32px, 3.55vw, 50px);
+  --type-section-size: clamp(30px, 3vw, 44px);
+}
+
+html[lang='ru'] .site :is(h1, h2, h3, p) {
+  overflow-wrap: break-word;
+}
+
+html[lang='ru'] .site .hero h1 {
+  margin-inline-start: 0;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+html[lang='ru'] .site .audience-copy h3 {
+  font-size: var(--type-subsection-size);
+  line-height: 1.1;
+}
+
+@media (max-width: 1000px) {
+  html[lang='ru'] .site .inner-pages {
+    --type-page-size: clamp(32px, 4.2vw, 46px);
+  }
+}
+
+@media (max-width: 767px) {
+  html[lang='ru'] {
+    --type-display-size: clamp(40px, 8.6vw, 62px);
+    --type-page-size: clamp(29px, 7vw, 39px);
+    --type-section-size: clamp(30px, 8vw, 42px);
+    --type-subsection-size: clamp(24px, 6vw, 34px);
+  }
+  html[lang='ru'] .site .inner-pages {
+    --type-page-size: clamp(29px, 7.5vw, 40px);
+    --type-section-size: clamp(28px, 7vw, 36px);
+  }
+}
+
+@media (max-width: 375px) {
+  html[lang='ru'] {
+    --type-display-size: clamp(37px, 10.4vw, 44px);
+    --type-section-size: 30px;
+  }
+}
