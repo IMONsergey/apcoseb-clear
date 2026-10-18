@@ -19,7 +19,7 @@ test('missing route shows only a single-screen arcade, a short title and home li
   await expect(game).toHaveAttribute('data-total-bricks', '44');
   await expect(game).toHaveAttribute('data-bricks', '44');
   await expect(board).toBeVisible();
-  expect((await board.screenshot()).byteLength).toBeGreaterThan(8_000);
+  expect((await board.screenshot()).byteLength).toBeGreaterThan(4_000);
   await expect(board).toHaveCSS('border-top-width', '0px');
   await expect(board).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   const metrics = await page.evaluate(() => ({
@@ -30,6 +30,48 @@ test('missing route shows only a single-screen arcade, a short title and home li
   expect(metrics.doc).toBeLessThanOrEqual(1);
   expect(metrics.body).toBeLessThanOrEqual(1);
   expect(metrics.root).toBeLessThanOrEqual(1);
+});
+
+test('the game has no decorative grid and the paddle uses the accent color', async ({ page }) => {
+  await page.goto('./empty-game-canvas');
+  const board = page.locator('.arcade404-board');
+  await expect(board).toBeVisible();
+
+  await expect
+    .poll(async () =>
+      board.evaluate((canvas: HTMLCanvasElement) => {
+        const context = canvas.getContext('2d');
+        if (!context) return false;
+        const sample = (x: number, y: number) =>
+          Array.from(
+            context.getImageData(
+              Math.floor((x * canvas.width) / 960),
+              Math.floor((y * canvas.height) / 620),
+              1,
+              1,
+            ).data,
+          );
+        const blank = [24, 300, 936].map((x) => sample(x, 400));
+        const reference = document.createElement('canvas');
+        reference.width = 1;
+        reference.height = 1;
+        const referenceContext = reference.getContext('2d');
+        if (!referenceContext) return false;
+        referenceContext.fillStyle = getComputedStyle(canvas)
+          .getPropertyValue('--accent-text')
+          .trim();
+        referenceContext.fillRect(0, 0, 1, 1);
+        const accent = Array.from(referenceContext.getImageData(0, 0, 1, 1).data);
+        const paddle = document.querySelector('.arcade404-game');
+        const paddleX = Number(paddle?.getAttribute('data-paddle-x'));
+        const paddleSamples = [16, 62, 108].map((offset) => sample(paddleX + offset, 574));
+        return (
+          blank.every((pixel) => pixel.every((channel) => channel === 0)) &&
+          paddleSamples.every((pixel) => pixel.every((channel, i) => channel === accent[i]))
+        );
+      }),
+    )
+    .toBe(true);
 });
 
 test('returning from a scrolled route keeps the shared header visible on 404', async ({ page }) => {

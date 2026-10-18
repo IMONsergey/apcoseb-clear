@@ -440,23 +440,6 @@ export default function Arcade404() {
     context.setTransform(scaleX, 0, 0, scaleY, 0, 0);
     context.clearRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 
-    context.strokeStyle = palette.border;
-    context.lineWidth = 1;
-    context.globalAlpha = 0.26;
-    for (let x = 24; x < WORLD_WIDTH; x += 48) {
-      context.beginPath();
-      context.moveTo(x, 0);
-      context.lineTo(x, WORLD_HEIGHT);
-      context.stroke();
-    }
-    for (let y = 24; y < WORLD_HEIGHT; y += 40) {
-      context.beginPath();
-      context.moveTo(0, y);
-      context.lineTo(WORLD_WIDTH, y);
-      context.stroke();
-    }
-    context.globalAlpha = 1;
-
     engine.bricks.forEach((brick) => {
       if (!brick.alive) return;
       context.fillStyle = brick.digit === 1 ? palette.accent : palette.text;
@@ -479,10 +462,8 @@ export default function Arcade404() {
       context.globalAlpha = 1;
     }
 
-    context.fillStyle = palette.text;
-    context.fillRect(engine.paddle.x, PADDLE_Y, engine.paddle.width, PADDLE_HEIGHT);
     context.fillStyle = palette.accent;
-    context.fillRect(engine.paddle.x + 8, PADDLE_Y + 4, engine.paddle.width - 16, 3);
+    context.fillRect(engine.paddle.x, PADDLE_Y, engine.paddle.width, PADDLE_HEIGHT);
 
     context.fillStyle = palette.accent;
     engine.balls.forEach((ball) => {
