@@ -12,7 +12,7 @@ import { LanguageBadge } from './ui/LanguageBadge';
 import { ThemeMenu, MobileThemeControl } from './ui/ThemeControl';
 import { Logo } from './ui/Logo';
 import { useScrollHeader } from '../hooks/useScrollHeader';
-export function Header() {
+export function Header({ forceVisible = false }: { forceVisible?: boolean }) {
   const { t } = useLocale();
   const [active, setActive] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -28,7 +28,9 @@ export function Header() {
     });
   };
   useEffect(() => () => cancelAnimationFrame(focusFrame.current), []);
-  const { compact, hidden } = useScrollHeader(ref, !!active || mobileOpen);
+  const state = useScrollHeader(ref, !!active || mobileOpen || forceVisible);
+  const compact = forceVisible ? false : state.compact;
+  const hidden = forceVisible ? false : state.hidden;
   useEffect(() => {
     const desktop = window.matchMedia('(min-width: 1200px)');
     const onChange = () => {

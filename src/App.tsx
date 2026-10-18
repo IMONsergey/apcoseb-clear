@@ -37,14 +37,10 @@ export function App() {
   return (
     <MotionProvider>
       <div id="top" className={notFound ? 'site site--not-found' : 'site'} lang={locale}>
-        {!notFound && (
-          <>
-            <a href="#main" className="skip-link">
-              <LocaleText>{t('Skip to content')}</LocaleText>
-            </a>
-            <Header />
-          </>
-        )}
+        <a href="#main" className="skip-link">
+          <LocaleText>{t('Skip to content')}</LocaleText>
+        </a>
+        <Header forceVisible={notFound} />
         <main id="main" data-route={path}>
           <RouteBoundary key={path}>
             <Suspense

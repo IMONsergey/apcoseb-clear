@@ -70,10 +70,7 @@ type Hud = {
 
 type Palette = {
   card: string;
-  elevated: string;
   text: string;
-  body: string;
-  muted: string;
   accent: string;
   border: string;
 };
@@ -391,10 +388,7 @@ function cssColor(element: HTMLElement, name: string, fallback: string) {
 function readPalette(element: HTMLElement): Palette {
   return {
     card: cssColor(element, '--surface-card', '#ffffff'),
-    elevated: cssColor(element, '--surface-elevated', '#eceef1'),
     text: cssColor(element, '--text-primary', '#121314'),
-    body: cssColor(element, '--color-text-body', '#3a3e43'),
-    muted: cssColor(element, '--text-muted', '#62666b'),
     accent: cssColor(element, '--accent-text', '#037a8f'),
     border: cssColor(element, '--border-subtle', '#dde1e5'),
   };
@@ -446,38 +440,30 @@ export default function Arcade404() {
     context.setTransform(scaleX, 0, 0, scaleY, 0, 0);
     context.clearRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 
-    context.fillStyle = palette.card;
-    context.fillRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-    context.globalAlpha = 0.42;
     context.strokeStyle = palette.border;
     context.lineWidth = 1;
+    context.globalAlpha = 0.26;
     for (let x = 24; x < WORLD_WIDTH; x += 48) {
       context.beginPath();
-      context.moveTo(x, 24);
-      context.lineTo(x, WORLD_HEIGHT - 24);
+      context.moveTo(x, 0);
+      context.lineTo(x, WORLD_HEIGHT);
       context.stroke();
     }
     for (let y = 24; y < WORLD_HEIGHT; y += 40) {
       context.beginPath();
-      context.moveTo(24, y);
-      context.lineTo(WORLD_WIDTH - 24, y);
+      context.moveTo(0, y);
+      context.lineTo(WORLD_WIDTH, y);
       context.stroke();
     }
     context.globalAlpha = 1;
-    context.strokeStyle = palette.border;
-    context.strokeRect(24.5, 24.5, WORLD_WIDTH - 49, WORLD_HEIGHT - 49);
 
     engine.bricks.forEach((brick) => {
       if (!brick.alive) return;
       context.fillStyle = brick.digit === 1 ? palette.accent : palette.text;
-      context.globalAlpha = brick.digit === 1 ? 0.92 : 0.84;
-      context.fillRect(brick.x, brick.y, brick.width, brick.height);
-      context.fillStyle = brick.digit === 1 ? palette.card : palette.elevated;
-      context.globalAlpha = 0.23;
-      context.fillRect(brick.x + 4, brick.y + 4, brick.width - 8, 2);
-      context.strokeStyle = palette.card;
-      context.globalAlpha = 0.2;
-      context.strokeRect(brick.x + 0.5, brick.y + 0.5, brick.width - 1, brick.height - 1);
+      context.globalAlpha = brick.digit === 1 ? 0.94 : 0.85;
+      context.beginPath();
+      context.roundRect(brick.x, brick.y, brick.width, brick.height, 2);
+      context.fill();
     });
     context.globalAlpha = 1;
 
@@ -527,44 +513,6 @@ export default function Arcade404() {
         context.fillRect(particle.x - 2, particle.y - 2, 4, 4);
       });
       context.globalAlpha = 1;
-    }
-
-    if (phaseRef.current !== 'running' || !engine.served) {
-      const state = phaseRef.current;
-      const x = WORLD_WIDTH / 2;
-      const y = 456;
-      context.fillStyle = palette.elevated;
-      context.globalAlpha = 0.92;
-      context.beginPath();
-      context.arc(x, y, 24, 0, Math.PI * 2);
-      context.fill();
-      context.globalAlpha = 1;
-      context.strokeStyle = palette.border;
-      context.lineWidth = 1.5;
-      context.stroke();
-      context.strokeStyle = palette.text;
-      context.fillStyle = palette.text;
-      context.lineWidth = 2.5;
-      if (state === 'paused') {
-        context.fillRect(x - 7, y - 9, 5, 18);
-        context.fillRect(x + 3, y - 9, 5, 18);
-      } else if (state === 'idle' || (state === 'running' && !engine.served)) {
-        context.beginPath();
-        context.moveTo(x - 5, y - 10);
-        context.lineTo(x + 10, y);
-        context.lineTo(x - 5, y + 10);
-        context.closePath();
-        context.fill();
-      } else {
-        context.beginPath();
-        context.arc(x, y, 10, -0.75 * Math.PI, 0.85 * Math.PI);
-        context.stroke();
-        context.beginPath();
-        context.moveTo(x - 9, y - 5);
-        context.lineTo(x - 13, y - 14);
-        context.lineTo(x - 3, y - 13);
-        context.stroke();
-      }
     }
   }, []);
 
@@ -741,6 +689,7 @@ export default function Arcade404() {
 
   const onPointerMove = (event: ReactPointerEvent<HTMLCanvasElement>) => {
     if (event.pointerType === 'mouse' && activePointerRef.current === null) {
+      if (phaseRef.current === 'idle') startNewGame();
       moveFromPointer(event.clientX);
       return;
     }

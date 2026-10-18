@@ -5,11 +5,11 @@ test('missing route shows only a single-screen arcade, a short title and home li
 }) => {
   await page.goto('./missing-arkanoid-route');
   await expect(page.locator('main')).toHaveAttribute('data-route', '/404');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('404/Page not found');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Page not found');
   await expect(page.getByRole('link', { name: 'Return to home' })).toHaveAttribute('href', /\/$/);
-  await expect(
-    page.locator('.site-header, .site-footer, .arcade404-hud, .arcade404-guide'),
-  ).toHaveCount(0);
+  await expect(page.locator('.site-header')).toBeVisible();
+  await expect(page.locator('.site-footer, .arcade404-hud, .arcade404-guide')).toHaveCount(0);
+  await expect(page.locator('.arcade404-home.double-button .double-button__icon')).toBeVisible();
   await expect(page.locator('.arcade404-header h1')).toBeVisible();
   await expect(page.locator('.arcade404-home')).toBeVisible();
   const game = page.locator('.arcade404-game');
@@ -20,6 +20,8 @@ test('missing route shows only a single-screen arcade, a short title and home li
   await expect(game).toHaveAttribute('data-bricks', '44');
   await expect(board).toBeVisible();
   expect((await board.screenshot()).byteLength).toBeGreaterThan(8_000);
+  await expect(board).toHaveCSS('border-top-width', '0px');
+  await expect(board).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   const metrics = await page.evaluate(() => ({
     doc: document.documentElement.scrollHeight - document.documentElement.clientHeight,
     body: document.body.scrollHeight - innerHeight,
@@ -28,6 +30,22 @@ test('missing route shows only a single-screen arcade, a short title and home li
   expect(metrics.doc).toBeLessThanOrEqual(1);
   expect(metrics.body).toBeLessThanOrEqual(1);
   expect(metrics.root).toBeLessThanOrEqual(1);
+});
+
+test('returning from a scrolled route keeps the shared header visible on 404', async ({ page }) => {
+  await page.goto('./pricing');
+  await page.evaluate(() => window.scrollTo(0, 900));
+  await page.evaluate(() => {
+    const link = document.createElement('a');
+    link.href = '/apcoseb-clear/missing-after-scroll';
+    document.querySelector('main')?.append(link);
+    link.click();
+    link.remove();
+  });
+  await expect(page.locator('main')).toHaveAttribute('data-route', '/404');
+  await expect(page.locator('.site-header')).toHaveAttribute('data-hidden', 'false');
+  await expect(page.locator('.site-header')).not.toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('.arcade404-board')).toBeVisible();
 });
 
 test('keyboard, pointer and silent restart are usable directly on the game board', async ({

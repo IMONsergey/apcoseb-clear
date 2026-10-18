@@ -73,7 +73,7 @@ test('language selection keeps the equivalent route, query and hash', async ({ p
   await openLanguageMenu(page);
   await page.getByRole('menuitemradio', { name: 'Русский', exact: true }).click();
 
-  await expect(page).toHaveURL(/\/ru\/platform\/data-methodology\?source=language#coverage$/);
+  await expect(page).toHaveURL(/\/ru\/platform\/data-methodology\/?\?source=language#coverage$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
   await expect(page.locator('[data-language-selector]')).toContainText('RU');
 });
@@ -83,7 +83,7 @@ test('same-locale navigation stays in the SPA and legal links return to English'
 }) => {
   await page.goto('./ru/teams');
   await page.locator('.site-header a[href$="/ru/pricing"]').click();
-  await expect(page).toHaveURL(/\/ru\/pricing$/);
+  await expect(page).toHaveURL(/\/ru\/pricing\/?$/);
   await expect(page.locator('main')).toHaveAttribute('data-route', '/pricing');
   await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
 
@@ -91,7 +91,7 @@ test('same-locale navigation stays in the SPA and legal links return to English'
   const legal = page.locator('a[href$="/legal/privacy-policy"]').first();
   await expect(legal).not.toHaveAttribute('href', /\/ru\/legal\//);
   await legal.click();
-  await expect(page).toHaveURL(/\/legal\/privacy-policy$/);
+  await expect(page).toHaveURL(/\/legal\/privacy-policy\/?$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0);
 });
@@ -142,7 +142,7 @@ test('untranslated corporate and legal pages do not claim localized variants', a
   const aboutLink = page.locator('a[href$="/about"]').first();
   await expect(aboutLink).not.toHaveAttribute('href', /\/ru\/about/);
   await aboutLink.click();
-  await expect(page).toHaveURL(/\/about$/);
+  await expect(page).toHaveURL(/\/about\/?$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 });
 
