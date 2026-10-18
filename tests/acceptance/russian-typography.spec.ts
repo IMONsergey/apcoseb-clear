@@ -53,6 +53,25 @@ for (const width of [320, 375, 390, 768, 1024, 1440, 1920]) {
       }));
       expect(layout.documentOverflow, `${route} at ${width}px`).toBeLessThanOrEqual(1);
       expect(layout.textOverflows, `${route} at ${width}px`).toEqual([]);
+
+      if (route === '/') {
+        const clippedCarouselWords = await page.locator('.step-copy h3').evaluateAll((headings) => {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          if (!context) throw new Error('Canvas text measurement is unavailable');
+          return headings.flatMap((heading) => {
+            const style = getComputedStyle(heading);
+            context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+            const maxWord = Math.max(
+              ...((heading.textContent ?? '').match(/\S+/g) ?? []).map(
+                (word) => context.measureText(word).width,
+              ),
+            );
+            return maxWord > heading.clientWidth + 1 ? [heading.textContent] : [];
+          });
+        });
+        expect(clippedCarouselWords, `Carousel titles at ${width}px`).toEqual([]);
+      }
     }
   });
 }

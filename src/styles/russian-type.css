@@ -29,6 +29,14 @@ html[lang='ru'] .site .hero h1 {
   text-wrap: balance;
 }
 
+/* Carousel cards have a narrower text measure than page sections. */
+html[lang='ru'] .site .step-copy h3 {
+  font-size: var(--type-subsection-size);
+  line-height: 1.1;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
 html[lang='ru'] .site .audience-copy h3 {
   font-size: var(--type-subsection-size);
   line-height: 1.1;
