@@ -3,8 +3,10 @@ import { linkTo } from '../../components/layout/pageLinks';
 import { supportEmail } from '../../config/site';
 import { PageFrame } from '../../components/layout/PageFrame';
 import { EditorialSection, ReadingRows } from '../../components/layout/PageSections';
+import { useLocale } from '../../i18n/context';
 
 export default function ScanningPage() {
+  const { t } = useLocale();
   const inquiry =
     'mailto:' + supportEmail + '?subject=' + encodeURIComponent('Apcosys scanning inquiry');
   const exclusion =
@@ -14,7 +16,16 @@ export default function ScanningPage() {
     encodeURIComponent('Apcosys network exclusion request') +
     '&body=' +
     encodeURIComponent(
-      'Networks / IP ranges:\n\nMy role in managing these networks:\n\nContact details:\n\nRelevant dates and context:\n',
+      [
+        'Networks / IP ranges:',
+        '',
+        'My role in managing these networks:',
+        '',
+        'Contact details:',
+        '',
+        'Relevant dates and context:',
+        '',
+      ].join('\n'),
     );
   return (
     <PageFrame
@@ -104,7 +115,7 @@ export default function ScanningPage() {
             </Text>
             <Text as="p">Do not send passwords, API keys or unrelated customer data.</Text>
             <a className="stage-text-link" href={inquiry}>
-              Email {supportEmail}
+              {t('Email {email}', { email: supportEmail })}
             </a>
           </aside>
         </div>
@@ -132,7 +143,7 @@ export default function ScanningPage() {
           ]}
         />
         <a className="stage-text-link" href={exclusion}>
-          Prepare a network exclusion request
+          {t('Prepare a network exclusion request')}
         </a>
       </EditorialSection>
     </PageFrame>

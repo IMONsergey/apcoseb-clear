@@ -7,16 +7,22 @@ import { Icon } from '../ui/Icon';
 import { Visual } from '../visuals/Visual';
 import { ApiIllustration } from '../visuals/ApiIllustration';
 export function ApiSection() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   return (
     <section className="api-section" id="api" aria-labelledby="api-title">
       <Visual kind="dots" direction="right-to-left" budget="supporting" themeOverride="light" />
       <div className="container api-grid">
         <div className="api-copy">
           <h2 id="api-title">
-            <LocaleText>{t('Bring Apcosys')}</LocaleText>
-            <br className="api-break" /> <LocaleText>{t('data into your')}</LocaleText>
-            <br className="api-break" /> <LocaleText>{t('own tools.')}</LocaleText>
+            {locale === 'en' ? (
+              <>
+                <LocaleText>{t('Bring Apcosys')}</LocaleText>
+                <br className="api-break" /> <LocaleText>{t('data into your')}</LocaleText>
+                <br className="api-break" /> <LocaleText>{t('own tools.')}</LocaleText>
+              </>
+            ) : (
+              <LocaleText>{t('Bring Apcosys data into your own tools.')}</LocaleText>
+            )}
           </h2>
           <Icon name="focus" width="25" height="25" />
           <p>

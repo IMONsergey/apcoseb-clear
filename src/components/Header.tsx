@@ -143,7 +143,7 @@ export function Header() {
               </div>
             ))}
             <a className="nav-link nav-trigger" href={siteHref('/teams')}>
-              For Teams
+              <LocaleText>{t('For Teams')}</LocaleText>
             </a>
             <a className="nav-link nav-trigger" href={siteHref('/pricing')}>
               <LocaleText>{t('Pricing')}</LocaleText>
@@ -209,7 +209,7 @@ export function Header() {
             href={siteHref('/teams')}
             onClick={() => setMobileOpen(false)}
           >
-            For Teams <Icon name="arrow" />
+            <LocaleText>{t('For Teams')}</LocaleText> <Icon name="arrow" />
           </a>
           <a
             className="mobile-pricing"

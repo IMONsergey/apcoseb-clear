@@ -6,12 +6,12 @@
   display: grid;
   grid-template-columns: var(--reading-columns);
   gap: var(--layout-gap);
-  align-items: center;
+  align-items: end;
   margin-bottom: var(--space-8);
 }
 .site .inner-pages .pricing-heading .billing {
   justify-self: end;
-  align-self: center;
+  align-self: end;
   margin: 0;
 }
 .site .inner-pages .pricing-heading .billing > p {

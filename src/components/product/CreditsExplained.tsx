@@ -1,5 +1,8 @@
 import { Text } from '../ui/Text';
+import { LocaleText } from '../../i18n/LocaleText';
+import { useLocale } from '../../i18n/context';
 export function CreditsExplained() {
+  const { t } = useLocale();
   return (
     <section
       id="usage-guide"
@@ -75,7 +78,7 @@ export function CreditsExplained() {
               </div>
             </article>
             <a className="stage-text-link" href="#search-token-packages">
-              See Search Token packages
+              <LocaleText>{t('See Search Token packages')}</LocaleText>
             </a>
           </div>
         </div>

@@ -3,6 +3,7 @@ import type { ThemedAsset } from '../../content/assets';
 import { useEffect, useRef } from 'react';
 import { useMotion } from '../../hooks/useMotion';
 import { ThemedArtwork } from '../ui/ThemedArtwork';
+import { useLocale } from '../../i18n/context';
 
 export type ArtworkKey =
   | 'search'
@@ -134,12 +135,13 @@ function SignalTrace() {
 }
 
 export function PageArtwork({ kind }: { kind: ArtworkKey }) {
+  const { t } = useLocale();
   const asset = artwork[kind];
   return (
     <figure className={'page-artwork page-artwork--' + kind}>
       <ThemedArtwork
         asset={asset.file}
-        alt={asset.alt}
+        alt={t(asset.alt)}
         width="960"
         height="640"
         decoding="async"

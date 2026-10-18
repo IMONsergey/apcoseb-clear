@@ -1,5 +1,6 @@
 import { useId, useLayoutEffect, useRef, type KeyboardEvent } from 'react';
 import { useTheme, type ThemeMode } from '../../theme/ThemeProvider';
+import { useLocale } from '../../i18n/context';
 import { Icon } from './Icon';
 
 const options: Array<{ value: ThemeMode; label: string }> = [
@@ -10,12 +11,13 @@ const options: Array<{ value: ThemeMode; label: string }> = [
 
 function ThemeOptions({ compact = false, onSelect }: { compact?: boolean; onSelect?: () => void }) {
   const { mode, setMode } = useTheme();
+  const { t } = useLocale();
   const name = useId();
   return (
     <div
       className={compact ? 'theme-segmented' : 'theme-menu-options'}
       role={compact ? 'radiogroup' : 'group'}
-      aria-label="Appearance"
+      aria-label={t('Appearance')}
     >
       {options.map((option) =>
         compact ? (
@@ -27,7 +29,7 @@ function ThemeOptions({ compact = false, onSelect }: { compact?: boolean; onSele
               checked={mode === option.value}
               onChange={() => setMode(option.value)}
             />
-            <span>{option.label}</span>
+            <span>{t(option.label)}</span>
             {mode === option.value && (
               <span className="theme-check" aria-hidden="true">
                 <svg viewBox="0 0 18 18" fill="none" aria-hidden="true" focusable="false">
@@ -55,7 +57,7 @@ function ThemeOptions({ compact = false, onSelect }: { compact?: boolean; onSele
               onSelect?.();
             }}
           >
-            <span>{option.label}</span>
+            <span>{t(option.label)}</span>
             {mode === option.value && (
               <span className="theme-check" aria-hidden="true">
                 <svg viewBox="0 0 18 18" fill="none" aria-hidden="true" focusable="false">
@@ -83,6 +85,7 @@ export function ThemeMenu({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const { t } = useLocale();
   const id = useId();
   const trigger = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
@@ -150,7 +153,7 @@ export function ThemeMenu({
         ref={trigger}
         type="button"
         className="icon-button theme-trigger"
-        aria-label="Appearance"
+        aria-label={t('Appearance')}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={id}
@@ -169,13 +172,13 @@ export function ThemeMenu({
         id={id}
         className="nav-panel theme-panel"
         role="menu"
-        aria-label="Appearance"
+        aria-label={t('Appearance')}
         data-open={open}
         aria-hidden={!open}
         inert={!open}
         onKeyDown={onKeyDown}
       >
-        <p className="eyebrow">APPEARANCE</p>
+        <p className="eyebrow">{t('APPEARANCE')}</p>
         <ThemeOptions onSelect={close} />
       </div>
     </div>
@@ -183,9 +186,10 @@ export function ThemeMenu({
 }
 
 export function MobileThemeControl() {
+  const { t } = useLocale();
   return (
     <div className="mobile-theme-control">
-      <p className="eyebrow">APPEARANCE</p>
+      <p className="eyebrow">{t('APPEARANCE')}</p>
       <ThemeOptions compact />
     </div>
   );

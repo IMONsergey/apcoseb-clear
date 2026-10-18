@@ -2,7 +2,10 @@ import { waitForRouteReady } from './routeReadiness';
 import { startTransition, useEffect, useState } from 'react';
 import { prepareRoute } from './routeModules';
 import { siteRoutes } from '../content/routes';
-import { siteBase as base, rootedPath, siteHref, isSitePath, getRoutePath } from './paths';
+import { translate, type Locale } from '../i18n/messages';
+import { hasLocalizedCopy } from '../i18n/localized-routes';
+import { localizedMetadataSource } from '../i18n/route-metadata';
+import { getRoutePath, isRouteAvailable, localeHref, resolveSiteLocation } from './paths';
 
 function resolveScroll({ smooth = false, focus = false } = {}) {
   let targetId: string;
@@ -25,7 +28,7 @@ function resolveScroll({ smooth = false, focus = false } = {}) {
 }
 
 /** Preserve scroll state per history entry, including lazy route transitions. */
-export function useSiteRoute() {
+export function useSiteRoute(locale: Locale) {
   const [path, setPath] = useState(getRoutePath);
   useEffect(() => {
     const previousSetting = history.scrollRestoration;
@@ -124,13 +127,15 @@ export function useSiteRoute() {
       )
         return null;
       const url = new URL(anchor.href, location.href);
+      if (url.origin !== location.origin) return null;
+      const resolved = resolveSiteLocation(url.pathname);
       if (
-        url.origin !== location.origin ||
-        (base && url.pathname !== base && !url.pathname.startsWith(base + '/'))
+        !resolved ||
+        resolved.locale !== locale ||
+        !isRouteAvailable(resolved.routePath, resolved.locale)
       )
         return null;
-      const targetPath = rootedPath(url.pathname.slice(base.length));
-      return isSitePath(targetPath) ? { url, targetPath } : null;
+      return { url, targetPath: resolved.routePath };
     };
     const warm = (event: Event) => {
       const anchor = internalAnchor(event.target);
@@ -178,16 +183,20 @@ export function useSiteRoute() {
       document.removeEventListener('pointerover', warm);
       document.removeEventListener('focusin', warm);
     };
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     const route = siteRoutes.find((item) => item.path === path);
+    const localized = locale === 'en' ? null : localizedMetadataSource(path);
     const title = route
-      ? path === '/'
+      ? path === '/' && locale === 'en'
         ? 'Apcosys — Start with a query.'
-        : route.title + ' | Apcosys'
-      : 'Page not found | Apcosys';
-    const description = route?.description || 'Find what you need on Apcosys.';
+        : (localized ? translate(locale, localized.title) : route.title) + ' | Apcosys'
+      : translate(locale, 'Page not found') + ' | Apcosys';
+    const description = localized
+      ? translate(locale, localized.description)
+      : (route?.description ?? 'Find what you need on Apcosys.');
+    document.documentElement.lang = locale;
     document.title = title;
     const meta = (selector: string, value: string) => {
       document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', value);
@@ -201,7 +210,9 @@ export function useSiteRoute() {
       canonical.rel = 'canonical';
       document.head.append(canonical);
     }
-    canonical.href = location.origin + siteHref(path === '/404' ? '/' : path);
+    const canonicalPath =
+      path === '/404' ? location.pathname : (localeHref(path, locale) ?? location.pathname);
+    canonical.href = location.origin + canonicalPath;
     let ogUrl = document.head.querySelector<HTMLMetaElement>('meta[property="og:url"]');
     if (!ogUrl) {
       ogUrl = document.createElement('meta');
@@ -209,6 +220,23 @@ export function useSiteRoute() {
       document.head.append(ogUrl);
     }
     ogUrl.content = canonical.href;
-  }, [path]);
+    document
+      .querySelectorAll<HTMLLinkElement>('link[rel="alternate"][data-apco-hreflang]')
+      .forEach((link) => link.remove());
+    if (hasLocalizedCopy(path)) {
+      const alternates: readonly (Locale | 'x-default')[] = ['en', 'ru', 'zh-Hant', 'x-default'];
+      for (const alternateLocale of alternates) {
+        const targetLocale = alternateLocale === 'x-default' ? 'en' : alternateLocale;
+        const href = localeHref(path, targetLocale);
+        if (!href) continue;
+        const link = document.createElement('link');
+        link.rel = 'alternate';
+        link.hreflang = alternateLocale;
+        link.href = location.origin + href;
+        link.dataset.apcoHreflang = '';
+        document.head.append(link);
+      }
+    }
+  }, [locale, path]);
   return path;
 }

@@ -3,7 +3,7 @@ import { useLocale } from '../../i18n/context';
 import { DoubleButton } from '../ui/DoubleButton';
 import { productUrl } from '../../config/site';
 export function Hero() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="container">
@@ -17,15 +17,25 @@ export function Hero() {
         </h1>
         <div className="hero-bottom">
           <p className="lead">
-            <LocaleText>
-              {t(
-                'Search internet-facing hosts by IP, domain, port, service or technology, see what runs on them and',
-              )}
-            </LocaleText>
-            {'\u00a0'}
-            <mark>
-              <LocaleText>{t('refine your search as you go.')}</LocaleText>
-            </mark>
+            {locale === 'en' ? (
+              <>
+                <LocaleText>
+                  {t(
+                    'Search internet-facing hosts by IP, domain, port, service or technology, see what runs on them and',
+                  )}
+                </LocaleText>
+                {'\u00a0'}
+                <mark>
+                  <LocaleText>{t('refine your search as you go.')}</LocaleText>
+                </mark>
+              </>
+            ) : (
+              <LocaleText>
+                {t(
+                  'Search internet-facing hosts by IP, domain, port, service or technology, see what runs on them and refine your search as you go.',
+                )}
+              </LocaleText>
+            )}
           </p>
           <div className="hero-actions">
             <DoubleButton href={`${productUrl}/search`}>

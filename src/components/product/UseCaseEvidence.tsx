@@ -2,6 +2,8 @@ import { Text } from '../ui/Text';
 import { CaseFragment } from './CompactFragments';
 import type { EvidenceScenario } from './ProductEvidence';
 import { productUrl } from '../../config/site';
+import { LocaleText } from '../../i18n/LocaleText';
+import { useLocale } from '../../i18n/context';
 
 type Journey = {
   label: string;
@@ -13,6 +15,7 @@ type Journey = {
   result: string;
   next: string;
   caveat: string;
+  caveatValues?: Record<string, string | number>;
 };
 
 const journeys: Record<'scope' | 'technology' | 'indicator', Journey> = {
@@ -54,11 +57,13 @@ const journeys: Record<'scope' | 'technology' | 'indicator', Journey> = {
     result: 'Review the host view, available services, technologies and observation date.',
     next: 'Investigate a relevant service or attribute while keeping attribution unproven.',
     caveat:
-      '198.51.100.24 is a reserved documentation address. This is a conceptual workflow, not an incident or attribution finding.',
+      '{address} is a reserved documentation address. This is a conceptual workflow, not an incident or attribution finding.',
+    caveatValues: { address: '198.51.100.24' },
   },
 };
 
 function EvidenceJourney({ kind }: { kind: keyof typeof journeys }) {
+  const { t } = useLocale();
   const item = journeys[kind];
   const stages = [
     [
@@ -109,10 +114,15 @@ function EvidenceJourney({ kind }: { kind: keyof typeof journeys }) {
           <Text as="p">{item.introduction}</Text>
         </div>
         <div className="stage-case-experience">
-          <div className="stage-example-journey" aria-label="Illustrative investigation stages">
+          <div
+            className="stage-example-journey"
+            aria-label={t('Illustrative investigation stages')}
+          >
             {stages.map(([number, title, description]) => (
               <div key={number}>
-                <span>{title}</span>
+                <span>
+                  <LocaleText>{t(title)}</LocaleText>
+                </span>
                 <Text as="p">{description}</Text>
               </div>
             ))}
@@ -120,13 +130,17 @@ function EvidenceJourney({ kind }: { kind: keyof typeof journeys }) {
           <CaseFragment kind={kind} />
         </div>
         <div className="stage-example-footer">
-          <Text as="p">{item.caveat}</Text>
+          <p>{t(item.caveat, item.caveatValues)}</p>
           <a href={productUrl + '/search'}>
-            {kind === 'scope'
-              ? 'Search your scope'
-              : kind === 'technology'
-                ? 'Search by technology'
-                : 'Look up an IP or domain'}{' '}
+            <LocaleText>
+              {t(
+                kind === 'scope'
+                  ? 'Search your scope'
+                  : kind === 'technology'
+                    ? 'Search by technology'
+                    : 'Look up an IP or domain',
+              )}
+            </LocaleText>{' '}
           </a>
         </div>
       </div>

@@ -1,13 +1,8 @@
 import { useEffect, useId, useRef, type KeyboardEvent } from 'react';
 import { Icon } from './Icon';
-
-const languages = [
-  { value: 'en', label: 'English', disabled: false },
-  { value: 'ru', label: '\u0420\u0443\u0441\u0441\u043a\u0438\u0439', disabled: true },
-  { value: 'zh', label: '\u4e2d\u6587', disabled: true },
-] as const;
-
-type LanguageCode = (typeof languages)[number]['value'];
+import { languageOptions, type LanguageCode } from '../../i18n/language-options';
+import { useLocale } from '../../i18n/context';
+import { getRoutePath, localeHref } from '../../app/paths';
 
 function focusInPlace(node?: HTMLElement) {
   if (!node) return;
@@ -49,10 +44,12 @@ function LanguageFlag({ locale }: { locale: LanguageCode }) {
           </>
         ) : (
           <>
-            <path fill="#de2910" d="M0 0h24v24H0z" />
+            <circle cx="12" cy="12" r="11" fill="#eef6f7" stroke="#087f92" strokeWidth="2" />
             <path
-              fill="#ffde00"
-              d="m6.2 4.1.9 2.1 2.3.2-1.8 1.5.6 2.2-2-1.2-2 1.2.6-2.2-1.8-1.5 2.3-.2z"
+              fill="none"
+              stroke="#087f92"
+              strokeWidth="1.5"
+              d="M1.8 12h20.4M12 1.5c3 3.1 4.3 6.6 4.3 10.5S15 19.4 12 22.5C9 19.4 7.7 15.9 7.7 12S9 4.6 12 1.5Z"
             />
           </>
         )}
@@ -68,6 +65,7 @@ export function LanguageBadge({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const { locale, t } = useLocale();
   const id = useId();
   const panelId = id + '-languages';
   const trigger = useRef<HTMLButtonElement>(null);
@@ -84,19 +82,27 @@ export function LanguageBadge({
     onOpenChange(false);
     focusInPlace(trigger.current ?? undefined);
   };
-  const focusEnglish = () => {
+  const focusOption = (position: 'current' | 'first' | 'last' = 'current') => {
     cancelFocus();
     focusFrame.current = requestAnimationFrame(() => {
       focusFrame.current = 0;
-      const option = panel.current?.querySelector<HTMLButtonElement>('button:not(:disabled)');
+      const options = Array.from(
+        panel.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') ?? [],
+      );
+      const option =
+        position === 'first'
+          ? options[0]
+          : position === 'last'
+            ? options.at(-1)
+            : (options.find((item) => item.getAttribute('aria-checked') === 'true') ?? options[0]);
       if (option && !option.closest('[inert]')) focusInPlace(option);
     });
   };
   const openMenu = (fromKeyboard = false) => {
     onOpenChange(true);
-    // Pointer activation should not paint a keyboard focus ring on English.
+    // Pointer activation should not paint a keyboard focus ring on the selected locale.
     // Keyboard and assistive-technology activation still enter the menu.
-    if (fromKeyboard) focusEnglish();
+    if (fromKeyboard) focusOption();
   };
   const onMenuKey = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
@@ -105,9 +111,27 @@ export function LanguageBadge({
       close();
     } else if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
       event.preventDefault();
-      focusEnglish();
+      const options = Array.from(
+        panel.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') ?? [],
+      );
+      if (event.key === 'Home' || event.key === 'End') {
+        focusOption(event.key === 'Home' ? 'first' : 'last');
+        return;
+      }
+      const focused = options.findIndex((option) => option === document.activeElement);
+      const next =
+        focused < 0
+          ? options.findIndex((option) => option.getAttribute('aria-checked') === 'true')
+          : (focused + (event.key === 'ArrowDown' ? 1 : -1) + options.length) % options.length;
+      focusInPlace(options[Math.max(next, 0)]);
     }
   };
+  const routePath = getRoutePath();
+  const suffix = location.search + location.hash;
+  const optionHref = (language: LanguageCode) =>
+    routePath === '/404' ? null : localeHref(routePath + suffix, language);
+  const shortLabel: Record<LanguageCode, string> = { en: 'EN', ru: 'RU', 'zh-Hant': '繁中' };
+  const selected = languageOptions.find((language) => language.value === locale)!;
 
   return (
     <div
@@ -124,7 +148,7 @@ export function LanguageBadge({
         type="button"
         className="language"
         data-language-selector=""
-        aria-label="EN — Language"
+        aria-label={`${selected.label} — ${t('Language')}`}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={panelId}
@@ -146,9 +170,9 @@ export function LanguageBadge({
           }
         }}
       >
-        <LanguageFlag locale="en" />
-        <span className="locale-text" lang="en">
-          EN
+        <LanguageFlag locale={locale} />
+        <span className="locale-text" lang={locale}>
+          {shortLabel[locale]}
         </span>
         <Icon name="chevron" />
       </button>
@@ -157,37 +181,39 @@ export function LanguageBadge({
         ref={panel}
         id={panelId}
         role="menu"
-        aria-label="Language"
+        aria-label={t('Language')}
         className="nav-panel language-panel"
         data-open={open}
         aria-hidden={!open}
         inert={!open}
         onKeyDown={onMenuKey}
       >
-        {languages.map((language) => (
-          <button
-            key={language.value}
-            type="button"
-            role="menuitemradio"
-            aria-checked={language.value === 'en'}
-            aria-disabled={language.disabled || undefined}
-            disabled={language.disabled}
-            tabIndex={open && !language.disabled ? 0 : -1}
-            lang={language.value === 'zh' ? 'zh-Hans' : language.value}
-            onMouseDown={(event) => event.preventDefault()}
-            onClick={() => {
-              if (!language.disabled) close();
-            }}
-          >
-            <LanguageFlag locale={language.value} />
-            <span>{language.label}</span>
-            {language.disabled && (
-              <span className="language-soon" aria-hidden="true">
-                SOON
-              </span>
-            )}
-          </button>
-        ))}
+        {languageOptions.map((language) => {
+          const href = language.available ? optionHref(language.value) : null;
+          return (
+            <button
+              key={language.value}
+              type="button"
+              role="menuitemradio"
+              aria-checked={language.value === locale}
+              aria-disabled={!href || undefined}
+              disabled={!href}
+              tabIndex={open && href && language.value === locale ? 0 : -1}
+              lang={language.value}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => {
+                if (!href || language.value === locale) {
+                  close();
+                  return;
+                }
+                location.assign(href);
+              }}
+            >
+              <LanguageFlag locale={language.value} />
+              <span>{language.label}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

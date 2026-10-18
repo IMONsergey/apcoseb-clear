@@ -15,6 +15,7 @@
 | [Content](CONTENT.md)           | Product copy and owner approval inputs                              |
 
 - [Style ownership and reuse](STYLES.md)
+- [Localization and translation release gates](LOCALIZATION.md)
 
 ## Legal source files
 

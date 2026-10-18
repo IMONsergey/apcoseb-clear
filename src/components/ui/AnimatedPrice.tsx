@@ -1,16 +1,29 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
-import { formatPrice } from '../../lib/pricing';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useMotion } from '../../hooks/useMotion';
+import { useLocale } from '../../i18n/context';
 
 /** Digit reels run on the compositor; the actual accessible price updates immediately. */
 export function AnimatedPrice({ amount }: { amount: number }) {
-  const label = formatPrice(amount);
+  const { locale } = useLocale();
+  const numberLocale = locale === 'en' ? 'en-US' : locale;
+  const currency = useMemo(
+    () =>
+      new Intl.NumberFormat(numberLocale, {
+        style: 'currency',
+        currency: 'USD',
+        currencyDisplay: 'narrowSymbol',
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 0,
+      }),
+    [numberLocale],
+  );
+  const label = currency.format(amount);
   const { reduced } = useMotion();
   const root = useRef<HTMLSpanElement>(null);
   const previous = useRef(amount);
   const animations = useRef<Animation[]>([]);
   useLayoutEffect(() => {
-    const from = formatPrice(previous.current);
+    const from = currency.format(previous.current);
     const direction = amount > previous.current ? 1 : -1;
     const changed = amount !== previous.current;
     previous.current = amount;
@@ -60,7 +73,7 @@ export function AnimatedPrice({ amount }: { amount: number }) {
       if (!nextAnimations.includes(animation)) animation.cancel();
     });
     animations.current = nextAnimations;
-  }, [amount, reduced]);
+  }, [amount, currency, reduced]);
   useEffect(() => () => animations.current.forEach((animation) => animation.cancel()), []);
   return (
     <span className="price-amount" ref={root}>

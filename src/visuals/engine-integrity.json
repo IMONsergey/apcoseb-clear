@@ -22,5 +22,17 @@
   {
     "path": "src/visuals/shapes/animated-shapes.ts",
     "sha256": "1de13b2221e569014dace0c9eb4611d41d0dd625efe67d293e3a71ac0076600c"
+  },
+  {
+    "path": "src/visuals/flow/turquoise-flow-themed.ts",
+    "sha256": "99a43a20db7015b9c1c5abfce06267fe7070b1e6a9b54b4afe2b7e2b8cbdcf64"
+  },
+  {
+    "path": "src/visuals/waves/ice-sphere-waves-themed.ts",
+    "sha256": "cad632b325e1fb67739a426ab90bca0112e483c1d9d06234d74dcfae72f9cac8"
+  },
+  {
+    "path": "src/visuals/dots/dot-cascade-themed.ts",
+    "sha256": "c42d58a5c0fe7abe950beb75df07d55e5058b88c9cd43cf0f8b9a6fb865c51ac"
   }
 ]

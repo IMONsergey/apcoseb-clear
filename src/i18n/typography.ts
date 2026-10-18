@@ -1,5 +1,7 @@
 import Typograf from 'typograf';
 
+type TypographyLocale = 'en' | 'ru' | 'zh-Hant';
+
 const engine = new Typograf({ locale: 'en-US' });
 engine.disableRule('*');
 engine.enableRule([
@@ -19,8 +21,19 @@ engine.disableRule([
 ]);
 
 const cache = new Map<string, string>();
+let activeLocale: TypographyLocale = 'en';
+let activeMessages: Readonly<Record<string, string>> = {};
 
-export function typograph(text: string): string {
+export function setTypographyLocale(
+  locale: TypographyLocale,
+  messages: Readonly<Record<string, string>> = {},
+) {
+  activeLocale = locale;
+  activeMessages = messages;
+}
+
+export function formatTypography(text: string, locale: TypographyLocale): string {
+  if (locale !== 'en') return text;
   let result = cache.get(text);
   if (result === undefined) {
     result = engine.execute(text);
@@ -28,6 +41,10 @@ export function typograph(text: string): string {
     cache.set(result, result);
   }
   return result;
+}
+
+export function typograph(text: string): string {
+  return formatTypography(activeMessages[text] ?? text, activeLocale);
 }
 
 export function noBreakNumber(value: string): string {

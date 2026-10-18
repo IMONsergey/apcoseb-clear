@@ -2,7 +2,9 @@ import { Text } from '../ui/Text';
 import { useEffect, useRef, useState } from 'react';
 import { MorphPanel } from '../ui/MorphPanel';
 import { apiRequestExample, apiResponseExample } from '../../content/product-demo';
+import { useLocale } from '../../i18n/context';
 export function ApiExample({ compact = false }: { compact?: boolean }) {
+  const { t } = useLocale();
   const [response, setResponse] = useState(false);
   const [copyState, setCopyState] = useState('Copy');
   const copyTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -45,7 +47,7 @@ export function ApiExample({ compact = false }: { compact?: boolean }) {
   return (
     <div className={'stage-code-window' + (compact ? ' stage-code-window--compact' : '')}>
       <div className="stage-code-header">
-        <div className="stage-code-tabs" role="group" aria-label="API code example">
+        <div className="stage-code-tabs" role="group" aria-label={t('API code example')}>
           <button
             type="button"
             aria-pressed={!response}
@@ -54,7 +56,7 @@ export function ApiExample({ compact = false }: { compact?: boolean }) {
               resetCopy();
             }}
           >
-            Request
+            {t('Request')}
           </button>
           <button
             type="button"
@@ -64,16 +66,16 @@ export function ApiExample({ compact = false }: { compact?: boolean }) {
               resetCopy();
             }}
           >
-            Response
+            {t('Response')}
           </button>
         </div>
         <button type="button" className="stage-code-copy" onClick={copy}>
-          {copyState}
+          {t(copyState)}
         </button>
       </div>
       {!compact && (
         <div className="stage-api-auth">
-          <span>AUTHENTICATION</span>
+          <span>{t('AUTHENTICATION')}</span>
           <Text as="p">
             Obtain your key inside Apcosys. Set the endpoint and authentication header from the
             confirmed API reference.
@@ -85,7 +87,7 @@ export function ApiExample({ compact = false }: { compact?: boolean }) {
           ref={code}
           data-morph-enter
           tabIndex={0}
-          aria-label={response ? 'Illustrative API response' : 'API request template'}
+          aria-label={t(response ? 'Illustrative API response' : 'API request template')}
         >
           <code>{snippet}</code>
         </pre>
@@ -99,8 +101,8 @@ export function ApiExample({ compact = false }: { compact?: boolean }) {
         {copyState === 'Copy'
           ? ''
           : copyState === 'Selected'
-            ? 'Clipboard unavailable. Code selected; use your device’s copy command.'
-            : copyState}
+            ? t('Clipboard unavailable. Code selected; use your device’s copy command.')
+            : t(copyState)}
       </span>
     </div>
   );

@@ -5,8 +5,10 @@ import { useState } from 'react';
 import { supportEmail } from '../../config/site';
 import { PageFrame } from '../../components/layout/PageFrame';
 import { EditorialSection } from '../../components/layout/PageSections';
+import { useLocale } from '../../i18n/context';
 
 export default function ContactPage() {
+  const { t } = useLocale();
   const [topic, setTopic] = useState(() => {
     const initial = new URLSearchParams(window.location.search).get('topic');
     return topics.some((item) => item === initial) ? initial! : '';
@@ -68,7 +70,7 @@ export default function ContactPage() {
             >
               <Text as="h3">{title}</Text>
               <Text as="p">{text}</Text>
-              <span>{topic === value ? 'Selected' : 'Choose topic'}</span>
+              <span>{t(topic === value ? 'Selected' : 'Choose topic')}</span>
             </button>
           ))}
         </div>

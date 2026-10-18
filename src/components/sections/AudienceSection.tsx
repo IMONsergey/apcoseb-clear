@@ -5,14 +5,23 @@ import { useLocale } from '../../i18n/context';
 import { DoubleButton } from '../ui/DoubleButton';
 import { Visual } from '../visuals/Visual';
 export function AudienceSection() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
+  const users = new Intl.NumberFormat(locale === 'en' ? 'en-US' : locale).format(
+    businessPlan.users,
+  );
   return (
     <section id="audiences" className="audiences section-space" aria-labelledby="audiences-title">
       <div className="container">
         <h2 id="audiences-title">
-          <LocaleText>{t('For security researchers')}</LocaleText>
-          <br />
-          <LocaleText>{t('and teams.')}</LocaleText>
+          {locale === 'en' ? (
+            <>
+              <LocaleText>{t('For security researchers')}</LocaleText>
+              <br />
+              <LocaleText>{t('and teams.')}</LocaleText>
+            </>
+          ) : (
+            <LocaleText>{t('For security researchers and teams.')}</LocaleText>
+          )}
         </h2>
         <div className="audience-grid">
           <article id="researchers" className="audience-card">
@@ -22,7 +31,7 @@ export function AudienceSection() {
             <div className="audience-copy">
               <h3>
                 <LocaleText className="locale-text--lines">
-                  {t('For security\nresearchers')}
+                  {t(locale === 'en' ? 'For security\nresearchers' : 'For security researchers')}
                 </LocaleText>
               </h3>
               <p>
@@ -65,13 +74,15 @@ export function AudienceSection() {
             </div>
             <div className="audience-copy">
               <h3>
-                <LocaleText className="locale-text--lines">{t('For security\nteams')}</LocaleText>
+                <LocaleText className="locale-text--lines">
+                  {t(locale === 'en' ? 'For security\nteams' : 'For security teams')}
+                </LocaleText>
               </h3>
               <p>
                 <LocaleText>
                   {t(
                     'Investigate the internet-facing infrastructure your organisation runs, review its technical context and bring the results into your own tools through the API. The Business plan gives up to {users} users access on one subscription.',
-                    { users: businessPlan.users },
+                    { users },
                   )}
                 </LocaleText>
               </p>

@@ -1,6 +1,9 @@
-import { readFile, mkdir, writeFile, copyFile } from 'node:fs/promises';
+import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve, join, dirname } from 'node:path';
 import ts from 'typescript';
+import { loadLocale, translate, type Locale } from '../src/i18n/messages';
+import { hasLocalizedCopy } from '../src/i18n/localized-routes';
+import { localizedMetadataSource } from '../src/i18n/route-metadata';
 
 interface CommonJsModule {
   exports: unknown;
@@ -90,30 +93,62 @@ const base = (template.match(/<script[^>]*\bsrc="(\/[^"]*?)assets\//)?.[1] ?? '/
   /\/$/,
   '',
 );
-for (const route of routes) {
-  const title = route.path === '/' ? 'Apcosys — Start with a query.' : route.title + ' | Apcosys';
-  let html = template.replace(/<title>[^<]*<\/title>/, '<title>' + escape(title) + '</title>');
-  html = replaceMeta(html, 'name', 'description', route.description);
-  html = replaceMeta(html, 'property', 'og:title', title);
-  html = replaceMeta(html, 'property', 'og:description', route.description);
-  const canonicalPath = (base || '') + route.path;
-  if (origin) {
-    html = html.replace(
-      '</head>',
-      '    <link rel="canonical" href="' +
-        escape(origin + canonicalPath) +
-        '" />\n    <meta property="og:url" content="' +
-        escape(origin + canonicalPath) +
-        '" />\n  </head>',
-    );
+const localizedPath = (path: string, locale: Locale): string => {
+  const prefix = locale === 'en' ? '' : locale === 'ru' ? '/ru' : '/zh-hant';
+  return (base || '') + (path === '/' ? prefix + '/' : prefix + path);
+};
+const locales: readonly Locale[] = ['en', 'ru', 'zh-Hant'];
+let generated = 0;
+for (const locale of locales) {
+  await loadLocale(locale);
+  for (const route of routes) {
+    if (locale !== 'en' && !hasLocalizedCopy(route.path)) continue;
+    const localized = locale === 'en' ? null : localizedMetadataSource(route.path);
+    const title =
+      route.path === '/' && locale === 'en'
+        ? 'Apcosys — Start with a query.'
+        : (localized ? translate(locale, localized.title) : route.title) + ' | Apcosys';
+    const description = localized ? translate(locale, localized.description) : route.description;
+    let html = template.replace(/<html\s+lang="[^"]*"/, `<html lang="${locale}"`);
+    html = html.replace(/<title>[^<]*<\/title>/, '<title>' + escape(title) + '</title>');
+    html = replaceMeta(html, 'name', 'description', description);
+    html = replaceMeta(html, 'property', 'og:title', title);
+    html = replaceMeta(html, 'property', 'og:description', description);
+    const canonicalPath = localizedPath(route.path, locale);
+    if (origin) {
+      const links = [
+        '    <link rel="canonical" href="' + escape(origin + canonicalPath) + '" />',
+        '    <meta property="og:url" content="' + escape(origin + canonicalPath) + '" />',
+      ];
+      if (hasLocalizedCopy(route.path)) {
+        for (const alternate of [...locales, 'x-default'] as const) {
+          const targetLocale = alternate === 'x-default' ? 'en' : alternate;
+          links.push(
+            '    <link rel="alternate" hreflang="' +
+              alternate +
+              '" href="' +
+              escape(origin + localizedPath(route.path, targetLocale)) +
+              '" data-apco-hreflang />',
+          );
+        }
+      }
+      html = html.replace('</head>', links.join('\n') + '\n  </head>');
+    }
+    const relativePath = localizedPath(route.path, locale).slice(base.length).replace(/^\//, '');
+    const target = join(dist, relativePath, 'index.html');
+    await mkdir(dirname(target), { recursive: true });
+    await writeFile(target, html);
+    generated++;
   }
-  const target = join(dist, route.path.replace(/^\//, ''), 'index.html');
-  await mkdir(dirname(target), { recursive: true });
-  await writeFile(target, html);
 }
-await copyFile(join(dist, 'index.html'), join(dist, '404.html'));
+await loadLocale('en');
+let notFound = template.replace(/<title>[^<]*<\/title>/, '<title>Page not found | Apcosys</title>');
+notFound = replaceMeta(notFound, 'name', 'description', 'Find what you need on Apcosys.');
+notFound = replaceMeta(notFound, 'property', 'og:title', 'Page not found | Apcosys');
+notFound = replaceMeta(notFound, 'property', 'og:description', 'Find what you need on Apcosys.');
+await writeFile(join(dist, '404.html'), notFound);
 console.log(
-  'Generated static title, description and Open Graph metadata for',
-  routes.length - 1,
-  'inner paths. Runtime rendering remains client-side.',
+  'Generated localized static title, description and Open Graph metadata for',
+  generated,
+  'routes. Runtime rendering remains client-side.',
 );

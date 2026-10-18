@@ -14,19 +14,19 @@ For all three engines, install `chromium firefox webkit` and run `npm run test:c
 
 ## Product boundary and delivery status
 
-| Feature      | What this repository does                                                           | Owner input for a live integration                                   |
-| ------------ | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Search       | Sends the query to the external product `/search?search_value=…`                    | Confirm the product's supported query semantics                      |
-| Sign In      | Opens the client product homepage; an optional verified route can override it       | Product homepage during migration; optional same-origin sign-in URL  |
-| Registration | Links to external `/register`; selected pricing plan is not transferred             | Product registration/plan-selection contract                         |
-| Pricing      | Displays owner-supplied plans and annual calculations; local comparison/dialogs     | Approved billing mechanics and checkout handoff                      |
-| API          | Illustrative request/response and animation; no real API call or key storage        | Verified API reference and integration contract                      |
-| Monitoring   | Explicitly labelled concept with synthetic states                                   | Product availability and data/alert contract                         |
-| Contact      | Validates fields and opens a `mailto:` draft; nothing is sent or stored by the site | Backend/service if actual website delivery is required               |
-| Cookies      | Stores an essential-only preference; no analytics integration                       | Approved consent/tracking model before adding analytics              |
-| Legal pages  | Six repository-owned Markdown sources compiled to local pages                       | Owner review of the legal content; source updates must be deliberate |
-| Languages    | English live; RU/CN unavailable controls retained                                   | Approved translations before enabling a locale                       |
-| Themes       | System/manual choice; separate light/dark illustration files                        | Use existing tokens and `ThemedArtwork` for future illustrations     |
+| Feature      | What this repository does                                                             | Owner input for a live integration                                   |
+| ------------ | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Search       | Sends the query to the external product `/search?search_value=…`                      | Confirm the product's supported query semantics                      |
+| Sign In      | Opens the client product homepage; an optional verified route can override it         | Product homepage during migration; optional same-origin sign-in URL  |
+| Registration | Links to external `/register`; selected pricing plan is not transferred               | Product registration/plan-selection contract                         |
+| Pricing      | Displays owner-supplied plans and annual calculations; local comparison/dialogs       | Approved billing mechanics and checkout handoff                      |
+| API          | Illustrative request/response and animation; no real API call or key storage          | Verified API reference and integration contract                      |
+| Monitoring   | Explicitly labelled concept with synthetic states                                     | Product availability and data/alert contract                         |
+| Contact      | Validates fields and opens a `mailto:` draft; nothing is sent or stored by the site   | Backend/service if actual website delivery is required               |
+| Cookies      | Stores an essential-only preference; no analytics integration                         | Approved consent/tracking model before adding analytics              |
+| Legal pages  | Six repository-owned Markdown sources compiled to local pages                         | Owner review of the legal content; source updates must be deliberate |
+| Languages    | EN, RU and Traditional Chinese for 11 marketing routes in local build; EN legal pages | Review translated content and deployment before publication          |
+| Themes       | System/manual choice; separate light/dark illustration files                          | Use existing tokens and `ThemedArtwork` for future illustrations     |
 
 ## Configuration
 
@@ -43,7 +43,7 @@ Optional `APCO_PUBLIC_SITE_ORIGIN` sets static canonical/OG URLs for the final H
 - Edit subscription allowances only in `content/plans.ts`; the comparison, API and Business summaries derive from that record.
 - Preserve shared container edges, right-aligned closing actions/footer metadata, natural content height and reduced-motion support.
 - Use paired illustration assets; never derive the dark edition with CSS inversion.
-- Preserve the integrity checks for the six TypeScript visual engines and retain all font/GSAP notices.
+- Preserve the integrity checks for the six original and three themed TypeScript visual engines and retain all font/GSAP notices.
 - Edit legal Markdown, run `npm run legal:compile`, review the generated diff. Do not edit the JSON by hand.
 - Keep demos marked as synthetic. Do not substitute invented production endpoints or credentials.
 

@@ -3,7 +3,7 @@ import '../../styles/billing-dock.css';
 import { siteHref } from '../../app/paths';
 import { LocaleText } from '../../i18n/LocaleText';
 import { useLocale } from '../../i18n/context';
-import { useRef, useState, type MouseEvent } from 'react';
+import { useMemo, useRef, useState, type MouseEvent } from 'react';
 import { MobileBillingDock } from './MobileBillingDock';
 import { plans, type Plan } from '../../content/plans';
 import { productUrl } from '../../config/site';
@@ -12,13 +12,7 @@ import { Modal } from '../ui/Modal';
 import { Visual } from '../visuals/Visual';
 import { BillingSwitch } from '../ui/BillingSwitch';
 import { AnimatedPrice } from '../ui/AnimatedPrice';
-import {
-  calculatePrice,
-  formatPrice,
-  formatCredits,
-  ANNUAL_DISCOUNT_PERCENT,
-  type BillingPeriod,
-} from '../../lib/pricing';
+import { calculatePrice, ANNUAL_DISCOUNT_PERCENT, type BillingPeriod } from '../../lib/pricing';
 export function PricingSection({
   showTeamBanner = true,
   title,
@@ -28,7 +22,26 @@ export function PricingSection({
   title?: string;
   comparisonHref?: string;
 }) {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
+  const numberLocale = locale === 'en' ? 'en-US' : locale;
+  const currency = useMemo(
+    () =>
+      new Intl.NumberFormat(numberLocale, {
+        style: 'currency',
+        currency: 'USD',
+        currencyDisplay: 'narrowSymbol',
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 0,
+      }),
+    [numberLocale],
+  );
+  const count = useMemo(() => new Intl.NumberFormat(numberLocale), [numberLocale]);
+  const formatPrice = (amount: number) => currency.format(amount);
+  const formatCount = (value: number) => count.format(value);
+  const formatCredits = (value: number, compact = false) => {
+    const formatted = formatCount(value);
+    return compact && locale === 'en' ? formatted.replaceAll(',', '\u00a0') : formatted;
+  };
   const [compare, setCompare] = useState(false);
   const rangeRef = useRef<HTMLDivElement>(null);
   const [planOpen, setPlanOpen] = useState(false);
@@ -41,8 +54,8 @@ export function PricingSection({
           <div className="pricing-heading">
             <h2 id="pricing-title">
               {title ? (
-                title
-              ) : (
+                t(title)
+              ) : locale === 'en' ? (
                 <>
                   <LocaleText>{t('Start free.')}</LocaleText>
                   <br />
@@ -52,15 +65,29 @@ export function PricingSection({
                     <LocaleText>{t('investigation needs more.')}</LocaleText>
                   </span>
                 </>
+              ) : (
+                <LocaleText>
+                  {t('Start free. Upgrade when your investigation needs more.')}
+                </LocaleText>
               )}
             </h2>
             <div className="billing billing--desktop">
               <p>
-                <LocaleText>{t('Subscribe annually')}</LocaleText>
-                <br />
-                <LocaleText>
-                  {t('and save {discount}%!', { discount: ANNUAL_DISCOUNT_PERCENT })}
-                </LocaleText>
+                {locale === 'en' ? (
+                  <>
+                    <LocaleText>{t('Subscribe annually')}</LocaleText>
+                    <br />
+                    <LocaleText>
+                      {t('and save {discount}%!', { discount: ANNUAL_DISCOUNT_PERCENT })}
+                    </LocaleText>
+                  </>
+                ) : (
+                  <LocaleText>
+                    {t('Subscribe annually and save {discount}%!', {
+                      discount: formatCount(ANNUAL_DISCOUNT_PERCENT),
+                    })}
+                  </LocaleText>
+                )}
               </p>
               <BillingSwitch value={period} onChange={setPeriod} />
             </div>
@@ -82,7 +109,9 @@ export function PricingSection({
                 className={`plan-card${plan.id === 'plus' ? ' plan-card--featured' : ''}`}
               >
                 <div>
-                  <h3>{plan.name}</h3>
+                  <h3>
+                    <LocaleText>{t(plan.name)}</LocaleText>
+                  </h3>
                   <p className="plan-description">
                     <LocaleText>{t(plan.description)}</LocaleText>
                   </p>
@@ -119,7 +148,7 @@ export function PricingSection({
                     <dt>
                       <LocaleText>{t('Users')}</LocaleText>
                     </dt>
-                    <dd>{plan.users}</dd>
+                    <dd>{formatCount(plan.users)}</dd>
                   </div>
                 </dl>
                 <div className="plan-actions">
@@ -145,7 +174,7 @@ export function PricingSection({
                       className="plan-button plan-button--accent stage-plan-contact"
                       href={siteHref('/contact')}
                     >
-                      Talk to Us
+                      <LocaleText>{t('Talk to Us')}</LocaleText>
                     </a>
                   )}
                 </div>
@@ -206,7 +235,7 @@ export function PricingSection({
                 </th>
                 {plans.map((p) => (
                   <th scope="col" key={p.id}>
-                    {p.name}
+                    <LocaleText>{t(p.name)}</LocaleText>
                   </th>
                 ))}
               </tr>
@@ -243,7 +272,7 @@ export function PricingSection({
                   <LocaleText>{t('Users')}</LocaleText>
                 </th>
                 {plans.map((p) => (
-                  <td key={p.id}>{p.users}</td>
+                  <td key={p.id}>{formatCount(p.users)}</td>
                 ))}
               </tr>
               <tr>
@@ -273,7 +302,7 @@ export function PricingSection({
       <Modal
         open={planOpen}
         onClose={() => setPlanOpen(false)}
-        title={selected ? t('{name} plan', { name: selected.name }) : t('Plan')}
+        title={selected ? t('{name} plan', { name: t(selected.name) }) : t('Plan')}
       >
         {selected && (
           <>
@@ -305,7 +334,7 @@ export function PricingSection({
                 <dt>
                   <LocaleText>{t('Users')}</LocaleText>
                 </dt>
-                <dd>{selected.users}</dd>
+                <dd>{formatCount(selected.users)}</dd>
               </div>
               <div>
                 <dt>

@@ -11,9 +11,9 @@ export async function revealHeader(page: Page) {
     .toBe(true);
 
   if ((await header.getAttribute('data-hidden')) === 'true') {
-    const viewport = page.viewportSize()!;
-    await page.mouse.move(8, viewport.height / 2);
-    await page.mouse.wheel(0, -80);
+    const viewport = page.viewportSize();
+    await page.mouse.move(8, (viewport?.height ?? 900) / 2);
+    await page.mouse.wheel(0, -180);
     await expect(header).toHaveAttribute('data-hidden', 'false');
   }
 
@@ -30,6 +30,6 @@ export async function openLanguageMenu(page: Page) {
     trigger,
     english: page.getByRole('menuitemradio', { name: 'English', exact: true }),
     russian: page.getByRole('menuitemradio', { name: 'Русский', exact: true }),
-    chinese: page.getByRole('menuitemradio', { name: '中文', exact: true }),
+    chinese: page.getByRole('menuitemradio', { name: '繁體中文', exact: true }),
   };
 }

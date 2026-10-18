@@ -1,5 +1,5 @@
 import { Text } from '../../components/ui/Text';
-import { planComparison } from '../../lib/pricing';
+import { formatApiRate, planComparison } from '../../lib/pricing';
 import { primarySearch, linkTo } from '../../components/layout/pageLinks';
 import { PricingSection } from '../../components/sections/PricingSection';
 import { CreditsExplained } from '../../components/product/CreditsExplained';
@@ -10,8 +10,10 @@ import {
   EditorialHeading,
   ReadingRows,
 } from '../../components/layout/PageSections';
+import { useLocale } from '../../i18n/context';
 
 function FullPlanComparison() {
+  const { t } = useLocale();
   return (
     <section className="stage-plan-comparison section-space" id="compare-plans">
       <div className="container">
@@ -21,17 +23,17 @@ function FullPlanComparison() {
         />
         <div
           role="region"
-          aria-label="Scroll to compare plan features"
+          aria-label={t('Scroll to compare plan features')}
           tabIndex={0}
           className="stage-table-scroll"
         >
           <table className="stage-data-table stage-plan-table">
             <thead>
               <tr>
-                <th scope="col">Feature</th>
+                <th scope="col">{t('Feature')}</th>
                 {plans.map((plan) => (
                   <th key={plan.id} scope="col">
-                    {plan.name}
+                    {t(plan.name)}
                   </th>
                 ))}
               </tr>
@@ -39,10 +41,20 @@ function FullPlanComparison() {
             <tbody>
               {planComparison.map((row) => (
                 <tr key={row.label}>
-                  <th scope="row">{row.label}</th>
-                  {plans.map((plan) => (
-                    <td key={plan.id}>{row.value(plan)}</td>
-                  ))}
+                  <th scope="row">{t(row.label)}</th>
+                  {plans.map((plan) => {
+                    const value =
+                      row.label === 'API rate limit' ? formatApiRate(plan, t) : row.value(plan);
+                    const translated =
+                      row.label === 'Private Scanner' && plan.privateScanner
+                        ? t('Listed for {plan}', {
+                            plan: t(plan.name[0] + plan.name.slice(1).toLowerCase()),
+                          })
+                        : /[A-Za-z]/.test(value)
+                          ? t(value)
+                          : value;
+                    return <td key={plan.id}>{translated}</td>;
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -57,6 +69,7 @@ function FullPlanComparison() {
 }
 
 export default function PricingPage() {
+  const { t } = useLocale();
   return (
     <PageFrame
       artwork="pricing"
@@ -97,12 +110,12 @@ export default function PricingPage() {
           <div className="stage-token-grid">
             <div>
               <strong>25,000</strong>
-              <span>Search Tokens</span>
+              <span>{t('Search Tokens')}</span>
               <b>$50</b>
             </div>
             <div>
               <strong>1,000,000</strong>
-              <span>Search Tokens</span>
+              <span>{t('Search Tokens')}</span>
               <b>$900</b>
             </div>
           </div>

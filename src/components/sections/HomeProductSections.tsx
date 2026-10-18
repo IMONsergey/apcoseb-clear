@@ -8,6 +8,8 @@ import { DoubleButton } from '../ui/DoubleButton';
 import { ThemedArtwork } from '../ui/ThemedArtwork';
 import { demoHosts } from '../../content/product-demo';
 import '../../styles/home-product.css';
+import { LocaleText } from '../../i18n/LocaleText';
+import { useLocale } from '../../i18n/context';
 
 const searchable = [
   {
@@ -38,6 +40,7 @@ const searchable = [
 ] as const;
 
 export function SearchableSection() {
+  const { locale, t } = useLocale();
   const [selected, setSelected] = useState(0);
   return (
     <section
@@ -48,12 +51,22 @@ export function SearchableSection() {
       <div className="container">
         <div className="home-product-heading">
           <h2 id="searchable-title">
-            Search the infrastructure <br />
-            behind the internet.
+            {locale === 'en' ? (
+              <>
+                Search the infrastructure <br />
+                behind the internet.
+              </>
+            ) : (
+              <LocaleText>{t('Search the infrastructure behind the internet.')}</LocaleText>
+            )}
           </h2>
         </div>
         <div className="home-searchable__layout">
-          <div className="home-searchable__index" role="group" aria-label="Searchable data types">
+          <div
+            className="home-searchable__index"
+            role="group"
+            aria-label={t('Searchable data types')}
+          >
             {searchable.map((item, i) => (
               <button
                 key={item.label}
@@ -63,8 +76,8 @@ export function SearchableSection() {
               >
                 <span className="searchable-selector" aria-hidden="true" />
                 <span>
-                  <strong>{item.label}</strong>
-                  <small>{item.description}</small>
+                  <strong>{t(item.label)}</strong>
+                  <small>{t(item.description)}</small>
                 </span>
               </button>
             ))}
@@ -72,7 +85,7 @@ export function SearchableSection() {
           <div className="home-searchable__evidence">
             <DataLens selected={selected} />
             <DoubleButton compact href={siteHref('/platform/data-methodology')}>
-              Explore Data &amp; Methodology
+              {t('Explore Data & Methodology')}
             </DoubleButton>
           </div>
         </div>
@@ -105,6 +118,7 @@ const cases = [
   },
 ] as const;
 export function HomeUseCases() {
+  const { locale, t } = useLocale();
   return (
     <section
       className="home-usecases section-space"
@@ -114,8 +128,14 @@ export function HomeUseCases() {
       <div className="container">
         <div className="home-product-heading">
           <h2 id="home-cases-title">
-            Different questions. <br />
-            One place to investigate them.
+            {locale === 'en' ? (
+              <>
+                Different questions. <br />
+                One place to investigate them.
+              </>
+            ) : (
+              <LocaleText>{t('Different questions. One place to investigate them.')}</LocaleText>
+            )}
           </h2>
         </div>
         <div className="home-usecases__grid">
@@ -124,7 +144,7 @@ export function HomeUseCases() {
               <a
                 className="home-usecases__image"
                 href={siteHref(item.path)}
-                aria-label={item.label}
+                aria-label={t(item.label)}
                 tabIndex={-1}
               >
                 <ThemedArtwork
@@ -136,10 +156,10 @@ export function HomeUseCases() {
                 />
               </a>
               <div className="home-usecases__story">
-                <h3>{item.title}</h3>
-                <p>{item.outcome}</p>
+                <h3>{t(item.title)}</h3>
+                <p>{t(item.outcome)}</p>
                 <DoubleButton variant="secondary" compact href={siteHref(item.path)}>
-                  {item.label}
+                  {t(item.label)}
                 </DoubleButton>
               </div>
             </article>
@@ -204,6 +224,7 @@ const capabilities = [
   },
 ] as const;
 export function CapabilitiesSection() {
+  const { t } = useLocale();
   const [selected, setSelected] = useState(0);
   const [httpsOnly, setHttpsOnly] = useState(false);
   const item = capabilities[selected]!;
@@ -215,12 +236,12 @@ export function CapabilitiesSection() {
     >
       <div className="container">
         <div className="home-product-heading">
-          <h2 id="capabilities-title">The tools to go deeper.</h2>
+          <h2 id="capabilities-title">{t('The tools to go deeper.')}</h2>
         </div>
         <div
           className="home-capabilities__tabs"
           role="group"
-          aria-label="Investigation capabilities"
+          aria-label={t('Investigation capabilities')}
         >
           {capabilities.map((cap, i) => (
             <button
@@ -230,15 +251,15 @@ export function CapabilitiesSection() {
               onClick={() => setSelected(i)}
             >
               <span>0{i + 1}</span>
-              {cap.label}
+              {t(cap.label)}
             </button>
           ))}
         </div>
         <MorphPanel>
           <div className="home-capabilities__stage" data-morph-enter>
             <div className="home-capabilities__copy">
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
+              <h3>{t(item.title)}</h3>
+              <p>{t(item.text)}</p>
               <DoubleButton
                 variant="primary"
                 compact
@@ -246,21 +267,21 @@ export function CapabilitiesSection() {
                   selected === 4 ? '/developers/api' : '/platform/search-investigation',
                 )}
               >
-                {selected === 4 ? 'Explore API integration' : 'Explore Search & Investigation'}
+                {t(selected === 4 ? 'Explore API integration' : 'Explore Search & Investigation')}
               </DoubleButton>
             </div>
             <div className="home-capabilities__screen">
               {selected === 1 ? (
                 <div className="capability-record">
                   <div className="capability-record__bar">
-                    <span>SERVICE FILTER / SYNTHETIC DEMO</span>
+                    <span>{t('SERVICE FILTER / SYNTHETIC DEMO')}</span>
                     <label>
                       <input
                         type="checkbox"
                         checked={httpsOnly}
                         onChange={(e) => setHttpsOnly(e.target.checked)}
                       />
-                      HTTPS only
+                      {t('HTTPS only')}
                     </label>
                   </div>
                   {demoHosts.map((host) => (
@@ -283,22 +304,22 @@ export function CapabilitiesSection() {
               ) : selected === 3 ? (
                 <div className="capability-record">
                   <div className="capability-record__bar">
-                    <span>BUCKETS / CONCEPT</span>
-                    <span>Research shortlist</span>
+                    <span>{t('BUCKETS / CONCEPT')}</span>
+                    <span>{t('Research shortlist')}</span>
                   </div>
                   {demoHosts.map((host) => (
                     <div className="capability-record__host" key={host.ip}>
                       <strong>{host.hostname}</strong>
                       <span>{host.ip}</span>
-                      <p>Review service evidence and confirm authorised scope.</p>
+                      <p>{t('Review service evidence and confirm authorised scope.')}</p>
                     </div>
                   ))}
                 </div>
               ) : selected === 4 ? (
                 <div className="capability-record">
                   <div className="capability-record__bar">
-                    <span>INTEGRATION / EXAMPLE</span>
-                    <span>Host context</span>
+                    <span>{t('INTEGRATION / EXAMPLE')}</span>
+                    <span>{t('Host context')}</span>
                   </div>
                   <pre>
                     <code>
@@ -316,7 +337,9 @@ export function CapabilitiesSection() {
                     </code>
                   </pre>
                   <p className="home-product-caption">
-                    Illustrative data shape. The API contract comes from the product documentation.
+                    {t(
+                      'Illustrative data shape. The API contract comes from the product documentation.',
+                    )}
                   </p>
                 </div>
               ) : selected === 0 ? (
@@ -331,8 +354,8 @@ export function CapabilitiesSection() {
                   <span className="capability-notes__mark" aria-hidden="true">
                     {i === 0 ? '01' : '02'}
                   </span>
-                  <h4>{title}</h4>
-                  <p>{text}</p>
+                  <h4>{t(title!)}</h4>
+                  <p>{t(text!)}</p>
                 </div>
               ))}
             </div>
@@ -343,24 +366,32 @@ export function CapabilitiesSection() {
   );
 }
 export function SecurityTeamsCTA() {
+  const { locale, t } = useLocale();
   return (
     <section className="home-team-cta" aria-labelledby="team-evaluation-title">
       <div className="container home-team-cta__layout">
         <div className="home-team-cta__copy">
           <h2 id="team-evaluation-title">
-            Evaluating Apcosys <br />
-            for your security team?
+            {locale === 'en' ? (
+              <>
+                Evaluating Apcosys <br />
+                for your security team?
+              </>
+            ) : (
+              <LocaleText>{t('Evaluating Apcosys for your security team?')}</LocaleText>
+            )}
           </h2>
           <p>
-            Tell us about your investigation workflows, data requirements and API needs. Find the
-            right way to evaluate Apcosys with your team.
+            {t(
+              'Tell us about your investigation workflows, data requirements and API needs. Find the right way to evaluate Apcosys with your team.',
+            )}
           </p>
           <div className="home-team-cta__actions">
             <DoubleButton variant="inverse" href={siteHref('/contact')}>
-              Talk to Us
+              {t('Talk to Us')}
             </DoubleButton>
             <DoubleButton variant="inverse" href={siteHref('/teams')}>
-              Explore Security Teams
+              {t('Explore Security Teams')}
             </DoubleButton>
           </div>
         </div>

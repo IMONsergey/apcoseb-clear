@@ -1,6 +1,5 @@
 import { LocaleText } from '../../i18n/LocaleText';
 import { useLocale } from '../../i18n/context';
-import { noBreakNumber } from '../../i18n/typography';
 import { assetUrl } from '../../content/assets';
 import { Logo } from '../ui/Logo';
 import { Icon, type IconName } from '../ui/Icon';
@@ -8,8 +7,13 @@ import { Icon, type IconName } from '../ui/Icon';
 const previewIcons: IconName[] = ['search', 'database', 'scanner', 'cube', 'book', 'bookmark'];
 
 /** Decorative product chrome: search below it is a real native form. */
-export function SearchChrome({ credits = '2 000' }: { credits?: string }) {
-  const { t } = useLocale();
+export function SearchChrome({ credits = 2000 }: { credits?: number }) {
+  const { locale, t } = useLocale();
+  const localizedCredits = new Intl.NumberFormat(locale === 'en' ? 'en-US' : locale).format(
+    credits,
+  );
+  const formattedCredits =
+    locale === 'en' ? localizedCredits.replaceAll(',', '\u00a0') : localizedCredits;
   return (
     <div className="search-chrome" aria-hidden="true">
       <div className="search-chrome__surface" />
@@ -35,7 +39,7 @@ export function SearchChrome({ credits = '2 000' }: { credits?: string }) {
       </div>
       <div className="search-chrome__account">
         <span>
-          <LocaleText>{t('Credits:')}</LocaleText> <b>{noBreakNumber(credits)}</b>
+          <LocaleText>{t('Credits:')}</LocaleText> <b>{formattedCredits}</b>
         </span>
         <span className="search-chrome__upgrade">
           <LocaleText>{t('Upgrade Plan')}</LocaleText>

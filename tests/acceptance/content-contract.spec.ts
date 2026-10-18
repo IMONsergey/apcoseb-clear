@@ -3,6 +3,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Text } from '../../src/components/ui/Text';
 import { plans, businessPlan } from '../../src/content/plans';
+import { languageOptions } from '../../src/i18n/language-options';
 import {
   calculatePrice,
   formatApiRate,
@@ -10,6 +11,18 @@ import {
   planComparison,
 } from '../../src/lib/pricing';
 import { markRouteReady, waitForRouteReady } from '../../src/app/routeReadiness';
+
+test('language options use canonical tags and native labels', () => {
+  expect(languageOptions.map((language) => language.value)).toEqual(['en', 'ru', 'zh-Hant']);
+  expect(languageOptions.map((language) => language.label)).toEqual([
+    'English',
+    'Русский',
+    '繁體中文',
+  ]);
+  for (const language of languageOptions) {
+    expect(Intl.getCanonicalLocales(language.value)).toEqual([language.value]);
+  }
+});
 
 test('ordinary authored text is formatted without changing its semantic element or link', () => {
   const result = renderToStaticMarkup(

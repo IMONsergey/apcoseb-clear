@@ -156,8 +156,8 @@ export function SearchPreview() {
               </h2>
             </div>
             <SearchForm />
-            <div className="search-examples" role="group" aria-label="Example investigations">
-              <span>Explore an example</span>
+            <div className="search-examples" role="group" aria-label={t('Example investigations')}>
+              <span>{t('Explore an example')}</span>
               {Object.entries(demoScenarios).map(([key, example]) => (
                 <button
                   type="button"
@@ -165,7 +165,7 @@ export function SearchPreview() {
                   aria-pressed={scenario === key}
                   onClick={() => setScenario(key as EvidenceScenario)}
                 >
-                  {example.label}
+                  {t(example.label)}
                 </button>
               ))}
             </div>
@@ -173,8 +173,10 @@ export function SearchPreview() {
               <ProductEvidence scenario={scenario} compact embedded showPlaybackStatus={false} />
             </div>
             <p className="search-scene__demo-note">
-              Synthetic demonstration · No live observations.{' '}
-              <a href={productUrl + '/search'}>Open product search</a>
+              <LocaleText>{t('Synthetic demonstration · No live observations.')}</LocaleText>{' '}
+              <a href={productUrl + '/search'}>
+                <LocaleText>{t('Open product search')}</LocaleText>
+              </a>
             </p>
           </div>
         </div>

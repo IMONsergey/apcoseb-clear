@@ -29,14 +29,16 @@ export function TrustMarquee() {
         className="trust-viewport"
         tabIndex={0}
         role="region"
-        aria-label="Research areas — focus to pause scrolling"
+        aria-label={t('Research areas — focus to pause scrolling')}
       >
         <div className="trust-track">
           {[0, 1].map((copy) => (
             <ul className="trust-group" key={copy} aria-hidden={copy === 1 || undefined}>
               {researchTopics.map((name) => (
                 <li key={name}>
-                  <span className="trust-mark stage-trust-topic">{name}</span>
+                  <span className="trust-mark stage-trust-topic">
+                    <LocaleText>{t(name)}</LocaleText>
+                  </span>
                 </li>
               ))}
             </ul>

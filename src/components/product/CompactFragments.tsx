@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { MorphPanel } from '../ui/MorphPanel';
 import { demoHosts } from '../../content/product-demo';
 import { Icon } from '../ui/Icon';
+import { useLocale } from '../../i18n/context';
 
 /** Deliberately cropped product details: each explains one concept, never a whole dashboard. */
 export function DataLens({ selected }: { selected: number }) {
+  const { t } = useLocale();
   const titles = [
     'Host identity',
     'Domain records',
@@ -13,10 +15,10 @@ export function DataLens({ selected }: { selected: number }) {
     'Version context',
   ];
   return (
-    <div className="data-lens" aria-label={titles[selected]}>
+    <div className="data-lens" aria-label={t(titles[selected]!)}>
       <div className="data-lens__header">
-        <span>{titles[selected]}</span>
-        <span>Example data</span>
+        <span>{t(titles[selected]!)}</span>
+        <span>{t('Example data')}</span>
       </div>
       <MorphPanel>
         <div className="data-lens__body" data-morph-enter>
@@ -28,16 +30,16 @@ export function DataLens({ selected }: { selected: number }) {
               </div>
               <dl>
                 <div>
-                  <dt>Hostname</dt>
+                  <dt>{t('Hostname')}</dt>
                   <dd>portal.example.com</dd>
                 </div>
                 <div>
-                  <dt>Services</dt>
+                  <dt>{t('Services')}</dt>
                   <dd>HTTPS · HTTP</dd>
                 </div>
                 <div>
-                  <dt>Evidence</dt>
-                  <dd>Response headers</dd>
+                  <dt>{t('Evidence')}</dt>
+                  <dd>{t('Response headers')}</dd>
                 </div>
               </dl>
             </>
@@ -54,9 +56,9 @@ export function DataLens({ selected }: { selected: number }) {
           ) : selected === 2 ? (
             <>
               <div className="data-lens__columns">
-                <span>Port</span>
-                <span>Protocol</span>
-                <span>Observation</span>
+                <span>{t('Port')}</span>
+                <span>{t('Protocol')}</span>
+                <span>{t('Observation')}</span>
               </div>
               {demoHosts[0]!.services.map((s) => (
                 <div className="data-lens__service" key={s.port}>
@@ -77,46 +79,48 @@ export function DataLens({ selected }: { selected: number }) {
                     {name}
                     <small>{version}</small>
                   </strong>
-                  <span>{source}</span>
+                  <span>{t(source!)}</span>
                 </div>
               ))}
             </div>
           ) : (
             <>
               <div className="version-path">
-                <span>Observed version</span>
+                <span>{t('Observed version')}</span>
                 <i />
-                <span>Vendor advisory</span>
+                <span>{t('Vendor advisory')}</span>
                 <i />
-                <span>Validation</span>
+                <span>{t('Validation')}</span>
               </div>
               <p>
-                A version match is a research lead. Check patches and configuration before
-                confirming a vulnerability.
+                {t(
+                  'A version match is a research lead. Check patches and configuration before confirming a vulnerability.',
+                )}
               </p>
             </>
           )}
         </div>
       </MorphPanel>
-      <div className="data-lens__footer">One observation, with its technical context.</div>
+      <div className="data-lens__footer">{t('One observation, with its technical context.')}</div>
     </div>
   );
 }
 
 export function SearchFragment() {
+  const { t } = useLocale();
   const [query, setQuery] = useState('example.com');
   return (
-    <div className="query-fragment" aria-label="Search starting points">
+    <div className="query-fragment" aria-label={t('Search starting points')}>
       <div className="query-fragment__input">
         <Icon name="search" />
         <code>{query}</code>
         <span>↵</span>
       </div>
-      <p>Start with an attribute you already know.</p>
+      <p>{t('Start with an attribute you already know.')}</p>
       <div className="query-fragment__options">
         {['example.com', '198.51.100.24', 'nginx 1.24.0'].map((q, i) => (
           <button type="button" key={q} aria-pressed={query === q} onClick={() => setQuery(q)}>
-            <span>{['Domain', 'IP address', 'Technology'][i]}</span>
+            <span>{t(['Domain', 'IP address', 'Technology'][i]!)}</span>
             <code>{q}</code>
           </button>
         ))}
@@ -126,11 +130,12 @@ export function SearchFragment() {
 }
 
 export function HostFragment() {
+  const { t } = useLocale();
   const host = demoHosts[0]!;
   return (
     <div className="host-fragment">
       <header>
-        <span>Host view</span>
+        <span>{t('Host view')}</span>
         <strong>{host.ip}</strong>
         <small>{host.hostname}</small>
       </header>
@@ -144,24 +149,25 @@ export function HostFragment() {
           <strong>80</strong>
         </div>
         <div>
-          <span>Technology</span>
+          <span>{t('Technology')}</span>
           <strong>nginx</strong>
         </div>
       </div>
       <pre>
         <code>{'HTTP/1.1 200 OK\nServer: nginx/1.24.0'}</code>
       </pre>
-      <p>Service response · illustrative record</p>
+      <p>{t('Service response · illustrative record')}</p>
     </div>
   );
 }
 
 export function CaseFragment({ kind }: { kind: 'scope' | 'technology' | 'indicator' }) {
+  const { t } = useLocale();
   if (kind === 'scope')
     return (
       <div className="case-fragment case-fragment--scope">
         <header>
-          <span>Programme boundary</span>
+          <span>{t('Programme boundary')}</span>
           <strong>example.com</strong>
         </header>
         <div className="scope-boundary">
@@ -172,50 +178,50 @@ export function CaseFragment({ kind }: { kind: 'scope' | 'technology' | 'indicat
                 <strong>{h.hostname}</strong>
                 <small>{h.ip}</small>
               </span>
-              <span>Review scope</span>
+              <span>{t('Review scope')}</span>
             </div>
           ))}
         </div>
-        <p>Candidate infrastructure. Confirm each target against the programme rules.</p>
+        <p>{t('Candidate infrastructure. Confirm each target against the programme rules.')}</p>
       </div>
     );
   if (kind === 'technology')
     return (
       <div className="case-fragment case-fragment--technology">
         <header>
-          <span>Technology evidence</span>
+          <span>{t('Technology evidence')}</span>
           <strong>
             nginx <em>1.24.0</em>
           </strong>
         </header>
         <div className="version-path">
-          <span>Detection</span>
+          <span>{t('Detection')}</span>
           <i />
-          <span>Advisory</span>
+          <span>{t('Advisory')}</span>
           <i />
-          <span>Verification</span>
+          <span>{t('Verification')}</span>
         </div>
         <dl>
           <div>
-            <dt>Observed signal</dt>
-            <dd>HTTP Server header</dd>
+            <dt>{t('Observed signal')}</dt>
+            <dd>{t('HTTP Server header')}</dd>
           </div>
           <div>
-            <dt>Version applicability</dt>
-            <dd>Check vendor advisory</dd>
+            <dt>{t('Version applicability')}</dt>
+            <dd>{t('Check vendor advisory')}</dd>
           </div>
           <div>
-            <dt>Patch state</dt>
-            <dd>Needs validation</dd>
+            <dt>{t('Patch state')}</dt>
+            <dd>{t('Needs validation')}</dd>
           </div>
         </dl>
-        <p>An association does not establish exploitability.</p>
+        <p>{t('An association does not establish exploitability.')}</p>
       </div>
     );
   return (
     <div className="case-fragment case-fragment--indicator">
       <header>
-        <span>Indicator trail</span>
+        <span>{t('Indicator trail')}</span>
         <strong>198.51.100.24</strong>
       </header>
       <div className="indicator-trail">
@@ -227,13 +233,13 @@ export function CaseFragment({ kind }: { kind: 'scope' | 'technology' | 'indicat
           <div key={a}>
             <span>0{i + 1}</span>
             <p>
-              <small>{a}</small>
+              <small>{t(a!)}</small>
               <strong>{b}</strong>
             </p>
           </div>
         ))}
       </div>
-      <p>Follow an attribute into the next query. Similarity alone is not attribution.</p>
+      <p>{t('Follow an attribute into the next query. Similarity alone is not attribution.')}</p>
     </div>
   );
 }

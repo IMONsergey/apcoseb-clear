@@ -4,6 +4,7 @@ import { metrics } from '../../content/metrics';
 import { EvidenceFlow } from '../../components/product/EvidenceFlow';
 import { PageFrame } from '../../components/layout/PageFrame';
 import { EditorialSection, FeatureColumns } from '../../components/layout/PageSections';
+import { useLocale } from '../../i18n/context';
 
 const coverageDefinitions = [
   ['IPv4', 'Observed IPv4 address entries'],
@@ -15,6 +16,7 @@ const coverageDefinitions = [
 ] as const;
 
 export default function MethodologyPage() {
+  const { t } = useLocale();
   return (
     <PageFrame
       artwork="methodology"
@@ -68,15 +70,17 @@ export default function MethodologyPage() {
             <article key={n}>
               <span>{n}</span>
               <Text as="h3">{title}</Text>
-              <code>{value}</code>
+              <code>{t(value!)}</code>
               <Text as="p">{text}</Text>
             </article>
           ))}
         </div>
         <div className="evidence-reading">
           <Text as="p">
-            <strong>Read from the observation outward.</strong> A response supports a detection; a
-            detection can suggest an association. Each step needs its own interpretation.
+            <strong>Read from the observation outward.</strong>{' '}
+            {t(
+              'A response supports a detection; a detection can suggest an association. Each step needs its own interpretation.',
+            )}
           </Text>
           <Text as="p">
             Domain observations connect names to infrastructure. A shared domain, service or
@@ -89,7 +93,7 @@ export default function MethodologyPage() {
         title="Coverage, defined."
         intro="These figures describe different parts of the dataset. Product detections and CVE associations are records, not counts of distinct vulnerable systems."
       >
-        <div className="coverage-register" role="region" aria-label="Coverage metrics">
+        <div className="coverage-register" role="region" aria-label={t('Coverage metrics')}>
           {metrics.map((metric, i) => (
             <article key={metric.id}>
               <div>
@@ -119,7 +123,7 @@ export default function MethodologyPage() {
               technology records.
             </Text>
             <a className="stage-text-link" href={linkTo('', '/responsible-scanning').href}>
-              Read the scanning principles
+              {t('Read the scanning principles')}
             </a>
           </article>
           <div className="date-reading">

@@ -1,3 +1,5 @@
+import { translate, type Locale } from '../../i18n/messages';
+
 type Gsap = typeof import('gsap').gsap;
 type Scene = 'query' | 'results' | 'host' | 'evidence' | 'suggestions';
 type Country = 'us' | 'de';
@@ -145,6 +147,13 @@ SOFTWARE.
     const WIDTH = 1257;
     const live = new Set<ApcosysProductDemo>();
     let sharedGSAP: Gsap | null = null;
+    const message = (sourceEnglish: string, values: Record<string, string | number> = {}) => {
+      const locale = (document.documentElement.lang || 'en') as Locale;
+      if (locale !== 'en') return translate(locale, sourceEnglish, values);
+      return sourceEnglish.replace(/\{(\w+)\}/g, (token, name: string) =>
+        String(values[name] ?? token),
+      );
+    };
     const SCENES = {
       query: {
         height: 843,
@@ -263,7 +272,11 @@ SOFTWARE.
         icon('arrow-up', 'query-arrow') +
         icon('loader', 'query-spinner') +
         '</div></div>' +
-        '<div class="recent"><div class="recent-heading"><span>Recent queries</span><span class="clear-all">Clear all</span></div><div class="recent-rows">' +
+        '<div class="recent"><div class="recent-heading"><span>' +
+        message('Recent queries') +
+        '</span><span class="clear-all">' +
+        message('Clear all') +
+        '</span></div><div class="recent-rows">' +
         recent
           .map(function (text, index) {
             return (
@@ -280,7 +293,10 @@ SOFTWARE.
             );
           })
           .join('') +
-        '</div></div><div class="syntax"><div class="syntax-heading"><span>Search syntax</span><span class="docs-link">View docs' +
+        '</div></div><div class="syntax"><div class="syntax-heading"><span>' +
+        message('Search syntax') +
+        '</span><span class="docs-link">' +
+        message('View docs') +
         icon('external-link') +
         '</span></div><div class="syntax-chips">' +
         ['service:nginx', 'port:443', 'country:us', 'ssl:true']
@@ -296,20 +312,36 @@ SOFTWARE.
         '<div class="surface results-scene"><div class="results-toolbar"><div class="result-search">' +
         icon('search', 'result-search-icon') +
         icon('loader', 'result-spinner') +
-        '<span>Search hosts, domains, IPs...</span></div>' +
-        '<div class="filter filter-services"><span>All services</span>' +
+        '<span>' +
+        message('Search hosts, domains, IPs...') +
+        '</span></div>' +
+        '<div class="filter filter-services"><span>' +
+        message('All services') +
+        '</span>' +
         icon('chevron-down') +
-        '</div><div class="filter filter-technologies"><span>All technologies</span>' +
+        '</div><div class="filter filter-technologies"><span>' +
+        message('All technologies') +
+        '</span>' +
         icon('chevron-down') +
         '</div>' +
-        '<div class="filter filter-countries"><span class="country-filter-label">All countries</span>' +
+        '<div class="filter filter-countries"><span class="country-filter-label">' +
+        message('All countries') +
+        '</span>' +
         icon('chevron-down') +
-        '<div class="country-menu"><div class="country-option">All countries</div><div class="country-option country-us">' +
+        '<div class="country-menu"><div class="country-option">' +
+        message('All countries') +
+        '</div><div class="country-option country-us">' +
         flag('us') +
-        '<span>United States</span></div><div class="country-option">' +
+        '<span>' +
+        message('United States') +
+        '</span></div><div class="country-option">' +
         flag('de') +
-        '<span>Germany</span></div></div></div>' +
-        '<div class="filter filter-sort"><span>Sort by: Relevance</span>' +
+        '<span>' +
+        message('Germany') +
+        '</span></div></div></div>' +
+        '<div class="filter filter-sort"><span>' +
+        message('Sort by: Relevance') +
+        '</span>' +
         icon('chevron-down') +
         '</div></div><div class="result-rows">' +
         rows
@@ -324,7 +356,7 @@ SOFTWARE.
               '</div><div class="result-ip">' +
               row.ip +
               '</div><div class="result-description">' +
-              row.description +
+              message(row.description) +
               '</div><div class="result-tags">' +
               row.tags
                 .map(function (text) {
@@ -336,7 +368,7 @@ SOFTWARE.
                 .map(function (value, j) {
                   return (
                     '<div class="result-metric"><span class="metric-label">' +
-                    ['Open ports', 'Services', 'Technologies'][j] +
+                    message(['Open ports', 'Services', 'Technologies'][j]!) +
                     '</span><span class="metric-value" data-value="' +
                     value +
                     '">' +
@@ -348,14 +380,18 @@ SOFTWARE.
               '<div class="result-country">' +
               flag(row.flag) +
               '<div><div class="country-name">' +
-              row.country +
+              message(row.country) +
               '</div><div class="country-city">' +
-              row.city +
+              message(row.city) +
               '</div></div></div></div>'
             );
           })
           .join('') +
-        '</div><div class="results-footer"><span class="result-count">3 hosts found</span><div class="load-more"><span>Load more</span>' +
+        '</div><div class="results-footer"><span class="result-count">' +
+        message('{count} hosts found', { count: 3 }) +
+        '</span><div class="load-more"><span>' +
+        message('Load more') +
+        '</span>' +
         icon('arrow-right') +
         '</div></div></div>'
       );
@@ -364,9 +400,9 @@ SOFTWARE.
       const meta = [
         ['Organization', 'Example Organization Ltd.'],
         ['ASN', 'AS64500'],
-        ['Location', flag('us') + '<span>San Francisco, United States</span>'],
-        ['First seen', 'Jan 12, 2023'],
-        ['Last seen', 'Apr 26, 2025'],
+        ['Location', flag('us') + '<span>' + message('San Francisco, United States') + '</span>'],
+        ['First seen', message('Jan 12, 2023')],
+        ['Last seen', message('Apr 26, 2025')],
       ];
       const end = chartPoint(SERIES90.length - 1, SERIES90);
       return (
@@ -380,7 +416,7 @@ SOFTWARE.
           .map(function (pair, i) {
             return (
               '<div class="host-meta-row"><span class="host-meta-label">' +
-              pair[0] +
+              message(pair[0]!) +
               '</span><span class="' +
               (i === 2 ? 'host-meta-location' : 'host-meta-value') +
               '">' +
@@ -389,7 +425,9 @@ SOFTWARE.
             );
           })
           .join('') +
-        '</div></div><div class="host-detail"><section class="chart-panel"><div class="host-panel-heading"><div class="host-panel-title"><span>Exposure over time</span>' +
+        '</div></div><div class="host-detail"><section class="chart-panel"><div class="host-panel-heading"><div class="host-panel-title"><span>' +
+        message('Exposure over time') +
+        '</span>' +
         icon('info') +
         '</div><div class="periods">' +
         ['7D', '30D', '90D', '1Y']
@@ -426,12 +464,21 @@ SOFTWARE.
         ')"><rect class="chart-tooltip" x="-21" y="0" width="42" height="32" rx="8"/><text class="chart-tooltip-text" x="0" y="22">28</text></g>' +
         ['Jan 1', 'Jan 15', 'Feb 1', 'Feb 15', 'Mar 1', 'Mar 15', 'Apr 1']
           .map(function (text, i) {
-            return '<text class="chart-date" x="' + (35 + i * 91) + '" y="175">' + text + '</text>';
+            return (
+              '<text class="chart-date" x="' +
+              (35 + i * 91) +
+              '" y="175">' +
+              message(text) +
+              '</text>'
+            );
           })
           .join('') +
-        '</svg></section><section class="vulnerability-panel"><div class="host-panel-heading"><div class="host-panel-title"><span>Vulnerabilities</span>' +
+        '</svg></section><section class="vulnerability-panel"><div class="host-panel-heading"><div class="host-panel-title"><span>' +
+        message('Vulnerabilities') +
+        '</span>' +
         icon('info') +
-        '</div><span class="view-all">View all' +
+        '</div><span class="view-all">' +
+        message('View all') +
         icon('arrow-right') +
         '</span></div><div class="vulnerability-tiles">' +
         [
@@ -449,14 +496,17 @@ SOFTWARE.
               '">' +
               tile[0] +
               '</div><div class="vulnerability-name">' +
-              tile[1] +
+              message(String(tile[1])) +
               '</div></div>'
             );
           })
           .join('') +
-        '</div></section><section class="services-panel"><div class="host-panel-heading"><div class="host-panel-title"><span>Open services</span>' +
+        '</div></section><section class="services-panel"><div class="host-panel-heading"><div class="host-panel-title"><span>' +
+        message('Open services') +
+        '</span>' +
         icon('info') +
-        '</div><span class="view-all">View all' +
+        '</div><span class="view-all">' +
+        message('View all') +
         icon('arrow-right') +
         '</span></div><div class="service-rows">' +
         [
@@ -473,7 +523,9 @@ SOFTWARE.
               pair[0] +
               ' <span>/ tcp</span></span><span class="service-name">' +
               pair[1] +
-              '</span><span class="service-state">Open</span></div>'
+              '</span><span class="service-state">' +
+              message('Open') +
+              '</span></div>'
             );
           })
           .join('') +
@@ -487,7 +539,7 @@ SOFTWARE.
           .map(function (pair) {
             return (
               '<div class="evidence-meta-label">' +
-              pair[0] +
+              message(pair[0]) +
               '</div><div class="evidence-meta-value">' +
               pair[1] +
               '</div>'
@@ -514,9 +566,15 @@ SOFTWARE.
         ['CVE-2020-15778', 'Medium', 'medium', 'OpenSSH information disclosure'],
       ];
       const location =
-        '<span class="evidence-location">' + flag('us') + '<span>United States</span></span>';
+        '<span class="evidence-location">' +
+        flag('us') +
+        '<span>' +
+        message('United States') +
+        '</span></span>';
       return (
-        '<div class="surface evidence-scene"><div class="evidence-layout"><section class="evidence-services"><div class="evidence-heading">Open services<span class="evidence-count">4</span></div><div class="evidence-service-list">' +
+        '<div class="surface evidence-scene"><div class="evidence-layout"><section class="evidence-services"><div class="evidence-heading">' +
+        message('Open services') +
+        '<span class="evidence-count">4</span></div><div class="evidence-service-list">' +
         services
           .map(function (service) {
             return (
@@ -528,20 +586,31 @@ SOFTWARE.
               service[0] +
               ' <span>/ tcp</span></div><div class="evidence-service-name">' +
               service[1] +
-              '</div></div><span class="evidence-open">Open</span><span class="evidence-chevron">' +
+              '</div></div><span class="evidence-open">' +
+              message('Open') +
+              '</span><span class="evidence-chevron">' +
               icon('chevron-down') +
               '</span></div>'
             );
           })
           .join('') +
-        '</div></section><section class="evidence-center"><div class="evidence-center-header"><div><div class="evidence-center-title">Technical evidence</div><div class="evidence-source">Evidence collected from 203.0.113.10:22</div></div><div class="evidence-nav"><span class="evidence-nav-item evidence-nav-prev">' +
+        '</div></section><section class="evidence-center"><div class="evidence-center-header"><div><div class="evidence-center-title">' +
+        message('Technical evidence') +
+        '</div><div class="evidence-source">' +
+        message('Evidence collected from {address}', { address: '203.0.113.10:22' }) +
+        '</div></div><div class="evidence-nav"><span class="evidence-nav-item evidence-nav-prev">' +
         icon('chevron-down') +
         '</span><span class="evidence-nav-item evidence-nav-next">' +
         icon('chevron-down') +
         '</span></div></div><div class="evidence-cards">' +
         '<div class="evidence-card evidence-banner-card"><div class="evidence-card-heading">' +
         icon('file') +
-        '<div><div class="evidence-card-title">Service banner</div><div class="evidence-card-subtitle evidence-protocol">SSH protocol banner</div></div><span class="evidence-raw">Raw' +
+        '<div><div class="evidence-card-title">' +
+        message('Service banner') +
+        '</div><div class="evidence-card-subtitle evidence-protocol">' +
+        message('SSH protocol banner') +
+        '</div></div><span class="evidence-raw">' +
+        message('Raw') +
         icon('external-link') +
         '</span></div><div class="evidence-banner"><span class="evidence-banner-text">SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.5</span><span class="evidence-banner-copy">' +
         icon('copy', 'evidence-banner-copy-icon') +
@@ -549,13 +618,21 @@ SOFTWARE.
         '</span></div></div>' +
         '<div class="evidence-card evidence-tls-card"><div class="evidence-card-heading">' +
         icon('lock') +
-        '<div><div class="evidence-card-title">SSL / TLS</div><div class="evidence-card-subtitle">Certificate details (if available)</div></div><span class="evidence-tls-status" data-available="false">' +
+        '<div><div class="evidence-card-title">SSL / TLS</div><div class="evidence-card-subtitle">' +
+        message('Certificate details (if available)') +
+        '</div></div><span class="evidence-tls-status" data-available="false">' +
         icon('circle-minus', 'evidence-tls-minus') +
         icon('check', 'evidence-tls-check') +
-        '<span class="evidence-tls-label">Not available</span></span></div><div class="evidence-tls-description">No SSL/TLS service detected on port 22.</div></div>' +
+        '<span class="evidence-tls-label">' +
+        message('Not available') +
+        '</span></span></div><div class="evidence-tls-description">' +
+        message('No SSL/TLS service detected on port 22.') +
+        '</div></div>' +
         '<div class="evidence-card evidence-network-card"><div class="evidence-card-heading">' +
         icon('waypoints') +
-        '<div class="evidence-card-title">Network information</div></div>' +
+        '<div class="evidence-card-title">' +
+        message('Network information') +
+        '</div></div>' +
         evidenceMeta([
           ['ASN', 'AS64500'],
           ['Organization', 'Example Organization Ltd.'],
@@ -565,23 +642,29 @@ SOFTWARE.
         '</div>' +
         '<div class="evidence-card evidence-geo-card"><div class="evidence-card-heading">' +
         icon('map-pin') +
-        '<div class="evidence-card-title">Geolocation</div></div>' +
+        '<div class="evidence-card-title">' +
+        message('Geolocation') +
+        '</div></div>' +
         evidenceMeta([
-          ['City', 'San Francisco'],
-          ['Region', 'California'],
+          ['City', message('San Francisco')],
+          ['Region', message('California')],
           ['Country', location],
           ['Coordinates', '37.7749, -122.4194'],
         ]) +
         '</div>' +
         '<div class="evidence-card evidence-dns-card"><div class="evidence-card-heading">' +
         icon('database') +
-        '<div class="evidence-card-title">Reverse DNS</div></div>' +
+        '<div class="evidence-card-title">' +
+        message('Reverse DNS') +
+        '</div></div>' +
         evidenceMeta([
           ['PTR record', 'example.com'],
           ['Resolved to', '203.0.113.10'],
         ]) +
         '</div>' +
-        '</div></section><section class="evidence-findings"><div class="evidence-heading">Detected products<span class="evidence-count">2</span></div><div class="evidence-products">' +
+        '</div></section><section class="evidence-findings"><div class="evidence-heading">' +
+        message('Detected products') +
+        '<span class="evidence-count">2</span></div><div class="evidence-products">' +
         products
           .map(function (product) {
             return (
@@ -591,9 +674,15 @@ SOFTWARE.
               ASSETS.logos[product[0]] +
               '" alt="" draggable="false"><span class="evidence-product-name">' +
               product[1] +
-              '</span><span class="evidence-product-confidence">High</span></div><div class="evidence-product-meta"><span>Version</span><span>' +
+              '</span><span class="evidence-product-confidence">' +
+              message('High') +
+              '</span></div><div class="evidence-product-meta"><span>' +
+              message('Version') +
+              '</span><span>' +
               product[2] +
-              '</span><span>Product</span><span>' +
+              '</span><span>' +
+              message('Product') +
+              '</span><span>' +
               product[3] +
               '</span><span>CPE</span><span class="evidence-product-cpe">' +
               product[4] +
@@ -601,7 +690,9 @@ SOFTWARE.
             );
           })
           .join('') +
-        '</div><div class="evidence-linked"><div class="evidence-heading">Linked CVEs<span class="evidence-count">3</span></div><div class="evidence-cves">' +
+        '</div><div class="evidence-linked"><div class="evidence-heading">' +
+        message('Linked CVEs') +
+        '<span class="evidence-count">3</span></div><div class="evidence-cves">' +
         cves
           .map(function (cve, i) {
             return (
@@ -612,18 +703,23 @@ SOFTWARE.
               '</span><span class="evidence-severity evidence-severity-' +
               cve[2] +
               '">' +
-              cve[1] +
+              message(cve[1]!) +
               '</span></div><div class="evidence-cve-description">' +
-              cve[3] +
+              message(cve[3]!) +
               '</div><span class="evidence-chevron">' +
               icon('chevron-down') +
               '</span></div>'
             );
           })
           .join('') +
-        '</div></div><div class="evidence-confidence"><div class="evidence-heading">Confidence' +
+        '</div></div><div class="evidence-confidence"><div class="evidence-heading">' +
+        message('Confidence') +
         icon('info') +
-        '</div><div class="evidence-confidence-value"><span class="evidence-confidence-number">92</span>%</div><div class="evidence-confidence-track"><div class="evidence-confidence-fill"></div></div><div class="evidence-confidence-description">High confidence based on multiple consistent signals<br>across banner, service behavior and OS fingerprinting.</div></div></section></div></div>'
+        '</div><div class="evidence-confidence-value"><span class="evidence-confidence-number">92</span>%</div><div class="evidence-confidence-track"><div class="evidence-confidence-fill"></div></div><div class="evidence-confidence-description">' +
+        message(
+          'High confidence based on multiple consistent signals across banner, service behavior and OS fingerprinting.',
+        ) +
+        '</div></div></section></div></div>'
       );
     }
     function suggestionsMarkup() {
@@ -643,18 +739,39 @@ SOFTWARE.
         ],
       ];
       return (
-        '<div class="surface suggestions-scene"><div class="refine-label">Refine your query</div><div class="refine-bar">' +
+        '<div class="surface suggestions-scene"><div class="refine-label">' +
+        message('Refine your query') +
+        '</div><div class="refine-bar">' +
         icon('search') +
         '<div class="refine-value-wrap"><span class="refine-value">ssl:true apache country:us</span><span class="refine-caret"></span></div><span class="refine-submit">' +
         icon('arrow-right', 'refine-arrow') +
         icon('loader', 'refine-spinner') +
-        '</span></div><div class="refine-help"><span>Add filters, technologies, countries or ports to narrow your search.</span><span class="refine-docs">View query syntax' +
+        '</span></div><div class="refine-help"><span>' +
+        message('Add filters, technologies, countries or ports to narrow your search.') +
+        '</span><span class="refine-docs">' +
+        message('View query syntax') +
         icon('external-link') +
         '</span></div>' +
         '<div class="found-summary"><div class="found-main"><span class="found-icon">' +
         icon('file-text') +
-        '</span><div><div class="found-label">WHAT WE FOUND</div><div class="found-title"><span class="found-host-count" data-value="248">248</span> internet-facing hosts</div><div class="found-description">Running Apache HTTP Server with SSL in the United States.</div></div></div><div class="found-metric"><div class="found-metric-label">Countries</div><div class="found-metric-value found-countries-value" data-value="1">1</div><div class="found-metric-description">United States</div></div><div class="found-metric"><div class="found-metric-label">ASNs</div><div class="found-metric-value found-asns-value" data-value="37">37</div></div><div class="found-metric"><div class="found-metric-label">Open ports</div><div class="found-metric-value found-ports-value" data-value="4">4</div><div class="found-metric-description found-ports-description">80, 443, 8080, 8443</div></div></div>' +
-        '<section class="suggested-section"><div class="suggested-heading"><span>Suggested next queries</span><span class="suggested-note">Investigate further with one click.</span></div><div class="suggested-rows">' +
+        '</span><div><div class="found-label">' +
+        message('WHAT WE FOUND') +
+        '</div><div class="found-title"><span class="found-host-count" data-value="248">248</span> ' +
+        message('internet-facing hosts') +
+        '</div><div class="found-description">' +
+        message('Running Apache HTTP Server with SSL in the United States.') +
+        '</div></div></div><div class="found-metric"><div class="found-metric-label">' +
+        message('Countries') +
+        '</div><div class="found-metric-value found-countries-value" data-value="1">1</div><div class="found-metric-description">' +
+        message('United States') +
+        '</div></div><div class="found-metric"><div class="found-metric-label">ASNs</div><div class="found-metric-value found-asns-value" data-value="37">37</div></div><div class="found-metric"><div class="found-metric-label">' +
+        message('Open ports') +
+        '</div><div class="found-metric-value found-ports-value" data-value="4">4</div><div class="found-metric-description found-ports-description">80, 443, 8080, 8443</div></div></div>' +
+        '<section class="suggested-section"><div class="suggested-heading"><span>' +
+        message('Suggested next queries') +
+        '</span><span class="suggested-note">' +
+        message('Investigate further with one click.') +
+        '</span></div><div class="suggested-rows">' +
         suggestions
           .map(function (row, i) {
             return (
@@ -663,12 +780,14 @@ SOFTWARE.
               '"><span class="suggested-number">' +
               (i + 1) +
               '</span><div><div class="suggested-title">' +
-              row[0] +
+              message(row[0]!) +
               '</div><div class="suggested-description">' +
-              row[1] +
+              message(row[1]!) +
               '</div></div><span class="suggested-tag">' +
-              row[2] +
-              '</span><span class="suggested-run"><span>Run query</span>' +
+              message(row[2]!) +
+              '</span><span class="suggested-run"><span>' +
+              message('Run query') +
+              '</span>' +
               icon('arrow-right', 'suggested-run-arrow') +
               icon('loader', 'suggested-run-spinner') +
               icon('check', 'suggested-run-check') +
@@ -897,7 +1016,7 @@ SOFTWARE.
           });
           this.$('.recent-row').removeAttribute('data-complete');
         } else if (this.scene === 'results') {
-          this.$('.country-filter-label').textContent = 'All countries';
+          this.$('.country-filter-label').textContent = message('All countries');
           this.$('.filter-countries').removeAttribute('data-active');
           this.$('.results-scene').removeAttribute('data-loading');
           this.$('.country-menu').style.visibility = 'hidden';
@@ -951,18 +1070,22 @@ SOFTWARE.
         this.$$('.evidence-service').forEach(function (el) {
           el.dataset.active = String(el.dataset.port === port);
         });
-        this.$('.evidence-source').textContent = 'Evidence collected from 203.0.113.10:' + port;
+        this.$('.evidence-source').textContent = message(
+          'Evidence collected from 203.0.113.10:' + port,
+        );
         this.$('.evidence-protocol').textContent = tls
-          ? 'HTTPS response banner'
-          : 'SSH protocol banner';
+          ? message('HTTPS response banner')
+          : message('SSH protocol banner');
         this.$('.evidence-banner-text').textContent = tls
           ? 'HTTP/1.1 200 OK · Apache/2.4.41 (Ubuntu)'
           : 'SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.5';
         this.$('.evidence-tls-status').dataset.available = String(tls);
-        this.$('.evidence-tls-label').textContent = tls ? 'Available' : 'Not available';
+        this.$('.evidence-tls-label').textContent = tls
+          ? message('Available')
+          : message('Not available');
         this.$('.evidence-tls-description').textContent = tls
-          ? 'Valid certificate · example.com · TLS 1.3.'
-          : 'No SSL/TLS service detected on port 22.';
+          ? message('Valid certificate · example.com · TLS 1.3.')
+          : message('No SSL/TLS service detected on port 22.');
         this.$('.evidence-banner-copy').removeAttribute('data-copied');
       }
       _suggestionsState(refined: boolean) {
@@ -971,8 +1094,8 @@ SOFTWARE.
           : 'ssl:true apache country:us';
         this.$('.found-host-count').textContent = refined ? '64' : '248';
         this.$('.found-description').textContent = refined
-          ? 'Running Apache HTTP Server on port 8080 in the United States.'
-          : 'Running Apache HTTP Server with SSL in the United States.';
+          ? message('Running Apache HTTP Server on port 8080 in the United States.')
+          : message('Running Apache HTTP Server with SSL in the United States.');
         this.$('.found-asns-value').textContent = refined ? '23' : '37';
         this.$('.found-ports-value').textContent = refined ? '1' : '4';
         this.$('.found-countries-value').textContent = '1';
@@ -1414,7 +1537,7 @@ SOFTWARE.
           );
           tl.call(
             () => {
-              label.textContent = 'All countries';
+              label.textContent = message('All countries');
               this.$('.filter-countries').removeAttribute('data-active');
               row.style.visibility = 'visible';
               this._engine!.set(row, { opacity: 0, y: 3 });
@@ -1654,7 +1777,7 @@ SOFTWARE.
         tl.set(menu, { visibility: 'hidden' }, 2.3);
         tl.call(
           () => {
-            this.$('.country-filter-label').textContent = 'United States';
+            this.$('.country-filter-label').textContent = message('United States');
             this.$('.filter-countries').dataset.active = 'true';
             this.$('.results-scene').dataset.loading = 'true';
           },

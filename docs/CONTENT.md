@@ -1,6 +1,6 @@
 # Content and integration ownership
 
-The site presents Apcosys in English. Metrics, plan values and synthetic interface demonstrations are not a live product feed. Keep demo labels and reserved example addresses when editing scenes.
+The site provides English and locally implemented Russian/Traditional Chinese marketing pages; legal documents remain English-only. Metrics, plan values and synthetic interface demonstrations are not a live product feed. Keep demo labels and reserved example addresses when editing scenes.
 
 | Content                                               | Authoritative project location                                       |
 | ----------------------------------------------------- | -------------------------------------------------------------------- |
@@ -16,7 +16,7 @@ Owner approval is required for current prices/annual rules, credits/tokens and l
 
 Contact opens an email draft; this repository does not deliver or store messages. Registration does not transfer the chosen pricing plan. Sign In opens the client product homepage during migration; an optional verified same-origin sign-in URL can override it. API examples are illustrative; they do not establish a production schema. Legal sources retain their original addresses and legal wording even when the general site support email is overridden.
 
-Light, Dark and System are available. RU/CN controls are unavailable until translations are approved. Preview `noindex` and `robots.txt` remain deliberate and should only change for an approved public launch.
+Light, Dark and System are available. RU/Traditional Chinese controls work locally on the translated marketing routes; public publication still requires review. Preview `noindex` and `robots.txt` remain deliberate and should only change for an approved public launch.
 
 ## Pricing and ordinary text
 

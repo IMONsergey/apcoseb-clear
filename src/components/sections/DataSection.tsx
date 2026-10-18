@@ -19,7 +19,7 @@ import { Visual } from '../visuals/Visual';
 
 /** One set of metrics; CSS changes the mobile reading path without duplicating data. */
 export function DataSection() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   return (
     <section
       className="data-section data-section--observations"
@@ -29,9 +29,15 @@ export function DataSection() {
       <div className="container data-stage">
         <div className="data-copy">
           <h2 id="data-title">
-            <LocaleText>{t('The data behind')}</LocaleText>
-            <br />
-            <LocaleText>{t('every search.')}</LocaleText>
+            {locale === 'en' ? (
+              <>
+                <LocaleText>{t('The data behind')}</LocaleText>
+                <br />
+                <LocaleText>{t('every search.')}</LocaleText>
+              </>
+            ) : (
+              <LocaleText>{t('The data behind every search.')}</LocaleText>
+            )}
           </h2>
           <p>
             <LocaleText>
@@ -51,8 +57,12 @@ export function DataSection() {
                     <LocaleText>{t(metric.label)}</LocaleText>
                   </span>
                 </dt>
-                <dd>{metric.value}</dd>
-                <dd className="metric-observation-note">{metric.note}</dd>
+                <dd>
+                  <LocaleText>{t(metric.value)}</LocaleText>
+                </dd>
+                <dd className="metric-observation-note">
+                  <LocaleText>{t(metric.note)}</LocaleText>
+                </dd>
               </div>
             ))}
           </dl>

@@ -4,10 +4,12 @@ import {
   FeatureColumns,
   ReadingRows,
 } from '../../components/layout/PageSections';
+import { useLocale } from '../../i18n/context';
 
 type GuidanceItem = { title: string; description: string };
 export type CaseKind = 'scope' | 'technology' | 'indicator';
 export function CaseApproach({ kind, items }: { kind: CaseKind; items: readonly GuidanceItem[] }) {
+  const { t } = useLocale();
   if (kind === 'scope')
     return (
       <EditorialSection
@@ -56,7 +58,7 @@ export function CaseApproach({ kind, items }: { kind: CaseKind; items: readonly 
             </article>
           ))}
         </div>
-        <aside className="investigation-notebook" aria-label="Example investigation note">
+        <aside className="investigation-notebook" aria-label={t('Example investigation note')}>
           <Text as="h3">Keep a useful investigation note.</Text>
           <dl>
             <div>

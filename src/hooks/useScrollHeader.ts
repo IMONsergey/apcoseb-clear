@@ -8,7 +8,7 @@ export function useScrollHeader(ref: RefObject<HTMLElement | null>, locked: bool
     let previous = scrollY;
     let travel = 0;
     let frame = 0;
-    let keyboardPinned = false;
+    let keyboardPinned = Boolean(location.hash);
     const update = () => {
       frame = 0;
       const y = Math.max(0, scrollY);

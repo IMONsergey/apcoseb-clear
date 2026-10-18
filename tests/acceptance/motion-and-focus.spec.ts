@@ -18,7 +18,7 @@ const priceAnimations = (page: Page) =>
           .filter((animation) => animation.playState === 'running').length,
     );
 
-test('language disclosure keeps the soft navigation treatment with unavailable RU and ZH', async ({
+test('language disclosure keeps the soft navigation treatment with all locales available', async ({
   page,
 }) => {
   await visit(page);
@@ -29,11 +29,12 @@ test('language disclosure keeps the soft navigation treatment with unavailable R
   const menu = await openLanguageMenu(page);
   await expect(platform).toHaveAttribute('aria-expanded', 'false');
   await expect(menu.english).toHaveAttribute('aria-checked', 'true');
-  await expect(menu.russian).toBeDisabled();
-  await expect(menu.chinese).toBeDisabled();
+  await expect(menu.russian).toBeEnabled();
+  await expect(menu.chinese).toBeEnabled();
+  await expect(menu.chinese).toHaveAttribute('lang', 'zh-Hant');
   // Navigation and language menus share the canonical elevated surface.
   await expect(page.locator('.language-panel')).toHaveCSS('background-color', 'rgb(236, 238, 241)');
-  await expect(menu.russian).toHaveCSS('opacity', '0.42');
+  await expect(menu.russian).toHaveCSS('opacity', '1');
 
   await page.keyboard.press('Escape');
   await expect(menu.trigger).toBeFocused();
@@ -123,7 +124,7 @@ test('language controls have no serious accessibility violations', async ({ page
   await visit(page, 390);
 
   const menu = await openLanguageMenu(page);
-  await expect(menu.russian).toBeDisabled();
+  await expect(menu.russian).toBeEnabled();
 
   const results = await new AxeBuilder({ page }).analyze();
   expect(

@@ -1,3 +1,5 @@
+import { translate, type Locale } from '../../i18n/messages';
+
 type Gsap = typeof import('gsap').gsap;
 type Endpoint = 'list' | 'detail';
 type TabName = 'parameters' | 'headers' | 'authorization' | 'examples';
@@ -41,6 +43,10 @@ declare global {
   const instances = new Set<ApiDeveloperDemo>();
   // Exact composition ratio of the supplied 2048 × 1511 reference.
   const FRAME = Object.freeze({ width: 1440, height: (1440 * 1511) / 2048 });
+  const message = (sourceEnglish: string, translationKey = sourceEnglish) => {
+    const locale = (document.documentElement.lang || 'en') as Locale;
+    return locale === 'en' ? sourceEnglish : translate(locale, translationKey);
+  };
   const dataset = {
     id: 'ds_01H8Z6K3F9Q2',
     name: 'Revenue Transactions',
@@ -250,32 +256,32 @@ declare global {
       super();
       const shadow = this.attachShadow({ mode: 'open' });
       shadow.innerHTML = `<style>${styles}</style>
-        <div class="viewport" role="img" aria-label="Animated Apcosys API demo: parameters update the cURL request, a successful JSON response appears, then the next endpoint opens and a success confirmation completes the loop."><div class="sizer"><section class="shell" inert aria-hidden="true">
+        <div class="viewport" role="img" aria-label="${message('Animated Apcosys API demo: parameters update the cURL request, a successful JSON response appears, then the next endpoint opens and a success confirmation completes the loop.')}"><div class="sizer"><section class="shell" inert aria-hidden="true">
           <aside class="sidebar">
-            <div class="sidebar-top"><span class="api-label">API</span></div>
-            <div class="group-title">${icon('chevron')}<span>Datasets</span></div>
-            <nav class="endpoints" aria-label="Dataset endpoints">
+            <div class="sidebar-top"><span class="api-label">${message('API')}</span></div>
+            <div class="group-title">${icon('chevron')}<span>${message('Datasets')}</span></div>
+            <nav class="endpoints" aria-label="${message('Dataset endpoints')}">
               <div class="nav-highlight" aria-hidden="true"></div>
-              <button tabindex="-1" class="nav-item" data-endpoint="list" aria-current="page" type="button"><span>List datasets</span><span class="verb">GET</span></button>
-              <button tabindex="-1" class="nav-item" data-endpoint="detail" type="button"><span>Get dataset</span><span class="verb">GET</span></button>
-              <span class="nav-item passive"><span>Create dataset</span><span class="verb">POST</span></span>
-              <span class="nav-item passive"><span>Update dataset</span><span class="verb">PATCH</span></span>
-              <span class="nav-item passive"><span>Delete dataset</span><span class="verb">DELETE</span></span>
+              <button tabindex="-1" class="nav-item" data-endpoint="list" aria-current="page" type="button"><span>${message('List datasets')}</span><span class="verb">GET</span></button>
+              <button tabindex="-1" class="nav-item" data-endpoint="detail" type="button"><span>${message('Get dataset')}</span><span class="verb">GET</span></button>
+              <span class="nav-item passive"><span>${message('Create dataset')}</span><span class="verb">POST</span></span>
+              <span class="nav-item passive"><span>${message('Update dataset')}</span><span class="verb">PATCH</span></span>
+              <span class="nav-item passive"><span>${message('Delete dataset')}</span><span class="verb">DELETE</span></span>
             </nav>
-            <div class="other-groups">${['Queries', 'Exports', 'Jobs', 'Organization'].map((label) => `<div class="group-title">${icon('right')}<span>${label}</span></div>`).join('')}</div>
+            <div class="other-groups">${['Queries', 'Exports', 'Jobs', 'Organization'].map((label) => `<div class="group-title">${icon('right')}<span>${message(label)}</span></div>`).join('')}</div>
           </aside>
           <div class="main">
             <header class="header">
               <div class="endpoint-heading"><span class="method">GET</span><div class="route-stack"><h1><span class="route">/v1/datasets</span><span class="route-suffix"></span></h1></div></div>
-              <button tabindex="-1" class="send" type="button"><span class="send-label">Send request</span><span class="send-icon"><span class="arrow">${icon('arrow')}</span><span class="spinner">${icon('spinner')}</span></span></button>
-              <p class="description">Returns a list of datasets in your organization.</p>
+              <button tabindex="-1" class="send" type="button"><span class="send-label">${message('Send request')}</span><span class="send-icon"><span class="arrow">${icon('arrow')}</span><span class="spinner">${icon('spinner')}</span></span></button>
+              <p class="description">${message('Returns a list of datasets in your organization.')}</p>
             </header>
-            <div class="tabs" role="tablist" aria-label="Request configuration">
+            <div class="tabs" role="tablist" aria-label="${message('Request configuration')}">
               ${[
-                ['parameters', 'Parameters'],
-                ['headers', 'Headers'],
-                ['authorization', 'Authorization'],
-                ['examples', 'Code examples'],
+                ['parameters', message('Parameters')],
+                ['headers', message('Headers')],
+                ['authorization', message('Authorization')],
+                ['examples', message('Code examples')],
               ]
                 .map(
                   ([id, label], i) =>
@@ -286,41 +292,62 @@ declare global {
             </div>
             <div class="panels">
               <div class="panel active" id="panel-parameters" role="tabpanel" aria-labelledby="tab-parameters">
-                <div class="panel-heading"><h2 class="params-heading">Query parameters</h2><span class="add-param" aria-hidden="true">${icon('plus')}<span>Add parameter</span></span></div>
-                <div class="column-labels" aria-hidden="true"><span>NAME</span><span>TYPE</span><span>DESCRIPTION</span><span>VALUE</span></div>
+                <div class="panel-heading"><h2 class="params-heading">${message('Query parameters')}</h2><span class="add-param" aria-hidden="true">${icon('plus')}<span>${message('Add parameter')}</span></span></div>
+                <div class="column-labels" aria-hidden="true"><span>${message('NAME')}</span><span>${message('TYPE')}</span><span>${message('DESCRIPTION')}</span><span>${message('VALUE')}</span></div>
                 <div class="query-rows">
                   ${[
-                    ['limit', 'integer', 'Maximum number of results (1–100)', '50', ''],
-                    ['offset', 'integer', 'Number of results to skip', '0', ''],
-                    ['q', 'string', 'Filter by name or description', '', 'e.g. revenue'],
+                    [
+                      'limit',
+                      'integer',
+                      message('Maximum number of results (1–100)'),
+                      '50',
+                      '',
+                      message('Limit parameter'),
+                    ],
+                    [
+                      'offset',
+                      'integer',
+                      message('Number of results to skip'),
+                      '0',
+                      '',
+                      message('Offset parameter'),
+                    ],
+                    [
+                      'q',
+                      'string',
+                      message('Filter by name or description'),
+                      '',
+                      message('e.g. revenue'),
+                      message('Search parameter'),
+                    ],
                   ]
                     .map(
-                      ([name, type, description, value, placeholder]) =>
-                        `<div class="param-row"><span class="param-name">${name}</span><span class="param-type">${type}${icon('chevron')}</span><span class="param-description">${description}</span><div class="field" data-field="${name}"><input readonly tabindex="-1" aria-label="${name} parameter" name="${name}" value="${value}" placeholder="${placeholder}" autocomplete="off" spellcheck="false" ${type === 'integer' ? `type="number" inputmode="numeric" min="${name === 'limit' ? '1' : '0'}" step="1"` : 'type="text"'} ${name === 'limit' ? 'max="100"' : ''}><span class="caret" aria-hidden="true"></span></div></div>`,
+                      ([name, type, description, value, placeholder, label]) =>
+                        `<div class="param-row"><span class="param-name">${name}</span><span class="param-type">${type}${icon('chevron')}</span><span class="param-description">${description}</span><div class="field" data-field="${name}"><input readonly tabindex="-1" aria-label="${label}" name="${name}" value="${value}" placeholder="${placeholder}" autocomplete="off" spellcheck="false" ${type === 'integer' ? `type="number" inputmode="numeric" min="${name === 'limit' ? '1' : '0'}" step="1"` : 'type="text"'} ${name === 'limit' ? 'max="100"' : ''}><span class="caret" aria-hidden="true"></span></div></div>`,
                     )
                     .join('')}
                 </div>
-                <div class="path-row param-row" hidden><span class="param-name">dataset_id</span><span class="param-type">string${icon('chevron')}</span><span class="param-description">Unique identifier of the dataset</span><div class="field" data-field="dataset_id"><input readonly tabindex="-1" name="dataset_id" data-id aria-label="Dataset identifier" placeholder="ds_…" value="" autocomplete="off" spellcheck="false"><span class="caret" aria-hidden="true"></span></div></div>
+                <div class="path-row param-row" hidden><span class="param-name">dataset_id</span><span class="param-type">string${icon('chevron')}</span><span class="param-description">${message('Unique identifier of the dataset')}</span><div class="field" data-field="dataset_id"><input readonly tabindex="-1" name="dataset_id" data-id aria-label="${message('Dataset identifier')}" placeholder="ds_…" value="" autocomplete="off" spellcheck="false"><span class="caret" aria-hidden="true"></span></div></div>
               </div>
               <div class="panel" id="panel-authorization" role="tabpanel" aria-labelledby="tab-authorization" aria-hidden="true" inert>
-                <div class="panel-heading"><h2>Authorization</h2></div>
-                <div class="auth-grid"><div><span class="field-label">SCHEME</span><span class="param-type">Bearer token${icon('chevron')}</span></div><div><span class="field-label">API KEY</span><span class="param-name">YOUR_API_KEY</span></div></div>
-                <div class="connected">${icon('check')}<span>API key connected</span></div><p class="auth-note">The Authorization header is included in every request.</p>
+                <div class="panel-heading"><h2>${message('Authorization')}</h2></div>
+                <div class="auth-grid"><div><span class="field-label">${message('SCHEME')}</span><span class="param-type">${message('Bearer token')}${icon('chevron')}</span></div><div><span class="field-label">${message('API KEY')}</span><span class="param-name">YOUR_API_KEY</span></div></div>
+                <div class="connected">${icon('check')}<span>${message('API key connected')}</span></div><p class="auth-note">${message('The Authorization header is included in every request.')}</p>
               </div>
               <div class="panel" id="panel-headers" role="tabpanel" aria-labelledby="tab-headers" aria-hidden="true" inert>
-                <div class="panel-heading"><h2>Request headers</h2></div><div class="headers-table"><span>Accept</span><span class="value">application/json</span><span>Authorization</span><span class="value">Bearer YOUR_API_KEY</span></div>
+                <div class="panel-heading"><h2>${message('Request headers')}</h2></div><div class="headers-table"><span>Accept</span><span class="value">application/json</span><span>Authorization</span><span class="value">Bearer YOUR_API_KEY</span></div>
               </div>
               <div class="panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples" aria-hidden="true" inert>
-                <div class="panel-heading"><h2>Code examples</h2></div><p class="example-note">Use the cURL request below with your API key.</p><div class="headers-table"><span>Base URL</span><span class="value">https://api.apcosys.com</span><span>Method</span><span class="value">GET</span><span>Response format</span><span class="value">application/json</span></div>
+                <div class="panel-heading"><h2>${message('Code examples')}</h2></div><p class="example-note">${message('Use the cURL request below with your API key.')}</p><div class="headers-table"><span>${message('Base URL')}</span><span class="value">https://api.apcosys.com</span><span>${message('Method')}</span><span class="value">GET</span><span>${message('Response format')}</span><span class="value">application/json</span></div>
               </div>
             </div>
-            <section aria-label="cURL request">
-              <div class="section-header"><h2>Request</h2><div class="section-tools"><span class="language">cURL${icon('chevron')}</span><button tabindex="-1" class="copy copy-request" type="button" aria-label="Copy cURL request"><span class="copy-icon">${icon('copy')}</span><span class="check">${icon('check')}</span></button></div></div>
+            <section aria-label="${message('cURL request')}">
+              <div class="section-header"><h2>${message('Request')}</h2><div class="section-tools"><span class="language">cURL${icon('chevron')}</span><button tabindex="-1" class="copy copy-request" type="button" aria-label="${message('Copy cURL request')}"><span class="copy-icon">${icon('copy')}</span><span class="check">${icon('check')}</span></button></div></div>
               <div class="code-box request-code"><div class="request-lines"></div></div>
             </section>
-            <section aria-label="JSON response">
-              <div class="section-header"><div class="section-title"><h2>Response</h2><span class="status" data-state="idle"><span class="status-mark" aria-hidden="true"><span class="status-dot"></span><span class="status-spin">${icon('spinner')}</span></span><span class="status-label">Not sent</span></span><span class="timing">184 ms</span></div><div class="section-tools"><span class="language">JSON${icon('chevron')}</span><button tabindex="-1" class="copy copy-response" type="button" aria-label="Copy JSON response"><span class="copy-icon">${icon('copy')}</span><span class="check">${icon('check')}</span></button></div></div>
-              <div class="code-box response-body" aria-busy="false"><div class="response-empty">Send a request to see the response.</div><div class="skeleton" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="response-code response-list" aria-hidden="true" inert>${highlightedJSON(listResponse)}</div><div class="response-code response-detail" aria-hidden="true" inert>${highlightedJSON(detailResponse)}</div></div>
+            <section aria-label="${message('JSON response')}">
+              <div class="section-header"><div class="section-title"><h2>${message('Response')}</h2><span class="status" data-state="idle"><span class="status-mark" aria-hidden="true"><span class="status-dot"></span><span class="status-spin">${icon('spinner')}</span></span><span class="status-label">${message('Not sent')}</span></span><span class="timing">184 ms</span></div><div class="section-tools"><span class="language">JSON${icon('chevron')}</span><button tabindex="-1" class="copy copy-response" type="button" aria-label="${message('Copy JSON response')}"><span class="copy-icon">${icon('copy')}</span><span class="check">${icon('check')}</span></button></div></div>
+              <div class="code-box response-body" aria-busy="false"><div class="response-empty">${message('Send a request to see the response.')}</div><div class="skeleton" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="response-code response-list" aria-hidden="true" inert>${highlightedJSON(listResponse)}</div><div class="response-code response-detail" aria-hidden="true" inert>${highlightedJSON(detailResponse)}</div></div>
             </section>
           </div>
           <div class="completion-layer" aria-hidden="true">
@@ -328,7 +355,7 @@ declare global {
             <div class="completion-card">
               <div class="completion-heading">
                 <div class="completion-icon"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle class="completion-ring" cx="24" cy="24" r="21" pathLength="1"/><path class="completion-check" d="m15.5 24 6 6 11-12" pathLength="1"/></svg></div>
-                <div><h2 class="completion-title">Request successful</h2><p class="completion-description">Your dataset is ready to use.</p></div>
+                <div><h2 class="completion-title">${message('Request successful')}</h2><p class="completion-description">${message('Your dataset is ready to use.')}</p></div>
               </div>
               <div class="completion-meta"><span class="completion-route"><b>GET</b>/v1/datasets/…</span><span class="completion-status">200 OK</span></div>
             </div>
@@ -660,10 +687,10 @@ declare global {
       this.$('.route-suffix').textContent = name === 'detail' ? '{dataset_id}' : '';
       this.$('.description').textContent =
         name === 'detail'
-          ? 'Returns one dataset by its unique identifier.'
-          : 'Returns a list of datasets in your organization.';
+          ? message('Returns one dataset by its unique identifier.')
+          : message('Returns a list of datasets in your organization.');
       this.$('.params-heading').textContent =
-        name === 'detail' ? 'Path parameters' : 'Query parameters';
+        name === 'detail' ? message('Path parameters') : message('Query parameters');
       this.$('.query-rows').hidden = name !== 'list';
       this.$('.path-row').hidden = name !== 'detail';
       this.$('.add-param').hidden = name === 'detail';
@@ -754,10 +781,10 @@ declare global {
       this._busy = false;
       this.$<HTMLButtonElement>('.send').disabled = false;
       this.$('.send').dataset.busy = 'false';
-      this.$('.send-label').textContent = 'Send request';
+      this.$('.send-label').textContent = message('Send request');
       this.$('.response-body').setAttribute('aria-busy', 'false');
       this.$('.status').dataset.state = 'idle';
-      this.$('.status-label').textContent = 'Not sent';
+      this.$('.status-label').textContent = message('Not sent');
       this.$('.timing').style.opacity = '0';
       this.$('.response-empty').style.opacity = '1';
       this.$('.skeleton').style.visibility = 'hidden';
@@ -781,9 +808,9 @@ declare global {
       this._busy = true;
       this.$<HTMLButtonElement>('.send').disabled = true;
       this.$('.send').dataset.busy = 'true';
-      this.$('.send-label').textContent = 'Sending…';
+      this.$('.send-label').textContent = message('Sending…');
       this.$('.status').dataset.state = 'sending';
-      this.$('.status-label').textContent = 'Sending…';
+      this.$('.status-label').textContent = message('Sending…');
       this.$('.response-body').setAttribute('aria-busy', 'true');
       this.$('.response-empty').style.opacity = '0';
       this.$('.skeleton').style.visibility = 'visible';
@@ -793,7 +820,7 @@ declare global {
       this._busy = false;
       this.$<HTMLButtonElement>('.send').disabled = false;
       this.$('.send').dataset.busy = 'false';
-      this.$('.send-label').textContent = 'Send request';
+      this.$('.send-label').textContent = message('Send request');
       this.$('.status').dataset.state = 'success';
       this.$('.status-label').textContent = '200 OK';
       this.$('.timing').textContent = endpoint === 'list' ? '184 ms' : '132 ms';

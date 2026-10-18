@@ -31,21 +31,26 @@ const pages = {
 
 export function App() {
   const { locale, t } = useLocale();
-  const path = useSiteRoute();
+  const path = useSiteRoute(locale);
+  const notFound = path === '/404';
   const Page = pages[routeGroup(path)];
   return (
     <MotionProvider>
-      <div id="top" className="site" lang={locale}>
-        <a href="#main" className="skip-link">
-          <LocaleText>{t('Skip to content')}</LocaleText>
-        </a>
-        <Header />
+      <div id="top" className={notFound ? 'site site--not-found' : 'site'} lang={locale}>
+        {!notFound && (
+          <>
+            <a href="#main" className="skip-link">
+              <LocaleText>{t('Skip to content')}</LocaleText>
+            </a>
+            <Header />
+          </>
+        )}
         <main id="main" data-route={path}>
           <RouteBoundary key={path}>
             <Suspense
               fallback={
-                <div className="route-fallback" role="status" aria-label="Loading page">
-                  <span className="sr-only">Loading page…</span>
+                <div className="route-fallback" role="status" aria-label={t('Loading page')}>
+                  <span className="sr-only">{t('Loading page…')}</span>
                 </div>
               }
             >
@@ -55,7 +60,7 @@ export function App() {
             </Suspense>
           </RouteBoundary>
         </main>
-        <Footer />
+        {!notFound && <Footer />}
       </div>
     </MotionProvider>
   );

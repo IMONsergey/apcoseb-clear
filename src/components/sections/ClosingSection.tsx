@@ -8,7 +8,8 @@ import { DoubleButton } from '../ui/DoubleButton';
 
 export function ClosingSection() {
   const compact = useMediaQuery('(max-width: 599px)');
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
+  const credits = new Intl.NumberFormat(locale === 'en' ? 'en-US' : locale).format(500);
   const { theme } = useTheme();
   const themed = (name: AssetFile<'closing'>) => assetVariantUrl('closing', name, theme);
   return (
@@ -40,7 +41,7 @@ export function ClosingSection() {
           {compact && (
             <div className="closing-account" aria-hidden="true">
               <span>
-                <LocaleText>{t('Credits:')}</LocaleText> <b>500</b>
+                <LocaleText>{t('Credits:')}</LocaleText> <b>{credits}</b>
               </span>
               <span className="closing-account__upgrade">
                 <LocaleText>{t('Upgrade Plan')}</LocaleText>

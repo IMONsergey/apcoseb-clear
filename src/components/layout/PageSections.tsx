@@ -4,6 +4,7 @@ import type { ThemedAsset, EditorialAsset } from '../../content/assets';
 import type { ReactNode } from 'react';
 import { siteHref } from '../../app/paths';
 import { ThemedArtwork } from '../ui/ThemedArtwork';
+import { useLocale } from '../../i18n/context';
 
 type EditorialMedia = { file: EditorialAsset; alt: string };
 
@@ -41,6 +42,7 @@ export function EditorialSection({
   className?: string;
   media?: EditorialMedia;
 }) {
+  const { t } = useLocale();
   return (
     <section
       id={id}
@@ -63,7 +65,7 @@ export function EditorialSection({
                 height="800"
                 loading="lazy"
                 decoding="async"
-                alt={media.alt}
+                alt={t(media.alt)}
               />
             </figure>
           )}
@@ -115,6 +117,7 @@ export function FeatureColumns({
 }: {
   items: readonly { title: string; text: string; detail?: string }[];
 }) {
+  const { t } = useLocale();
   return (
     <div
       className={
@@ -126,7 +129,7 @@ export function FeatureColumns({
         <article key={item.title}>
           <Text as="h3">{item.title}</Text>
           <Text as="p">{item.text}</Text>
-          {item.detail && <span className="feature-columns__detail">{item.detail}</span>}
+          {item.detail && <span className="feature-columns__detail">{t(item.detail)}</span>}
         </article>
       ))}
     </div>
@@ -138,6 +141,7 @@ export function RelatedReading({
 }: {
   items: readonly { title: string; text: string; path: SitePath }[];
 }) {
+  const { t } = useLocale();
   return (
     <div className="related-reading">
       {items.map((item) => (
@@ -155,7 +159,7 @@ export function RelatedReading({
           )}
           <Text as="h3">{item.title}</Text>
           <Text as="p">{item.text}</Text>
-          <span>Explore</span>
+          <span>{t('Explore')}</span>
         </a>
       ))}
     </div>

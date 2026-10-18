@@ -8,15 +8,21 @@ import { StepIllustration } from '../visuals/StepIllustration';
 import { DoubleButton } from '../ui/DoubleButton';
 import { siteHref } from '../../app/paths';
 export function StepCarousel() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   const { track, position, positions, move, goTo } = useCarousel();
   return (
     <section id="how-it-works" className="steps section-space" aria-labelledby="steps-title">
       <div className="container section-heading-row">
         <h2 id="steps-title">
-          <LocaleText>{t('One query,')}</LocaleText>
-          <br />
-          <LocaleText>{t('step by step.')}</LocaleText>
+          {locale === 'en' ? (
+            <>
+              <LocaleText>{t('One query,')}</LocaleText>
+              <br />
+              <LocaleText>{t('step by step.')}</LocaleText>
+            </>
+          ) : (
+            <LocaleText>{t('One query, step by step.')}</LocaleText>
+          )}
         </h2>
         <div className="steps-intro">
           <Icon name="focus" width="25" height="25" />
@@ -85,7 +91,7 @@ export function StepCarousel() {
               </div>
               <div className="step-media">
                 <Visual kind="dots" direction="bottom-to-top" />
-                <StepIllustration scene={step.scene} image={step.image} alt={t(step.alt)} />
+                <StepIllustration scene={step.scene} image={step.image} alt={step.alt} />
               </div>
             </li>
           ))}
@@ -93,10 +99,14 @@ export function StepCarousel() {
       </div>
       <div className="container step-evidence-note">
         <p>
-          Illustrative product walkthrough · Query, results, host, evidence and the next search.
+          <LocaleText>
+            {t(
+              'Illustrative product walkthrough · Query, results, host, evidence and the next search.',
+            )}
+          </LocaleText>
         </p>
         <DoubleButton compact href={siteHref('/platform/search-investigation')}>
-          Explore Search & Investigation
+          <LocaleText>{t('Explore Search & Investigation')}</LocaleText>
         </DoubleButton>
       </div>
     </section>

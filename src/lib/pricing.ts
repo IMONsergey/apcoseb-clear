@@ -27,10 +27,18 @@ export const formatPrice = (amount: number) => currency.format(amount);
 const count = new Intl.NumberFormat('en-US');
 export const formatCredits = (value: number, compact = false) =>
   compact ? count.format(value).replaceAll(',', '\u00a0') : count.format(value);
-export const formatApiRate = (plan: Plan) =>
+export const formatApiRate = (
+  plan: Plan,
+  translate: (source: string, values?: Record<string, string | number>) => string = (
+    source,
+    values = {},
+  ) => source.replace(/\{(\w+)\}/g, (token, name: string) => String(values[name] ?? token)),
+) =>
   plan.apiRequestsPerSecond === null
     ? '—'
-    : `${plan.apiRequestsPerSecond} request${plan.apiRequestsPerSecond === 1 ? '' : 's'}/s`;
+    : translate(plan.apiRequestsPerSecond === 1 ? '{count} request/s' : '{count} requests/s', {
+        count: plan.apiRequestsPerSecond,
+      });
 const included = (value: boolean) => (value ? 'Included' : 'Not included');
 export const planComparison = [
   { label: 'Credits', value: (plan: Plan) => formatCredits(plan.credits) },

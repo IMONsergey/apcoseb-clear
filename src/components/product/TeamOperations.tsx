@@ -1,8 +1,15 @@
 import { businessPlan } from '../../content/plans';
 import { Text } from '../ui/Text';
 import { EditorialSection, ReadingRows, RelatedReading } from '../layout/PageSections';
+import { LocaleText } from '../../i18n/LocaleText';
+import { useLocale } from '../../i18n/context';
 
 export function TeamOperations() {
+  const { locale, t } = useLocale();
+  const numberLocale = locale === 'en' ? 'en-US' : locale;
+  const count = new Intl.NumberFormat(numberLocale);
+  const compactCount = new Intl.NumberFormat(numberLocale, { notation: 'compact' });
+  const users = count.format(businessPlan.users);
   return (
     <>
       <EditorialSection
@@ -90,25 +97,36 @@ export function TeamOperations() {
       <EditorialSection
         id="team-access"
         title="Choose access for your team."
-        intro={`Business brings a larger allowance and access for up to ${businessPlan.users} users. Discuss data needs, invoice payment and procurement questions with the team.}`}
+        intro={
+          locale === 'en'
+            ? `Business brings a larger allowance and access for up to ${users} users. Discuss data needs, invoice payment and procurement questions with the team.`
+            : t(
+                'Business brings a larger allowance and access for up to {users} users. Discuss data needs, invoice payment and procurement questions with the team.',
+                { users },
+              )
+        }
       >
         <div className="business-allowance">
           <div>
-            <strong>{businessPlan.users}</strong>
-            <span>Users on one subscription</span>
+            <strong>{users}</strong>
+            <span>
+              <LocaleText>{t('Users on one subscription')}</LocaleText>
+            </span>
+          </div>
+          <div>
+            <strong>{compactCount.format(businessPlan.credits)}</strong>
+            <span>
+              <LocaleText>{t('Included credits')}</LocaleText>
+            </span>
           </div>
           <div>
             <strong>
-              {new Intl.NumberFormat('en-US', { notation: 'compact' }).format(businessPlan.credits)}
-            </strong>
-            <span>Included credits</span>
-          </div>
-          <div>
-            <strong>
-              {businessPlan.apiRequestsPerSecond}
+              {count.format(businessPlan.apiRequestsPerSecond)}
               <span>/s</span>
             </strong>
-            <span>API request rate</span>
+            <span>
+              <LocaleText>{t('API request rate')}</LocaleText>
+            </span>
           </div>
         </div>
         <Text as="p" className="editorial-note">

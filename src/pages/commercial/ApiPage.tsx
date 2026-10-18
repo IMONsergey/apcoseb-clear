@@ -11,6 +11,7 @@ import {
   ReadingRows,
   FeatureColumns,
 } from '../../components/layout/PageSections';
+import { useLocale } from '../../i18n/context';
 
 const documentationLink = apiDocumentationUrl
   ? { label: 'View API Documentation', href: apiDocumentationUrl }
@@ -65,6 +66,7 @@ function ApiSample() {
   );
 }
 export default function ApiPage() {
+  const { t } = useLocale();
   return (
     <PageFrame
       artwork="api"
@@ -119,27 +121,24 @@ export default function ApiPage() {
         <div className="api-access-layout">
           <div
             role="region"
-            aria-label="API rate limits"
+            aria-label={t('API rate limits')}
             tabIndex={0}
             className="stage-table-scroll"
           >
             <table className="stage-data-table">
               <thead>
                 <tr>
-                  <th scope="col">Plan</th>
-                  <th scope="col">API access</th>
-                  <th scope="col">Plan rate limit</th>
+                  <th scope="col">{t('Plan')}</th>
+                  <th scope="col">{t('API access')}</th>
+                  <th scope="col">{t('Plan rate limit')}</th>
                 </tr>
               </thead>
               <tbody>
                 {plans.map((plan) => (
                   <tr key={plan.id}>
-                    <th scope="row">
-                      {plan.name[0]}
-                      {plan.name.slice(1).toLowerCase()}
-                    </th>
-                    <td>{plan.api ? 'Yes' : 'No'}</td>
-                    <td>{formatApiRate(plan)}</td>
+                    <th scope="row">{t(plan.name[0] + plan.name.slice(1).toLowerCase())}</th>
+                    <td>{t(plan.api ? 'Yes' : 'No')}</td>
+                    <td>{formatApiRate(plan, t)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -156,7 +155,7 @@ export default function ApiPage() {
               packages before scheduling a larger workflow.
             </Text>
             <a className="stage-text-link" href={siteHref('/pricing') + '#usage-guide'}>
-              Understand usage and capacity
+              {t('Understand usage and capacity')}
             </a>
           </aside>
         </div>

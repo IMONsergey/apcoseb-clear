@@ -1,4 +1,28 @@
-/* Language control remains visible while the public landing ships English-only content. */
+/* Localized documents use script-complete system fallbacks and neutral tracking. */
+html[lang='ru'] {
+  --font-sans: Arial, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --tracking-display: 0;
+  --tracking-heading: 0;
+  --tracking-compact: 0;
+  --tracking-label: 0;
+}
+html[lang='zh-Hant'] {
+  --font-sans: 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+  --font-mono: 'PingFang TC', 'Noto Sans Mono CJK TC', monospace;
+  --tracking-display: 0;
+  --tracking-heading: 0;
+  --tracking-compact: 0;
+  --tracking-label: 0;
+}
+html:not([lang='en']) .mobile-nav-group > .eyebrow {
+  text-transform: none;
+}
+.locale-text[lang='zh-Hant'] {
+  font: inherit;
+  letter-spacing: inherit;
+}
+
 :root:has(.language-panel[data-open='true']) {
   scroll-behavior: auto;
 }

@@ -1,6 +1,6 @@
 # Apcosys website
 
-React 19 + TypeScript + Vite marketing website: 19 routes, Light/Dark/System themes, local legal documents and GSAP/canvas product demonstrations. The authenticated product is a separate system. Start developer onboarding with [Handoff](docs/HANDOFF.md).
+React 19 + TypeScript + Vite marketing website: 19 English routes, 11 Russian and 11 Traditional Chinese marketing variants in local builds, Light/Dark/System themes, English legal documents and GSAP/canvas product demonstrations. The authenticated product is a separate system. Start developer onboarding with [Handoff](docs/HANDOFF.md).
 
 ## Local setup
 
@@ -25,6 +25,7 @@ npm run test:release
 | Command                                  | Purpose                                                                                                                   |
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | `npm run check`                          | Legal-source parity, asset inventory, engine integrity, style and architecture contracts, formatting, lint and TypeScript |
+| `npm run verify:localization`            | Check translated route coverage, message placeholders and locale metadata                                                 |
 | `npm run verify:architecture`            | Check import boundaries, runtime cycles and the guard’s fixture tests                                                     |
 | `npm run verify:styles`                  | Check shared style contracts and print the source inventory                                                               |
 | `npm run build`                          | GitHub Pages build at `/apcoseb-clear/`, route metadata and bundle budgets                                                |
@@ -59,11 +60,12 @@ The current Playwright acceptance suite is the release baseline. Visual changes 
 
 ## Deployment and documentation
 
-GitHub Pages will use https://imonsergey.github.io/apcoseb-clear/ once enabled and manually published. The first push only runs validation; it does not publish the website. Vercel root-build settings are included, but hosting must be connected separately. `noindex` remains enabled until public-launch approval.
+The GitHub Pages preview is available at https://imonsergey.github.io/apcoseb-clear/. Publishing requires an explicit Actions workflow dispatch; ordinary pushes only validate the code. Vercel root-build settings are included, but hosting must be connected separately. `noindex` remains enabled until public-launch approval.
 
 - [Developer handoff and integration boundaries](docs/HANDOFF.md)
 - [Move into a fresh repository](docs/MIGRATION.md)
 - [Architecture and editing recipes](docs/ARCHITECTURE.md)
+- [Localization strategy and translation release gates](docs/LOCALIZATION.md)
 - [Deployment and rollback](docs/DEPLOYMENT.md)
 - [Quality assurance](docs/QA.md)
 - [Grid](docs/SITE-GRID.md), [assets](docs/ASSETS.md), [visual engines](docs/VISUALS.md)

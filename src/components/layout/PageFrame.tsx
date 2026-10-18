@@ -7,6 +7,7 @@ import { useRef, type ReactNode } from 'react';
 import { useReadingPosition } from '../../hooks/useReadingPosition';
 import { usePageMotion } from '../../hooks/usePageMotion';
 import { DoubleButton } from '../ui/DoubleButton';
+import { useLocale } from '../../i18n/context';
 
 export type PageLink = { label: string; href: string; secondary?: boolean };
 
@@ -49,6 +50,7 @@ function PageIntro({
 }
 
 export function PageAction({ links }: { links: readonly PageLink[] }) {
+  const { t } = useLocale();
   return (
     <div className="stage-actions">
       {links.map(({ label, href, secondary }) => (
@@ -57,7 +59,7 @@ export function PageAction({ links }: { links: readonly PageLink[] }) {
           href={href}
           {...(secondary ? { variant: 'secondary' as const } : {})}
         >
-          {label}
+          {t(label)}
         </DoubleButton>
       ))}
     </div>
@@ -87,6 +89,7 @@ export function PageFrame({
   sections?: readonly { label: string; id: string }[];
   closing?: { title: string; description: string };
 }) {
+  const { t } = useLocale();
   const root = useRef<HTMLElement>(null);
   usePageMotion(root, title);
   const activeSection = useReadingPosition(sections?.map(({ id }) => id) ?? []);
@@ -104,21 +107,21 @@ export function PageFrame({
         actions={heroLinks ?? links?.slice(0, 2)}
       />
       {sections && (
-        <nav className="page-contents container" aria-label="On this page">
+        <nav className="page-contents container" aria-label={t('On this page')}>
           {sections.map(({ label, id }) => (
             <a
               key={id}
               href={'#' + id}
               aria-current={activeSection === id ? 'location' : undefined}
             >
-              {label}
+              {t(label)}
             </a>
           ))}
         </nav>
       )}
       {children}
       {links && (
-        <nav className="stage-related" aria-label="Continue exploring Apcosys">
+        <nav className="stage-related" aria-label={t('Continue exploring Apcosys')}>
           <div className="container stage-related__inner">
             {closing && (
               <div className="page-closing-copy">
@@ -134,7 +137,7 @@ export function PageFrame({
                   href={href}
                   key={href + label}
                 >
-                  {label}
+                  {t(label)}
                 </DoubleButton>
               ))}
             </div>
@@ -145,10 +148,11 @@ export function PageFrame({
   );
 }
 
-export function Notice({ children }: { children: ReactNode }) {
+export function Notice({ children }: { children: string }) {
+  const { t } = useLocale();
   return (
     <aside className="stage-note" role="note">
-      {children}
+      {t(children)}
     </aside>
   );
 }

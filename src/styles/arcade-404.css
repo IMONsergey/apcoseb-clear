@@ -1,0 +1,160 @@
+/* One screen: a 404 formed from the playable bricks, with only an exit link. */
+html:has(.site--not-found),
+body:has(.site--not-found),
+#root:has(.site--not-found) {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.site.site--not-found {
+  display: block;
+  width: 100%;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--surface-page);
+}
+
+.site--not-found > main {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.arcade404-page {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: min(100% - 2 * clamp(12px, 3vw, 42px), 1140px);
+  height: 100%;
+  min-height: 0;
+  margin-inline: auto;
+  padding-block: clamp(14px, 2.2vh, 26px);
+  gap: clamp(12px, 2.2vh, 24px);
+  color: var(--text-primary);
+}
+
+.arcade404-header {
+  flex: 0 0 auto;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.arcade404-header h1 {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: clamp(5px, 0.9vw, 12px);
+  font: 500 var(--font-size-20)/1.25 var(--font-sans);
+  letter-spacing: var(--tracking-compact);
+  white-space: nowrap;
+}
+
+.arcade404-header h1 > span:first-child {
+  font-family: var(--font-mono);
+  color: var(--accent-text);
+  font-size: var(--font-size-16);
+}
+
+.arcade404-header__separator {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.arcade404-home {
+  min-height: 42px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-inline: clamp(12px, 1.7vw, 20px);
+  background: var(--action-fill);
+  color: var(--on-action);
+  border-radius: var(--radius-control);
+  text-decoration: none;
+  font: var(--type-control);
+  white-space: nowrap;
+}
+
+.arcade404-home:hover {
+  background: var(--action-hover-fill);
+}
+
+.arcade404-home:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.arcade404-game {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.arcade404-board-frame {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.arcade404-board {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 48 / 31;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-panel);
+  background: var(--surface-card);
+  touch-action: none;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.arcade404-board:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.arcade404-fallback {
+  display: grid;
+  place-items: center;
+  width: min(100%, 960px);
+  height: 100%;
+  max-height: 620px;
+  font: 500 clamp(90px, 20vw, 250px)/1 var(--font-sans);
+  letter-spacing: -0.08em;
+  color: var(--text-muted);
+}
+
+@media (max-width: 599px) {
+  .arcade404-page {
+    gap: 12px;
+    padding-block: 12px;
+  }
+
+  .arcade404-header h1 {
+    font-size: var(--font-size-14);
+    letter-spacing: var(--tracking-compact);
+  }
+
+  .arcade404-home {
+    min-height: 38px;
+    font-size: var(--font-size-12);
+    gap: 6px;
+  }
+}

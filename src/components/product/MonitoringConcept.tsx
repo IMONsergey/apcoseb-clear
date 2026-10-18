@@ -3,6 +3,8 @@ import { useState, useRef, useEffect } from 'react';
 import { MorphPanel } from '../ui/MorphPanel';
 import { siteHref } from '../../app/paths';
 import { demoHosts } from '../../content/product-demo';
+import { LocaleText } from '../../i18n/LocaleText';
+import { useLocale } from '../../i18n/context';
 const views = [
   {
     id: 'scope',
@@ -38,6 +40,8 @@ const views = [
   },
 ];
 export function MonitoringConcept() {
+  const { locale, t } = useLocale();
+  const count = new Intl.NumberFormat(locale === 'en' ? 'en-US' : locale);
   const [current, setCurrent] = useState(0);
   const [assetIndex, setAssetIndex] = useState(0);
   const nav = useRef<HTMLDivElement>(null);
@@ -82,7 +86,7 @@ export function MonitoringConcept() {
                   aria-pressed={i === current}
                   className="stage-monitor-console__nav"
                 >
-                  {item.label}
+                  <LocaleText>{t(item.label)}</LocaleText>
                 </button>
               ))}
             </div>
@@ -102,30 +106,46 @@ export function MonitoringConcept() {
                         onClick={() => setAssetIndex(i)}
                       >
                         <span>
-                          <strong>{host.role}</strong>
+                          <strong>
+                            <LocaleText>{t(host.role)}</LocaleText>
+                          </strong>
                           <small>{host.ip}</small>
                         </span>
-                        <span>{assetIndex === i ? 'Selected' : 'Select'}</span>
+                        <span>
+                          <LocaleText>{t(assetIndex === i ? 'Selected' : 'Select')}</LocaleText>
+                        </span>
                       </button>
                     ))}
                   </div>
                   <div className="stage-monitor-assets__details" aria-live="polite">
-                    <span>Selected example</span>
+                    <span>
+                      <LocaleText>{t('Selected example')}</LocaleText>
+                    </span>
                     <strong>{asset.ip}</strong>
                     <div>
-                      <span>Hostname</span>
+                      <span>
+                        <LocaleText>{t('Hostname')}</LocaleText>
+                      </span>
                       <span>{asset.hostname}</span>
                     </div>
                     <div>
-                      <span>Snapshot source</span>
-                      <span>Authored concept · no scan date</span>
+                      <span>
+                        <LocaleText>{t('Snapshot source')}</LocaleText>
+                      </span>
+                      <span>
+                        <LocaleText>{t('Authored concept · no scan date')}</LocaleText>
+                      </span>
                     </div>
                   </div>
                 </div>
                 {current <= 2 ? (
                   <div className="stage-monitor-console__summary" aria-live="polite">
                     <div>
-                      <span>{current === 0 ? 'Authorised scope' : 'Snapshot A / earlier'}</span>
+                      <span>
+                        <LocaleText>
+                          {t(current === 0 ? 'Authorised scope' : 'Snapshot A / earlier')}
+                        </LocaleText>
+                      </span>
                       <strong>{current === 0 ? asset.hostname : '443 / HTTPS'}</strong>
                       <Text as="p">
                         {current === 0
@@ -134,16 +154,24 @@ export function MonitoringConcept() {
                       </Text>
                     </div>
                     <div>
-                      <span>{current === 0 ? 'Objects to review' : 'Snapshot B / later'}</span>
+                      <span>
+                        <LocaleText>
+                          {t(current === 0 ? 'Objects to review' : 'Snapshot B / later')}
+                        </LocaleText>
+                      </span>
                       <strong>
                         {current === 0
-                          ? asset.services.length + ' service records'
+                          ? t('{count} service records', {
+                              count: count.format(asset.services.length),
+                            })
                           : '443 / HTTPS + ' + service.port + ' / ' + service.protocol}
                       </strong>
                       <Text as="p">
                         {current === 0
-                          ? asset.role
-                          : 'Added in this example: ' + service.technology}
+                          ? t(asset.role)
+                          : t('Added in this example: {technology}', {
+                              technology: service.technology,
+                            })}
                       </Text>
                     </div>
                   </div>
@@ -156,17 +184,23 @@ export function MonitoringConcept() {
                     </Text>
                     <dl>
                       <div>
-                        <dt>Host</dt>
+                        <dt>
+                          <LocaleText>{t('Host')}</LocaleText>
+                        </dt>
                         <dd>{asset.hostname}</dd>
                       </div>
                       <div>
-                        <dt>Changed service</dt>
+                        <dt>
+                          <LocaleText>{t('Changed service')}</LocaleText>
+                        </dt>
                         <dd>
                           {service.port} / {service.protocol}
                         </dd>
                       </div>
                       <div>
-                        <dt>Technology</dt>
+                        <dt>
+                          <LocaleText>{t('Technology')}</LocaleText>
+                        </dt>
                         <dd>{service.technology}</dd>
                       </div>
                     </dl>
@@ -185,13 +219,15 @@ export function MonitoringConcept() {
                     encodeURIComponent(asset.ip)
                   }
                 >
-                  Explore Search & Investigation
+                  <LocaleText>{t('Explore Search & Investigation')}</LocaleText>
                 </a>
               </div>
             </MorphPanel>
           </div>
           <div className="stage-monitor-console__footer">
-            Concept only · NO LIVE ALERTS · Illustrative service records
+            <LocaleText>
+              {t('Concept only · NO LIVE ALERTS · Illustrative service records')}
+            </LocaleText>
           </div>
         </div>
       </div>

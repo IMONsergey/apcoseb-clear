@@ -4,6 +4,8 @@ import { EditorialHeading } from '../layout/PageSections';
 import { useEffect, useRef, useState } from 'react';
 import { useMotion } from '../../hooks/useMotion';
 import { MorphPanel } from '../ui/MorphPanel';
+import { LocaleText } from '../../i18n/LocaleText';
+import { useLocale } from '../../i18n/context';
 
 /** One flowing field of observations: depth comes from the wave, without a wire grid. */
 export function TeamSignal({ inverse = false }: { inverse?: boolean }) {
@@ -139,6 +141,7 @@ const teamStages = [
   },
 ];
 export function TeamWorkflow() {
+  const { t } = useLocale();
   const [selected, setSelected] = useState(0);
   const item = teamStages[selected]!;
   return (
@@ -150,22 +153,24 @@ export function TeamWorkflow() {
         />
         <div className="team-workflow__layout">
           <div className="team-workflow__visual">
-            <div className="team-sequence" aria-label="Illustrative analyst handoff">
+            <div className="team-sequence" aria-label={t('Illustrative analyst handoff')}>
               {['Investigation brief', 'Service observations', 'Research notes', 'API handoff'].map(
                 (label, i) => (
                   <div className={selected === i ? 'is-current' : ''} key={label}>
                     <span>0{i + 1}</span>
                     <div>
-                      <strong>{label}</strong>
+                      <strong>
+                        <LocaleText>{t(label)}</LocaleText>
+                      </strong>
                       <small>
-                        {
+                        {t(
                           [
                             'Domain or technical attribute',
                             'Host · protocol · technology',
                             'Evidence and open questions',
                             'Scripts and internal reports',
-                          ][i]
-                        }
+                          ][i]!,
+                        )}
                       </small>
                     </div>
                     <i aria-hidden="true" />
@@ -175,13 +180,15 @@ export function TeamWorkflow() {
             </div>
             <MorphPanel>
               <div className="team-workflow__record">
-                <span>{item.meta}</span>
-                <code>{item.record}</code>
+                <span>
+                  <LocaleText>{t(item.meta)}</LocaleText>
+                </span>
+                <code>{t(item.record)}</code>
               </div>
             </MorphPanel>
           </div>
           <div>
-            <div className="team-workflow__tabs" role="group" aria-label="Team workflow">
+            <div className="team-workflow__tabs" role="group" aria-label={t('Team workflow')}>
               {teamStages.map((s, i) => (
                 <button
                   type="button"
@@ -190,7 +197,7 @@ export function TeamWorkflow() {
                   key={s.name}
                 >
                   <span>0{i + 1}</span>
-                  {s.name}
+                  <LocaleText>{t(s.name)}</LocaleText>
                 </button>
               ))}
             </div>

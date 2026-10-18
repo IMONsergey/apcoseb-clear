@@ -4,6 +4,8 @@ import { MorphPanel } from '../ui/MorphPanel';
 import { productUrl } from '../../config/site';
 import { siteHref } from '../../app/paths';
 import { ProductEvidence, type EvidenceMode, type EvidenceScenario } from './ProductEvidence';
+import { LocaleText } from '../../i18n/LocaleText';
+import { useLocale } from '../../i18n/context';
 
 type Story = 'search' | 'bounty' | 'vulnerability' | 'osint' | 'team';
 
@@ -116,6 +118,7 @@ const stories = {
 } as const;
 
 export function InvestigationWorkbench({ story = 'search' }: { story?: Story }) {
+  const { t } = useLocale();
   const [selected, setSelected] = useState(0);
   const data = stories[story];
   const [hostIndex, setHostIndex] = useState(() =>
@@ -135,7 +138,7 @@ export function InvestigationWorkbench({ story = 'search' }: { story?: Story }) 
     <section
       className={'stage-workbench stage-workbench--' + story + ' section-space'}
       id="investigation"
-      aria-label={data.tag + ' interactive illustrated workflow'}
+      aria-label={t('{name} interactive illustrated workflow', { name: t(data.tag) })}
     >
       <div className="container">
         <div className="stage-workbench__intro">
@@ -149,7 +152,7 @@ export function InvestigationWorkbench({ story = 'search' }: { story?: Story }) 
             ref={stepsRef}
             className="stage-workbench__steps"
             role="tablist"
-            aria-label="Investigation workflow steps"
+            aria-label={t('Investigation workflow steps')}
           >
             {data.captions.map((label, index) => (
               <button
@@ -182,7 +185,9 @@ export function InvestigationWorkbench({ story = 'search' }: { story?: Story }) 
                 onClick={() => setSelected(index)}
               >
                 <span>{String(index + 1).padStart(2, '0')}</span>
-                <strong>{label}</strong>
+                <strong>
+                  <LocaleText>{t(label)}</LocaleText>
+                </strong>
               </button>
             ))}
           </nav>
@@ -212,7 +217,7 @@ export function InvestigationWorkbench({ story = 'search' }: { story?: Story }) 
                   <Text as="h3">{data.captions[selected]}</Text>
                   <Text as="p">{data.detail[selected]}</Text>
                 </div>
-                <span className="stage-workbench__query" title="Example only">
+                <span className="stage-workbench__query" title={t('Example only')}>
                   {data.query}
                 </span>
               </div>
@@ -225,8 +230,12 @@ export function InvestigationWorkbench({ story = 'search' }: { story?: Story }) 
             screens demonstrate the intended investigation sequence.
           </Text>
           <div>
-            <a href={productUrl + '/search'}>Try Search</a>
-            <a href={siteHref('/platform/data-methodology')}>Data & Methodology</a>
+            <a href={productUrl + '/search'}>
+              <LocaleText>{t('Try Search')}</LocaleText>
+            </a>
+            <a href={siteHref('/platform/data-methodology')}>
+              <LocaleText>{t('Data & Methodology')}</LocaleText>
+            </a>
           </div>
         </div>
       </div>

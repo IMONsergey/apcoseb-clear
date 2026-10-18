@@ -3,8 +3,10 @@ import { primarySearch, linkTo } from '../../components/layout/pageLinks';
 import { InvestigationWorkbench } from '../../components/product/InvestigationWorkbench';
 import { PageFrame } from '../../components/layout/PageFrame';
 import { EditorialSection, ReadingRows } from '../../components/layout/PageSections';
+import { useLocale } from '../../i18n/context';
 
 export default function InvestigationPage() {
+  const { t } = useLocale();
   return (
     <PageFrame
       artwork="search"
@@ -51,7 +53,7 @@ export default function InvestigationPage() {
             ],
           ].map(([label, value, title, text]) => (
             <article key={label}>
-              <span>{label}</span>
+              <span>{t(label!)}</span>
               <code>{value}</code>
               <Text as="h3">{title}</Text>
               <Text as="p">{text}</Text>

@@ -3,6 +3,7 @@ import { Component, Suspense, lazy, useRef, type ReactNode } from 'react';
 import { type ResearchPoster, type ResearchScene } from '../../content/research';
 import { assetVariantUrl } from '../../content/assets';
 import { useTheme } from '../../theme/ThemeProvider';
+import { useLocale } from '../../i18n/context';
 
 const Demo = lazy(() => import('./StepDemoMount'));
 const posterWidths: Record<ResearchPoster, number> = {
@@ -34,9 +35,10 @@ export function StepIllustration({
   const ref = useRef<HTMLDivElement>(null);
   const mounted = useNearViewport(ref, '240px');
   const { theme } = useTheme();
+  const { t } = useLocale();
 
   return (
-    <div ref={ref} className="step-illustration" role="img" aria-label={alt}>
+    <div ref={ref} className="step-illustration" role="img" aria-label={t(alt)}>
       <img
         src={assetVariantUrl('walkthrough', image, theme)}
         srcSet={([360, 600] as const)
