@@ -3,7 +3,7 @@ import { createDotCascade, type DotOptions, type DotController } from './dot-cas
 import { observeFirstPaint } from '../firstPaint';
 import './dot-cascade.css';
 
-export interface DotCascadeProps extends DotOptions {
+interface DotCascadeProps extends DotOptions {
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
@@ -11,7 +11,7 @@ export interface DotCascadeProps extends DotOptions {
   onReady?: ((ready: boolean) => void) | undefined;
 }
 
-export function DotCascade({
+function DotCascade({
   children,
   className = '',
   style,
@@ -33,21 +33,17 @@ export function DotCascade({
   const host = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const controller = useRef<DotController | null>(null);
+  const stopReadiness = useRef<(() => void) | null>(null);
   useEffect(() => {
-    if (!canvas.current || !host.current) return;
-    // Decorative overlays listen on their containing section without intercepting links or scrolling.
-    const surface = host.current.closest<HTMLElement>('.step-media, article, section');
-    const target = overlay ? surface || host.current.parentElement || host.current : host.current;
-    controller.current = createDotCascade(canvas.current, {}, target);
-    const stopReadiness = observeFirstPaint(canvas.current, controller.current, onReady);
     return () => {
-      stopReadiness();
+      stopReadiness.current?.();
+      stopReadiness.current = null;
       controller.current?.destroy();
       controller.current = null;
     };
   }, [overlay, onReady]);
   useEffect(() => {
-    controller.current?.update({
+    const options = {
       spacing,
       dotRadius,
       startOpacity,
@@ -58,7 +54,16 @@ export function DotCascade({
       fps,
       interactive,
       color,
-    });
+    };
+    if (controller.current) {
+      controller.current.update(options);
+    } else if (canvas.current && host.current) {
+      // Decorative overlays listen on their containing section without intercepting links or scrolling.
+      const surface = host.current.closest<HTMLElement>('.step-media, article, section');
+      const target = overlay ? surface || host.current.parentElement || host.current : host.current;
+      controller.current = createDotCascade(canvas.current, options, target);
+      stopReadiness.current = observeFirstPaint(canvas.current, controller.current, onReady);
+    }
   }, [
     spacing,
     dotRadius,
@@ -71,6 +76,7 @@ export function DotCascade({
     interactive,
     color,
     overlay,
+    onReady,
   ]);
   const appearance = {
     ...style,

@@ -1,6 +1,5 @@
-import { readPublicSettings } from './public-settings';
+/** Vite validates these public destinations before serving or building the site. */
+export const { productUrl, supportEmail, signInUrl } = __APCO_PUBLIC_SETTINGS__;
 
-/** Public settings are embedded into the client bundle at build time. */
-export const { productUrl, supportEmail, signInUrl, apiDocumentationUrl } = readPublicSettings(
-  import.meta.env,
-);
+/** Resolve through siteHref at render time to retain the active language and hosting base. */
+export const apiDocumentationPath = '/developers/api/docs';

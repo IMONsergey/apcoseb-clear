@@ -1,5 +1,6 @@
 import { Text } from '../../components/ui/Text';
-import { formatApiRate, planComparison } from '../../lib/pricing';
+import { formatApiRate, formatCredits, formatPrice, planComparison } from '../../lib/pricing';
+import { siteHref } from '../../app/paths';
 import { primarySearch, linkTo } from '../../components/layout/pageLinks';
 import { PricingSection } from '../../components/sections/PricingSection';
 import { CreditsExplained } from '../../components/product/CreditsExplained';
@@ -13,17 +14,21 @@ import {
 import { useLocale } from '../../i18n/context';
 
 function FullPlanComparison() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   return (
     <section className="stage-plan-comparison section-space" id="compare-plans">
       <div className="container">
         <EditorialHeading
           title="Compare plans."
-          intro="Compare the allowance, research tools and API access included at each level. Choose the capabilities you need before adding more capacity."
+          intro="Plus adds API access, CVE context and bucket search. Expert adds full filters and leak-data context; Business adds team access and private scanning."
         />
+        <Text as="p" className="stage-helper stage-table-hint" id="plan-comparison-hint">
+          Swipe the table horizontally on smaller screens to compare all four plans.
+        </Text>
         <div
           role="region"
           aria-label={t('Scroll to compare plan features')}
+          aria-describedby="plan-comparison-hint"
           tabIndex={0}
           className="stage-table-scroll"
         >
@@ -44,7 +49,11 @@ function FullPlanComparison() {
                   <th scope="row">{t(row.label)}</th>
                   {plans.map((plan) => {
                     const value =
-                      row.label === 'API rate limit' ? formatApiRate(plan, t) : row.value(plan);
+                      row.label === 'API rate limit'
+                        ? formatApiRate(plan, t)
+                        : row.label === 'Credits'
+                          ? formatCredits(plan.credits, false, locale)
+                          : row.value(plan);
                     const translated =
                       row.label === 'Private Scanner' && plan.privateScanner
                         ? t('Listed for {plan}', {
@@ -60,16 +69,25 @@ function FullPlanComparison() {
             </tbody>
           </table>
         </div>
-        <Text as="p" className="stage-helper stage-table-hint">
-          Swipe the table horizontally on smaller screens to compare all four plans.
+        <Text as="p" className="stage-helper">
+          Search reads the public index. Private scans are available by request for hosts you own,
+          with consent and verified ownership; results are shared only with you.
         </Text>
+        <p className="stage-helper">
+          {t(
+            'Need to use data commercially? Confirm the permitted use for your selected plan with Apcosys before purchasing.',
+          )}{' '}
+          <a className="stage-text-link" href={siteHref('/contact') + '?topic=Other'}>
+            {t('Confirm data usage')}
+          </a>
+        </p>
       </div>
     </section>
   );
 }
 
 export default function PricingPage() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   return (
     <PageFrame
       artwork="pricing"
@@ -109,19 +127,19 @@ export default function PricingPage() {
           />
           <div className="stage-token-grid">
             <div>
-              <strong>25,000</strong>
-              <span>{t('Search Tokens')}</span>
-              <b>$50</b>
+              <strong>{formatCredits(25_000, false, locale)}</strong>
+              <span>{t('Search Tokens', { count: 25_000 })}</span>
+              <b>{formatPrice(50, locale)}</b>
             </div>
             <div>
-              <strong>1,000,000</strong>
-              <span>{t('Search Tokens')}</span>
-              <b>$900</b>
+              <strong>{formatCredits(1_000_000, false, locale)}</strong>
+              <span>{t('Search Tokens', { count: 1_000_000 })}</span>
+              <b>{formatPrice(900, locale)}</b>
             </div>
           </div>
           <Notice>
-            Packages shown for the client preview. Check eligibility, token balance, expiry and
-            final purchase terms in your account.
+            Packages are additional purchases. Confirm which balance receives the tokens and when
+            they expire before payment.
           </Notice>
         </div>
       </section>
@@ -138,7 +156,7 @@ export default function PricingPage() {
             },
             {
               title: 'Monthly or annual billing?',
-              text: 'Use the switch above the plans to compare billing periods. Annual prices show the discounted monthly equivalent; the annual total is shown on the plan.',
+              text: 'Annual pricing shows a monthly equivalent and the total billed for a year. The billing switch changes prices, not the credit amounts listed with each plan.',
             },
             {
               title: 'How can I pay?',
@@ -149,8 +167,8 @@ export default function PricingPage() {
               text: 'Applicable VAT or GST and the final payable amount are shown in checkout before you complete the purchase.',
             },
             {
-              title: 'What happens after cancellation?',
-              text: 'The proposed billing terms keep paid features available until the end of the current subscription period. Confirm the applicable terms in your account.',
+              title: 'When do credits renew?',
+              text: 'Contact our team to confirm annual credit renewal, expiry and unused-credit terms before purchase.',
             },
             {
               title: 'How are refunds handled?',

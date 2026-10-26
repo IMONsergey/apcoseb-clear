@@ -1,5 +1,154 @@
 import { expect, test } from '@playwright/test';
 
+test('Russian page styles and display fonts start before application code is available', async ({
+  page,
+}) => {
+  const requested: string[] = [];
+  page.on('request', (request) => requested.push(new URL(request.url()).pathname));
+  let release: () => void = () => undefined;
+  const held = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route(/\/assets\/index-[\w-]+\.js$/, async (route) => {
+    await held;
+    await route.continue();
+  });
+  try {
+    await page.goto('./ru/about/', { waitUntil: 'commit' });
+    await expect(page.locator('script[type="module"][src]')).toHaveAttribute(
+      'fetchpriority',
+      'high',
+    );
+    await expect(
+      page.locator('link[rel="modulepreload"], link[rel="preload"][as="script"]'),
+    ).toHaveCount(0);
+    await expect
+      .poll(() => requested.some((url) => /CorporatePages-[\w-]+\.css$/.test(url)))
+      .toBe(true);
+    await expect
+      .poll(() => requested.some((url) => url.endsWith('/fonts/onest-cyrillic.woff2')))
+      .toBe(true);
+    release();
+    await expect(page.locator('main h1')).toBeVisible();
+    await expect(page.locator('main')).toHaveAttribute('data-route', '/about');
+  } finally {
+    release();
+  }
+});
+
+test('early resource hints do not transfer the same JavaScript twice', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Check resource transfer accounting in Chromium.');
+  await page.goto('./ru/');
+  await expect(page.locator('main h1')).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+  const duplicates = await page.evaluate(() => {
+    const transfers = new Map<string, number>();
+    for (const item of performance.getEntriesByType('resource') as PerformanceResourceTiming[]) {
+      if (!new URL(item.name).pathname.endsWith('.js') || item.transferSize === 0) continue;
+      transfers.set(item.name, (transfers.get(item.name) ?? 0) + 1);
+    }
+    return [...transfers].filter(([, count]) => count > 1);
+  });
+  expect(duplicates).toEqual([]);
+});
+
+for (const path of ['./', './about/', './legal/privacy-policy/']) {
+  test(`footer actions appear only after delayed page content commits: ${path}`, async ({
+    page,
+  }) => {
+    let release: () => void = () => undefined;
+    const held = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    await page.route(/\/(?:HomePage|CorporatePages|LegalPages)-[\w-]+\.js$/, async (route) => {
+      await held;
+      await route.continue();
+    });
+    try {
+      const navigation = page.goto(path);
+      await expect(page.locator('main .route-fallback')).toBeVisible();
+      await expect(page.locator('footer')).toHaveCount(0);
+      release();
+      await navigation;
+      await expect(page.locator('main h1')).toBeVisible();
+      await page.getByRole('button', { name: 'Cookie Preferences' }).click();
+      const dialog = page.getByRole('dialog', { name: 'Cookie Preferences' });
+      await expect(dialog).toBeVisible();
+      await dialog.getByRole('button', { name: 'Save Preferences' }).click();
+      await expect(dialog).toBeHidden();
+    } finally {
+      release();
+    }
+  });
+}
+
+for (const width of [390, 1280]) {
+  test(`delayed related artwork preserves footer geometry and pointer activation at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 720 });
+    let release: () => void = () => undefined;
+    const held = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let requested = 0;
+    await page.route(/\/assets\/inner\/(?:search|methodology)\.webp$/, async (route) => {
+      requested += 1;
+      await held;
+      await route.continue();
+    });
+    try {
+      await page.goto('./about/');
+      await expect(page.locator('main h1')).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
+      const images = page.locator('.related-reading img');
+      await expect(images).toHaveCount(2);
+      await page.locator('.related-reading').scrollIntoViewIfNeeded();
+      await expect.poll(() => requested).toBe(2);
+
+      const trigger = page.getByRole('button', { name: 'Cookie Preferences' });
+      await trigger.scrollIntoViewIfNeeded();
+      const geometry = () =>
+        page.locator('.related-reading, .stage-related, footer').evaluateAll((elements) =>
+          elements.map((element) => {
+            const rect = element.getBoundingClientRect();
+            return { top: rect.top + scrollY, height: rect.height };
+          }),
+        );
+      const before = await geometry();
+      const button = (await trigger.boundingBox())!;
+      await page.mouse.move(button.x + button.width / 2, button.y + button.height / 2);
+      await page.mouse.down();
+      release();
+      await images.evaluateAll((elements) =>
+        Promise.all(elements.map((element) => (element as HTMLImageElement).decode())),
+      );
+      const after = await geometry();
+      await page.mouse.up();
+
+      for (let i = 0; i < before.length; i++) {
+        expect(
+          Math.abs(after[i]!.top - before[i]!.top),
+          'Image loading moves content',
+        ).toBeLessThanOrEqual(1);
+        expect(
+          Math.abs(after[i]!.height - before[i]!.height),
+          'Image loading resizes content',
+        ).toBeLessThanOrEqual(1);
+      }
+      const dialog = page.getByRole('dialog', { name: 'Cookie Preferences' });
+      await expect(dialog).toBeVisible();
+      await dialog.getByRole('button', { name: 'Save Preferences' }).click();
+      await expect(dialog).toBeHidden();
+    } finally {
+      release();
+    }
+  });
+}
+
 // Delay route code deliberately: a fast development machine must not hide a collapsing fallback.
 for (const width of [390, 1440]) {
   for (const path of ['./', './about/', './legal/privacy-policy/']) {
@@ -63,7 +212,9 @@ test('Legal loads without homepage, product artwork or animation engines', async
   await page.waitForTimeout(400);
   expect(
     assets.filter((path) =>
-      /\/(?:HomePage|PageFrame|ThemedArtwork|evidencePlayback|gsap|theme-demos)-/.test(path),
+      /\/(?:HomePage|PageFrame|ThemedArtwork|evidencePlayback|gsap|applicationPlayback)-/.test(
+        path,
+      ),
     ),
   ).toEqual([]);
 });

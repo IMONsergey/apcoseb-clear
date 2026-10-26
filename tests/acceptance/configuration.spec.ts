@@ -1,12 +1,33 @@
 import { expect, test } from '@playwright/test';
 import { readPublicSettings } from '../../src/config/public-settings';
+import { deploymentSettings } from '../helpers/public-settings';
 
-test('default sign-in opens the client site while unverified API docs stay disabled', () => {
+test('sign-in uses its configured destination and documentation stays on site', async ({
+  page,
+}) => {
+  await page.goto('./');
+  await expect(
+    page.locator('.site-header').getByRole('link', { name: 'Sign In', exact: true }),
+  ).toHaveAttribute('href', deploymentSettings.signInUrl);
+  await page.goto('./developers/api');
+  await expect(
+    page.getByRole('link', { name: 'View API Documentation', exact: true }).first(),
+  ).toHaveAttribute('href', /\/developers\/api\/docs$/);
+});
+
+test('defaults use the published product and login route', () => {
   expect(readPublicSettings({})).toEqual({
     productUrl: 'https://apcosys.net',
     supportEmail: 'info@apcosys.net',
-    signInUrl: 'https://apcosys.net/',
-    apiDocumentationUrl: null,
+    signInUrl: 'https://apcosys.net/login',
+  });
+});
+
+test('a custom product origin uses its login route', () => {
+  expect(
+    readPublicSettings({ VITE_APCO_PRODUCT_URL: 'https://product.example.com' }),
+  ).toMatchObject({
+    signInUrl: 'https://product.example.com/login',
   });
 });
 
@@ -16,14 +37,20 @@ test('verified deployment settings use the supplied origin and contacts', () => 
       VITE_APCO_PRODUCT_URL: ' https://product.example.com/ ',
       VITE_APCO_SUPPORT_EMAIL: 'support+web@example.com',
       VITE_APCO_SIGN_IN_URL: 'https://product.example.com/login',
-      VITE_APCO_API_DOCS_URL: 'https://docs.example.com/api',
     }),
   ).toEqual({
     productUrl: 'https://product.example.com',
     supportEmail: 'support+web@example.com',
     signInUrl: 'https://product.example.com/login',
-    apiDocumentationUrl: 'https://docs.example.com/api',
   });
+});
+
+test('a retired external documentation setting does not enter public configuration', () => {
+  const legacyEnvironment = {
+    VITE_APCO_PRODUCT_URL: 'https://apcosys.net',
+    VITE_APCO_API_DOCS_URL: 'https://apcosys.net/docs/api',
+  };
+  expect(readPublicSettings(legacyEnvironment)).toEqual(readPublicSettings({}));
 });
 
 for (const [setting, value] of [
@@ -38,8 +65,6 @@ for (const [setting, value] of [
   ['VITE_APCO_SIGN_IN_URL', 'https://other.example.com/login'],
   ['VITE_APCO_SIGN_IN_URL', 'https://user:password@apcosys.net/login'],
   ['VITE_APCO_SIGN_IN_URL', 'http://apcosys.net/login'],
-  ['VITE_APCO_API_DOCS_URL', 'http://docs.example.com'],
-  ['VITE_APCO_API_DOCS_URL', 'https://user:password@docs.example.com'],
 ] as const) {
   test(`reject malformed public setting ${setting}: ${value.replaceAll('\n', ' ')}`, () => {
     expect(() => readPublicSettings({ [setting]: value })).toThrow(setting);

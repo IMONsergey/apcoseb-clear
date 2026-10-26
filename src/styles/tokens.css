@@ -54,6 +54,7 @@
   --media-density: 1;
   --section-space: clamp(48px, calc(100px * var(--space-density)), 100px);
   --header-height: 96px;
+  --anchor-header-height: 72px;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
@@ -73,6 +74,7 @@
     --gutter: 24px;
     --section-space: 64px;
     --header-height: 78px;
+    --anchor-header-height: 64px;
   }
 }
 @media (max-width: 375px) {

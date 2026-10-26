@@ -1,16 +1,21 @@
 import { expect, test } from '@playwright/test';
 import { siteRoutes } from '../../src/content/routes';
 
-const innerRoutes = siteRoutes.filter(({ path }) => path !== '/' && !path.startsWith('/legal/'));
+const innerRoutes = siteRoutes.filter(
+  ({ path, group }) => path !== '/' && group !== 'legal' && group !== 'documentation',
+);
 
 // Include both sides of the stacking/type breakpoints and narrow CTA wrapping.
 for (const width of [320, 360, 390, 480, 600, 767, 768, 1000, 1001, 1280, 1440, 1920]) {
-  test(`internal first blocks share one height at ${width}px`, async ({ page }) => {
+  test(`internal first blocks share one height with a compact pricing introduction at ${width}px`, async ({
+    page,
+  }) => {
     test.setTimeout(90_000);
     await page.setViewportSize({ width, height: 900 });
     const heights: number[] = [];
     const artworkHeights: number[] = [];
     const sectionStarts: number[] = [];
+    let pricingHeight = 0;
     for (const route of innerRoutes) {
       await page.goto('.' + route.path);
       await expect(page.locator('main h1')).toBeVisible();
@@ -35,9 +40,12 @@ for (const width of [320, 360, 390, 480, 600, 767, 768, 1000, 1001, 1280, 1440, 
           bounds,
         };
       });
-      heights.push(geometry.height);
-      artworkHeights.push(geometry.artHeight);
-      sectionStarts.push(geometry.nextTop);
+      if (route.path === '/pricing') pricingHeight = geometry.height;
+      else {
+        heights.push(geometry.height);
+        artworkHeights.push(geometry.artHeight);
+        sectionStarts.push(geometry.nextTop);
+      }
       expect(geometry.overflow, route.path).toBeLessThanOrEqual(1);
       expect(geometry.gap, `${route.path}: copy and art separation`).toBeGreaterThanOrEqual(19);
       for (const box of geometry.bounds) {
@@ -48,6 +56,9 @@ for (const width of [320, 360, 390, 480, 600, 767, 768, 1000, 1001, 1280, 1440, 
       }
     }
     expect(Math.max(...heights) - Math.min(...heights), 'hero height spread').toBeLessThan(1);
+    expect(pricingHeight, 'pricing brings the plans closer to its introduction').toBeLessThan(
+      Math.min(...heights),
+    );
     expect(
       Math.max(...artworkHeights) - Math.min(...artworkHeights),
       'art size spread',
@@ -58,6 +69,36 @@ for (const width of [320, 360, 390, 480, 600, 767, 768, 1000, 1001, 1280, 1440, 
     ).toBeLessThan(1);
   });
 }
+
+test('pricing shows plan prices in the first desktop viewport in every locale', async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  for (const locale of ['', 'ru/', 'zh-hant/']) {
+    await page.goto(`./${locale}pricing`);
+    await expect(page.locator('main h1')).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const prices = page.locator('.plan-grid .plan-price');
+    await expect(prices).toHaveCount(4);
+    for (const price of await prices.all()) await expect(price).toBeInViewport({ ratio: 1 });
+    const path = testInfo.outputPath(`pricing-${locale.replace('/', '') || 'en'}-1440.png`);
+    await page.screenshot({ path, animations: 'disabled' });
+    await testInfo.attach(`${locale || 'en'} pricing first viewport`, {
+      path,
+      contentType: 'image/png',
+    });
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./ru/pricing');
+  await expect(page.locator('main h1')).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+  const mobilePath = testInfo.outputPath('pricing-ru-390.png');
+  await page.screenshot({ path: mobilePath, fullPage: true, animations: 'disabled' });
+  await testInfo.attach('ru pricing at 390px', {
+    path: mobilePath,
+    contentType: 'image/png',
+  });
+});
 
 for (const width of [320, 1440]) {
   test(`hero accommodates double-sized text at ${width}px`, async ({ page }) => {

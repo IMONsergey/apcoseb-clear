@@ -38,7 +38,7 @@ export const plans = [
     price: 0,
     credits: 500,
     users: 1,
-    action: 'Start Free',
+    action: 'Open Apcosys',
     api: false,
     apiRequestsPerSecond: null,
     searchFilters: 'Basic',
@@ -50,7 +50,7 @@ export const plans = [
   {
     id: 'plus',
     name: 'PLUS',
-    description: 'Research with API access',
+    description: 'Host analytics & API access',
     price: 50,
     credits: 25000,
     users: 1,
@@ -83,3 +83,14 @@ export const plans = [
 ] as const satisfies readonly PlanDefinition[];
 
 export type Plan = (typeof plans)[number];
+
+/** Published HTTP API method costs (rate allowance), not a conversion to plan credits.
+ * Source: https://apcosys.net/docs/api, verified 24 October 2026.
+ */
+export const httpApiMethodCosts = {
+  hosts: 1,
+  analytics: 3,
+  buckets: 1,
+  bucketAnalytics: 1,
+  other: 1,
+} as const;

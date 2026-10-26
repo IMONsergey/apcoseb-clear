@@ -74,6 +74,23 @@
   margin-top: var(--space-3);
   white-space: nowrap;
 }
+.summary-source {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin-top: var(--space-6);
+  color: rgb(255 255 255 / 65%);
+  font: 400 var(--font-size-10)/1.5 var(--font-sans);
+}
+.summary-source a {
+  color: inherit;
+  text-decoration: none;
+}
+.summary-source a:is(:hover, :focus-visible) {
+  color: white;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 .search-preview__inner {
   padding-top: var(--space-9);
 }
@@ -131,9 +148,8 @@
   background: var(--action-hover-fill);
 }
 .search-error {
-  position: absolute;
-  left: 0;
-  top: calc(100% + 10px);
+  position: relative;
+  margin-top: var(--space-3);
   background: var(--surface-card);
   padding: 9px var(--space-3);
   width: 100%;
@@ -141,8 +157,6 @@
   font-size: var(--font-size-14);
   line-height: 1.5;
   border-radius: var(--radius-control);
-  box-shadow: var(--shadow-popover);
-  z-index: 3;
   animation: feedback-in 180ms var(--ease);
 }
 .lower-scene {
@@ -196,9 +210,6 @@
   display: block;
   width: 100%;
   height: auto;
-}
-.closing-hotspot:hover {
-  background: #ffffff10;
 }
 @media (min-width: 1800px) {
   .search-preview__inner {
@@ -338,5 +349,11 @@
 @media (max-width: 340px) {
   .hero h1 {
     font-size: var(--font-size-40);
+  }
+}
+
+@media (max-width: 375px) {
+  .summary-grid dd {
+    font-size: var(--font-size-14);
   }
 }

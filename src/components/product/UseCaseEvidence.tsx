@@ -21,43 +21,39 @@ type Journey = {
 const journeys: Record<'scope' | 'technology' | 'indicator', Journey> = {
   scope: {
     label: 'BUG BOUNTY / EXAMPLE INVESTIGATION',
-    title: "Visibility isn't permission.",
+    title: 'From a domain to an in-scope host.',
     introduction:
-      'Follow one permitted starting point through candidate infrastructure to a responsible testing decision.',
+      'Build a shortlist of candidate hosts, then check their services, observation dates and programme scope.',
     scenario: 'domain',
-    start: 'example.com — a reserved stand-in for a domain explicitly permitted by a programme.',
-    query: 'Search that permitted domain using the currently supported query format.',
-    result: 'Inspect the host, ports and service context of candidate results.',
-    next: 'Verify each selected host against the programme rules before interacting with it.',
-    caveat:
-      'The domain and host below are reserved examples, not a real bug bounty programme or an authorised target.',
+    start: 'example.com stands in for a domain included in a programme scope.',
+    query: 'Enter the permitted domain in the search field. This example uses example.com.',
+    result: 'Compare portal.example.com and gateway.example.com in the example results.',
+    next: 'Check each host against the programme scope before testing its services.',
+    caveat: 'Reserved example domain and IP addresses.',
   },
   technology: {
     label: 'VULNERABILITY RESEARCH / EXAMPLE INVESTIGATION',
-    title: 'A version is a lead. Not a finding.',
+    title: 'From a product to the hosts running it.',
     introduction:
-      'Move from a technology observation to candidate hosts, then separate potential CVE associations from validated vulnerabilities.',
+      'Identify candidate hosts with a matching technology, then use service evidence and observation dates to plan advisory checks.',
     scenario: 'technology',
-    start: 'nginx 1.24.0, used here as a synthetic technology lead.',
-    query:
-      'Research input: nginx 1.24.0. Translate it into the supported product/version query syntax.',
-    result: 'Compare observed host services, detection evidence and any associated CVE context.',
-    next: 'Open a host, check observation age, patch backports and configuration before drawing conclusions.',
-    caveat:
-      'Technology, version and host information below are illustrative. No specific CVE or exploitable host is claimed.',
+    start: 'nginx is the product to look for; the example shows version 1.24.0.',
+    query: 'Search for nginx, then inspect the detected version in each host record.',
+    result: 'Read the HTTP Server header that supports the nginx version in this example.',
+    next: 'Check the vendor advisory, installed patches and configuration.',
+    caveat: 'Example technology and host records.',
   },
   indicator: {
     label: 'OSINT / EXAMPLE INVESTIGATION',
-    title: 'Follow attributes. Keep attribution separate.',
+    title: 'From an IP address to its services.',
     introduction:
-      'Take an indicator from an investigation, inspect its technical context and choose the next evidence-led query.',
+      'Turn an indicator into a next query, keeping the observed service, date and supporting response together.',
     scenario: 'indicator',
-    start: 'An IP address present in an alert or investigation report.',
-    query: 'Look up the address in the current Apcosys search.',
-    result: 'Review the host view, available services, technologies and observation date.',
-    next: 'Investigate a relevant service or attribute while keeping attribution unproven.',
-    caveat:
-      '{address} is a reserved documentation address. This is a conceptual workflow, not an incident or attribution finding.',
+    start: '198.51.100.24 stands in for an IP address from an alert or report.',
+    query: 'Enter the complete IP address in the search field.',
+    result: 'The example connects the IP to portal.example.com and HTTPS on port 443.',
+    next: 'Use the hostname or service as the next query, then check the new results.',
+    caveat: '{address} · Reserved example address.',
     caveatValues: { address: '198.51.100.24' },
   },
 };
@@ -66,42 +62,10 @@ function EvidenceJourney({ kind }: { kind: keyof typeof journeys }) {
   const { t } = useLocale();
   const item = journeys[kind];
   const stages = [
-    [
-      '01',
-      'Starting point',
-      kind === 'scope'
-        ? 'An authorised domain.'
-        : kind === 'technology'
-          ? 'A product and version.'
-          : 'An IP or domain from a report.',
-    ],
-    [
-      '02',
-      'Query',
-      kind === 'scope'
-        ? 'Find candidate infrastructure.'
-        : kind === 'technology'
-          ? 'Find matching observations.'
-          : 'Look up the indicator.',
-    ],
-    [
-      '03',
-      'Result',
-      kind === 'scope'
-        ? 'Review exposed services.'
-        : kind === 'technology'
-          ? 'Read the detection evidence.'
-          : 'Examine shared attributes.',
-    ],
-    [
-      '04',
-      'Next step',
-      kind === 'scope'
-        ? 'Confirm scope before testing.'
-        : kind === 'technology'
-          ? 'Validate applicability.'
-          : 'Record a new research lead.',
-    ],
+    ['01', 'Starting point', item.start],
+    ['02', 'Query', item.query],
+    ['03', 'Result', item.result],
+    ['04', 'Next step', item.next],
   ] as const;
   return (
     <section
@@ -120,6 +84,11 @@ function EvidenceJourney({ kind }: { kind: keyof typeof journeys }) {
           >
             {stages.map(([number, title, description]) => (
               <div key={number}>
+                {kind === 'scope' && (
+                  <b className="stage-example-journey__number" aria-hidden="true">
+                    {number}
+                  </b>
+                )}
                 <span>
                   <LocaleText>{t(title)}</LocaleText>
                 </span>
@@ -131,13 +100,13 @@ function EvidenceJourney({ kind }: { kind: keyof typeof journeys }) {
         </div>
         <div className="stage-example-footer">
           <p>{t(item.caveat, item.caveatValues)}</p>
-          <a href={productUrl + '/search'}>
+          <a href={productUrl + (kind === 'technology' ? '/search?search_value=nginx' : '/search')}>
             <LocaleText>
               {t(
                 kind === 'scope'
                   ? 'Search your scope'
                   : kind === 'technology'
-                    ? 'Search by technology'
+                    ? 'Search for nginx'
                     : 'Look up an IP or domain',
               )}
             </LocaleText>{' '}

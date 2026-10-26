@@ -17,7 +17,7 @@ mkdirSync(resolve('.work'), { recursive: true });
 // The ZIP contains only committed source, never .git or a source-history marker.
 execFileSync(
   'git',
-  ['archive', '--format=zip', '--prefix=apcosys-web/', `--output=${output}`, 'HEAD'],
+  ['archive', '--format=zip', '--prefix=apcosys-web/', `--output=${output}`, `${sha}^{tree}`],
   { stdio: 'inherit' },
 );
 console.log(`Source snapshot: ${output}\nVerified from commit: ${sha}`);

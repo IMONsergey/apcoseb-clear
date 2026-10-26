@@ -16,13 +16,13 @@ npm run handoff:package
 
 The resulting ZIP in `.work/` has an `apcosys-web/` root and contains no `.git` directory, archived design-review reports or source-commit marker. Record the accepted commit and CI result outside the new repository for traceability.
 
-The `handoff-package` CI job independently verifies the extracted source at `/recipient-site/` and `/`, then uploads the clean source ZIP as a workflow artifact. Select the artifact from the **accepted, successful** pull-request run; an in-progress or cancelled run is not release evidence.
+The `handoff-package` CI job independently verifies the extracted source at `/recipient-site/` and `/` with `test:relocation`, including 404 recovery and localized font delivery, then uploads the clean source ZIP as a workflow artifact. Select the artifact from the **accepted, successful** pull-request run; an in-progress or cancelled run is not release evidence.
 
 Extract it to an empty directory and initialize a new Git repository. Do not copy `.git`, `.env`, local dependencies, build output, preview screenshots or temporary performance reports from the old project. Do not rewrite font, engine or third-party license notices.
 
 ## Initialize the destination repository
 
-After extracting the approved ZIP and entering its `apcosys-web/` directory, create an **empty** repository in the receiving owner's GitHub account (without a generated README, license or .gitignore). Before the first push, enable **Settings → Pages → GitHub Actions** in the receiving repository when GitHub Pages will host the site: the included main-branch workflow attempts a Pages deploy. For a Vercel-only destination, the receiving owner should replace/disable the Pages deployment jobs while retaining validation. Then:
+After extracting the approved ZIP and entering its `apcosys-web/` directory, create an **empty** repository in the receiving owner's GitHub account (without a generated README, license or .gitignore). When GitHub Pages will host the site, enable **Settings → Pages → GitHub Actions** in the receiving repository. A push to `main` validates the code in Chromium, Firefox and WebKit before publishing, then checks the actual Pages URL. An explicit `workflow_dispatch` is also supported; only a run on `main` publishes. Pull requests and manual runs on other branches validate without publication. For a Vercel-only destination, the receiving owner can disable the Pages publishing jobs while retaining validation. Then:
 
 ```sh
 git init -b main

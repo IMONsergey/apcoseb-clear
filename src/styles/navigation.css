@@ -1,4 +1,4 @@
-/* Approved soft disclosure treatment. Pointer state and keyboard focus are distinct. */
+/* Navigation disclosure, feedback and touch targets. */
 .nav-trigger {
   display: flex;
   align-items: center;
@@ -30,6 +30,10 @@
   width: max-content;
   min-width: 182px;
   max-width: 320px;
+  max-height: calc(100dvh - var(--header-height) - 16px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block: 6px;
   padding: 6px;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-frame);
@@ -60,7 +64,7 @@
   padding: 10px;
   border-radius: var(--radius-panel);
   line-height: 1.5;
-  white-space: nowrap;
+  white-space: normal;
   transition:
     background-color 180ms var(--ease),
     color 180ms var(--ease);
@@ -123,5 +127,38 @@
   }
   .header-signin {
     flex-shrink: 0;
+  }
+}
+
+.mobile-nav-group a {
+  transition: color 180ms ease;
+}
+.nav-link {
+  transition:
+    background-color 200ms var(--ease),
+    color 180ms ease;
+}
+@media (pointer: coarse) {
+  .brand {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .header-signin,
+  .header-signup {
+    min-height: 44px;
+  }
+}
+@media (min-width: 1600px) {
+  .site-header .nav-trigger,
+  .site-header .plain-button,
+  .site-header .double-button {
+    font-size: var(--font-size-16);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-group a,
+  .nav-link {
+    transition: none;
   }
 }

@@ -130,8 +130,7 @@ export function TeamOperations() {
           </div>
         </div>
         <Text as="p" className="editorial-note">
-          Business plan figures shown for the client preview. Final access and commercial terms are
-          confirmed in the product.
+          Confirm Business access and commercial terms in your account before purchase.
         </Text>
       </EditorialSection>
     </>

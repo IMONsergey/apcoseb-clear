@@ -17,7 +17,7 @@ test('Russian prose uses locale-specific typography without changing technical t
   );
 });
 
-test('Russian display face loads from the local font bundle', async ({ page }) => {
+test('Russian display face loads from the local font bundle', async ({ page, baseURL }) => {
   const fontRequests: string[] = [];
   page.on('request', (request) => {
     if (request.resourceType() === 'font') fontRequests.push(request.url());
@@ -31,7 +31,7 @@ test('Russian display face loads from the local font bundle', async ({ page }) =
     .evaluate((element) => getComputedStyle(element).fontFamily);
   expect(family).toContain('Onest');
   expect(fontRequests.some((url) => url.endsWith('/fonts/onest-cyrillic.woff2'))).toBe(true);
-  expect(fontRequests.every((url) => url.includes('/apcoseb-clear/fonts/'))).toBe(true);
+  expect(fontRequests.every((url) => url.startsWith(new URL('fonts/', baseURL).href))).toBe(true);
 });
 
 for (const width of [320, 375, 390, 768, 1024, 1440, 1920]) {
@@ -39,6 +39,13 @@ for (const width of [320, 375, 390, 768, 1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
     for (const route of localizedRoutes) {
       await page.goto(`./ru${route}`);
+      const main = page.locator('main');
+      await expect(main).toHaveAttribute('data-route', route);
+      await expect(main.locator('h1')).toBeVisible();
+      await expect(main.locator('.route-fallback, .route-error')).toHaveCount(0);
+      if (route.startsWith('/legal/')) {
+        await expect(main.locator('.legal-copy')).toBeVisible();
+      }
       await page.evaluate(() => document.fonts.ready);
       const layout = await page.evaluate(() => ({
         documentOverflow: document.documentElement.scrollWidth - innerWidth,

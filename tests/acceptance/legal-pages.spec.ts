@@ -5,6 +5,18 @@ import { marked } from 'marked';
 import { legalRoutes } from '../../src/content/legal-routes';
 import { siteRoutes } from '../../src/content/routes';
 
+test('the subprocessor list reference provides an actionable existing contact', async ({
+  page,
+}) => {
+  await page.goto('./legal/data-processing-agreement');
+  const paragraph = page
+    .locator('.legal-copy p')
+    .filter({ hasText: 'For the current list of Subprocessors' });
+  await expect(
+    paragraph.getByRole('link', { name: 'info@apcosys.net', exact: true }),
+  ).toHaveAttribute('href', 'mailto:info@apcosys.net');
+});
+
 for (const route of legalRoutes) {
   test(`${route.title}: complete published text, valid anchors and local references`, async ({
     page,
@@ -135,15 +147,16 @@ for (const width of [768, 1280, 1920]) {
   test(`footer metadata shares a single line at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('./legal/data-collection-policy');
+    const metadata = page.locator('.footer-meta > p, .footer-meta > a, .footer-meta > button');
+    // The footer mounts after the lazy route is ready, independently of font loading.
+    await expect(metadata).toHaveCount(3);
     await page.evaluate(() => document.fonts.ready);
-    const centers = await page
-      .locator('.footer-meta > p, .footer-meta > a, .footer-meta > button')
-      .evaluateAll((nodes) =>
-        nodes.map((node) => {
-          const rect = node.getBoundingClientRect();
-          return rect.y + rect.height / 2;
-        }),
-      );
+    const centers = await metadata.evaluateAll((nodes) =>
+      nodes.map((node) => {
+        const rect = node.getBoundingClientRect();
+        return rect.y + rect.height / 2;
+      }),
+    );
     expect(centers).toHaveLength(3);
     expect(Math.max(...centers) - Math.min(...centers)).toBeLessThanOrEqual(1);
   });

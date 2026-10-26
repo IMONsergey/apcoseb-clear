@@ -44,13 +44,22 @@ function LanguageFlag({ locale }: { locale: LanguageCode }) {
           </>
         ) : (
           <>
-            <circle cx="12" cy="12" r="11" fill="#eef6f7" stroke="#087f92" strokeWidth="2" />
-            <path
-              fill="none"
-              stroke="#087f92"
-              strokeWidth="1.5"
-              d="M1.8 12h20.4M12 1.5c3 3.1 4.3 6.6 4.3 10.5S15 19.4 12 22.5C9 19.4 7.7 15.9 7.7 12S9 4.6 12 1.5Z"
-            />
+            <path fill="#de2910" d="M0 0h24v24H0z" />
+            <g fill="#ffde00">
+              {[
+                'translate(7 9.5) scale(4.5)',
+                'translate(13 4.5) rotate(15) scale(1.5)',
+                'translate(16 7.5) rotate(42) scale(1.5)',
+                'translate(16 11.5) rotate(-5) scale(1.5)',
+                'translate(13 14.5) rotate(22) scale(1.5)',
+              ].map((transform) => (
+                <path
+                  key={transform}
+                  transform={transform}
+                  d="m0-1 .225.691h.726l-.588.427.225.691L0 .382l-.588.427.225-.691-.588-.427h.726Z"
+                />
+              ))}
+            </g>
           </>
         )}
       </g>
@@ -148,7 +157,7 @@ export function LanguageBadge({
         type="button"
         className="language"
         data-language-selector=""
-        aria-label={`${selected.label} — ${t('Language')}`}
+        aria-label={`${shortLabel[locale]} — ${selected.label} — ${t('Language')}`}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={panelId}

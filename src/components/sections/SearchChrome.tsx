@@ -31,18 +31,18 @@ export function SearchChrome({ credits = 2000 }: { credits?: number }) {
       </div>
       <div className="search-chrome__filters">
         <span>
-          <LocaleText>{t('Add Filter')}</LocaleText> <Icon name="plus" />
+          <LocaleText>{t('Filters')}</LocaleText>
         </span>
         <span>
-          <LocaleText>{t('All Types')}</LocaleText> <Icon name="chevron" />
+          <LocaleText>{t('Hosts')}</LocaleText>
         </span>
       </div>
       <div className="search-chrome__account">
         <span>
           <LocaleText>{t('Credits:')}</LocaleText> <b>{formattedCredits}</b>
         </span>
-        <span className="search-chrome__upgrade">
-          <LocaleText>{t('Upgrade Plan')}</LocaleText>
+        <span className="search-chrome__preview">
+          <LocaleText>{t('Interface preview')}</LocaleText>
         </span>
       </div>
     </div>

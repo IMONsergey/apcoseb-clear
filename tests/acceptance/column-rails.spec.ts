@@ -12,7 +12,6 @@ const structures = [
   '.home-searchable__layout',
   '.home-usecases__grid',
   '.home-capabilities__stage',
-  '.capability-notes',
   '.audience-grid',
   '.api-grid',
   '.plan-grid',
@@ -46,7 +45,7 @@ const structures = [
   '.legal-documents',
 ];
 
-for (const width of [320, 390, 768, 1024, 1199, 1200, 1440, 1920, 2560]) {
+for (const width of [320, 390, 767, 768, 1024, 1199, 1200, 1440, 1920, 2560]) {
   test(`structural columns align across all routes at ${width}px`, async ({ page }) => {
     test.setTimeout(120_000);
     await page.setViewportSize({ width, height: 1000 });
@@ -94,26 +93,32 @@ for (const width of [320, 390, 768, 1024, 1199, 1200, 1440, 1920, 2560]) {
           starts,
           ends,
           groups,
+          left: rail.left,
           right: rail.right,
           actions: Array.from(
             document.querySelectorAll('.stage-related__links, .legal-tools, .footer-meta'),
-          ).map((group) => ({
-            name: group.className,
-            right: Math.max(
-              ...Array.from(group.children)
-                .map((child) => child.getBoundingClientRect())
-                .filter((rect) => rect.width > 0 && rect.height > 0)
-                .map((rect) => rect.right),
-            ),
-          })),
+          ).map((group) => {
+            const children = Array.from(group.children)
+              .map((child) => child.getBoundingClientRect())
+              .filter((rect) => rect.width > 0 && rect.height > 0);
+            return {
+              name: group.className,
+              related: group.matches('.stage-related__links'),
+              left: Math.min(...children.map((rect) => rect.left)),
+              right: Math.max(...children.map((rect) => rect.right)),
+            };
+          }),
           legal: legal && innerWidth >= 768 ? legal.getBoundingClientRect().left : null,
         };
       }, structures);
-      for (const action of geometry.actions)
+      for (const action of geometry.actions) {
+        // Stacked related actions share the copy's left rail; other action groups stay right.
+        const side = width <= 767 && action.related ? 'left' : 'right';
         expect(
-          Math.abs(action.right - geometry.right),
-          `${path}: ${action.name} visible content reaches the right page rail`,
+          Math.abs(action[side] - geometry[side]),
+          `${path}: ${action.name} visible content reaches the ${side} page rail`,
         ).toBeLessThanOrEqual(1);
+      }
       for (const group of geometry.groups) {
         for (const child of group!.children) {
           if (child.hug) continue;

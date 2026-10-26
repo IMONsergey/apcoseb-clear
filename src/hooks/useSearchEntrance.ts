@@ -14,12 +14,17 @@ export function useSearchEntrance() {
     let lift = 0;
     let settle = 1;
     let current = 0;
+    let painted = '';
     const render = () => {
       frame = 0;
       const progress = Math.min(1, Math.max(0, window.scrollY / settle));
       const eased = progress * progress * (3 - 2 * progress);
       current = -lift * (1 - eased);
-      content.style.setProperty('--search-lift', `${current.toFixed(2)}px`);
+      const value = `${current.toFixed(2)}px`;
+      if (value !== painted) {
+        painted = value;
+        content.style.setProperty('--search-lift', value);
+      }
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(render);

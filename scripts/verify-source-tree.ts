@@ -1,4 +1,4 @@
-import { readdirSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve, relative, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -46,7 +46,24 @@ export function inspectSourceTree(root = process.cwd()): SourceTreeReport {
         failures.push(`Transient file in source tree: ${name}`);
       if (entry.isSymbolicLink()) failures.push(`Symbolic link requires review: ${name}`);
       else if (entry.isDirectory()) scan(absolute);
-      else if (entry.isFile()) files++;
+      else if (entry.isFile()) {
+        files++;
+        if (/\.(?:[cm]?js|jsx)$/i.test(name))
+          failures.push(`Author code must use TypeScript: ${name}`);
+        if (/\.html?$/i.test(name)) {
+          const html = readFileSync(absolute, 'utf8');
+          for (const script of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)) {
+            const type = script[1]?.match(/\btype\s*=\s*["']([^"']+)["']/i)?.[1];
+            if (
+              (!type || /^(?:module|(?:text|application)\/(?:java|ecma)script)$/i.test(type)) &&
+              script[2]?.trim()
+            )
+              failures.push(`Inline script must be generated from TypeScript: ${name}`);
+          }
+          if (/\son[a-z]+\s*=/i.test(html))
+            failures.push(`Inline event handlers must move to TypeScript: ${name}`);
+        }
+      }
     }
   }
   scan(resolve(root), true);

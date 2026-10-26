@@ -147,15 +147,17 @@ export function RelatedReading({
       {items.map((item) => (
         <a key={item.path} href={siteHref(item.path)}>
           {relatedArtwork[item.path] && (
-            <ThemedArtwork
-              className="related-reading__image"
-              asset={relatedArtwork[item.path]!}
-              alt=""
-              width="960"
-              height="640"
-              loading="lazy"
-              decoding="async"
-            />
+            <div className="related-reading__media">
+              <ThemedArtwork
+                className="related-reading__image"
+                asset={relatedArtwork[item.path]!}
+                alt=""
+                width="960"
+                height="640"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
           )}
           <Text as="h3">{item.title}</Text>
           <Text as="p">{item.text}</Text>

@@ -1,6 +1,7 @@
 import { Text } from '../../components/ui/Text';
 import { primaryContact, linkTo } from '../../components/layout/pageLinks';
 import { supportEmail } from '../../config/site';
+import { useLocale } from '../../i18n/context';
 import { PageFrame } from '../../components/layout/PageFrame';
 import {
   EditorialSection,
@@ -9,6 +10,7 @@ import {
 } from '../../components/layout/PageSections';
 
 export default function AboutPage() {
+  const { t } = useLocale();
   return (
     <PageFrame
       artwork="about"
@@ -22,7 +24,10 @@ export default function AboutPage() {
       ]}
       closing={{
         title: 'Talk to the people behind the product.',
-        description: `Questions about the platform, data or collaboration? Reach the team at ${supportEmail}.`,
+        description: t(
+          'Questions about the platform, data or collaboration? Reach the team at {email}.',
+          { email: supportEmail },
+        ),
       }}
       links={[primaryContact, linkTo('Responsible Scanning', '/responsible-scanning', true)]}
     >

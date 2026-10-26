@@ -1,5 +1,5 @@
 import { RouteReady } from './app/RouteReady';
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useMemo, useState } from 'react';
 import { useLocale } from './i18n/context';
 import { LocaleText } from './i18n/LocaleText';
 import { Header } from './components/Header';
@@ -13,7 +13,9 @@ import {
   loadPlatform,
   loadResearch,
   loadCommercial,
+  loadDocumentation,
   loadCorporate,
+  loadInvestors,
   loadLegal,
   loadNotFound,
   routeGroup,
@@ -24,7 +26,9 @@ const pages = {
   platform: lazy(loadPlatform),
   research: lazy(loadResearch),
   commercial: lazy(loadCommercial),
+  documentation: lazy(loadDocumentation),
   corporate: lazy(loadCorporate),
+  investors: lazy(loadInvestors),
   legal: lazy(loadLegal),
   notFound: lazy(loadNotFound),
 };
@@ -32,8 +36,29 @@ const pages = {
 export function App() {
   const { locale, t } = useLocale();
   const path = useSiteRoute(locale);
+  const [readyPath, setReadyPath] = useState<string | null>(null);
   const notFound = path === '/404';
   const Page = pages[routeGroup(path)];
+  const content = useMemo(
+    () => (
+      <main id="main" data-route={path}>
+        <RouteBoundary key={path} path={path} onReady={setReadyPath}>
+          <Suspense
+            fallback={
+              <div className="route-fallback" role="status" aria-label={t('Loading page')}>
+                <span className="sr-only">{t('Loading page…')}</span>
+              </div>
+            }
+          >
+            <RouteReady path={path} onReady={setReadyPath}>
+              <Page path={path} />
+            </RouteReady>
+          </Suspense>
+        </RouteBoundary>
+      </main>
+    ),
+    [Page, path, t],
+  );
   return (
     <MotionProvider>
       <div id="top" className={notFound ? 'site site--not-found' : 'site'} lang={locale}>
@@ -41,22 +66,8 @@ export function App() {
           <LocaleText>{t('Skip to content')}</LocaleText>
         </a>
         <Header forceVisible={notFound} />
-        <main id="main" data-route={path}>
-          <RouteBoundary key={path}>
-            <Suspense
-              fallback={
-                <div className="route-fallback" role="status" aria-label={t('Loading page')}>
-                  <span className="sr-only">{t('Loading page…')}</span>
-                </div>
-              }
-            >
-              <RouteReady path={path}>
-                <Page path={path} />
-              </RouteReady>
-            </Suspense>
-          </RouteBoundary>
-        </main>
-        {!notFound && <Footer />}
+        {content}
+        {!notFound && readyPath === path && <Footer />}
       </div>
     </MotionProvider>
   );

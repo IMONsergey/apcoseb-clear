@@ -77,29 +77,44 @@ test('editorial images load responsively without shifting the text', async ({ pa
 test('reading surfaces retain symmetric space and readable body copy', async ({ page }) => {
   for (const width of [390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    for (const path of [
-      '/teams',
-      '/platform/data-methodology',
-      '/use-cases/osint-threat-investigation',
+    for (const { path, surfaceSelector, copySelector } of [
+      {
+        path: '/teams',
+        surfaceSelector: '.handoff-record',
+        copySelector: '.team-handoff > div > p',
+      },
+      {
+        path: '/platform/data-methodology',
+        surfaceSelector: '.date-reading',
+        copySelector: '.collection-layout > article > p',
+      },
+      {
+        path: '/use-cases/osint-threat-investigation',
+        surfaceSelector: '.investigation-notebook',
+        copySelector: '.indicator-approach article p',
+      },
     ]) {
       await page.goto('.' + path);
-      const surfaces = await page
-        .locator('.handoff-record, .date-reading, .investigation-notebook')
-        .evaluateAll((els) =>
-          els.map((el) => {
-            const css = getComputedStyle(el);
-            return { left: parseFloat(css.paddingLeft), right: parseFloat(css.paddingRight) };
-          }),
-        );
+      const surface = page.locator(surfaceSelector);
+      const bodyCopy = page.locator(copySelector);
+      await expect(surface.first()).toBeVisible();
+      await expect(bodyCopy.first()).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
+      const surfaces = await surface.evaluateAll((els) =>
+        els.map((el) => {
+          const css = getComputedStyle(el);
+          return { left: parseFloat(css.paddingLeft), right: parseFloat(css.paddingRight) };
+        }),
+      );
+      expect(surfaces.length, path).toBeGreaterThan(0);
       for (const box of surfaces) {
         expect(box.left, path).toBeGreaterThanOrEqual(22);
         expect(Math.abs(box.left - box.right), path).toBeLessThanOrEqual(1);
       }
-      const copy = await page
-        .locator(
-          '.indicator-approach article p, .team-handoff > div > p, .collection-layout > article > p',
-        )
-        .evaluateAll((els) => els.map((el) => parseFloat(getComputedStyle(el).fontSize)));
+      const copy = await bodyCopy.evaluateAll((els) =>
+        els.map((el) => parseFloat(getComputedStyle(el).fontSize)),
+      );
+      expect(copy.length, path).toBeGreaterThan(0);
       for (const size of copy) expect(size, path).toBeGreaterThanOrEqual(width > 1000 ? 18 : 17);
     }
   }

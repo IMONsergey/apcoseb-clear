@@ -79,8 +79,19 @@
 }
 @media (max-width: 375px) {
   .billing-dock {
+    flex-direction: column;
+    align-items: stretch;
     padding: 10px var(--space-3);
-    gap: var(--space-3);
+    gap: var(--space-2);
+  }
+  .billing-dock__offer {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 3px var(--space-2);
+  }
+  .billing-dock .billing-switch {
+    align-self: center;
   }
   .billing-dock__offer strong {
     font-size: var(--font-size-14);
@@ -89,7 +100,7 @@
   .billing-dock__offer > span {
     font-size: var(--font-size-12);
     line-height: 1.25;
-    min-height: 28px;
+    min-height: 0;
   }
   .billing-dock .segmented label > span {
     font-size: var(--font-size-14);

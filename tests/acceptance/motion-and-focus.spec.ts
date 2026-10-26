@@ -82,15 +82,16 @@ test('prices retain the digit-reel animation in both directions and rapid switch
   const annual = page.getByRole('radio', { name: 'Annually', exact: true });
   const monthly = page.getByRole('radio', { name: 'Monthly', exact: true });
 
-  await annual.check();
-  await expect(page.locator('.price-amount')).toHaveText(['$0', '$40', '$240', '$720']);
-  await expect.poll(starts).toBeGreaterThan(0);
-  const annualStarts = await starts();
-  expect(await page.locator('.price-digit__reel').count()).toBeGreaterThan(0);
-
+  await expect(annual).toBeChecked();
   await monthly.check();
   await expect(page.locator('.price-amount')).toHaveText(['$0', '$50', '$300', '$900']);
-  await expect.poll(starts).toBeGreaterThan(annualStarts);
+  await expect.poll(starts).toBeGreaterThan(0);
+  const monthlyStarts = await starts();
+  expect(await page.locator('.price-digit__reel').count()).toBeGreaterThan(0);
+
+  await annual.check();
+  await expect(page.locator('.price-amount')).toHaveText(['$0', '$40', '$240', '$720']);
+  await expect.poll(starts).toBeGreaterThan(monthlyStarts);
 
   await annual.check();
   await monthly.check();
@@ -108,7 +109,8 @@ test('reduced motion preserves the selected price without a running reel', async
   expect(await priceAnimations(page)).toBe(0);
 });
 
-test('marquee pauses for focus', async ({ page }) => {
+test('marquee keeps scrolling during hover and focus', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
   await visit(page);
 
   const trust = page.locator('.trust');
@@ -116,8 +118,14 @@ test('marquee pauses for focus', async ({ page }) => {
   await expect(trust).toHaveAttribute('data-running', 'true');
 
   const viewport = trust.locator('.trust-viewport');
+  await viewport.hover();
   await viewport.focus();
-  await expect(viewport.locator('.trust-track')).toHaveCSS('animation-play-state', 'paused');
+  const track = viewport.locator('.trust-track');
+  await expect(track).toHaveCSS('animation-play-state', 'running');
+  const transform = await track.evaluate((node) => getComputedStyle(node).transform);
+  await expect
+    .poll(() => track.evaluate((node) => getComputedStyle(node).transform))
+    .not.toBe(transform);
 });
 
 test('language controls have no serious accessibility violations', async ({ page }) => {

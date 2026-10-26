@@ -5,14 +5,13 @@ export type IconName =
   | 'chevron'
   | 'search'
   | 'plus'
+  | 'check'
   | 'minus'
   | 'close'
   | 'menu'
   | 'previous'
   | 'external'
   | 'focus'
-  | 'pause'
-  | 'play'
   | 'database'
   | 'scanner'
   | 'cube'
@@ -25,6 +24,7 @@ const paths: Record<IconName, string> = {
   chevron: 'M4 6l4 4 4-4',
   search: 'm11.4 11.4 3.2 3.2M12.5 7A5.5 5.5 0 1 1 1.5 7a5.5 5.5 0 0 1 11 0',
   plus: 'M3 8h10M8 3v10',
+  check: 'm3 8 3 3 7-7',
   minus: 'M3 8h10',
   close: 'm4 4 8 8M12 4l-8 8',
   menu: 'M2 4h12M2 8h12M2 12h12',
@@ -37,8 +37,6 @@ const paths: Record<IconName, string> = {
   book: 'M8 3C6 1 2 1 1 2v12c2-1 5-1 7 1 2-2 5-2 7-1V2c-1-1-5-1-7 1Zm0 0v12',
   bookmark: 'M3 2h10v13l-5-3-5 3V2Z',
   appearance: 'M8 2.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Zm0 0v11M8 5a3 3 0 0 0 0 6',
-  pause: 'M5 3v10M11 3v10',
-  play: 'm5 3 8 5-8 5Z',
 };
 export function Icon({ name, ...props }: SVGProps<SVGSVGElement> & { name: IconName }) {
   return (

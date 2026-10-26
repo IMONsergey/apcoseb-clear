@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, type HTMLAttributes, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, type HTMLAttributes, type ReactNode } from 'react';
 import { useMotion } from '../../hooks/useMotion';
 import './MorphPanel.css';
 
@@ -14,13 +14,16 @@ export function MorphPanel({
   const content = useRef<HTMLDivElement>(null);
   const { reduced } = useMotion();
   const measure = useRef<(() => void) | null>(null);
-  useLayoutEffect(() => {
+  // Initial content uses its natural height; only later changes need a pre-paint measurement.
+  useEffect(() => {
     const outer = frame.current;
     const inner = content.current;
     if (!outer || !inner) return;
-    let height = inner.getBoundingClientRect().height;
-    let width = inner.getBoundingClientRect().width;
+    const initial = inner.getBoundingClientRect();
+    let height = initial.height;
+    let width = initial.width;
     let animation: Animation | undefined;
+    let resizeFrame = 0;
     const resize = () => {
       const next = inner.getBoundingClientRect();
       if (Math.abs(next.height - height) < 0.5 && Math.abs(next.width - width) < 0.5) return;
@@ -47,11 +50,20 @@ export function MorphPanel({
       };
     };
     measure.current = resize;
-    const observer = new ResizeObserver(resize);
+    // Observer-driven size changes can include fractional font/layout adjustments.
+    // Commit their height animation in the next frame to avoid a resize delivery loop.
+    const observer = new ResizeObserver(() => {
+      if (resizeFrame) return;
+      resizeFrame = requestAnimationFrame(() => {
+        resizeFrame = 0;
+        resize();
+      });
+    });
     observer.observe(inner);
     return () => {
       measure.current = null;
       observer.disconnect();
+      cancelAnimationFrame(resizeFrame);
       animation?.cancel();
       outer.style.height = '';
       delete outer.dataset.morphing;

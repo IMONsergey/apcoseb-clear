@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import ru from '../../src/i18n/translations/ru';
 import zhHant from '../../src/i18n/translations/zh-Hant';
 import { openLanguageMenu } from '../helpers/locale';
@@ -11,12 +11,18 @@ const translated = (locale: keyof typeof catalogs, source: string) =>
   catalogs[locale][source] ?? source;
 const escapeHtml = (value: string) =>
   value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
+const staticDocumentLanguage = (page: Page, html: string) =>
+  page.evaluate(
+    (markup) =>
+      new DOMParser().parseFromString(markup, 'text/html').documentElement.getAttribute('lang'),
+    html,
+  );
 
 test('English URLs, content and metadata remain unchanged', async ({ page, request }) => {
   const response = await request.get('./pricing/');
   expect(response.ok()).toBe(true);
   const html = await response.text();
-  expect(html).toContain('<html lang="en"');
+  expect(await staticDocumentLanguage(page, html)).toBe('en');
   expect(html).toContain('<title>Pricing | Apcosys</title>');
   expect(html).toContain('content="Compare Apcosys plans, credits, limits and API access."');
 
@@ -42,7 +48,7 @@ for (const locale of ['ru', 'zh-Hant'] as const) {
     const source = localizedMetadata['/platform/search-investigation'];
     const title = formatTypography(translated(locale, source.title), locale) + ' | Apcosys';
     const description = formatTypography(translated(locale, source.description), locale);
-    expect(html).toContain(`<html lang="${locale}"`);
+    expect(await staticDocumentLanguage(page, html)).toBe(locale);
     expect(html).toContain(`<title>${escapeHtml(title)}</title>`);
     expect(html).toContain(`content="${escapeHtml(description)}"`);
 
@@ -79,7 +85,7 @@ test('language selection keeps the equivalent route, query and hash', async ({ p
   await expect(page.locator('[data-language-selector]')).toContainText('RU');
 });
 
-test('same-locale navigation stays in the SPA and legal links return to English', async ({
+test('same-locale navigation includes legal pages and the language menu opens the English source', async ({
   page,
 }) => {
   await page.goto('./ru/teams');
@@ -90,14 +96,21 @@ test('same-locale navigation stays in the SPA and legal links return to English'
 
   await page.goto('./ru/contact');
   const legal = page.locator('a[href$="/legal/privacy-policy"]').first();
-  await expect(legal).not.toHaveAttribute('href', /\/ru\/legal\//);
+  await expect(legal).toHaveAttribute('href', /\/ru\/legal\//);
   await legal.click();
+  await expect(page).toHaveURL(/\/ru\/legal\/privacy-policy\/?$/);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
+  await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(4);
+  await expect(page.locator('.legal-translation')).toHaveCount(0);
+  const languages = await openLanguageMenu(page);
+  await languages.english.click();
   await expect(page).toHaveURL(/\/legal\/privacy-policy\/?$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0);
+  await expect(page.locator('.legal-translation')).toHaveCount(0);
+  await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(4);
 });
 
-test('language menu exposes native radio semantics and a region-neutral Chinese mark', async ({
+test('language menu retains Traditional Chinese and uses the requested PRC flag', async ({
   page,
 }) => {
   await page.goto('./zh-hant/pricing');
@@ -105,7 +118,16 @@ test('language menu exposes native radio semantics and a region-neutral Chinese 
   const chinese = page.getByRole('menuitemradio', { name: '繁體中文', exact: true });
   await expect(chinese).toHaveAttribute('aria-checked', 'true');
   await expect(chinese).toHaveAttribute('lang', 'zh-Hant');
-  expect((await chinese.locator('svg').innerHTML()).toLowerCase()).not.toContain('#de2910');
+  await expect(chinese.locator('svg path[fill="#de2910"]')).toHaveCount(1);
+  await expect(chinese.locator('svg g[fill="#ffde00"] > path')).toHaveCount(5);
+  await expect(page.locator('[data-language-selector] svg path[fill="#de2910"]')).toHaveCount(1);
+  await expect(page.locator('[data-language-selector]')).toContainText('繁中');
+  await page.locator('.language-control').screenshot({
+    path: test.info().outputPath('chinese-flag-trigger.png'),
+  });
+  await page.locator('.language-panel').screenshot({
+    path: test.info().outputPath('language-menu.png'),
+  });
   await chinese.focus();
   await page.keyboard.press('ArrowUp');
   await expect(page.getByRole('menuitemradio', { name: 'Русский', exact: true })).toBeFocused();
@@ -115,12 +137,14 @@ test('localized runtime preserves verbatim and form values and publishes alterna
   page,
 }) => {
   await page.goto('./ru/developers/api');
-  await expect(page.locator('.stage-code-window pre')).toContainText('APCOSYS_API_ENDPOINT');
+  await expect(page.locator('.stage-code-window pre')).toContainText(
+    'https://api.apcosys.net/api/v1/search/hosts',
+  );
   await expect(page.locator('.locale-text .locale-text')).toHaveCount(0);
   await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(4);
   await expect(page.locator('link[rel="alternate"][hreflang="zh-Hant"]')).toHaveAttribute(
     'href',
-    /\/zh-hant\/developers\/api$/,
+    /\/zh-hant\/developers\/api\/$/,
   );
 
   await page.goto('./ru/');
@@ -129,23 +153,39 @@ test('localized runtime preserves verbatim and form values and publishes alterna
   await expect(input).toHaveValue('example.com  --  443');
 });
 
-test('untranslated corporate and legal pages do not claim localized variants', async ({
-  page,
-  request,
-}) => {
-  for (const unsupported of ['about', 'responsible-scanning', 'legal/privacy-policy']) {
-    const response = await request.get('./ru/' + unsupported + '/');
-    const html = await response.text();
-    expect(html).not.toContain(`<html lang="ru"`);
-  }
+for (const locale of ['ru', 'zh-Hant'] as const) {
+  const prefix = locale === 'ru' ? 'ru' : 'zh-hant';
+  test(`${locale} corporate and legal editions have matching static metadata and navigation`, async ({
+    page,
+    request,
+  }) => {
+    for (const route of ['/about', '/responsible-scanning', '/legal/privacy-policy'] as const) {
+      const response = await request.get('./' + prefix + route + '/');
+      expect(response.ok()).toBe(true);
+      const html = await response.text();
+      expect(await staticDocumentLanguage(page, html)).toBe(locale);
+      const title =
+        formatTypography(translated(locale, localizedMetadata[route].title), locale) + ' | Apcosys';
+      expect(html).toContain('<title>' + escapeHtml(title) + '</title>');
+    }
 
-  await page.goto('./ru/pricing');
-  const aboutLink = page.locator('a[href$="/about"]').first();
-  await expect(aboutLink).not.toHaveAttribute('href', /\/ru\/about/);
-  await aboutLink.click();
-  await expect(page).toHaveURL(/\/about\/?$/);
-  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-});
+    await page.goto('./' + prefix + '/pricing');
+    const aboutLink = page
+      .getByRole('navigation', { name: translated(locale, 'Footer'), exact: true })
+      .getByRole('link', { name: translated(locale, 'About'), exact: true });
+    await expect(aboutLink).toBeVisible();
+    await expect(aboutLink).toHaveAttribute('href', new RegExp('/' + prefix + '/about$'));
+    await aboutLink.click();
+    await expect(page).toHaveURL(new RegExp('/' + prefix + '/about/?$'));
+    await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+      formatTypography(
+        translated(locale, 'Built for people who investigate the internet.'),
+        locale,
+      ),
+    );
+  });
+}
 
 test('a missing route canonically identifies itself instead of the homepage', async ({ page }) => {
   await page.goto('./ru/missing-route');
@@ -156,3 +196,47 @@ test('a missing route canonically identifies itself instead of the homepage', as
     url.origin + url.pathname,
   );
 });
+
+for (const width of [390, 1440]) {
+  for (const [route, anchor] of [
+    ['', 'api'],
+    ['platform/search-investigation', 'search-syntax'],
+    ['pricing', 'compare-plans'],
+    ['docs/investors', 'investor-platform'],
+    ['developers/api/docs', 'errors'],
+    ['legal/terms', 'governing-law'],
+  ] as const) {
+    test(`language round trip keeps the visible anchor: ${route || 'home'} at ${width}px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+      await page.goto(`./${route}?source=language#${anchor}`);
+      for (const [language, label] of [
+        ['ru', 'Русский'],
+        ['zh-Hant', '繁體中文'],
+        ['en', 'English'],
+      ] as const) {
+        await expect(page.locator(`[id="${anchor}"]`)).toBeInViewport();
+        await openLanguageMenu(page);
+        await page.getByRole('menuitemradio', { name: label, exact: true }).click();
+        await expect(page.locator('html')).toHaveAttribute('lang', language);
+        await expect(page.locator(`[id="${anchor}"]`)).toBeInViewport();
+        await page.evaluate(() => document.fonts.ready);
+        const destination = new URL(page.url());
+        expect(destination.search).toBe('?source=language');
+        expect(destination.hash).toBe(`#${anchor}`);
+        await expect
+          .poll(() =>
+            page
+              .locator(`[id="${anchor}"]`)
+              .evaluate((element) => element.getBoundingClientRect().top),
+          )
+          .toBeGreaterThanOrEqual(-1);
+        expect(
+          await page.evaluate(() => document.documentElement.scrollWidth - innerWidth),
+        ).toBeLessThanOrEqual(1);
+      }
+    });
+  }
+}

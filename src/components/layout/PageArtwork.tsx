@@ -16,6 +16,7 @@ export type ArtworkKey =
   | 'api'
   | 'pricing'
   | 'about'
+  | 'investors'
   | 'scanning'
   | 'contact';
 const artwork: Record<ArtworkKey, { file: ThemedAsset; alt: string }> = {
@@ -59,6 +60,10 @@ const artwork: Record<ArtworkKey, { file: ThemedAsset; alt: string }> = {
     file: 'inner/about.webp',
     alt: 'An open structure makes the internet’s technical layers visible.',
   },
+  investors: {
+    file: 'inner/investors.webp',
+    alt: 'An open optical structure brings teal infrastructure signals into a shared centre.',
+  },
   scanning: {
     file: 'inner/scanning.webp',
     alt: 'A defined boundary surrounds infrastructure being observed.',
@@ -80,20 +85,14 @@ function SignalTrace() {
     let raf = 0,
       visible = false,
       phase = 0,
-      previous = 0;
+      previous = 0,
+      lastDraw = 0,
+      width = 0,
+      height = 0;
+    let ink = getComputedStyle(el).getPropertyValue('--accent-text');
     const draw = () => {
-      const width = el.clientWidth,
-        height = el.clientHeight;
-      const dpr = Math.min(devicePixelRatio, 2);
-      const pixelWidth = Math.round(width * dpr);
-      const pixelHeight = Math.round(height * dpr);
-      if (el.width !== pixelWidth || el.height !== pixelHeight) {
-        el.width = pixelWidth;
-        el.height = pixelHeight;
-      }
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = getComputedStyle(el).getPropertyValue('--accent-text');
+      ctx.fillStyle = ink;
       for (let i = 0; i < 48; i++) {
         const x = width * (0.12 + (i / 47) * 0.76);
         const y = height * 0.52 + Math.sin((i / 47) * Math.PI * 2 + phase) * height * 0.11;
@@ -105,9 +104,12 @@ function SignalTrace() {
       ctx.globalAlpha = 1;
     };
     const tick = (now: number) => {
-      phase += Math.min(now - previous, 32) / 8000;
+      phase += Math.min(now - previous, 64) / 8000;
       previous = now;
-      draw();
+      if (now - lastDraw >= 1000 / 30) {
+        lastDraw = now;
+        draw();
+      }
       raf = requestAnimationFrame(tick);
     };
     const sync = () => {
@@ -122,13 +124,31 @@ function SignalTrace() {
       visible = active;
       sync();
     });
-    const resize = new ResizeObserver(draw);
+    const resize = new ResizeObserver(([entry]) => {
+      if (!entry) return;
+      width = entry.contentRect.width;
+      height = entry.contentRect.height;
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      el.width = Math.round(width * dpr);
+      el.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      draw();
+    });
     resize.observe(el);
+    const palette = new MutationObserver(() => {
+      ink = getComputedStyle(el).getPropertyValue('--accent-text');
+      draw();
+    });
+    palette.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
     sync();
     return () => {
       cancelAnimationFrame(raf);
       stopActivity();
       resize.disconnect();
+      palette.disconnect();
     };
   }, [reduced, paused]);
   return <canvas ref={canvas} className="page-artwork__trace" aria-hidden="true" />;

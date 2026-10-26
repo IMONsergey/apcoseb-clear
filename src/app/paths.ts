@@ -2,15 +2,15 @@ import { siteRoutes, type SitePath } from '../content/routes';
 import type { Locale } from '../i18n/messages';
 import { hasLocalizedCopy } from '../i18n/localized-routes';
 
-export const siteBase = import.meta.env.BASE_URL.replace(/\/+$/, '');
-export const rootedPath = (value: string) => value.replace(/\/+$/, '') || '/';
+const siteBase = import.meta.env.BASE_URL.replace(/\/+$/, '');
+const rootedPath = (value: string) => value.replace(/\/+$/, '') || '/';
 
 const localePrefixes: Record<Exclude<Locale, 'en'>, string> = {
   ru: '/ru',
   'zh-Hant': '/zh-hant',
 };
 
-export type SiteLocation = {
+type SiteLocation = {
   locale: Locale;
   routePath: string;
 };
@@ -38,10 +38,6 @@ export function resolveSiteLocation(pathname: string): SiteLocation | null {
 export function getLocale(): Locale {
   if (typeof window === 'undefined') return 'en';
   return resolveSiteLocation(window.location.pathname)?.locale ?? 'en';
-}
-
-export function isSitePath(value: string): value is SitePath {
-  return siteRoutes.some((route) => route.path === value);
 }
 
 export function isRouteAvailable(path: string, locale: Locale): path is SitePath {

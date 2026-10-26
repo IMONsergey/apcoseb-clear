@@ -83,8 +83,7 @@
   height: 36px;
   object-fit: contain;
 }
-.trust[data-running='false'] .trust-track,
-.trust-viewport:focus-within .trust-track {
+.trust[data-running='false'] .trust-track {
   animation-play-state: paused;
 }
 @keyframes trust-travel {

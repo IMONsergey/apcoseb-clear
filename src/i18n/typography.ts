@@ -2,44 +2,56 @@ import Typograf from 'typograf';
 
 type TypographyLocale = 'en' | 'ru' | 'zh-Hant';
 
-const englishEngine = new Typograf({ locale: 'en-US' });
-englishEngine.disableRule('*');
-englishEngine.enableRule([
-  'common/space/*',
-  'common/punctuation/*',
-  'common/nbsp/afterShortWord',
-  'common/nbsp/afterShortWordByList',
-  'common/nbsp/beforeShortLastWord',
-  'en-US/dash/main',
-]);
-englishEngine.disableRule([
-  'common/space/trimLeft',
-  'common/space/trimRight',
-  'common/space/delLeadingBlanks',
-  'common/space/delTrailingBlanks',
-  'common/space/insertFinalNewline',
-]);
+const engines: Partial<Record<'en' | 'ru', Typograf>> = {};
+function typographyEngine(locale: 'en' | 'ru'): Typograf {
+  const cached = engines[locale];
+  if (cached) return cached;
+  if (locale === 'en') {
+    const engine = new Typograf({ locale: 'en-US' });
+    engine.disableRule('*');
+    engine.enableRule([
+      'common/space/*',
+      'common/punctuation/*',
+      'common/nbsp/afterShortWord',
+      'common/nbsp/afterShortWordByList',
+      'common/nbsp/beforeShortLastWord',
+      'en-US/dash/main',
+    ]);
+    engine.disableRule([
+      'common/space/trimLeft',
+      'common/space/trimRight',
+      'common/space/delLeadingBlanks',
+      'common/space/delTrailingBlanks',
+      'common/space/insertFinalNewline',
+    ]);
 
-// Keep technical values, dates, IDs and links out of the Russian prose rules.
-const russianEngine = new Typograf({ locale: 'ru' });
-russianEngine.disableRule('*');
-russianEngine.enableRule([
-  'common/space/delRepeatSpace',
-  'common/space/delBeforePunctuation',
-  'common/space/delBeforeDot',
-  'common/punctuation/quote',
-  'common/punctuation/hellip',
-  'common/nbsp/afterShortWord',
-  'common/nbsp/afterShortWordByList',
-  'ru/dash/main',
-  'ru/nbsp/abbr',
-  'ru/nbsp/afterNumberSign',
-  'ru/nbsp/initials',
-  'ru/nbsp/dayMonth',
-  'ru/nbsp/mln',
-  'ru/nbsp/year',
-  'ru/nbsp/rubleKopek',
-]);
+    engines.en = engine;
+    return engine;
+  }
+  // Technical values, dates, IDs and links stay outside the Russian prose rules.
+  const engine = new Typograf({ locale: 'ru' });
+  engine.disableRule('*');
+  engine.enableRule([
+    'common/space/delRepeatSpace',
+    'common/space/delBeforePunctuation',
+    'common/space/delBeforeDot',
+    'common/punctuation/quote',
+    'common/punctuation/hellip',
+    'common/nbsp/afterShortWord',
+    'common/nbsp/afterShortWordByList',
+    'ru/dash/main',
+    'ru/nbsp/abbr',
+    'ru/nbsp/afterNumberSign',
+    'ru/nbsp/initials',
+    'ru/nbsp/dayMonth',
+    'ru/nbsp/mln',
+    'ru/nbsp/year',
+    'ru/nbsp/rubleKopek',
+  ]);
+
+  engines.ru = engine;
+  return engine;
+}
 
 const cache = new Map<string, string>();
 let activeLocale: TypographyLocale = 'en';
@@ -58,7 +70,7 @@ export function formatTypography(text: string, locale: TypographyLocale): string
   const key = `${locale}\u0000${text}`;
   let result = cache.get(key);
   if (result === undefined) {
-    result = (locale === 'ru' ? russianEngine : englishEngine).execute(text);
+    result = typographyEngine(locale).execute(text);
     cache.set(key, result);
     cache.set(`${locale}\u0000${result}`, result);
   }

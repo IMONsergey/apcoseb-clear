@@ -16,17 +16,34 @@ export function calculatePrice(monthlyDollars: number, period: BillingPeriod) {
     total: (monthlyCents * (period === 'annually' ? 12 : 1)) / 100,
   };
 }
-const currency = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  maximumFractionDigits: 2,
-  minimumFractionDigits: 0,
-});
-export const formatPrice = (amount: number) => currency.format(amount);
+const formatters = new Map<string, { currency: Intl.NumberFormat; count: Intl.NumberFormat }>();
 
-const count = new Intl.NumberFormat('en-US');
-export const formatCredits = (value: number, compact = false) =>
-  compact ? count.format(value).replaceAll(',', '\u00a0') : count.format(value);
+/** The same USD and count conventions apply to cards, tables, packages and dialogs. */
+export function getPricingFormatters(locale = 'en') {
+  let result = formatters.get(locale);
+  if (!result) {
+    const numberLocale = locale === 'en' ? 'en-US' : locale;
+    result = {
+      currency: new Intl.NumberFormat(numberLocale, {
+        style: 'currency',
+        currency: 'USD',
+        currencyDisplay: 'narrowSymbol',
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 0,
+      }),
+      count: new Intl.NumberFormat(numberLocale),
+    };
+    formatters.set(locale, result);
+  }
+  return result;
+}
+export const formatPrice = (amount: number, locale = 'en') =>
+  getPricingFormatters(locale).currency.format(amount);
+
+export const formatCredits = (value: number, compact = false, locale = 'en') => {
+  const formatted = getPricingFormatters(locale).count.format(value);
+  return compact && locale === 'en' ? formatted.replaceAll(',', '\u00a0') : formatted;
+};
 export const formatApiRate = (
   plan: Plan,
   translate: (source: string, values?: Record<string, string | number>) => string = (

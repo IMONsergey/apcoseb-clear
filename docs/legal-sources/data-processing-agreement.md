@@ -57,7 +57,7 @@ We engage trusted third-party Subprocessors to support our services, including:
 - **Postmark (ActiveCampaign):** Facilitates email delivery.
 <!-- - **Cloudflare:** Provides DDoS protection, proxy services, and content delivery.   -->
 
-A current list of Subprocessors is available at **Subprocessors List**.
+For the current list of Subprocessors, contact [info@apcosys.net](mailto:info@apcosys.net).
 
 ## 6. Data Transfers
 

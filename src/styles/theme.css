@@ -161,14 +161,6 @@ body,
   }
 }
 
-/* Disabled languages communicate intent instead of resembling broken controls. */
-.language-panel .language-soon {
-  margin-left: auto;
-  font: 500 var(--font-size-10)/1 var(--font-mono);
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  opacity: 0.9;
-}
 html[data-theme='dark'] .language-panel button:disabled {
   opacity: 0.64;
 }

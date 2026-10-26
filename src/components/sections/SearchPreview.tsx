@@ -4,7 +4,7 @@ import { LocaleText } from '../../i18n/LocaleText';
 import { useLocale } from '../../i18n/context';
 import { noBreakNumber } from '../../i18n/typography';
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
-import { metrics } from '../../content/metrics';
+import { metrics, metricsSource } from '../../content/metrics';
 import { productUrl } from '../../config/site';
 import { SearchChrome } from './SearchChrome';
 import { TrustMarquee } from './TrustMarquee';
@@ -44,89 +44,98 @@ function SearchForm({ className = '' }: { className?: string }) {
     setSubmitting(true);
   }
   return (
-    <form
-      className={`search-form ${className}${error ? ' search-form--invalid' : ''}`}
-      action={`${productUrl}/search`}
-      method="get"
-      onSubmit={submit}
-      aria-busy={submitting || undefined}
-      role="search"
-      aria-label={t('Search internet infrastructure')}
-    >
-      <span className="search-form__glow" aria-hidden="true" />
-      <label className="sr-only" htmlFor={id}>
-        {t('Domain, IP or technical attribute')}
-      </label>
-      <input
-        id={id}
-        ref={input}
-        enterKeyHint="search"
-        type="search"
-        name="search_value"
-        value={query}
-        onChange={(event) => {
-          setQuery(event.target.value);
-          setError(false);
-        }}
-        placeholder={t(
-          compact ? 'Domain, IP or attribute' : 'Domain, IP or technical attribute. It’s free',
-        )}
-        autoComplete="off"
-        spellCheck={false}
-        aria-invalid={error || undefined}
-        aria-describedby={
-          [compact && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
-        }
-      />
-      {!compact && !query && (
-        <span className="search-desktop-placeholder" aria-hidden="true">
-          <span>{t('Domain, IP or technical attribute.')}</span>
-          <span className="search-desktop-placeholder__accent">{t('It’s free')}</span>
-        </span>
-      )}
-      {query && !submitting && (
-        <button
-          type="button"
-          className="search-clear"
-          aria-label={t('Clear search query')}
-          onClick={() => {
-            setQuery('');
-            setError(false);
-            input.current?.focus({ preventScroll: true });
-          }}
-        >
-          <Icon name="close" />
-        </button>
-      )}
-      <button
-        type="submit"
-        className="search-submit"
-        aria-label={t('Search Apcosys')}
-        disabled={submitting}
+    <>
+      <form
+        className={`search-form ${className}${error ? ' search-form--invalid' : ''}`}
+        action={`${productUrl}/search`}
+        method="get"
+        onSubmit={submit}
+        aria-busy={submitting || undefined}
+        role="search"
+        aria-label={t('Search internet infrastructure')}
       >
-        {submitting ? (
-          <span className="search-spinner" aria-hidden="true" />
-        ) : (
-          <Icon name="search" />
+        <label className="sr-only" htmlFor={id}>
+          {t('Domain, IP or technical attribute')}
+        </label>
+        <input
+          id={id}
+          ref={input}
+          enterKeyHint="search"
+          type="search"
+          name="search_value"
+          value={query}
+          onChange={(event) => {
+            setQuery(event.target.value);
+            setError(false);
+          }}
+          placeholder={t(
+            compact ? 'Domain, IP or attribute' : 'Domain, IP or technical attribute. It’s free',
+          )}
+          autoComplete="off"
+          spellCheck={false}
+          aria-invalid={error || undefined}
+          aria-describedby={
+            [compact && !error && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') ||
+            undefined
+          }
+        />
+        {!compact && !query && (
+          <span className="search-desktop-placeholder" aria-hidden="true">
+            <span>{t('Domain, IP or technical attribute.')}</span>
+            <span className="search-desktop-placeholder__accent">{t('It’s free')}</span>
+          </span>
         )}
-      </button>
-      {compact && (
-        <span className="search-free-note" id={`${id}-hint`}>
-          <LocaleText>{t('It’s free')}</LocaleText>
-        </span>
-      )}
+        {query && !submitting && (
+          <button
+            type="button"
+            className="search-clear"
+            aria-label={t('Clear search query')}
+            onClick={() => {
+              setQuery('');
+              setError(false);
+              input.current?.focus({ preventScroll: true });
+            }}
+          >
+            <Icon name="close" />
+          </button>
+        )}
+        <button
+          type="submit"
+          className="search-submit"
+          aria-label={t('Search Apcosys')}
+          disabled={submitting}
+        >
+          {submitting ? (
+            <span className="search-spinner" aria-hidden="true" />
+          ) : (
+            <Icon name="search" />
+          )}
+        </button>
+        {compact && !error && (
+          <span className="search-free-note" id={`${id}-hint`}>
+            <LocaleText>{t('It’s free')}</LocaleText>
+          </span>
+        )}
+      </form>
       {error && (
-        <span className="search-error" id={`${id}-error`} role="alert">
+        <p className="search-error" id={`${id}-error`} role="alert">
           <LocaleText>{t('Enter a domain, IP or technical attribute.')}</LocaleText>
-        </span>
+        </p>
       )}
-    </form>
+    </>
   );
 }
 export function SearchPreview() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   const scene = useSearchEntrance();
   const [scenario, setScenario] = useState<EvidenceScenario>('domain');
+  const number = new Intl.NumberFormat(locale);
+  const date = new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(metricsSource.timestamp));
   return (
     <section className="search-preview" aria-label={t('Try Apcosys public search')}>
       <Visual kind="flow" eager />
@@ -138,10 +147,18 @@ export function SearchPreview() {
               <dt>
                 <LocaleText>{t(metric.label)}</LocaleText>
               </dt>
-              <dd>{noBreakNumber(metric.value)}</dd>
+              <dd>{noBreakNumber(number.format(metric.value))}</dd>
             </div>
           ))}
         </dl>
+        <p className="container summary-source">
+          <time dateTime={metricsSource.timestamp}>
+            {t('Coverage snapshot · {date}', { date })}
+          </time>
+          <a href={metricsSource.url} target="_blank" rel="noopener noreferrer">
+            {t('View statistics source')}
+          </a>
+        </p>
       </div>
       <div className="container search-preview__inner">
         <div ref={scene} className="search-scene">
@@ -163,9 +180,10 @@ export function SearchPreview() {
                   type="button"
                   key={key}
                   aria-pressed={scenario === key}
+                  aria-label={`${t(example.label)}: ${example.query}`}
                   onClick={() => setScenario(key as EvidenceScenario)}
                 >
-                  {t(example.label)}
+                  {example.query}
                 </button>
               ))}
             </div>
@@ -173,7 +191,7 @@ export function SearchPreview() {
               <ProductEvidence scenario={scenario} compact embedded showPlaybackStatus={false} />
             </div>
             <p className="search-scene__demo-note">
-              <LocaleText>{t('Synthetic demonstration · No live observations.')}</LocaleText>{' '}
+              <LocaleText>{t('Example results')}</LocaleText>{' '}
               <a href={productUrl + '/search'}>
                 <LocaleText>{t('Open product search')}</LocaleText>
               </a>

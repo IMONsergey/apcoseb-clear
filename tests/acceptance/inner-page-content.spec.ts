@@ -33,17 +33,26 @@ test('contact topic selection prepares the form and query presets are validated'
 }) => {
   await page.goto('./contact');
   await page.getByRole('button', { name: /API & integration/ }).click();
-  await expect(page.getByRole('combobox', { name: 'Topic', exact: true })).toHaveValue(
-    'API access',
-  );
+  await expect(page.getByRole('combobox', { name: 'Topic', exact: true })).toHaveText('API access');
   await expect(page.getByLabel('Name', { exact: true })).toBeFocused();
   await expect(page.locator('#contact-form')).toBeInViewport();
   await page.goto('./contact?topic=Billing%20%26%20invoices');
-  await expect(page.getByRole('combobox', { name: 'Topic', exact: true })).toHaveValue(
+  await expect(page.getByRole('combobox', { name: 'Topic', exact: true })).toHaveText(
     'Billing & invoices',
   );
   await page.goto('./contact?topic=unknown');
-  await expect(page.getByRole('combobox', { name: 'Topic', exact: true })).toHaveValue('');
+  // Invalid URL presets cannot overwrite a topic saved in the user's draft.
+  await expect(page.getByRole('combobox', { name: 'Topic', exact: true })).toHaveText(
+    'Billing & invoices',
+  );
+  await page.evaluate(() => {
+    for (const key of Object.keys(sessionStorage))
+      if (key.startsWith('apcosys-contact-draft-v1:')) sessionStorage.removeItem(key);
+  });
+  await page.goto('./contact?topic=unknown');
+  await expect(page.getByRole('combobox', { name: 'Topic', exact: true })).toHaveText(
+    'Select a topic',
+  );
 });
 
 test('network exclusion link prepares an actionable email without claiming submission', async ({
@@ -56,7 +65,7 @@ test('network exclusion link prepares an actionable email without claiming submi
   const email = new URL(href!);
   expect(email.protocol).toBe('mailto:');
   expect(email.searchParams.get('subject')).toBe('Apcosys network exclusion request');
-  const body = email.searchParams.get('body');
+  const body = email.searchParams.get('body')?.replace(/\s+/gu, ' ');
   for (const field of [
     'Networks / IP ranges:',
     'My role in managing these networks:',
@@ -65,6 +74,8 @@ test('network exclusion link prepares an actionable email without claiming submi
   ])
     expect(body).toContain(field);
   await expect(
-    page.getByText('an email draft does not apply an exclusion automatically.', { exact: false }),
+    page.getByText('Send your IP range and contact details. Our team will review the request.', {
+      exact: true,
+    }),
   ).toBeVisible();
 });

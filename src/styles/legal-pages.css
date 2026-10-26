@@ -14,6 +14,7 @@
 }
 .legal-header__copy {
   display: grid;
+  min-width: 0;
   grid-template-rows: minmax(calc(2em * var(--type-page-leading)), auto) auto auto;
   /* Title and description reserve the longest current copy, but can grow at text zoom. */
   font-size: var(--type-page-size);
@@ -55,6 +56,8 @@
 }
 .legal-documents a {
   display: flex;
+  min-width: 0;
+  overflow-wrap: break-word;
   align-items: center;
   min-height: 44px;
   font: var(--type-small);
@@ -135,6 +138,9 @@
 }
 .legal-copy p + p {
   margin-top: 18px;
+}
+.legal-copy:lang(zh-Hant) p {
+  text-wrap: wrap;
 }
 .legal-copy strong {
   font-weight: 600;
@@ -252,6 +258,9 @@
   }
 }
 @media (max-width: 479px) {
+  .legal-description {
+    min-block-size: 6.4em;
+  }
   .legal-tools {
     min-block-size: 96px;
     align-content: end;

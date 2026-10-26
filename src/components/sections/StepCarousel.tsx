@@ -91,7 +91,7 @@ export function StepCarousel() {
               </div>
               <div className="step-media">
                 <Visual kind="dots" direction="bottom-to-top" />
-                <StepIllustration scene={step.scene} image={step.image} alt={step.alt} />
+                <StepIllustration scene={step.scene} alt={step.alt} />
               </div>
             </li>
           ))}
@@ -100,9 +100,7 @@ export function StepCarousel() {
       <div className="container step-evidence-note">
         <p>
           <LocaleText>
-            {t(
-              'Illustrative product walkthrough · Query, results, host, evidence and the next search.',
-            )}
+            {t('Query, results, host, technical context and the next search.')}
           </LocaleText>
         </p>
         <DoubleButton compact href={siteHref('/platform/search-investigation')}>

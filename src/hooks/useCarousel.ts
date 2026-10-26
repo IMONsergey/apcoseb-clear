@@ -11,45 +11,43 @@ export function useCarousel() {
   const { paused } = useMotion();
   const update = useCallback(() => {
     const element = track.current;
-    const first = element?.firstElementChild;
-    if (!element || !(first instanceof HTMLElement)) return;
-    const step =
-      first.getBoundingClientRect().width + (parseFloat(getComputedStyle(element).gap) || 20);
-    const maximum = Math.max(0, element.scrollWidth - element.clientWidth);
-    const count = Math.max(1, Math.round(maximum / step) + 1);
-    stops.current = Array.from({ length: count }, (_, index) =>
-      index === count - 1 ? maximum : Math.min(maximum, index * step),
-    );
+    if (!element) return;
+    const left = element.scrollLeft;
     const closest = stops.current.reduce(
       (best, stop, index, values) =>
-        Math.abs(stop - element.scrollLeft) < Math.abs((values[best] ?? 0) - element.scrollLeft)
-          ? index
-          : best,
+        Math.abs(stop - left) < Math.abs((values[best] ?? 0) - left) ? index : best,
       0,
     );
-    setPositions(count);
     setPosition(closest);
-    if (
-      requested.current !== null &&
-      Math.abs(element.scrollLeft - (stops.current[requested.current] ?? maximum)) < 2
-    )
+    if (requested.current !== null && Math.abs(left - (stops.current[requested.current] ?? 0)) < 2)
       requested.current = null;
   }, []);
   useEffect(() => {
     const element = track.current;
-    if (!element) return;
-    const resize = new ResizeObserver(() => {
+    const first = element?.firstElementChild;
+    if (!element || !(first instanceof HTMLElement)) return;
+    const measure = () => {
+      const step =
+        first.getBoundingClientRect().width + (parseFloat(getComputedStyle(element).gap) || 20);
+      const maximum = Math.max(0, element.scrollWidth - element.clientWidth);
+      const count = Math.max(1, Math.round(maximum / step) + 1);
+      stops.current = Array.from({ length: count }, (_, index) =>
+        index === count - 1 ? maximum : Math.min(maximum, index * step),
+      );
+      setPositions(count);
       requested.current = null;
       update();
-    });
+    };
+    const resize = new ResizeObserver(measure);
     resize.observe(element);
+    resize.observe(first);
     const manualScroll = () => {
       requested.current = null;
     };
     element.addEventListener('scroll', update, { passive: true });
     element.addEventListener('pointerdown', manualScroll, { passive: true });
     element.addEventListener('wheel', manualScroll, { passive: true });
-    update();
+    measure();
     return () => {
       resize.disconnect();
       element.removeEventListener('scroll', update);

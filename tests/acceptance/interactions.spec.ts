@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { deploymentSettings } from '../helpers/public-settings';
 
 test('Homepage preserves one real search input inside the original SearchPreview', async ({
   page,
@@ -52,15 +53,59 @@ for (const width of [320, 390, 1366, 1440, 1920]) {
   });
 }
 
-test('five-step investigation workbench moves through contextual scenes', async ({ page }) => {
+for (const motion of ['reduce', 'no-preference'] as const) {
+  test(`research carousel handles rapid input and viewport changes: ${motion}`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: motion });
+    await page.setViewportSize({ width: 390, height: 900 });
+    await page.goto('./');
+    const carousel = page.locator('#how-it-works');
+    const track = carousel.locator('#research-track');
+    const counter = carousel.locator('.counter');
+    const previous = carousel.getByRole('button', { name: 'Previous research step' });
+    const next = carousel.getByRole('button', { name: 'Next research step' });
+
+    for (const width of [390, 1440, 390]) {
+      await page.setViewportSize({ width, height: 900 });
+      await track.scrollIntoViewIfNeeded();
+      await track.press('Home');
+      const total = width === 390 ? 5 : 3;
+      await expect(counter).toHaveText(`1 / ${total}`);
+      await expect(previous).toBeDisabled();
+      await next.click();
+      await next.click();
+      await expect(counter).toHaveText(`3 / ${total}`);
+      await track.press('End');
+      await expect(counter).toHaveText(`${total} / ${total}`);
+      await expect(next).toBeDisabled();
+      await expect(track.locator('.step-card').last()).toBeInViewport({ ratio: 0.98 });
+      await track.press('ArrowLeft');
+      await expect(counter).toHaveText(`${total - 1} / ${total}`);
+      await expect(next).toBeEnabled();
+    }
+  });
+}
+
+test('three-step investigation workbench changes the active task with keyboard navigation', async ({
+  page,
+}) => {
   await page.goto('./platform/search-investigation');
   const tabs = page.locator('.stage-workbench__step');
-  await expect(tabs).toHaveCount(5);
-  await tabs.nth(2).click();
+  await expect(tabs).toHaveCount(3);
+  await expect(page.locator('.investigation-query')).toBeVisible();
+  await tabs.first().focus();
+  await tabs.first().press('ArrowRight');
+  await expect(tabs.nth(1)).toBeFocused();
+  await expect(page.locator('.investigation-results')).toBeVisible();
+  await expect(page.locator('.investigation-query')).toHaveCount(0);
+  await tabs.nth(1).press('End');
+  await expect(tabs.nth(2)).toBeFocused();
   await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
-  await expect(page.locator('.stage-workbench__insight h3')).toContainText('Examine a host');
-  await tabs.nth(4).click();
-  await expect(page.locator('.stage-workbench__insight h3')).toContainText('Refine');
+  await expect(page.locator('.investigation-host__heading')).toContainText('198.51.100.24');
+  await tabs.nth(2).press('Home');
+  await expect(tabs.first()).toBeFocused();
+  await expect(page.locator('.investigation-query')).toBeVisible();
 });
 
 test('monitoring concept changes state and does not claim real alerts', async ({ page }) => {
@@ -74,22 +119,32 @@ test('monitoring concept changes state and does not claim real alerts', async ({
   await expect(page.getByText('443 / HTTPS + 80 / HTTP')).toBeVisible();
   await buttons.nth(2).click();
   await expect(page.getByRole('heading', { name: 'Review a possible change.' })).toBeVisible();
-  await expect(page.getByText('NO LIVE ALERTS')).toBeVisible();
+  await expect(page.locator('.stage-concept-label')).toBeVisible();
+  await expect(page.locator('.stage-concept-label')).toContainText('Not a live product capability');
 });
 
 test('distinct use-case evidence is accessible in each research journey', async ({ page }) => {
   await page.goto('./use-cases/bug-bounty');
-  await expect(page.getByRole('heading', { name: 'Visibility isn’t permission.' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'From a domain to an in-scope host.' }),
+  ).toBeVisible();
   await page.goto('./use-cases/vulnerability-research');
-  await expect(page.getByRole('heading', { name: /A version is a lead/ })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'From a product to the hosts running it.' }),
+  ).toBeVisible();
   await page.goto('./use-cases/osint-threat-investigation');
-  await expect(page.getByRole('heading', { name: /Follow attributes/ })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'From an IP address to its services.' }),
+  ).toBeVisible();
 });
 
 test('homepage plan prices follow the selected billing period', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('./');
   await page.locator('#pricing').scrollIntoViewIfNeeded();
+  await expect(page.locator('.billing--desktop input[value="annually"]')).toBeChecked();
+  await expect(page.locator('.plan-grid .price-amount')).toHaveText(['$0', '$40', '$240', '$720']);
+  await page.locator('.billing--desktop').getByRole('radio', { name: 'Monthly' }).check();
   await expect(page.locator('.plan-grid .price-amount')).toHaveText(['$0', '$50', '$300', '$900']);
   await page.locator('.billing--desktop').getByRole('radio', { name: 'Annually' }).check();
   await expect(page.locator('.plan-grid .price-amount')).toHaveText(['$0', '$40', '$240', '$720']);
@@ -126,6 +181,11 @@ test('billing switch aligns with the heading baseline on desktop', async ({ page
 
 test('pricing monthly and annual values follow documented discount', async ({ page }) => {
   await page.goto('./pricing');
+  await expect(page.locator('.billing--desktop input[value="annually"]')).toBeChecked();
+  await expect(page.locator('#plan-plus .plan-price')).toContainText('$40');
+  await expect(page.locator('#plan-expert .plan-price')).toContainText('$240');
+  await expect(page.locator('#plan-business .plan-price')).toContainText('$720');
+  await page.locator('.billing--desktop').getByRole('radio', { name: 'Monthly' }).check();
   await expect(page.locator('#plan-plus .plan-price')).toContainText('$50');
   await expect(page.locator('#plan-expert .plan-price')).toContainText('$300');
   await expect(page.locator('#plan-business .plan-price')).toContainText('$900');
@@ -139,7 +199,10 @@ test('pricing monthly and annual values follow documented discount', async ({ pa
   await page.getByRole('button', { name: 'Choose Business' }).click();
   const dialog = page.getByRole('dialog', { name: 'BUSINESS plan' });
   await expect(dialog).toBeVisible();
-  await expect(dialog).toContainText('selection is not transferred');
+  await expect(dialog.getByRole('link', { name: 'Open Apcosys', exact: true })).toHaveAttribute(
+    'href',
+    deploymentSettings.signInUrl,
+  );
   await dialog.getByRole('button', { name: 'Close dialog' }).click();
   await expect(page.locator('#plan-business .stage-plan-contact')).toHaveAttribute(
     'href',
@@ -147,13 +210,15 @@ test('pricing monthly and annual values follow documented discount', async ({ pa
   );
 });
 
-test('API example is explicitly illustrative and request/response switch', async ({ page }) => {
+test('documented HTTP API request and example response switch', async ({ page }) => {
   await page.goto('./developers/api');
-  await expect(page.locator('.stage-code-window pre')).toContainText('APCOSYS_API_ENDPOINT');
-  await page.getByRole('button', { name: 'Response', exact: true }).click();
   await expect(page.locator('.stage-code-window pre')).toContainText(
-    'Illustrative response shape only',
+    'https://api.apcosys.net/api/v1/search/hosts',
   );
+  await page.getByRole('button', { name: 'Response', exact: true }).click();
+  await expect(page.locator('.stage-code-window pre')).toContainText('"open_ports"');
+  await expect(page.locator('.stage-code-note')).toContainText('Example response.');
+  await expect(page.locator('.stage-code-note')).toContainText('uts is the last update');
 });
 
 test('Homepage navigation reaches search syntax and respects history', async ({ page }) => {
@@ -188,23 +253,24 @@ test('direct path refresh serves route-specific SEO meta in static response', as
 test('registration and Sign In never claim unsupported plan selection', async ({ page }) => {
   await page.goto('./pricing');
   await page.getByRole('button', { name: 'Choose Plus' }).click();
-  await expect(page.getByRole('dialog', { name: 'PLUS plan' })).toContainText(
-    'selection is not transferred',
-  );
+  await expect(
+    page
+      .getByRole('dialog', { name: 'PLUS plan' })
+      .getByRole('link', { name: 'Open Apcosys', exact: true }),
+  ).toHaveAttribute('href', deploymentSettings.signInUrl);
   await expect(page.locator('.site-header .header-signin')).toHaveAttribute(
     'href',
-    'https://apcosys.net/',
+    deploymentSettings.signInUrl,
   );
 });
 
-test('contact form displays required email fallback and validation', async ({ page }) => {
+test('contact form offers one email action and validates required fields', async ({ page }) => {
   await page.goto('./contact');
-  await expect(page.getByRole('button', { name: 'Prepare email' })).toBeVisible();
-  await page.getByRole('button', { name: 'Prepare email' }).click();
+  await expect(page.getByRole('button', { name: 'Email us' })).toBeVisible();
+  await page.getByRole('button', { name: 'Email us' }).click();
   await expect(page.locator('[name="name"]')).toHaveAttribute('required', '');
-  await expect(
-    page.getByText('Messages are not stored or delivered by this website.', { exact: false }),
-  ).toBeVisible();
+  await expect(page.locator('#contact-form .stage-form-actions button')).toHaveCount(1);
+  await expect(page.locator('#contact-form [name="name"]')).toBeFocused();
 });
 
 test('direct hash entry waits for lazy investigation content', async ({ page }) => {
@@ -238,27 +304,107 @@ test('browser history restores scroll after lazy route navigation', async ({ pag
     .toBeLessThan(80);
 });
 
-test('unverified API docs remain within the supported on-site guidance', async ({ page }) => {
-  await page.goto('./');
-  await page.getByText('Can I use the API?', { exact: true }).click();
-  await page.locator('#faq').getByRole('link', { name: 'Read API integration guidance' }).click();
-  await expect(page).toHaveURL(/\/developers\/api#documentation$/);
-  await expect(page.locator('#documentation')).toBeInViewport();
-  await page.getByRole('link', { name: 'Read API integration guidance' }).first().click();
-  await expect(page).toHaveURL(/\/developers\/api#documentation$/);
-  await expect(page.locator('#documentation')).toBeInViewport();
-  await expect(
-    page.getByText('Illustrative request template, not a working API contract.', { exact: false }),
-  ).toBeVisible();
-});
+for (const locale of [
+  {
+    language: 'en',
+    prefix: '',
+    developers: 'Developers',
+    documentation: 'Documentation',
+    action: 'View API Documentation',
+    question: 'Can I use the API?',
+  },
+  {
+    language: 'ru',
+    prefix: 'ru/',
+    developers: 'Разработчикам',
+    documentation: 'Документация',
+    action: 'Посмотреть документацию API',
+    question: 'Могу ли я использовать API?',
+  },
+  {
+    language: 'zh-Hant',
+    prefix: 'zh-hant/',
+    developers: '開發者',
+    documentation: '文件',
+    action: '查看 API 文件',
+    question: '我可以使用 API 嗎？',
+  },
+]) {
+  test(`${locale.language} documentation links open the localized standalone API reference`, async ({
+    page,
+    baseURL,
+  }) => {
+    const home = `./${locale.prefix}`;
+    const destination = new URL(`${home}developers/api/docs`, baseURL!);
+    const href = destination.pathname + destination.hash;
+    const expectDocumentation = async () => {
+      await expect(page).toHaveURL(destination.href);
+      await expect(page.locator('html')).toHaveAttribute('lang', locale.language);
+      await expect(page.locator('.api-docs h1')).toBeInViewport();
+    };
 
-test('investigation page leads with one connected product scene, not another search widget', async ({
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(home);
+    await expect(page.locator('main h1')).toBeVisible();
+    await page.locator('.desktop-nav').getByRole('button', { name: locale.developers }).click();
+    const desktopLink = page
+      .locator('.desktop-nav')
+      .getByRole('link', { name: locale.documentation, exact: true });
+    await expect(desktopLink).toHaveAttribute('href', href);
+    await desktopLink.click();
+    await expectDocumentation();
+
+    await page.goto(`${home}developers/api`);
+    const actions = page.locator('main').getByRole('link', { name: locale.action, exact: true });
+    await expect(actions).toHaveCount(2);
+    for (const action of await actions.all()) await expect(action).toHaveAttribute('href', href);
+    await actions.last().click();
+    await expectDocumentation();
+    await page.goto(home);
+    const footerLink = page
+      .locator('footer')
+      .getByRole('link', { name: locale.documentation, exact: true });
+    await expect(footerLink).toHaveAttribute('href', href);
+    await footerLink.click();
+    await expectDocumentation();
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(home);
+    await expect(page.locator('main h1')).toBeVisible();
+    await page.locator('.menu-toggle').click();
+    const drawer = page.locator('dialog.mobile-navigation');
+    const mobileLink = drawer.getByRole('link', { name: locale.documentation, exact: true });
+    await expect(mobileLink).toHaveAttribute('href', href);
+    await mobileLink.click();
+    await expect(drawer).toBeHidden();
+    await expectDocumentation();
+
+    await page.goto(home);
+    await page.getByText(locale.question, { exact: true }).click();
+    const faqLink = page.locator('#faq a[href$="/developers/api/docs"]');
+    await expect(faqLink).toHaveAttribute('href', href);
+    await faqLink.click();
+    await expectDocumentation();
+    await expect(page.locator('.api-docs [data-example="first-request"] pre')).toBeVisible();
+
+    await page.goto(`${home}developers/api#documentation`);
+    await expect(page.locator('#documentation')).toBeInViewport();
+    const fullReference = page.locator('#documentation a[href$="/developers/api/docs"]');
+    await expect(fullReference).toHaveAttribute('href', href);
+    await fullReference.click();
+    await expectDocumentation();
+  });
+}
+
+test('investigation page leads with one manual example and a separate live-search handoff', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('./platform/search-investigation');
   await expect(page.locator('.stage-platform-search .search-form')).toHaveCount(0);
   await expect(page.locator('.stage-workbench__viewer')).toBeVisible();
-  await expect(page.locator('.stage-workbench__step')).toHaveCount(5);
+  await expect(page.locator('.stage-workbench__step')).toHaveCount(3);
+  await expect(page.locator('.stage-workbench form')).toHaveCount(1);
+  await expect(page.locator('.stage-workbench__notice')).toContainText('Example records');
   await expect(page.locator('.stage-page-cta')).toHaveCount(0);
 });

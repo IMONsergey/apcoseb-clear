@@ -74,16 +74,19 @@ test('the game has no decorative grid and the paddle uses the accent color', asy
     .toBe(true);
 });
 
-test('returning from a scrolled route keeps the shared header visible on 404', async ({ page }) => {
+test('returning from a scrolled route keeps the shared header visible on 404', async ({
+  page,
+  baseURL,
+}) => {
   await page.goto('./pricing');
   await page.evaluate(() => window.scrollTo(0, 900));
-  await page.evaluate(() => {
+  await page.evaluate((href) => {
     const link = document.createElement('a');
-    link.href = '/apcoseb-clear/missing-after-scroll';
+    link.href = href;
     document.querySelector('main')?.append(link);
     link.click();
     link.remove();
-  });
+  }, new URL('missing-after-scroll', baseURL).href);
   await expect(page.locator('main')).toHaveAttribute('data-route', '/404');
   await expect(page.locator('.site-header')).toHaveAttribute('data-hidden', 'false');
   await expect(page.locator('.site-header')).not.toHaveAttribute('aria-hidden', 'true');

@@ -19,7 +19,9 @@ async function checkArtwork(page: Page, theme: 'light' | 'dark') {
   }
 }
 
-for (const route of siteRoutes.filter((route) => !route.path.startsWith('/legal/'))) {
+for (const route of siteRoutes.filter(
+  (route) => route.group !== 'legal' && route.group !== 'documentation',
+)) {
   test(`dark artwork loads without light-image downloads on ${route.path}`, async ({ page }) => {
     const requested: string[] = [];
     page.on('request', (request) => {

@@ -1,90 +1,152 @@
-/* Closing call to action */
-/* Click regions follow the actual visible CTA in each supplied Start asset. Images are unchanged. */
-html[data-theme='dark'] .closing-scene {
-  --closing-cta-surface: var(--text-primary);
+/* Localized HTML keeps the final action readable in every theme and viewport. */
+.closing-scene.closing-scene--live {
+  --closing-rail-width: 64px;
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: var(--closing-rail-width) minmax(0, 1fr);
+  grid-template-rows: 80px minmax(0, 1fr);
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 640px;
+  padding: 0;
+  border-radius: var(--radius-scene);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
 }
-/* Cover the raster CTA before placing its accessible, theme-aware replacement. */
-.closing-cta-mask {
-  position: absolute;
-  left: calc(var(--cta-left) - 4px);
-  top: var(--cta-y);
-  width: calc(var(--cta-width) + 8px);
-  height: calc(var(--cta-height) + 8px);
-  background: var(--closing-cta-surface);
-  transform: translateY(-50%);
-  pointer-events: none;
-  z-index: 1;
-}
-.closing-hotspot {
-  position: absolute;
-  left: var(--cta-left);
-  top: var(--cta-y);
-  width: var(--cta-width);
-  height: var(--cta-height);
-  min-height: 44px;
-  transform: translateY(-50%);
-  border-radius: var(--radius-control);
-  transition:
-    background-color 200ms var(--ease),
-    box-shadow 200ms var(--ease);
-}
-html[data-theme='dark'] .closing-scene:not(.closing-scene--compact) > picture {
+.closing-scene--live .search-chrome {
+  z-index: 0;
+  mask-image: none;
+  border-radius: inherit;
   overflow: hidden;
-  clip-path: inset(6px);
+  background: var(--surface-card);
 }
-.closing-hotspot--button {
-  --button-height: clamp(44px, 3.2vw, 54px);
-  --button-bg: var(--action-fill);
-  --button-hover: var(--action-hover-fill);
-  --button-color: var(--on-action);
-  width: auto;
-  height: auto;
-  min-height: var(--button-height);
-  left: calc(var(--cta-left) + var(--cta-width) / 2);
-  top: var(--cta-y);
-  transform: translate(-50%, -50%);
-  border-radius: var(--radius-control);
-  overflow: visible;
-  z-index: 2;
+.closing-scene--live .search-chrome__surface {
+  border: 0;
 }
-.closing-hotspot--button .double-button__label {
-  min-width: clamp(132px, 10vw, 172px);
-  padding-inline: clamp(var(--space-4), 1.35vw, var(--space-6));
+.closing-scene--live .search-chrome__rail {
+  width: var(--closing-rail-width);
+  padding-top: var(--space-6);
+  gap: var(--space-3);
 }
-@media (max-width: 1199px) {
-  .closing-scene {
-    --cta-left: 43.6%;
-    --cta-y: 68.6%;
-    --cta-width: 20.4%;
-    --cta-height: 6.2%;
+.closing-scene--live .search-chrome__rail > img {
+  width: 26px;
+  margin-bottom: var(--space-6);
+}
+.closing-scene--live .search-chrome__rail span {
+  width: 40px;
+  height: 40px;
+}
+.closing-scene--live .search-chrome__rail span svg {
+  width: 18px;
+  height: 18px;
+}
+.closing-scene--live .search-chrome__filters {
+  top: var(--space-6);
+  left: calc(var(--closing-rail-width) + var(--space-6));
+}
+.closing-scene--live .search-chrome__account {
+  top: var(--space-6);
+  right: var(--space-6);
+}
+.closing-scene--live .search-chrome__filters > span,
+.closing-scene--live .search-chrome__account,
+.closing-scene--live .search-chrome__account b {
+  font-size: var(--font-size-14);
+}
+.closing-scene--live .closing-copy {
+  position: relative;
+  z-index: 1;
+  grid-column: 2;
+  grid-row: 2;
+  width: 100%;
+  max-width: 900px;
+  padding: var(--space-8) var(--space-7) var(--space-10);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.closing-copy h2 {
+  max-width: 16ch;
+  font-size: var(--font-size-64);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+.closing-scene--live .closing-copy__note {
+  max-width: 52ch;
+  margin-top: var(--space-6);
+  color: var(--color-text-body);
+  font: 400 var(--font-size-12)/1.6 var(--font-mono);
+}
+.closing-scene--live .closing-copy > .double-button {
+  margin-top: var(--space-8);
+  max-width: 100%;
+}
+@media (max-width: 899px) {
+  .closing-scene.closing-scene--live {
+    --closing-rail-width: 44px;
+    min-height: 560px;
+    aspect-ratio: auto;
+  }
+  .closing-scene--live .search-chrome__filters {
+    display: none;
+  }
+  .closing-scene--live .search-chrome__rail {
+    gap: var(--space-3);
+  }
+  .closing-scene--live .search-chrome__rail > img {
+    width: 22px;
+  }
+  .closing-scene--live .search-chrome__rail span {
+    width: 32px;
+    height: 32px;
+  }
+  .closing-scene--live .search-chrome__rail span svg {
+    width: 16px;
+    height: 16px;
+  }
+  .closing-copy h2 {
+    font-size: var(--font-size-48);
   }
 }
-@media (max-width: 410px) {
-  .closing-scene {
-    --cta-left: 23.1%;
-    --cta-y: 58.55%;
-    --cta-width: 53.8%;
-    --cta-height: 5.7%;
+@media (max-width: 599px) {
+  .closing-scene.closing-scene--live {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 112px minmax(0, 1fr);
+    min-height: 480px;
   }
-}
-@media (max-width: 375px) {
-  .closing-scene {
-    --cta-left: 21%;
-    --cta-y: 59.65%;
-    --cta-width: 58%;
-    --cta-height: 5.9%;
+  .closing-scene--live .closing-copy {
+    grid-column: 1;
+    padding: var(--space-6) var(--space-5) var(--space-8);
   }
-}
-@media (max-width: 340px) {
-  .closing-scene {
-    --cta-left: 17.2%;
-    --cta-y: 67.95%;
-    --cta-width: 65.7%;
-    --cta-height: 8.3%;
+  .closing-scene--live .search-chrome__account {
+    top: 62px;
+    left: 16px;
+    right: 16px;
+    justify-content: space-between;
+    gap: var(--space-2);
   }
-}
-@media (prefers-reduced-motion: reduce) {
-  .closing-hotspot {
-    transition: none;
+  .closing-scene--live .search-chrome__account > span {
+    padding: 9px 10px;
+  }
+  .closing-scene--live .search-chrome__filters > span,
+  .closing-scene--live .search-chrome__account,
+  .closing-scene--live .search-chrome__account b {
+    font-size: var(--font-size-12);
+  }
+  .closing-scene--live .search-chrome__account b {
+    margin-left: 6px;
+  }
+  .closing-copy h2 {
+    font-size: var(--font-size-32);
+    letter-spacing: var(--tracking-heading);
+  }
+  .closing-scene--live .closing-copy__note {
+    margin-top: var(--space-5);
+    font-size: var(--font-size-12);
   }
 }

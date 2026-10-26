@@ -1,5 +1,5 @@
 /* Data section */
-/* Desktop globe composition; narrower containers retain the approved reading path. */
+/* Desktop globe composition and responsive reading layout. */
 .data-section {
   overflow: clip;
   padding-top: 0;
@@ -271,7 +271,7 @@
   .data-visual-field .data-metrics {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(5, var(--metric-height));
+    grid-template-rows: repeat(5, minmax(var(--metric-height), auto));
     gap: var(--metric-gap) var(--layout-gap);
     position: relative;
     inset: auto;
@@ -279,7 +279,8 @@
   .data-visual-field .metric-card {
     position: relative;
     inset: auto;
-    height: var(--metric-height);
+    height: auto;
+    min-height: var(--metric-height);
     width: auto;
     z-index: 1;
   }
@@ -346,7 +347,7 @@
     line-height: 1.1;
   }
 }
-/* The coverage totals already sit above SearchPreview. The globe now explains how to read a record. */
+/* Observation context beneath the globe. */
 .data-section--observations .metric-card dd:not(.metric-observation-note) {
   font: 500 var(--font-size-20)/1.25 var(--font-sans);
   white-space: normal;
@@ -360,6 +361,18 @@
   gap: var(--space-4);
   align-items: center;
   text-align: center;
+}
+.data-section--observations .metric-card > :is(dt, dd) {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+@container data (min-width: 600px) and (max-width: 1199px) {
+  .data-section--observations .metric-card {
+    height: auto;
+    min-height: 172px;
+  }
 }
 .data-section--observations .metric-card--protocols dd:not(.metric-observation-note) {
   font-size: var(--font-size-24);

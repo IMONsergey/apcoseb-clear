@@ -18,10 +18,10 @@ export function EvidenceFlow() {
       previous = 0;
     let ink = '',
       line = '',
-      surface = '';
+      surface = '',
+      gap = 32;
     const draw = () => {
       context.clearRect(0, 0, width, height);
-      const gap = parseFloat(getComputedStyle(canvas).getPropertyValue('--layout-gap')) || 32;
       const column = (width - gap * 2) / 3;
       const points = [0, 1, 2].map((i) => column / 2 + i * (column + gap));
       const y = height / 2;
@@ -56,6 +56,7 @@ export function EvidenceFlow() {
     const sync = () => {
       cancelAnimationFrame(frame);
       const style = getComputedStyle(canvas);
+      gap = parseFloat(style.getPropertyValue('--layout-gap')) || 32;
       ink = style.getPropertyValue('--accent-text').trim();
       line = style.getPropertyValue('--border-subtle').trim();
       surface = style.getPropertyValue('--surface-page').trim();

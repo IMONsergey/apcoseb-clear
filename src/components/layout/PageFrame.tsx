@@ -49,7 +49,7 @@ function PageIntro({
   );
 }
 
-export function PageAction({ links }: { links: readonly PageLink[] }) {
+function PageAction({ links }: { links: readonly PageLink[] }) {
   const { t } = useLocale();
   return (
     <div className="stage-actions">

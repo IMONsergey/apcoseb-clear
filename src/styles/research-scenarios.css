@@ -100,3 +100,25 @@
     margin-top: 18px;
   }
 }
+
+/* The programme boundary is a review step, not a simulated selection box. */
+.site .inner-pages .stage-case-evidence--scope .stage-example-journey {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+.site .inner-pages .stage-case-evidence--scope .stage-example-journey > div {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: var(--space-2) var(--space-4);
+  padding-block: var(--space-5);
+}
+.stage-example-journey__number {
+  grid-row: 1 / 3;
+  color: var(--accent-text);
+  font: 400 var(--font-size-12)/1.5 var(--font-mono);
+  padding-top: var(--space-1);
+}
+.site .inner-pages .stage-case-evidence--scope .stage-example-journey p {
+  grid-column: 2;
+  margin: 0;
+}

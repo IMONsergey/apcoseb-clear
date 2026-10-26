@@ -1,4 +1,80 @@
 export default {
+  'For Investors': '投資人',
+  'For investors.': '投資人專區。',
+  'Investor enquiries': '投資洽詢',
+  'External digital exposure intelligence. Apcosys turns observations of public internet infrastructure into searchable context for security researchers and teams.':
+    '外部數位曝險情報。Apcosys 將公開網際網路基礎架構的觀測資料，轉化為資安研究人員與團隊可搜尋的技術脈絡。',
+  'The opportunity': '市場機會',
+  'Platform foundations': '平台基礎',
+  'The next stage': '下一階段',
+  'For investment enquiries and further company information, contact the Apcosys team directly.':
+    '如需洽詢投資事宜或進一步了解公司，請直接聯絡 Apcosys 團隊。',
+  'Visibility beyond the perimeter.': '看見邊界之外。',
+  'Cloud adoption and distributed infrastructure keep expanding what organisations expose to the public internet.':
+    '雲端服務與分散式基礎架構的普及，讓組織暴露於公開網際網路的系統持續增加。',
+  'Exposed services, infrastructure misconfigurations and data leaks create risks that are difficult to understand from inside an organisation alone. Security teams need an external view of the systems they investigate.':
+    '暴露的服務、基礎架構設定錯誤與資料外洩帶來的風險，很難僅從組織內部掌握。資安團隊需要從外部檢視所調查的系統。',
+  'Apcosys observes publicly accessible infrastructure directly. It brings hosts, services and technologies into a searchable view, helping teams move from a technical signal to the context behind it.':
+    'Apcosys 直接觀測可公開存取的基礎架構，將主機、服務與技術整合為可搜尋的視圖，協助團隊從技術訊號追溯其背後的脈絡。',
+  'A platform built around observations.': '以觀測為基礎的平台。',
+  'The foundation is the connection between internet-scale collection, useful technical context and the workflows that put it to work.':
+    '平台將網際網路規模的資料蒐集、實用的技術脈絡與實際工作流程連結起來。',
+  'Internet-wide perspective.': '網際網路全局視角。',
+  'Observe publicly accessible hosts and services across networks, rather than relying only on information collected inside a customer environment.':
+    '跨網路觀測可公開存取的主機與服務，補充僅從客戶環境內部蒐集的資訊。',
+  'Application-layer context.': '應用層脈絡。',
+  'Connect services, detected technologies and response details so researchers can understand what sits behind an exposed host.':
+    '連結服務、偵測到的技術與回應細節，讓研究人員了解暴露主機背後的內容。',
+  'An investigation workflow.': '調查工作流程。',
+  'Move from a query to matching hosts and technical evidence. Refine the search as each observation raises the next question.':
+    '從查詢進入符合條件的主機與技術證據，並隨著每項觀測引出新問題，逐步調整搜尋。',
+  'Data that teams can use.': '團隊可運用的資料。',
+  'Bring infrastructure intelligence into research, security operations and internal tools through search and API access.':
+    '透過搜尋與 API 存取，將基礎架構情報運用於研究、資安作業與內部工具。',
+  'Building the next stage of Apcosys.': '打造 Apcosys 的下一階段。',
+  'Our focus is continued platform development and market expansion.':
+    '我們專注於持續發展平台並拓展市場。',
+  'We are developing the platform around the needs of security researchers and enterprise teams: richer infrastructure context, practical workflows and scalable access to data.':
+    '我們依據資安研究人員與企業團隊的需求發展平台：更豐富的基礎架構脈絡、實用的工作流程，以及可擴展的資料存取。',
+  'We welcome conversations with investors who share a long-term interest in internet intelligence and external digital exposure. Get in touch to discuss the company, our direction and the next stage of growth.':
+    '我們歡迎與長期關注網際網路情報及外部數位曝險的投資人交流。請聯絡我們，討論公司、發展方向與下一階段的成長。',
+  'An open optical structure brings teal infrastructure signals into a shared centre.':
+    '開放式光學結構將青綠色的基礎架構訊號匯聚至共同中心。',
+  'Begin with infrastructure you own or are authorised to assess.':
+    '從您擁有或獲授權評估的基礎設施開始。',
+  'Compare two recorded snapshots of the selected host.': '比較所選主機的兩份記錄快照。',
+  'Query, results, host, technical context and the next search.':
+    '從查詢、結果、主機與技術背景，到下一次搜尋。',
+  'Follow a reserved example domain through scope checks and host evidence.':
+    '以保留的範例網域，逐步檢查授權範圍並查看主機證據。',
+  'Follow a reserved example address through services and shared attributes.':
+    '以保留的範例 IP 位址，追查服務及共同屬性。',
+  'Review an example host and plan the next investigation step.': '檢視範例主機，規劃下一步調查。',
+  'API enabled': 'API 已啟用',
+  'Usage & limits': '用量與限制',
+  'Account API key': '帳戶 API 金鑰',
+  'One key for your integrations.': '以一組金鑰連接您的整合。',
+  'Reveal key': '顯示金鑰',
+  'Account limits': '帳戶限制',
+  Enabled: '已啟用',
+  'All types': '所有類型',
+  'Example Research Network': '範例研究網路',
+  'Explore hosts, services and networks.': '探索主機、服務與網路。',
+  Results: '結果',
+  Save: '儲存',
+  '4 hosts returned': '找到 4 個主機',
+  'Page 1': '第 1 頁',
+  'Host / network': '主機／網路',
+  'Apply conditions': '套用條件',
+  'Validity period': '有效期限',
+  'DNS names': 'DNS 名稱',
+  'Example results': '結果範例',
+
+  OSINT: 'OSINT',
+  'Team & Business plan': '團隊與 Business 方案',
+  'Billing & invoices': '帳單與發票',
+  'Responsible scanning': '負責任的掃描',
+  Other: '其他',
   ' / month': ' / 月',
   '(optional)': '(選填)',
   '{amount} billed annually': '年繳總額：{amount}',
@@ -6,8 +82,6 @@ export default {
   '{count} example hosts': '{count} 個範例主機',
   '{name} plan': '{name} 方案',
   '/mo': '/月',
-  'A careful first integration is easier to understand, debug and extend.':
-    '謹慎的首次整合更容易理解、除錯和擴充。',
   'A change opens a question.': '變化開啟一個問題。',
   'A closer look at internet infrastructure': '深入探究網際網路基礎設施',
   'A compact introduction to API requests, access levels and usage.':
@@ -21,7 +95,6 @@ export default {
     '在您選擇之前提供一些實用細節。付款前，請在產品結帳頁面檢視最終條款。',
   'A match is not a finding.': '相符並非發現。',
   'A newly published advisory.': '新發布的公告。',
-  'A product and version.': '產品與版本。',
   'A product or version is inferred from the available service response.':
     '從可用的服務回應中推斷出產品或版本。',
   'A recent record describes what responded at that moment. It does not guarantee that the service remains available or unchanged.':
@@ -46,7 +119,6 @@ export default {
     '有用的交接會說明發生了什麼變化、檢查了什麼，以及還有什麼需要解答。',
   'A useful note lets another analyst retrace the question without inheriting an unsupported conclusion.':
     '一份有用的筆記能讓另一位分析師回溯該問題，而不會繼承未經支持的結論。',
-  'A version is a lead. Not a finding.': '版本是線索，並非發現。',
   'A version match is a research lead. Check patches and configuration before confirming a vulnerability.':
     '版本相符僅是研究線索。在確認漏洞之前，請檢查修補程式與配置。',
   About: '關於我們',
@@ -54,29 +126,19 @@ export default {
   'Absence is not proof': '不存在並非證明',
   'Access & limits': '存取權限與限制',
   'Access gateway': '存取閘道',
-  'Add Filter': '新增篩選條件',
   'Advanced · full filters': '進階搜尋 · 完整篩選',
   'Advanced search & full filters': '進階搜尋與完整篩選功能',
   Advisory: '公告',
   'Advisory applicability': '公告適用性',
-  'All fields are required except company.': '除公司外，所有欄位均為必填。',
-  'All Types': '所有類型',
-  'Allowances and access shown in the current landing concept':
-    '目前登陸頁面概念中所顯示的額度與存取權限。',
+  'Plan allowances and access': '方案額度與存取權限',
   'An address, domain or product name.': '位址、網域或產品名稱。',
   'An association does not establish exploitability.': '關聯並不能確立可利用性。',
   'An association is a lead to verify, not a confirmed vulnerability.':
     '關聯是待驗證的線索，而非已確認的漏洞。',
-  'An authorised domain.': '授權的網域。',
   'An HTTPS service and a technology response.': '一個 HTTPS 服務和技術回應。',
-  'An illustrative saved collection. Confirm current availability and plan access with the team.':
-    '說明性的已儲存集合。請與團隊確認目前的可用性並規劃存取權限。',
   'An indicator from an alert.': '來自警報的指標。',
   'An IP from a log, a domain from a report or a service identified in an alert can become a starting point.':
     '來自日誌的 IP、來自報告的網域或警報中識別的服務，都可以成為起點。',
-  'An IP or domain from a report.': '來自報告的 IP 或網域。',
-  'An IP, domain, service or technology becomes your starting point.':
-    'IP、網域、服務或技術將成為您的起點。',
   'An observation has a time.': '觀測有時間性。',
   'An observation is a starting point.': '觀測是起點。',
   'Analyst input': '分析師輸入',
@@ -100,15 +162,12 @@ export default {
   'API access by plan.': '各方案的 API 存取權限。',
   'API access is available on Plus, Expert and Business plans.':
     'Plus、Expert 和 Business 方案提供 API 存取權限。',
-  'API activity uses the account’s request balance. Review request costs and Search Token packages before scheduling a larger workflow.':
-    'API 活動會消耗帳戶的請求餘額。在安排更大規模的工作流程之前，請先檢視請求成本與搜尋權杖 (Search Token) 套件。',
   'API handoff': 'API 交接',
   'API request rate': 'API 請求速率',
   Applicability: '適用性',
   'Applicable VAT or GST and the final payable amount are shown in checkout before you complete the purchase.':
     '適用的 VAT 或 GST 以及最終應付金額會在您完成購買前的結帳頁面中顯示。',
   Association: '關聯',
-  'At least 10 characters.': '至少 10 個字元。',
   AUTHENTICATION: '身分驗證',
   'Before a candidate becomes a target.': '在候選目標成為正式目標之前。',
   'Before a result informs a decision, another analyst should be able to see what was observed, why it matters and what has not yet been established.':
@@ -118,10 +177,6 @@ export default {
   'Before you act': '採取行動之前',
   'Begin with a specific product or technology and use the supported search syntax to focus on relevant observations.':
     '從特定的產品或技術開始，使用支援的搜尋語法專注於相關的觀測結果。',
-  'Begin with an IP, domain, service or technology. Use supported attributes to narrow the results to the infrastructure behind your question.':
-    '從 IP、網域、服務或技術開始。使用支援的屬性將結果縮小到您問題背後的基礎設施。',
-  'Begin with infrastructure you own or are authorised to assess. Select an example target below.':
-    '從您擁有或獲授權評估的基礎設施開始。請在下方選擇一個範例目標。',
   'Begin with infrastructure your team owns or is authorised to assess. Keep the scope and the research question explicit.':
     '從您的團隊擁有或獲授權評估的基礎設施開始。保持範圍和研究問題明確。',
   'Billed annually': '按年計費',
@@ -129,8 +184,6 @@ export default {
   Billing: '帳單',
   'Billing period': '計費週期',
   'Billing questions.': '帳單問題。',
-  'Billing, scanning or another question? Select the relevant topic in the form below.':
-    '帳單、掃描或其他問題？請在下方表單中選擇相關主題。',
   'Bring an existing question to Apcosys. Use observed infrastructure to give the next review more technical context.':
     '將現有的問題帶到 Apcosys。利用觀測到的基礎設施，為下一次審查提供更多技術背景資訊。',
   'Bring Apcosys': '將 Apcosys',
@@ -140,57 +193,40 @@ export default {
     '將觀測到的連接埠、服務及偵測到的產品帶入單一系統的背景資訊中。',
   'Bring supported observations into your workflow.': '將支援的觀測結果帶入您的工作流程。',
   'Bring the evidence into your workflow.': '將證據帶入您的工作流程。',
-  Buckets: '儲存桶',
-  'BUCKETS / CONCEPT': '儲存桶 / 概念',
+  Buckets: '儲存貯體',
   'Bug Bounty': '漏洞賞金計畫',
   'Build an evidence trail you can revisit.': '建立一條您可以重新檢視的證據軌跡。',
-  BUSINESS: '商業版',
+  BUSINESS: 'Business',
   'Business access': 'Business 存取權限',
   'Business brings a larger allowance and access for up to {users} users. Discuss data needs, invoice payment and procurement questions with the team.':
     'Business 方案提供更大的額度以及最多 {users} 位使用者的存取權限。請與團隊討論資料需求、發票付款及採購問題。',
-  'Business plan figures shown for the client preview. Final access and commercial terms are confirmed in the product.':
-    '顯示的 Business 方案數據僅供客戶預覽。最終存取權限與商業條款將在產品中確認。',
+  'Confirm Business access and commercial terms in your account before purchase.':
+    '購買前，請在帳戶中確認 Business 方案的存取權限與商業條款。',
   'Can I start for free?': '我可以免費開始嗎？',
   'Can I use the API?': '我可以使用 API 嗎？',
   'Candidate infrastructure. Confirm each target against the programme rules.':
     '候選基礎設施。請依照計畫規則確認每個目標。',
-  'Carry a useful service, technology or domain into the next query. Keep the observation that led you there so the investigation remains traceable.':
-    '將有用的服務、技術或網域帶入下一個查詢中。保留引導您到那裡的觀測結果，以便調查保持可追溯性。',
   'Carry forward: the detection, advisory applicability and checks still required.':
     '傳遞下去：偵測結果、公告適用性以及仍需進行的檢查。',
   'Carry forward: the host, relevant service response and the question that remains.':
     '傳遞下去：主機、相關服務回應以及尚未解決的問題。',
   'Carry forward: the observation context, the source and your own validation notes.':
     '傳遞下去：觀測背景資訊、來源以及您自己的驗證筆記。',
-  'Carry the available observation dates and supporting attributes with the result.':
-    '將可用的觀測日期及支援屬性與結果一併保留。',
   'Carry the host, service evidence and available observation time into your notes or reporting workflow.':
     '將主機、服務證據及可用的觀測時間帶入您的筆記或報告工作流程中。',
   'Carry the selected host into Search & Investigation and validate the observation.':
     '將選定的主機帶入「搜尋與調查」中並驗證該觀測結果。',
   'Check permitted techniques, exclusions and rate restrictions in the programme before interacting with a service.':
     '在與服務互動之前，請檢查計畫中允許的技術、排除項目及速率限制。',
-  'Check status codes and the current API error guidance. Make failures visible in your own tool instead of treating an empty result as a confirmed absence.':
-    '檢查狀態碼和目前的 API 錯誤指南。在您自己的工具中讓失敗顯而易見，而不是將空結果視為已確認的資料不存在。',
   'Check the affected versions, required configuration and vendor guidance. Account for backported patches.':
     '檢查受影響的版本、所需配置及供應商指南。將回溯移植的修補程式納入考量。',
   'Check the detection': '檢查偵測結果',
-  'Check the evidence behind a detected version. A potential CVE association is a lead to validate against patches, configuration and observation time.':
-    '檢查偵測到的版本背後的證據。潛在的 CVE 關聯是一條線索，需針對修補程式、配置及觀測時間進行驗證。',
   'Check the observation time and collection context. An absent response alone does not prove that a service has been retired.':
     '檢查觀測時間和收集背景資訊。單憑沒有回應並不能證明該服務已停用。',
-  'Check the remaining balance before a larger investigation. Ask the team about exhaustion, expiry and rollover if these affect your workflow.':
-    '在進行更大規模的調查前，請檢查剩餘餘額。如果額度耗盡、到期和展延會影響您的工作流程，請向團隊詢問。',
   'Check vendor advisory': '檢查供應商公告',
   'Check whether the added service belongs to a planned deployment. Review its response and confirm the host remains in your scope.':
     '檢查新增的服務是否屬於計劃的部署。檢視其回應並確認該主機仍在您的範圍內。',
   'Check whether their observation times are comparable.': '檢查它們的觀測時間是否具有可比性。',
-  'Choose a host or search question you understand. Set the endpoint and authentication header from the current reference.':
-    '選擇一個您了解的主機或搜尋問題。從目前的參考文件中設定端點和身分驗證標頭。',
-  'Choose a plan for its capabilities. Add capacity when the tools already fit and you need to make more requests.':
-    '根據功能選擇方案。當工具已符合需求且您需要進行更多請求時，再增加容量。',
-  'Choose a step, select a host and inspect the evidence. The same record stays in view as the question becomes more specific.':
-    '選擇一個步驟，選擇一台主機並檢視證據。當問題變得更具體時，同一筆記錄會保持在檢視畫面中。',
   'Choose a topic': '選擇主題',
   'Choose a topic to prepare the form. A little context helps the team understand your question.':
     '選擇一個主題來準備表單。提供一些背景資訊有助於團隊了解您的問題。',
@@ -204,11 +240,8 @@ export default {
   'Choose what to observe.': '選擇要觀測的目標。',
   'Clear answers.': '清晰的解答。',
   'Clear search query': '清除搜尋查詢',
-  'Client-preview figures. Measurement date and final counting definitions have not been supplied; these are not live totals.':
-    '客戶預覽數據。測量日期和最終計數定義尚未提供；這些並非即時總計。',
   Close: '關閉',
   'Close dialog': '關閉對話框',
-  'Collect the leads': '收集線索',
   'Collection & dates': '收集與日期',
   Company: '公司',
   Compare: '比較',
@@ -216,22 +249,15 @@ export default {
     '比較基礎設施觀測結果，檢視發生了什麼變化，並將相關證據帶入調查中。請在下方探索建議的工作流程。',
   'Compare open ports, services and detected technologies across the results. Narrow the list to systems that help answer your question.':
     '比較所有結果中的開放連接埠、服務及偵測到的技術。將清單縮小到有助於回答您問題的系統。',
-  'Compare open ports, services and detected technologies before opening a host. Look for the result that helps answer your question.':
-    '在開啟主機之前，先比較開放連接埠、服務及偵測到的技術。尋找有助於回答您問題的結果。',
   'Compare plans': '比較方案',
   'Compare plans.': '比較方案。',
   'Compare recorded observations.': '比較記錄的觀測結果。',
-  'Compare the allowance, research tools and API access included at each level. Choose the capabilities you need before adding more capacity.':
-    '比較每個等級所包含的額度、研究工具和 API 存取權限。在增加更多容量之前，選擇您所需的功能。',
   'Compare the reported product with its evidence.': '將回報的產品與其證據進行比較。',
   'Compare the service response, detected software and observation time before escalating a lead.':
     '在升級線索之前，請先比較服務回應、偵測到的軟體及觀測時間。',
   'Compare the supporting service evidence. A different banner may reflect a configuration change rather than a software upgrade.':
     '比較支援的服務證據。不同的橫幅可能反映的是配置變更，而非軟體升級。',
   'Concept demonstration · Not a live product capability': '概念展示 · 並非實際產品功能',
-  'Concept examples only. This page does not connect to live scans or deliver alerts.':
-    '僅為概念範例。此頁面不會連接到實際掃描或發送警報。',
-  'Confirm scope before testing.': '測試前確認範圍。',
   'Confirm the individual host is covered. A related domain or shared technology does not automatically extend the scope.':
     '確認個別主機已被涵蓋。相關網域或共享技術不會自動擴展範圍。',
   'Connect your tools': '連接您的工具',
@@ -239,7 +265,6 @@ export default {
     '在得出結論之前，請考量供應商的修復程式、回溯移植、系統配置及觀測時間。',
   'Consider when the service was observed. Verify the condition on systems you are authorised to assess.':
     '考量該服務被觀測到的時間。在您獲授權評估的系統上驗證該狀況。',
-  'contact our team': '請聯絡我們的團隊',
   Context: '背景資訊',
   'Context, not conclusions.': '背景資訊，而非結論。',
   'Continue in Apcosys': '在 Apcosys 中繼續',
@@ -254,13 +279,11 @@ export default {
   'Coverage, observation dates, CVE associations and the limits of internet scanning.':
     '涵蓋範圍、觀測日期、CVE 關聯以及網際網路掃描的限制。',
   Credits: '額度',
-  'Credits or Search Tokens?': '額度還是搜尋權杖？',
   'Credits:': '額度：',
   'Cross-check every lead against the programme rules before taking action. Search results are not an authorisation to test an unrelated system.':
     '在採取行動前，請將每條線索與計畫規則進行交叉核對。搜尋結果並非測試無關系統的授權。',
   'Current state': '當前狀態',
   'CVE associations': 'CVE 關聯',
-  'CVE Associations': 'CVE 關聯',
   'CVE ASSOCIATIONS': 'CVE 關聯',
   'CVE associations need checks against vendor advisories, patch backports and the actual configuration.':
     'CVE 關聯需要對照供應商公告、回溯移植的修補程式以及實際配置進行檢查。',
@@ -274,9 +297,6 @@ export default {
   'Describe the workflow, request types and volume you are planning.':
     '描述您計劃的工作流程、請求類型及數量。',
   'Detected product': '偵測到的產品',
-  'Detected Products': '偵測到的產品',
-  'Detected products, versions and CVEs potentially associated with them.':
-    '偵測到的產品、版本，以及可能與之相關的 CVE。',
   'Detected, not verified': '已偵測，未驗證',
   Detection: '偵測',
   'Detection evidence': '偵測證據',
@@ -290,8 +310,6 @@ export default {
   'Domain observations': '網域觀測',
   'Domain observations connect names to infrastructure. A shared domain, service or technology does not by itself establish ownership.':
     '網域觀測將名稱與基礎設施連結起來。共享的網域、服務或技術本身並不能確立所有權。',
-  'Domain observations connected to infrastructure': '與基礎設施連結的網域觀測',
-  'Domain or technical attribute': '網域或技術屬性',
   'Domain, IP or attribute': '網域、IP 或屬性',
   'Domain, IP or technical attribute': '網域、IP 或技術屬性',
   'Domain, IP or technical attribute.': '網域、IP 或技術屬性。',
@@ -299,32 +317,25 @@ export default {
   Domains: '網域',
   'Email us': '寄送電子郵件給我們',
   'Enter a domain, IP or technical attribute.': '輸入網域、IP 位址或技術屬性。',
-  'Enter an observed attribute': '輸入觀測到的屬性',
   'Evaluate it with your own research question.': '用您自己的研究問題來評估。',
   'Evaluating Apcosys for your security team?': '正在為您的安全團隊評估 Apcosys 嗎？',
   'Every investigation starts with a question.': '每次調查都始於一個問題。',
   'every search.': '資料。',
   Evidence: '證據',
-  'Evidence and open questions': '證據與未解決的問題',
-  'Examine a host': '檢視主機',
   'Examine CVEs potentially associated with observed technologies and versions.':
     '檢視可能與觀測到的技術和版本相關的 CVE。',
   'Examine potential exposure.': '檢視潛在暴露。',
   'Examine services and host context. Identify the next research lead.':
     '檢視服務與主機背景資訊。找出下一個研究線索。',
-  'Examine shared attributes.': '檢視共享屬性。',
   'Examine the host.': '檢視主機。',
   'Example data': '範例資料',
   'Example investigation': '調查範例',
   'Expected access or new exposure?': '預期的存取還是新的暴露？',
-  EXPERT: '專家版',
+  EXPERT: 'Expert',
   Explore: '探索',
   'Explore a host with its service evidence, or learn how to contact the team about scanning activity.':
     '連同服務證據一起探索主機，或了解如何就掃描活動聯絡團隊。',
-  'Explore a potential monitoring workflow with synthetic snapshots. This concept does not connect to live scans or alerts.':
-    '使用模擬快照探索潛在的監控工作流程。此概念不會連接到實際掃描或警報。',
-  'Explore access levels or talk to the team about the API reference and your integration requirements.':
-    '探索存取層級，或與團隊討論 API 參考文件及您的整合需求。',
+  'Compare observations and investigate changes.': '比較觀測記錄，調查變化。',
   'Explore an example': '探索範例',
   'Explore API': '探索 API',
   'Explore API integration': '探索 API 整合',
@@ -353,7 +364,6 @@ export default {
   'Find candidate infrastructure. Verify permission before testing.':
     '尋找候選基礎設施。測試前請確認授權。',
   'Find internet-facing systems that match your query.': '尋找符合您查詢條件且面向網際網路的系統。',
-  'Find matching observations.': '尋找相符的觀測結果。',
   'Find matching versions. Check whether the advisory applies.':
     '尋找相符的版本。檢查公告是否適用。',
   'Find the infrastructure behind a name.': '尋找名稱背後的基礎設施。',
@@ -368,11 +378,8 @@ export default {
     '跟隨發生變化的主機進入其服務與技術背景資訊。',
   'Follow an attribute into the next query. Similarity alone is not attribution.':
     '跟隨屬性進入下一個查詢。單憑相似性並非歸因。',
-  'Follow attributes. Keep attribution separate.': '跟隨屬性。將歸因分開。',
   'Follow one lead through a shared research process. Choose a step to see which evidence and open questions move with it.':
     '跟隨一條線索走過共享的研究流程。選擇一個步驟，看看哪些證據和未解決的問題會隨之移動。',
-  'Follow one permitted starting point through candidate infrastructure to a responsible testing decision.':
-    '從一個允許的起點開始，循著候選基礎設施，做出負責任的測試決策。',
   'Follow shared attributes.': '跟隨共享屬性。',
   'Follow the next evidence-led question.': '跟隨下一個以證據為導向的問題。',
   'Follow the result': '跟隨結果',
@@ -384,11 +391,8 @@ export default {
   'For security researchers and teams.': '專為安全研究人員與團隊打造。',
   'For security teams': '適用於安全團隊',
   'For Teams': '團隊版',
-  'For the current credit usage rules,': '有關目前的額度使用規則，',
   'Frame the question': '界定問題',
-  FREE: '免費版',
-  'Free introduces search. Plus adds API access for individual research. Expert adds deeper filtering. Business brings access for a team and a larger allowance.':
-    '免費版介紹搜尋功能。Plus 版為個人研究增加 API 存取。Expert 版增加更深入的篩選功能。Business 版提供團隊存取權限及更大的額度。',
+  FREE: 'Free',
   'From analyst question to technical context.': '從分析師的問題到技術背景資訊。',
   'From query to technical context.': '從查詢到技術背景資訊。',
   'Get your account key.': '取得您的帳戶金鑰。',
@@ -396,11 +400,8 @@ export default {
     '為分析師提供關於網際網路基礎設施的統一技術證據來源——從最初的指標到其背後的背景資訊。',
   'Give analysts the context they need.': '為分析師提供所需的背景資訊。',
   'Good questions.': '好問題。',
-  'Good questions. Clear answers.': '好問題。清晰的解答。',
-  'Handle unsuccessful requests.': '處理不成功的請求。',
   'Has limits': '有其限制',
   'Have specific requirements?': '有特定需求嗎？',
-  'Host · protocol · technology': '主機 · 通訊協定 · 技術',
   'Host context': '主機背景資訊',
   'Host identity': '主機身分',
   'Host research': '主機研究',
@@ -416,31 +417,22 @@ export default {
   'How can I pay?': '我該如何付款？',
   'How collection works.': '收集如何運作。',
   'How CVE associations work': 'CVE 關聯如何運作',
-  'How does the Free plan work?': '免費方案如何運作？',
+  'How does the Free plan work?': 'Free 方案如何運作？',
   'How we scan': '我們如何掃描',
   'HTTP Server header': 'HTTP 伺服器標頭',
   'HTTPS only': '僅限 HTTPS',
   'I agree to the processing of my data in line with the': '我同意依照以下政策處理我的資料：',
-  'Illustrative Apcosys API documentation with a request and response. See the current documentation for the live API.':
-    'Apcosys API 的說明性請求與回應範例。實際 API 請參閱目前的產品文件。',
-  'Illustrative data shape. The API contract comes from the product documentation.':
-    '說明性資料結構。API 合約來自產品文件。',
-  'Illustrative inputs, not query syntax. Use the syntax and filters provided in Apcosys search.':
-    '說明性輸入，並非查詢語法。請使用 Apcosys 搜尋中提供的語法和篩選條件。',
-  'Illustrative request template, not a working API contract. Contact the team for the current endpoint, authentication details and API reference.':
-    '說明性請求範本，並非可運作的 API 合約。請聯絡團隊以取得目前的端點、身分驗證詳細資訊及 API 參考文件。',
+  'Example inputs.': '輸入範例。',
   Included: '包含',
   'Included credits': '包含額度',
   'Indicator trail': '指標軌跡',
   'Inspect a host.': '檢視主機。',
   'Inspect host observations and use relevant technology and CVE associations as research leads rather than confirmed findings.':
     '檢視主機觀測結果，並將相關技術和 CVE 關聯作為研究線索，而非已確認的發現。',
-  'Inspect matching infrastructure': '檢視相符的基礎設施',
   'Inspect the response.': '檢視回應。',
   'Inspect the technical evidence.': '檢視技術證據。',
   'Inspect what the service actually returned.': '檢視服務實際回傳的內容。',
   Integration: '整合',
-  'INTEGRATION / EXAMPLE': '整合 / 範例',
   'Internet intelligence for your security team.': '為您的安全團隊提供網際網路情報。',
   'Internet-facing systems change. Read a service response alongside its collection context before using it in a decision.':
     '面向網際網路的系統會發生變化。在將服務回應應用於決策之前，請連同其收集背景資訊一起閱讀。',
@@ -456,14 +448,9 @@ export default {
   'It’s free': '免費使用',
   'Judge relevance before you click.': '點擊前先判斷相關性。',
   'Keep a useful investigation note.': '保留有用的調查筆記。',
-  'Keep a useful lead together.': '將有用的線索整理在一起。',
-  'Keep credentials, access tokens and sensitive third-party findings out of your message.':
-    '請勿在訊息中包含憑證、存取權杖及敏感的第三方發現。',
   'Keep only the protocol relevant to your question.': '僅保留與您的問題相關的通訊協定。',
-  'Keep related hosts in a research shortlist.': '將相關主機保留在研究候選清單中。',
   'Keep separate': '分開保留',
   'Keep the context': '保留背景資訊',
-  'Keep the context.': '保留背景資訊。',
   'Keep the earlier and later records together with their time context. Inspect the service response behind the change.':
     '將較早和較晚的記錄與其時間背景資訊保留在一起。檢視變化背後的服務回應。',
   'Keep the evidence together.': '將證據保留在一起。',
@@ -477,8 +464,6 @@ export default {
   'Keep the source': '保留來源',
   'Keep the thread.': '保持線索的連貫性。',
   'Keep the uncertainty': '保留不確定性',
-  'Keep your workflow within its plan limit. Use the documented retry guidance and avoid repeating unsuccessful requests indefinitely.':
-    '將您的工作流程保持在方案限制內。使用已記錄的重試指南，並避免無限期地重複不成功的請求。',
   'Know what the data cannot prove.': '了解資料無法證明什麼。',
   'Know what’s behind every result.': '了解每個結果背後的內容。',
   Language: '語言',
@@ -492,7 +477,6 @@ export default {
   'Look up an IP or domain': '查詢 IP 或網域',
   'Look up the host and review its services, products and versions. Give the analyst enough context to decide which part of the lead needs closer attention.':
     '查詢主機並檢視其服務、產品和版本。為分析師提供足夠的背景資訊，以決定線索的哪個部分需要密切關注。',
-  'Look up the indicator.': '查詢該指標。',
   'Main navigation': '主要導覽',
   'Make scope the starting point.': '將範圍作為起點。',
   'Make the handoff useful.': '讓交接變得有用。',
@@ -502,8 +486,6 @@ export default {
   'Matching hosts with their open ports and services.': '符合條件的主機及其開放的連接埠與服務。',
   Menu: '選單',
   Message: '訊息',
-  'Messages are not stored or delivered by this website. This form prepares a draft in your email application; review and send it there.':
-    '本網站不會儲存或傳送訊息。此表單會在您的電子郵件應用程式中建立草稿；請在那裡檢視並寄出。',
   'Missing is not absent.': '未顯示並不代表不存在。',
   'Mobile navigation': '行動版導覽',
   Monitoring: '監控',
@@ -515,8 +497,6 @@ export default {
     '月繳訂閱使用信用卡結帳。有關年度 Business 訂閱的發票付款事宜，請詢問團隊。',
   'More capacity': '更多容量',
   'More to test inside your scope.': '在您的範圍內測試更多目標。',
-  'Move from a technology observation to candidate hosts, then separate potential CVE associations from validated vulnerabilities.':
-    '從技術觀測轉向候選主機，然後將潛在的 CVE 關聯與已驗證的漏洞區分開來。',
   'Move from detection to evidence.': '從偵測走向證據。',
   'Move the next task forward.': '推進下一個任務。',
   Name: '姓名',
@@ -541,12 +521,8 @@ export default {
   Observe: '觀測',
   Observed: '觀測到的',
   'Observed hostname': '觀測到的主機名稱',
-  'Observed IPv4 address entries': '觀測到的 IPv4 位址條目',
-  'Observed IPv6 address entries': '觀測到的 IPv6 位址條目',
   'Observed signal': '觀測到的訊號',
   'Observed version': '觀測到的版本',
-  'Obtain your key inside Apcosys. Set the endpoint and authentication header from the confirmed API reference.':
-    '在 Apcosys 內取得您的金鑰。根據確認的 API 參考文件設定端點和身分驗證標頭。',
   'One host, the technical picture.': '單一主機，完整的技術全貌。',
   'One lead. A shared starting point.': '一條線索。一個共同的起點。',
   'One observation, with its technical context.': '一項觀測結果及其技術背景。',
@@ -568,40 +544,28 @@ export default {
   'own tools.': '自有工具中。',
   Ownership: '所有權',
   'Ownership and attribution remain unproven.': '所有權和歸因仍未經證實。',
-  'Packages shown for the client preview. Check eligibility, token balance, expiry and final purchase terms in your account.':
-    '顯示的套件僅供客戶預覽。請在您的帳戶中檢查資格、權杖餘額、到期日及最終購買條款。',
   'Patch state': '修補狀態',
   'Personal introduction': '個人入門',
-  'Pick up the investigation': '繼續調查',
   Plan: '方案',
-  'Plan allowances are listed in credits; additional packages are sold as Search Tokens. The credit-to-token relationship is not yet verified. Confirm the account balance and package terms before adding capacity.':
-    '方案額度以「額度 (credits)」列出；額外套餐以「搜尋權杖 (Search Tokens)」販售。額度與權杖的轉換關係尚未驗證。在增加容量之前，請確認帳戶餘額和套餐條款。',
   'Plan billing options': '方案計費選項',
   'Plan comparison': '方案比較',
   'Plan rate limit': '方案速率限制',
-  'Plan rates shown for the client preview. Confirm current limits and consumption in your account.':
-    '顯示的方案速率僅供客戶預覽。請在您的帳戶中確認目前的限制與消耗量。',
   Plans: '方案',
   Platform: '平台',
-  PLUS: 'PLUS 版',
+  PLUS: 'Plus',
   'Plus, Expert and Business include API access. Choose a rate and allowance that fit the volume and pace of your workflow.':
     'Plus、Expert 和 Business 方案包含 API 存取權限。選擇符合您工作流程數量和步調的速率與額度。',
   'Ports & Services': '連接埠與服務',
   'Ports, services and detected versions belong to one selected host.':
     '連接埠、服務及偵測到的版本皆屬於同一個選定的主機。',
-  'Potential links between detected products and CVEs': '偵測到的產品與 CVE 之間的潛在關聯',
   'Prefer a direct email?': '偏好直接寄送電子郵件？',
   'Prepare a narrow request.': '準備一個範圍明確的請求。',
-  'Prepare email': '準備電子郵件',
-  'Preserve the evidence.': '保留證據。',
   'Previous research step': '上一個研究步驟',
   Pricing: '定價',
   'Prioritise with context.': '結合背景資訊排定優先順序。',
   'Privacy Policy': '隱私權政策',
-  'Product detections derived from service responses': '從服務回應中得出的產品偵測',
   'Programme boundary': '計畫邊界',
   Protocols: '通訊協定',
-  'Protocols represented in the dataset': '資料集中代表的通訊協定',
   'Public services': '公開服務',
   'Put a technology under the microscope.': '將技術放在顯微鏡下。',
   'Put observations in context.': '將觀測結果置於背景資訊中。',
@@ -615,25 +579,18 @@ export default {
   Question: '問題',
   'Questions about data, API access, team plans or procurement? Choose a topic and tell us what you need.':
     '對資料、API 存取、團隊方案或採購有疑問嗎？選擇一個主題並告訴我們您的需求。',
-  'Read API integration guidance': '閱讀 API 整合指南',
-  'Read from the observation outward.': '從觀測結果向外閱讀。',
+  'Read from the observation outward.': '先檢視觀測結果，再形成判斷。',
   'Read methodology': '閱讀方法論',
-  'Read the detection evidence.': '閱讀偵測證據。',
   'Read the evidence in context.': '在背景資訊中閱讀證據。',
-  'Read the observed ports and services together with the response evidence. Keep detected products and versions in the context of that host.':
-    '將觀測到的連接埠與服務，連同回應證據一起閱讀。將偵測到的產品與版本保留在該主機的背景資訊中。',
   'Read the response': '閱讀回應',
   'Read the response behind the product label. Banners can be incomplete, stale or changed by intermediaries.':
     '閱讀產品標籤背後的回應。橫幅可能不完整、過時或被中間人更改。',
   'Read the result. Understand the source.': '閱讀結果。了解來源。',
-  'Read the returned fields and their observation context before using them in a report or wider workflow.':
-    '在將傳回的欄位及其觀測背景資訊用於報告或更廣泛的工作流程之前，請先閱讀它們。',
   'Read the scanning principles': '閱讀掃描原則',
   'Read the service response and detected technology before interpreting a signal.':
     '在詮釋訊號之前，請先閱讀服務回應及偵測到的技術。',
   'Reading dates and timestamps.': '閱讀日期與時間戳記。',
   'Reading the evidence': '閱讀證據',
-  'Record a new research lead.': '記錄新的研究線索。',
   'Record the observed attributes and their time context in your own investigation notes and analytical workflow.':
     '在您自己的調查筆記和分析工作流程中記錄觀測到的屬性及其時間背景資訊。',
   'Record what has been observed and what still needs independent verification.':
@@ -642,20 +599,14 @@ export default {
     '記錄指標的來源以及它旨在回答哪個問題。',
   'Record your reasoning separately from the source data, so the next person can distinguish an observation from a validated finding.':
     '將您的推理與來源資料分開記錄，以便下一個人能區分觀測結果與已驗證的發現。',
-  'Refine the next query': '細化下一個查詢',
   'Refine the query with what you found and continue.': '利用你發現的資訊細化查詢，然後繼續。',
   'refine your search as you go.': '隨時細化你的搜尋。',
   'Refund eligibility follows the payment provider’s policy and applicable consumer law. Review the current policy in checkout or contact the team with your billing question.':
     '退款資格遵循支付服務供應商的政策及適用的消費者法律。請在結帳頁面檢視當前政策，或聯絡團隊提出您的帳單問題。',
   'Removed, filtered or temporarily unavailable?': '已移除、被過濾還是暫時無法使用？',
   Request: '請求',
-  'Request costs': '請求成本',
   'Request rate controls how quickly you can query. Your usage allowance controls how much capacity is available.':
     '請求速率控制您查詢的速度。您的用量額度控制可用的容量多寡。',
-  'Request template. Endpoint and authentication contract require product confirmation.':
-    '請求範本。端點與身分驗證合約需經產品確認。',
-  'Request without analytics, such as host information or bucket search.':
-    '無分析的請求，例如主機資訊或儲存桶搜尋。',
   'Requires verification': '需要驗證',
   'Research a product or version.': '研究產品或版本。',
   'Research a technology across infrastructure, then inspect individual hosts to understand whether a potential exposure is relevant.':
@@ -664,25 +615,17 @@ export default {
   'Research leads': '研究線索',
   'Research notes': '研究筆記',
   'Research responsibly.': '負責任地進行研究。',
-  'Research shortlist': '研究候選清單',
   'Research tasks': '研究任務',
   'Research the named technology and inspect potential version matches. Review the evidence before turning an association into a finding.':
     '研究指定的技術並檢查潛在的版本相符情況。在將關聯轉化為發現之前，先檢視證據。',
-  'Research with API access': '附帶 API 存取的研究',
   'Reserved example address': '保留範例位址',
-  'Respect the request rate.': '遵守請求速率。',
   Response: '回應',
   'Response headers': '回應標頭',
   'Responses become records': '回應成為記錄',
   'Responsible Scanning': '負責任的掃描',
   Result: '結果',
   'Results.': '結果。',
-  'Return to the observations you need to review.': '回到您需要檢視的觀測結果。',
   'Review a possible change.': '檢視可能的變化。',
-  'Review detected technology': '檢視偵測到的技術',
-  'Review exposed services.': '檢視暴露的服務。',
-  'Review scope': '檢視範圍',
-  'Review service evidence and confirm authorised scope.': '檢視服務證據並確認授權範圍。',
   'Review the comparison.': '檢視比較結果。',
   'Review the evidence': '檢視證據',
   'Review which internet-facing hosts appear to use the product, alongside observed ports and services.':
@@ -695,7 +638,6 @@ export default {
   'Search and investigate observed domain data.': '搜尋並調查觀測到的網域資料。',
   'Search Apcosys': '搜尋 Apcosys',
   'Search by product and version.': '依產品與版本搜尋。',
-  'Search by technology': '依技術搜尋',
   'Search for observed products and versions, explore the infrastructure around them and evaluate potential vulnerability context.':
     '搜尋觀測到的產品與版本，探索其周圍的基礎設施，並評估潛在的漏洞背景資訊。',
   'Search infrastructure.': '搜尋基礎設施。',
@@ -706,14 +648,13 @@ export default {
     '透過 IP、網域、連接埠、服務或技術搜尋面向網際網路的主機，查看它們上面運行著什麼，並隨時細化您的搜尋。',
   'Search internet-facing hosts, services and technologies.':
     '搜尋面向網際網路的主機、服務與技術。',
-  'Search observed products and versions. CVE context is available from Plus in the plan preview.':
-    '搜尋觀測到的產品與版本。在方案預覽中，CVE 背景資訊從 Plus 版開始提供。',
+  'Search observed products and versions. The plan comparison lists CVE context from Plus.':
+    '搜尋觀測到的產品與版本。方案比較表列出從 Plus 起提供 CVE 背景資訊。',
   'SEARCH RESULTS': '搜尋結果',
   'Search the infrastructure behind the internet.': '搜尋網際網路背後的基礎設施。',
   'Search Token': '個搜尋權杖',
   'Search Token packages.': '搜尋權杖套件。',
-  'Search Tokens': '個搜尋權杖',
-  'Search with category analytics.': '帶有類別分析的搜尋。',
+  'Search Tokens': '搜尋權杖',
   'Search your scope': '搜尋您的範圍',
   'Searchable observations reduce uncertainty. They do not remove the need for technical judgement.':
     '可供搜尋的觀測結果減少了不確定性。它們並未消除技術判斷的必要性。',
@@ -725,15 +666,14 @@ export default {
   'See where a technology runs.': '查看技術運行的地方。',
   'SELECT A HOST': '選擇主機',
   'Select a topic': '選擇主題',
-  'Select HTTPS to narrow this demonstration to the service you want to inspect.':
-    '選擇 HTTPS 以將此示範範圍縮小至您想檢視的服務。',
+  'Filter results by service.': '依服務篩選結果。',
   'Separate a lead from a finding.': '將線索與發現區分開來。',
   'Service attribute': '服務屬性',
   'Service discovery': '服務探索',
   'SERVICE EVIDENCE / {port} TCP': '服務證據 / {port} TCP',
-  'SERVICE FILTER / SYNTHETIC DEMO': '服務篩選 / 模擬示範',
+  'SERVICE FILTER': '服務篩選',
   'Service observations': '服務觀測',
-  'Service response · illustrative record': '服務回應 · 說明性記錄',
+  'Service response · example record': '服務回應 · 範例記錄',
   Services: '服務',
   'Share your team size, research needs and any invoice requirements.':
     '分享您的團隊規模、研究需求以及任何發票要求。',
@@ -745,7 +685,6 @@ export default {
   'Skip to content': '跳至內容',
   'Start a conversation': '開始對話',
   'Start a conversation.': '開始對話。',
-  'Start Free': '免費開始',
   'Start free.': '免費開始。',
   'Start free. Upgrade when you need more searches, deeper filters, API access or a team.':
     '免費開始。當您需要更多搜尋次數、更深入的篩選條件、API 存取權限或團隊功能時，再進行升級。',
@@ -755,13 +694,10 @@ export default {
     '免費開始。當您的研究需要更多額度、篩選條件或 API 存取權限時再進行升級。',
   'Start from the programme scope.': '從計畫範圍開始。',
   'Start from what you have.': '從您擁有的開始。',
-  'Start small. Make the result useful.': '從小處著手。讓結果變得有用。',
   'Start with a query.': '從查詢開始。',
   'Start with a query. Follow what you find.': '從查詢開始。跟隨你的發現。',
   'Start with a single query. See which hosts match, open one, review its technical context and decide where to look next.':
     '從單一查詢開始。查看哪些主機符合條件，開啟其中一個，檢視其技術背景資訊，並決定下一步要查看哪裡。',
-  'Start with a small query. Use your account API key and the endpoint, authentication scheme and parameters from the current API reference.':
-    '從一個小查詢開始。使用您的帳戶 API 金鑰，以及目前 API 參考文件中的端點、身分驗證機制和參數。',
   'Start with a technical attribute.': '從技術屬性開始。',
   'Start with an IP or domain, or use the API to bring repeat lookups into your investigation workflow.':
     '從 IP 或網域開始，或使用 API 將重複查詢帶入您的調查工作流程中。',
@@ -769,21 +705,13 @@ export default {
     '從您擁有的指標開始。隨著調查的進展，將您觀測到的內容與您認為它可能代表的含義區分開來。',
   'Start with what you know': '從您已知的開始',
   'Start with your first query.': '從第一個查詢開始。',
-  'Start with your first query. Try the public search before creating an account.':
-    '從第一個查詢開始。建立帳戶前先試用公開搜尋。',
   'Start with your next research question.': '從您的下一個研究問題開始。',
-  'Start your first query': '開始您的第一個查詢',
   'Starting a query': '開始查詢',
   'Starting indicator': '起始指標',
   'Starting point': '起點',
   'Stay in scope.': '保持在範圍內。',
   'step by step.': '循序漸進。',
-  'Store the fields your investigation needs alongside the source and observation context. Keep your own conclusions separate from the returned data.':
-    '將您的調查所需的欄位與來源及觀測背景資訊一起儲存。將您自己的結論與傳回的資料分開。',
   'Subscribe annually': '訂閱年繳方案',
-  'Synthetic demonstration · No live observations.': '模擬示範 · 無即時觀測資料。',
-  'Take an indicator from an investigation, inspect its technical context and choose the next evidence-led query.':
-    '從調查中取出一個指標，檢視其技術背景資訊，並選擇下一個以證據為導向的查詢。',
   'Take supported search and host data into scripts and internal workflows.':
     '將支援的搜尋與主機資料帶入腳本及內部工作流程中。',
   'Talk to the Apcosys team.': '聯絡 Apcosys 團隊。',
@@ -807,25 +735,17 @@ export default {
     '告訴我們哪些資產、變化和調查工作流程對您的團隊很重要。協助塑造監控體驗。',
   'Tell us which data, observations or coverage you want to understand.':
     '告訴我們您想了解哪些資料、觀測結果或涵蓋範圍。',
-  'Terms & Conditions': '條款與條件',
+  'Terms & Conditions': '使用條款',
   'Testing rules': '測試規則',
   'The approach': '研究方法',
   'The data behind': '每次搜尋背後的',
   'The data behind every search.': '每次搜尋背後的資料。',
-  'The exact meanings of Created and Updated, and the scan cadence, still require confirmation.':
-    'Created 和 Updated 的確切含義以及掃描頻率仍需確認。',
-  'The existing Free plan introduces the service for personal, non-commercial use.':
-    '現有的免費方案旨在讓使用者體驗該服務，僅供個人非商業用途。',
-  'The form prepares a message in your email application. You review it and send it from there.':
-    '此表單會在您的電子郵件應用程式中準備一則訊息。您可以在那裡檢視並寄出。',
+  'Coverage totals do not indicate when an individual service was last observed. Check the timestamps attached to the record.':
+    '涵蓋範圍總數無法顯示個別服務最近一次被觀測的時間。請查看記錄附帶的時間戳記。',
   'The Free plan is intended for personal, non-commercial use, with one Free account per person.':
-    '免費方案旨在供個人非商業用途使用，每人限一個免費帳戶。',
+    'Free 方案僅供個人非商業用途使用，每人限一個 Free 帳戶。',
   'The host and its other observations remain connected.': '主機及其其他觀測結果保持連結。',
   'The investigation': '調查',
-  'The proposed billing terms keep paid features available until the end of the current subscription period. Confirm the applicable terms in your account.':
-    '擬議的帳單條款會保留付費功能直至當前訂閱期結束。請在您的帳戶中確認適用條款。',
-  'The selected plan is shown for comparison only. Plan selection is not transferred to registration. Confirm the plan, pricing and billing inside Apcosys before purchase.':
-    '顯示的選定方案僅供比較。方案選擇不會轉移至註冊流程。購買前請在 Apcosys 內確認方案、價格與計費方式。',
   'The strongest research starts where a simple version comparison stops.':
     '最有力的研究始於簡單版本比較結束的地方。',
   'The tools to go deeper.': '深入探索的工具。',
@@ -833,8 +753,6 @@ export default {
     '比較中有用的部分是下一個決策。不同的變化在成為研究任務之前需要不同的檢查。',
   'The useful result is a host you can responsibly investigate. Keep the programme’s boundaries with you from the first query to the last check.':
     '有用的結果是您能夠負責任地進行調查的主機。從第一次查詢到最後一次檢查，請始終將計畫的邊界放在心上。',
-  'These figures describe different parts of the dataset. Product detections and CVE associations are records, not counts of distinct vulnerable systems.':
-    '這些數字描述了資料集的不同部分。產品偵測和 CVE 關聯是記錄，而非不同受影響系統的數量。',
   'Three checks after a version match.': '版本相符後的三項檢查。',
   Topic: '主題',
   'Try Apcosys public search': '試用 Apcosys 公開搜尋',
@@ -845,11 +763,7 @@ export default {
     '將技術問題轉化為查詢，檢視相符的主機，並開啟每一台以查看其背後的服務、技術與背景資訊。',
   'Turn an alert, domain or technical question into an investigation your team can follow.':
     '將警報、網域或技術問題轉化為您的團隊可以跟隨的調查。',
-  'Turn an IP, domain, service or technology question into a set of observations to review.':
-    '將 IP、網域、服務或技術問題轉化為一組可供檢視的觀測結果。',
   'Turn one indicator into a clearer picture.': '將單一指標轉化為更清晰的畫面。',
-  'Two authored snapshots show how a service difference can become a research lead.':
-    '兩個建立的快照展示了服務差異如何成為研究線索。',
   Uncertainty: '不確定性',
   'Understand observations, dates and the limits of a comparison.':
     '了解觀測結果、日期以及比較的限制。',
@@ -858,15 +772,12 @@ export default {
   'Understand what changes across your exposure.': '了解您暴露範圍內的變化。',
   'Understand your allowance.': '了解您的額度。',
   'Upgrade or buy more?': '升級還是購買更多？',
-  'Upgrade Plan': '升級方案',
   'Upgrade when you need another capability or team access. Consider a package when you need more requests at the same access level.':
     '當您需要其他功能或團隊存取權限時進行升級。當您需要在相同存取層級下進行更多請求時，請考慮購買套餐。',
   'Upgrade when your': '當您的研究',
   'Upgrade, reconfiguration or a different response?': '升級、重新配置還是不同的回應？',
   Usage: '用量',
   'Usage and credits.': '用量與額度。',
-  'Usage applies to website and API requests. Check the current charge in your account.':
-    '用量適用於網站和 API 請求。請在您的帳戶中檢查目前的扣款情況。',
   'Use a service, a technology or a domain from one result to ask a more precise question. Start with the public search and follow what you find.':
     '使用某個結果中的服務、技術或網域來提出更精確的問題。從公開搜尋開始，並跟隨您所發現的內容。',
   'Use an account with API access. Keep the key in your server environment or secrets manager, outside browser code.':
@@ -885,21 +796,12 @@ export default {
     '使用 API 將支援的搜尋與主機資料帶入腳本、豐富步驟及內部報告中。',
   'Use the domains, IP addresses or other assets explicitly permitted by the programme. Stay within its published testing rules.':
     '使用計畫明確允許的網域、IP 位址或其他資產。遵守其公布的測試規則。',
-  'Use the same search and host context in your own tools. Build around the supported fields and request types in the current API reference.':
-    '在您自己的工具中使用相同的搜尋與主機背景資訊。基於目前 API 參考文件中支援的欄位和請求類型來進行建置。',
-  'Use the switch above the plans to compare billing periods. Annual prices show the discounted monthly equivalent; the annual total is shown on the plan.':
-    '使用方案上方的切換開關來比較計費週期。年繳價格顯示的是折扣後的每月等值；年度總額顯示在方案上。',
   'Useful at the point of investigation.': '在調查階段發揮作用。',
-  'Useful for: analyst tools and investigation reports.': '適用於：分析師工具與調查報告。',
-  'Useful for: focused enrichment and repeat lookups.': '適用於：針對性的資料豐富與重複查詢。',
-  'Useful for: traceable research and careful interpretation.':
-    '適用於：可追溯的研究與謹慎的詮釋。',
   'Useful when a log, alert or report already identifies a system. Review its observed services before widening the search.':
     '當日誌、警報或報告已指出特定系統時很有用。在擴大搜尋範圍之前，先檢視其觀測到的服務。',
   Users: '使用者',
   'Users on one subscription': '單一訂閱使用者數',
   'Validate a potential association.': '驗證潛在關聯。',
-  'Validate applicability.': '驗證適用性。',
   'Validate the current state with an authorised method.': '使用授權的方法驗證當前狀態。',
   'Validate the signal': '驗證訊號',
   Validation: '驗證',
@@ -912,7 +814,6 @@ export default {
   'View API documentation': '查看 API 文件',
   'View Business Plan': '查看 Business 方案',
   'View Plans': '查看方案',
-  "Visibility isn't permission.": '可見性不等於許可。',
   'Vulnerability Context': '漏洞背景資訊',
   'Vulnerability Research': '漏洞研究',
   'Web application': '網頁應用程式',
@@ -921,9 +822,6 @@ export default {
   'What about taxes?': '稅金方面呢？',
   'What Apcosys records.': 'Apcosys 記錄了什麼。',
   'What are we trying to establish?': '我們試圖確立什麼？',
-  'What consumes search credits?': '什麼會消耗搜尋額度？',
-  'What happens after cancellation?': '取消後會發生什麼事？',
-  'What happens at the limit?': '達到限制時會發生什麼事？',
   'What needs independent verification?': '哪些需要獨立驗證？',
   'What to query': '可以查詢的內容',
   'What we observe': '我們觀測的內容',
@@ -932,7 +830,6 @@ export default {
   'What you can query.': '您可以查詢什麼。',
   'Which host, service and response support the lead?': '哪些主機、服務和回應支持該線索？',
   'Which other observations could explain this service?': '還有哪些觀測結果可以解釋此服務？',
-  'Who is each plan for?': '每個方案適合誰？',
   'Who reviews it, and what should they check?': '誰來審查，他們應該檢查什麼？',
   'with annual billing': '採用年繳',
   'Work email': '工作電子郵件',
@@ -947,14 +844,17 @@ export default {
   '{count} example host': '{count} 個範例主機',
   '{count} service records': '{count} 筆服務記錄',
   '{name} interactive illustrated workflow': '{name} 互動式說明工作流程',
-  '{address} is a reserved documentation address. This is a conceptual workflow, not an incident or attribution finding.':
-    '{address} 是保留的文件範例位址。這是概念性工作流程，並非真實事件或歸因結論。',
+  '{address} · Reserved example address.': '{address} · 保留的範例位址。',
+  'A defined boundary surrounds infrastructure being observed.':
+    '明確的邊界環繞正在觀測的基礎設施。',
   'A precise connection carries data between two software systems.':
     '一條精確的連線在兩個軟體系統之間傳遞資料。',
   'A single teal connection links three transparent layers of observations.':
     '一條藍綠色連線串起三層透明的觀測資料。',
   'Added in this example: {technology}': '此範例中新增：{technology}',
   Analytics: '分析',
+  'An open structure makes the internet’s technical layers visible.':
+    '開放式結構呈現網際網路的技術層次。',
   'An optical lens brings one infrastructure host into focus.':
     '光學透鏡將一部基礎設施主機聚焦呈現。',
   'API code example': 'API 程式碼範例',
@@ -963,8 +863,7 @@ export default {
   'API request template': 'API 請求範本',
   APPEARANCE: '外觀',
   Appearance: '外觀',
-  'Authored concept · no scan date': '編寫的概念示範 · 無掃描日期',
-  'Authored demonstration': '編寫的示範',
+  'Example record': '範例記錄',
   'Authorised scope': '授權範圍',
   'Begin with a known {type}. The records below show how the investigation continues. Technology input illustrates intent, not verified query syntax.':
     '從已知的{type}開始。下方記錄顯示調查如何繼續進行。技術輸入僅用於說明意圖，並非經驗證的查詢語法。',
@@ -979,8 +878,6 @@ export default {
   'Company: {company}': '公司：{company}',
   'Compare the detected version with vendor advisories and installed patches.':
     '將偵測到的版本與供應商公告及已安裝的修補程式進行比較。',
-  'Concept only · NO LIVE ALERTS · Illustrative service records':
-    '僅為概念 · 無即時警報 · 說明性服務記錄',
   'Confirm permission before observing.': '觀測前請先確認授權。',
   'Continue exploring Apcosys': '繼續探索 Apcosys',
   'Continue with the selected host in Search & Investigation. Keep the observation context with the task.':
@@ -992,12 +889,11 @@ export default {
   Dark: '深色',
   'Domain records': '網域記錄',
   Essential: '必要項目',
-  'Essential browser storage supports the website theme and your saved preferences. No optional analytics or marketing trackers are enabled in this client preview.':
-    '必要的瀏覽器儲存空間用於支援網站主題及您儲存的偏好設定。此客戶預覽未啟用任何選用的分析或行銷追蹤器。',
+  'Essential browser storage supports the website theme and your saved preferences. No optional analytics or marketing trackers are enabled on this website.':
+    '必要的瀏覽器儲存空間用於支援網站主題及您儲存的偏好設定。此網站未啟用任何選用的分析或行銷追蹤器。',
   'Evidence source': '證據來源',
   'Example investigation note': '調查筆記範例',
   'Example investigations': '調查範例',
-  'Example only': '僅為範例',
   Feature: '功能',
   'For the current legal policy, see': '如需查看目前的法律政策，請參閱',
   'Four levels of access grow with the needs of an investigation.':
@@ -1006,7 +902,6 @@ export default {
   'HOST DETAILS': '主機詳細資訊',
   'I agree to the processing of my data in line with the {privacyPolicy}.':
     '我同意依照{privacyPolicy}處理我的資料。',
-  'Illustrative analyst handoff': '說明性分析師交接',
   'Illustrative API response': '說明性 API 回應',
   'Illustrative domain investigation': '說明性網域調查',
   'Illustrative host details and open services.': '說明性的主機詳細資訊與開放服務。',
@@ -1014,12 +909,7 @@ export default {
   'Illustrative investigation stages': '說明性調查階段',
   'Illustrative list of matching hosts, services and technologies.':
     '符合條件的主機、服務與技術之說明性清單。',
-  'Illustrative product walkthrough · Query, results, host, evidence and the next search.':
-    '說明性產品導覽 · 查詢、結果、主機、證據與下一次搜尋。',
   'Illustrative technology investigation': '說明性技術調查',
-  'Illustrative technical context for an individual host.': '單一主機的說明性技術背景資訊。',
-  'Illustrative UI · No live host results or backend queries are simulated. The product screens demonstrate the intended investigation sequence.':
-    '說明性介面 · 不會模擬即時主機結果或後端查詢。產品畫面用於展示預期的調查順序。',
   'Infrastructure organised inside a defined research scope.': '基礎設施整理於明確的研究範圍之內。',
   'Investigation capabilities': '調查功能',
   'Investigation workflow steps': '調查工作流程步驟',
@@ -1032,30 +922,25 @@ export default {
   'NEXT RESEARCH LEAD': '下一個研究線索',
   'No live observation': '無即時觀測資料',
   'Not included': '未包含',
-  'Not installed in this preview': '此預覽未安裝',
+  'Not enabled on this website': '此網站未啟用',
   'Not provided': '未提供',
   'Observation time': '觀測時間',
   'Observation, detection, association: different levels of certainty.':
     '觀測、偵測與關聯代表不同的確定程度。',
   'On this page': '本頁內容',
   'Open Apcosys Search': '開啟 Apcosys 搜尋',
-  'Pause product animation': '暫停產品動畫',
-  'Play product animation': '播放產品動畫',
   Port: '連接埠',
   'Private Scanner': '私有掃描器',
   Protocol: '通訊協定',
   'Query, host, service, context': '查詢、主機、服務、背景資訊',
   'Reload page': '重新載入頁面',
   'Required for site preferences': '網站偏好設定所必需',
-  'Research areas — focus to pause scrolling': '研究領域 — 聚焦即可暫停捲動',
+  'Research areas': '研究領域',
   'Research decision': '研究決策',
   'Response banner · authored example': '回應橫幅 · 編寫的範例',
   'Return to the query with a more specific search.': '以更精確的搜尋條件返回查詢。',
-  'Review the response and validate the observation before treating a change as a security finding.':
-    '在將變更視為安全發現之前，請檢視回應並驗證觀測結果。',
   'Save Preferences': '儲存偏好設定',
   'Search & filters': '搜尋與篩選條件',
-  'Search query with recent queries and syntax examples.': '包含最近查詢與語法範例的搜尋查詢。',
   'Search starting points': '搜尋起點',
   'Search → review → integrate': '搜尋 → 檢視 → 整合',
   'Searchable data types': '可搜尋的資料類型',
@@ -1066,7 +951,6 @@ export default {
   'SERVICE RESPONSE': '服務回應',
   'Snapshot A / earlier': '快照 A / 較早',
   'Snapshot B / later': '快照 B / 較晚',
-  'Snapshot source': '快照來源',
   'STARTING POINT': '起點',
   'Start with an attribute you already know.': '從您已知的屬性開始。',
   'Subscribe annually and save {discount}%!': '訂閱年繳方案並節省 {discount}%！',
@@ -1074,16 +958,12 @@ export default {
   'Swipe the table horizontally on smaller screens to compare all four plans.':
     '在較小的螢幕上水平滑動表格，以比較全部四個方案。',
   System: '系統',
-  'Synthetic host data, not the production response schema.':
-    '合成主機資料，並非正式環境的回應結構。',
   'Team workflow': '團隊工作流程',
   TECHNOLOGY: '技術',
   'Technical indicators connected into an investigation trail.': '技術指標串連成一條調查軌跡。',
   'Technical review': '技術檢視',
-  'The domain and host below are reserved examples, not a real bug bounty programme or an authorised target.':
-    '下方網域與主機均為保留範例，並非真實的漏洞賞金計畫或授權目標。',
-  'Technology, version and host information below are illustrative. No specific CVE or exploitable host is claimed.':
-    '下方技術、版本與主機資訊僅供說明，並未宣稱存在特定 CVE 或可利用的主機。',
+  'Reserved example domain and IP addresses.': '保留的範例網域與 IP 位址。',
+  'Example technology and host records.': '範例技術與主機記錄。',
   'This page could not load.': '無法載入此頁面。',
   'TIME CONTEXT': '時間背景資訊',
   'Topic: {topic}': '主題：{topic}',
@@ -1098,175 +978,31 @@ export default {
   'View API Documentation': '查看 API 文件',
   'Workflow handoff': '工作流程交接',
   'Work email: {email}': '工作電子郵件：{email}',
-  'Your email application will open with a prepared message. Please send the email there; this website has not submitted it.':
-    '您的電子郵件應用程式將開啟一封準備好的訊息。請在該應用程式中寄出；本網站尚未提交訊息。',
   'Cookie preferences saved.': 'Cookie 偏好設定已儲存。',
   'Scroll to compare plan features': '捲動以比較方案功能',
   'CVE CONTEXT': 'CVE 背景資訊',
-  'Animated Apcosys API demo: parameters update the cURL request, a successful JSON response appears, then the next endpoint opens and a success confirmation completes the loop.':
-    'Apcosys API 動畫示範：參數會更新 cURL 請求，接著顯示成功的 JSON 回應，再開啟下一個端點，最後以成功確認完成循環。',
-  'Add parameter': '新增參數',
-  'API KEY': 'API 金鑰',
-  'API key connected': 'API 金鑰已連線',
-  Authorization: '授權',
   'Base URL': '基底 URL',
-  'Bearer token': 'Bearer 權杖',
-  'Code examples': '程式碼範例',
-  'Copy cURL request': '複製 cURL 請求',
-  'Copy JSON response': '複製 JSON 回應',
-  'Create dataset': '建立資料集',
-  'cURL request': 'cURL 請求',
-  'Dataset endpoints': '資料集端點',
-  'Dataset identifier': '資料集識別碼',
-  Datasets: '資料集',
-  'Delete dataset': '刪除資料集',
-  DESCRIPTION: '說明',
-  'e.g. revenue': '例如 revenue',
-  Exports: '匯出',
-  'Filter by name or description': '依名稱或說明篩選',
-  'Get dataset': '取得資料集',
-  Headers: '標頭',
-  Jobs: '工作',
-  'JSON response': 'JSON 回應',
-  'Limit parameter': 'limit 參數',
-  'List datasets': '列出資料集',
-  'Maximum number of results (1–100)': '結果數量上限（1–100）',
   Method: '方法',
-  NAME: '名稱',
-  'Not sent': '尚未傳送',
-  'Number of results to skip': '要略過的結果數量',
-  'Offset parameter': 'offset 參數',
-  Organization: '組織',
-  Parameters: '參數',
-  'Path parameters': '路徑參數',
-  'Query parameters': '查詢參數',
-  Queries: '查詢',
-  'Request configuration': '請求設定',
-  'Request headers': '請求標頭',
-  'Request successful': '請求成功',
-  'Response format': '回應格式',
-  'Returns a list of datasets in your organization.': '傳回您組織中的資料集清單。',
-  'Returns one dataset by its unique identifier.': '依唯一識別碼傳回一個資料集。',
-  SCHEME: '驗證方式',
-  'Search parameter': '搜尋參數',
-  'Send a request to see the response.': '傳送請求以查看回應。',
-  'Send request': '傳送請求',
-  'Sending…': '傳送中…',
-  'The Authorization header is included in every request.': '每個請求都會包含 Authorization 標頭。',
-  TYPE: '類型',
-  'Unique identifier of the dataset': '資料集的唯一識別碼',
-  'Update dataset': '更新資料集',
-  'Use the cURL request below with your API key.': '使用您的 API 金鑰執行下方 cURL 請求。',
-  VALUE: '值',
-  'Your dataset is ready to use.': '您的資料集已可使用。',
-  '{count} hosts found': '找到 {count} 部主機',
-  'Add filters, technologies, countries or ports to narrow your search.':
-    '新增篩選條件、技術、國家/地區或連接埠，以縮小搜尋範圍。',
-  'All countries': '所有國家/地區',
-  'All services': '所有服務',
-  'All technologies': '所有技術',
-  'Apache hosts that may be affected by recent CVEs.': '可能受近期 CVE 影響的 Apache 主機。',
-  'Apr 1': '4 月 1 日',
-  'Apr 26, 2025': '2025 年 4 月 26 日',
-  Ashburn: '阿什本',
   Available: '可用',
-  California: '加利福尼亞州',
-  'Certificate details (if available)': '憑證詳細資訊（如有）',
   City: '城市',
-  'Clear all': '全部清除',
-  Confidence: '信心度',
-  Coordinates: '座標',
-  Countries: '國家/地區',
   Country: '國家/地區',
-  Critical: '嚴重',
   CVEs: 'CVE',
-  'Detected products': '偵測到的產品',
-  'Evidence collected from {address}': '從 {address} 收集的證據',
-  'Exposure over time': '對外暴露隨時間變化',
-  Falkenstein: '法肯施泰因',
-  'Feb 1': '2 月 1 日',
-  'Feb 15': '2 月 15 日',
-  'Find Apache on different ports (e.g. 8080, 8443).':
-    '尋找在其他連接埠上運行的 Apache（例如 8080、8443）。',
-  'Find known vulnerabilities': '尋找已知漏洞',
-  'First seen': '首次觀測',
-  Geolocation: '地理位置',
   Germany: '德國',
-  'Git hosting and developer API platform.': 'Git 託管與開發者 API 平台。',
-  'Global content delivery and web services.': '全球內容傳遞與網頁服務。',
   High: '高',
-  'High confidence based on multiple consistent signals across banner, service behavior and OS fingerprinting.':
-    '根據橫幅、服務行為及作業系統指紋等多項一致訊號，具有高信心度。',
-  'Hosts running related technologies (e.g. PHP, OpenSSL).':
-    '運行相關技術的主機（例如 PHP、OpenSSL）。',
-  'HTTPS response banner': 'HTTPS 回應橫幅',
   'internet-facing hosts': '面向網際網路的主機',
-  'Investigate further with one click.': '按一下即可進一步調查。',
   'IP range': 'IP 範圍',
-  'Jan 1': '1 月 1 日',
-  'Jan 12, 2023': '2023 年 1 月 12 日',
-  'Jan 15': '1 月 15 日',
-  'Last seen': '最近觀測',
-  'Linked CVEs': '關聯的 CVE',
-  'Load more': '載入更多',
   Location: '位置',
   Low: '低',
-  'Mar 1': '3 月 1 日',
-  'Mar 15': '3 月 15 日',
-  Medium: '中',
-  'Network information': '網路資訊',
-  'Nmap test host for scanning research.': '用於掃描研究的 Nmap 測試主機。',
-  'No SSL/TLS service detected on port 22.': '未在連接埠 22 偵測到 SSL/TLS 服務。',
-  'Not available': '無法使用',
   Open: '開放',
   'Open ports': '開放連接埠',
-  'Open services': '開放服務',
-  'OpenSSH information disclosure': 'OpenSSH 資訊洩漏',
-  'OpenSSH privilege escalation': 'OpenSSH 權限提升',
-  'OpenSSH regreSSHion RCE vulnerability': 'OpenSSH regreSSHion 遠端程式碼執行漏洞',
-  'Other hosts using the same TLS certificate.': '使用相同 TLS 憑證的其他主機。',
-  'Other services on the same ASNs (e.g. related infrastructure).':
-    '相同 ASN 上的其他服務（例如相關基礎設施）。',
-  'PTR record': 'PTR 記錄',
   Product: '產品',
-  'Public DNS resolver.': '公用 DNS 解析器。',
-  Raw: '原始資料',
-  'Recent queries': '最近查詢',
-  'Refine your query': '細化您的查詢',
   Region: '地區',
-  'Related technology': '相關技術',
-  'Resolved to': '解析至',
-  'Reverse DNS': '反向 DNS',
-  'Run query': '執行查詢',
-  'Running Apache HTTP Server on port 8080 in the United States.':
-    '在美國的連接埠 8080 上運行 Apache HTTP Server。',
-  'Running Apache HTTP Server with SSL in the United States.':
-    '在美國運行支援 SSL 的 Apache HTTP Server。',
-  'Same ASN': '相同 ASN',
-  'Same certificate': '相同憑證',
-  'Same service': '相同服務',
-  'Same service on other ports': '其他連接埠上的相同服務',
-  'Same TLS certificate': '相同 TLS 憑證',
-  'San Francisco': '舊金山',
-  'San Francisco, United States': '美國舊金山',
-  'Search hosts, domains, IPs...': '搜尋主機、網域、IP…',
-  'Search syntax': '搜尋語法',
   'Service banner': '服務橫幅',
-  'Sort by: Relevance': '排序方式：相關性',
-  'SSH protocol banner': 'SSH 通訊協定橫幅',
-  'Suggested next queries': '建議的下一步查詢',
-  'Technical evidence': '技術證據',
   'United States': '美國',
-  'Valid certificate · example.com · TLS 1.3.': '有效憑證 · example.com · TLS 1.3。',
   Version: '版本',
   'View all': '查看全部',
-  'View docs': '查看文件',
-  'View query syntax': '查看查詢語法',
-  Vulnerabilities: '漏洞',
-  'WHAT WE FOUND': '我們的發現',
-  ASN: 'ASN',
-  '{count} request/s': '每秒 {count} 個請求',
-  '{count} requests/s': '每秒 {count} 個請求',
+  '{count} request/s': '每秒 {count} 次請求',
+  '{count} requests/s': '每秒 {count} 次請求',
   '301 response': '301 回應',
   Contact: '聯絡',
   'Contact team': '聯絡團隊',
@@ -1287,68 +1023,682 @@ export default {
   Selected: '已選取',
   'SSH identification': 'SSH 識別資訊',
   'SSH identification banner': 'SSH 識別橫幅',
-  'Synthetic demonstration. Reserved example addresses and authored service records; no live scan or CVE finding.':
-    '合成示範。使用保留的範例位址與編寫的服務記錄；不包含即時掃描或 CVE 發現。',
+  'Example records': '範例記錄',
   'Write at least 10 characters, excluding surrounding spaces.':
     '請輸入至少 10 個字元，不計前後空格。',
   'nginx 1.24.0 · HTTP Server header': 'nginx 1.24.0 · HTTP 伺服器標頭',
   'Layers of technology opened for closer examination.': '技術層次展開以供仔細檢視。',
   'Several research inputs meet in one shared body of evidence.':
     '多項研究輸入匯集成一套共享的證據。',
-
-  // 404 arcade
-  'ERROR / 404': '錯誤 / 404',
-  'Signal lost. Keep the ball in play.': '訊號遺失。讓球繼續前進。',
-  'This route does not exist, but the system is still responsive. Clear the 404 or return to familiar ground.':
-    '此頁面不存在，但系統仍在回應。擊碎「404」，或返回熟悉的頁面。',
-  '404 page links': '404 頁面連結',
   'Page not found': '找不到頁面',
   'Return to home': '返回首頁',
-  'Explore search': '探索搜尋',
-  '404 arcade': '404 打磚塊',
-  'PRESS START': '按下開始',
-  PAUSED: '已暫停',
-  '404 CLEARED': '404 已清除',
-  'SIGNAL LOST': '訊號遺失',
-  'PRESS SPACE TO LAUNCH': '按空白鍵發球',
   'Awaiting start': '等待開始',
   Paused: '已暫停',
   '404 cleared': '404 已清除',
   'Game over': '遊戲結束',
   'In play': '遊戲進行中',
   'Ball ready — press Space': '球已就緒 — 按空白鍵',
-  'Wide paddle': '加寬球拍',
-  'Multi-ball': '多球',
-  'Protective shield': '防護盾',
-  'Slow ball': '減速球',
-  'Route recovery protocol': '路由復原程序',
-  'Game status': '遊戲狀態',
   Score: '得分',
   Bricks: '磚塊',
-  Lives: '生命',
-  '404 clearance': '404 清除進度',
-  '404 brick progress': '404 磚塊清除進度',
   'Arkanoid game board. Break the bricks that form 404. Use Arrow keys or A and D to move, Space to launch or pause, and P or Escape to pause.':
     '打磚塊遊戲區。擊碎組成 404 的磚塊。使用方向鍵或 A、D 移動球拍。按空白鍵發球或暫停，按 P 或 Escape 暫停及繼續。',
   'The game board is unavailable.': '遊戲區無法使用。',
-  'Canvas 2D is not supported in this browser. You can still return home.':
-    '此瀏覽器不支援 Canvas 2D。您仍可返回首頁。',
   '{state}. Score {score}. {bricks} bricks remain. {lives} lives.':
     '狀態：{state}。得分：{score}。剩餘磚塊：{bricks}。剩餘生命：{lives}。',
-  'Game controls': '遊戲控制',
-  'Start game': '開始遊戲',
-  Resume: '繼續',
-  Restart: '重新開始',
-  'Active boosts': '啟用中的加成',
-  '{count} balls': '球數：{count}',
-  '{seconds}s': '{seconds} 秒',
-  'No active power-ups': '目前沒有加成',
-  'Keyboard and touch controls': '鍵盤與觸控操作',
-  'Move the paddle': '移動球拍',
-  'Launch or pause': '發球或暫停',
-  'Pause or resume': '暫停或繼續',
-  'Drag or tap the board': '拖曳或點按遊戲區',
-  'Focus the game board first to use keyboard controls.': '使用鍵盤前，請先選取遊戲區。',
-  'Power-ups': '加成道具',
   Space: '空白鍵',
+  QUERY: '查詢',
+  Basic: '基本',
+  Extended: '擴充',
+  Free: 'Free',
+  Plus: 'Plus',
+  Expert: 'Expert',
+  Business: 'Business',
+  'Search Tokens#one': '個搜尋權杖',
+  'Search Tokens#few': '個搜尋權杖',
+  'Search Tokens#many': '個搜尋權杖',
+  'Search Tokens#other': '個搜尋權杖',
+  '{count} requests/s#one': '每秒 {count} 次請求',
+  '{count} requests/s#few': '每秒 {count} 次請求',
+  '{count} requests/s#many': '每秒 {count} 次請求',
+  '{count} requests/s#other': '每秒 {count} 次請求',
+  'Search hosts': '搜尋主機',
+  'Host details': '主機詳細資料',
+  'Read the query': '閱讀查詢',
+  'Select a matching host': '選擇符合條件的主機',
+  'Inspect the observed service': '檢視觀測到的服務',
+  'Follow the evidence': '追查技術證據',
+  'Version A → Version B': '版本 A → 版本 B',
+  'Observed → Not observed': '已觀測 → 未觀測',
+  'Need to use data commercially? Confirm the permitted use for your selected plan with Apcosys before purchasing.':
+    '需要將資料用於商業用途嗎？購買前，請向 Apcosys 確認所選方案允許的使用範圍。',
+  'Confirm data usage': '確認資料使用條件',
+  'View all plan features': '查看所有方案功能',
+  'API key': 'API 金鑰',
+  'Query credits remaining': '剩餘查詢額度',
+  'Scan credits remaining': '剩餘掃描額度',
+  'Search workspace with a query field and supported query types.':
+    '含查詢欄位與支援查詢類型的搜尋工作區。',
+  'Review the service response, certificate and observed technical context.':
+    '檢視服務回應、憑證及觀測到的技術背景資訊。',
+  'Host TLS certificate with its issuer, validity period and DNS name.':
+    '主機的 TLS 憑證，包含簽發者、有效期與 DNS 名稱。',
+  Filters: '篩選條件',
+  Netherlands: '荷蘭',
+  'TLS certificate': 'TLS 憑證',
+  'Search internet infrastructure.': '搜尋網際網路基礎設施。',
+  'Text query': '文字查詢',
+  'Certificate identity': '憑證識別資訊',
+  Subject: '主體',
+  Issuer: '簽發者',
+  'Example Certificate Authority': '範例憑證機構',
+  'Applied condition': '已套用條件',
+  '1 result': '1 筆結果',
+  'API workspace with a masked key, credit balances and account limits.':
+    'API 工作區，包含已遮蔽的金鑰、剩餘額度與帳戶限制。',
+  'Built for people who investigate the internet.': '為探索網際網路的人而打造。',
+  'Apcosys makes technical observations about internet-facing infrastructure searchable, so security researchers and teams can investigate them.':
+    'Apcosys 將面向網際網路基礎架構的技術觀測整理為可搜尋的資料，供資安研究人員與團隊深入調查。',
+  'Why Apcosys': '為什麼選擇 Apcosys',
+  'Our approach': '我們的方法',
+  'Explore the platform': '探索平台',
+  'Talk to the people behind the product.': '與產品團隊交流。',
+  'Questions about the platform, data or collaboration? Reach the team at {email}.':
+    '對平台、資料或合作有疑問嗎？請透過 {email} 聯絡團隊。',
+  'A glass lens brings one connected host into focus within an infrastructure landscape.':
+    '玻璃透鏡在基礎架構景觀中聚焦於一台已連接的主機。',
+  'Why we built Apcosys.': '我們為何建立 Apcosys。',
+  'The answer is rarely in the first result. A good investigation needs a clear path from a technical question to the evidence behind it.':
+    '答案很少就在第一筆結果中。完善的調查需要一條清楚的路徑，從技術問題走向背後的證據。',
+  'Internet infrastructure produces a large volume of technical signals. The difficult part is turning an initial lead into a question you can investigate.':
+    '網際網路基礎架構產生大量技術訊號。困難之處在於將初步線索轉化為可以深入調查的問題。',
+  'Apcosys brings hosts, services and detected technologies into a searchable view, so researchers can open a result, understand its context and choose where to look next.':
+    'Apcosys 將主機、服務與偵測到的技術整合至可搜尋的介面，讓研究人員開啟結果、了解脈絡，並決定下一步的方向。',
+  'Start with an attribute.': '從一項屬性開始。',
+  'Inspect the services.': '檢查服務。',
+  'Read the evidence.': '檢視證據。',
+  'Next question': '下一個問題',
+  'Our approach.': '我們的方法。',
+  'Make the evidence easier to find, easier to understand and easier to use responsibly.':
+    '讓證據更容易查找、理解，並以負責任的方式使用。',
+  'Searchable observations.': '可搜尋的觀測資料。',
+  'We turn how public hosts respond — ports, services and technologies — into data you can query. Start with an attribute you know and narrow the question as you learn.':
+    '我們將公開主機的回應，包括連接埠、服務與技術，轉化為可查詢的資料。從已知屬性出發，隨著了解加深逐步聚焦問題。',
+  'Built for investigation.': '為調查而打造。',
+  'The product follows the path from query to host to context. Each step should help a researcher decide what deserves a closer look.':
+    '產品沿著查詢、主機到脈絡的路徑展開。每一步都應協助研究人員判斷哪些內容值得深入查看。',
+  'Transparent data.': '透明的資料。',
+  'A useful result explains what was observed and what remains uncertain. Collection context, observation dates and detection limits matter as much as the result itself.':
+    '有用的結果會說明觀測到了什麼，以及哪些部分仍不確定。收集脈絡、觀測日期與偵測限制，和結果本身同樣重要。',
+  'Responsible collection.': '負責任的資料收集。',
+  'Publicly observable information is not permission to test a system. We provide a direct contact route for scanning questions and network exclusion requests.':
+    '資訊可供公開觀測，並不代表獲得測試系統的授權。我們提供直接聯絡管道，處理掃描問題與網路排除請求。',
+  'See the approach in practice.': '了解方法如何付諸實踐。',
+  'Explore the investigation workflow and the principles behind the data.':
+    '探索調查流程與資料背後的原則。',
+  'From a question to a host.': '從問題走向主機。',
+  'Follow a query through results, services and technical context.':
+    '沿著查詢，逐步檢視結果、服務與技術脈絡。',
+  'What sits behind a result.': '結果背後的資訊。',
+  'Read about observations, coverage, dates and potential CVE associations.':
+    '了解觀測資料、涵蓋範圍、日期與潛在的 CVE 關聯。',
+  'Apcosys scanning inquiry': 'Apcosys 掃描諮詢',
+  'Apcosys network exclusion request': 'Apcosys 網路排除請求',
+  'Networks / IP ranges:': '網路 / IP 範圍：',
+  'My role in managing these networks:': '我在管理這些網路時的職責：',
+  'Contact details:': '聯絡資料：',
+  'Relevant dates and context:': '相關日期與背景資訊：',
+  'How Apcosys scans.': 'Apcosys 如何進行掃描。',
+  'The principles behind collecting observations from publicly accessible systems, and how to reach us about scanning activity or a network exclusion.':
+    '了解我們從公開可存取系統收集觀測資料的原則，以及如何就掃描活動或網路排除事宜聯絡我們。',
+  Collection: '資料收集',
+  'Identify traffic': '辨識流量',
+  'Request exclusion': '申請排除',
+  'Contact the scanning team': '聯絡掃描團隊',
+  'Request an exclusion': '申請排除網路',
+  'Questions about an observation?': '對觀測資料有疑問嗎？',
+  'Share the relevant network and time context with the team. For help interpreting a result, start with Data & Methodology.':
+    '請向團隊提供相關網路與時間資訊。如需協助解讀結果，請先查看「資料與方法論」。',
+  'Email the scanning team': '傳送電子郵件給掃描團隊',
+  'A glass boundary defines the infrastructure reached through a controlled entry point.':
+    '玻璃邊界劃出透過受控入口可存取的基礎架構。',
+  'What we collect.': '我們收集的資料。',
+  'Apcosys records how publicly accessible services respond to connection requests. Those responses become searchable technical observations.':
+    'Apcosys 記錄公開可存取的服務如何回應連線請求，並將這些回應轉化為可搜尋的技術觀測資料。',
+  'Ports and services': '連接埠與服務',
+  'Where a service responds and which supported protocol is observed.':
+    '服務回應的位置，以及觀測到的支援協定。',
+  'Service responses': '服務回應',
+  'The technical response used as evidence for an observation.': '作為觀測證據的技術回應。',
+  'Detected technologies': '偵測到的技術',
+  'Products and versions inferred from the available response.':
+    '根據可取得的回應推斷出的產品與版本。',
+  'For detailed collection boundaries or questions about specific traffic, contact the scanning team.':
+    '如需了解詳細收集範圍，或對特定流量有疑問，請聯絡掃描團隊。',
+  'Identifying our scanners.': '辨識我們的掃描器。',
+  'If you believe traffic came from Apcosys, send the details needed to check its origin. A product name or service banner alone is not enough to verify a scanner.':
+    '如果您認為流量來自 Apcosys，請提供核實來源所需的資料。僅憑產品名稱或服務橫幅，無法確認掃描器的身分。',
+  'What to include': '需要提供的資料',
+  Source: '來源',
+  'The source IP observed in your logs.': '您的日誌中記錄的來源 IP。',
+  Destination: '目標',
+  'The affected address, port and protocol.': '受影響的位址、連接埠與協定。',
+  Time: '時間',
+  'The date, time and timezone of the traffic.': '流量發生的日期、時間與時區。',
+  'A short description and a relevant, sanitised log excerpt.':
+    '簡短描述，以及已移除敏感資料的相關日誌片段。',
+  'Ask us to verify it.': '請我們協助核實。',
+  'Write to the team with the source and destination details. We can review your question against the relevant scanning information.':
+    '請寫信給團隊，提供來源與目標的詳細資訊。我們可以根據相關掃描資訊查核您的問題。',
+  'Do not send passwords, API keys or unrelated customer data.':
+    '請勿傳送密碼、API 金鑰或無關的客戶資料。',
+  'Email {email}': '寄信至 {email}',
+  'Opting out.': '退出掃描。',
+  'If you own or administer a network, contact us with the IP ranges you want excluded. Give the team enough context to identify the request and reach you.':
+    '如果您擁有或管理某個網路，請聯絡我們並提供要排除的 IP 範圍。請提供足夠背景資訊，讓團隊能確認請求內容並與您聯絡。',
+  'Identify the networks.': '列出網路。',
+  'List the relevant IP addresses or ranges. If the request concerns a particular event, include its date and timezone.':
+    '列出相關 IP 位址或範圍。如果請求與特定事件有關，請提供該事件的日期與時區。',
+  'Explain your role.': '說明您的職責。',
+  'Describe your responsibility for these networks and include a working contact address for follow-up.':
+    '說明您對這些網路的管理職責，並提供可用的聯絡地址以便後續聯繫。',
+  'Send the request.': '傳送請求。',
+  'Send your IP range and contact details. Our team will review the request.':
+    '請提供 IP 範圍與聯絡資料。我們的團隊會審核您的請求。',
+  'Prepare a network exclusion request': '準備網路排除請求',
+  'Use the X-API-Key header. Keep your API key on a trusted server, outside browser code.':
+    '使用 X-API-Key 標頭。請將 API 金鑰保存在可信任的伺服器上，不要放入瀏覽器程式碼。',
+  'Example response': '範例回應',
+  'Documented HTTP request. Set APCOSYS_API_KEY in your server environment before running it.':
+    '文件所載的 HTTP 請求。執行前，請在伺服器環境中設定 APCOSYS_API_KEY。',
+  'Send a small host-search request to the public HTTP API. Use your account API key in the X-API-Key header.':
+    '向公開 HTTP API 傳送小規模主機搜尋請求。在 X-API-Key 標頭中使用您帳戶的 API 金鑰。',
+  'Open Apcosys': '開啟 Apcosys',
+  'Opens in a new tab': '將在新分頁開啟',
+  'Coverage snapshot · {date}': '涵蓋範圍快照 · {date}',
+  'View statistics source': '查看統計資料來源',
+  'These figures reproduce the public statistics endpoint. Read them alongside the source and its update date.':
+    '這些數字取自公開統計資料端點。請搭配資料來源及其更新日期閱讀。',
+  'Total reported in the {field} field.': '{field} 欄位所回報的總數。',
+  'This is a dated snapshot, not a live total. The endpoint does not specify counting or deduplication rules.':
+    '這是特定日期的快照，並非即時總數。此端點未說明計算或去除重複資料的規則。',
+  Products: '產品',
+  'Last updated': '最後更新',
+  'Print document': '列印文件',
+  'Legal documents': '法律文件',
+  'Back to top': '回到頂端',
+  'Questions? {email}': '有疑問嗎？{email}',
+  'Terms for accessing the Apcosys API and using its data.':
+    '存取 Apcosys API 及使用其資料的條款。',
+  'How cookies and related technologies are used, and how to manage your preferences.':
+    '了解 Cookie 與相關技術的使用方式，以及如何管理您的偏好設定。',
+  'What Apcosys collects, how it is collected, and the purpose of those observations.':
+    '了解 Apcosys 收集哪些資料、如何收集，以及這些觀測資料的用途。',
+  'How personal data is processed, protected and retained when you use Apcosys.':
+    '了解使用 Apcosys 時，個人資料如何被處理、保護及保留。',
+  'How Apcosys collects, uses and shares personal information, and the choices available to you.':
+    '了解 Apcosys 如何收集、使用及分享個人資訊，以及您可以做出的選擇。',
+  'The terms governing access to the Apcosys website and services.':
+    '規範存取 Apcosys 網站與服務的條款。',
+
+  'Find matching hosts, then inspect their ports and service responses.':
+    '尋找符合條件的主機，再查看其連接埠與服務回應。',
+  'Explore files in context.': '查看檔案及其所在位置。',
+  'Search reads the public index. Private scans are available by request for hosts you own, with consent and verified ownership; results are shared only with you.':
+    '搜尋使用公開索引。私人掃描須提出申請，僅針對您擁有的主機，並須取得您的同意及驗證所有權；結果僅提供給您。',
+  'Group matching files by bucket and inspect their metadata.':
+    '依儲存貯體分組符合條件的檔案，並查看其中繼資料。',
+  'Locate the bucket': '找出儲存貯體',
+  'See the storage host and container behind the files.': '查看檔案所在的儲存主機與容器。',
+  'Inspect the records': '查看檔案記錄',
+  'Compare file paths, formats and sizes.': '比較檔案路徑、格式與大小。',
+  'Example bucket': '儲存貯體範例',
+  'Explore bucket search': '探索儲存貯體搜尋',
+  '{size} MB': '{size} MB',
+  'Host analytics & API access': '主機分析與 API 存取',
+  'Compare the tools and credit allowance first. HTTP API method costs and request-rate limits describe different parts of usage.':
+    '先比較功能與方案額度。HTTP API 方法成本和請求速率限制衡量的是不同的使用面向。',
+  'HTTP API method costs': 'HTTP API 方法成本',
+  'Host or bucket request': '主機或儲存貯體請求',
+  'Host search, host details, bucket search or bucket analytics.':
+    '搜尋主機、查詢主機詳情、搜尋儲存貯體或取得儲存貯體分析。',
+  'Host analytics': '主機分析',
+  'Aggregated results for the same host-search filters.': '依相同主機搜尋條件取得彙總結果。',
+  'These are method-cost units against the public HTTP API rate allowance. They do not specify a debit in plan credits or Search Tokens.':
+    '這些是公開 HTTP API 以速率配額（rate allowance）計算的方法成本單位，並未說明方案額度或搜尋權杖的扣除量。',
+  'What can I do with Plus?': 'Plus 可以用來做什麼？',
+  'Example: search {domain}, then request analytics for the same filters. Two HTTP calls have a combined method cost of {cost} ({search} + {analytics}), returning host records and a breakdown to guide your next filter.':
+    '例如：搜尋 {domain}，再用相同條件請求分析。這兩次 HTTP 呼叫的方法成本合計為 {cost}（{search} + {analytics}），可取得主機紀錄與彙總資訊，作為下一步篩選的依據。',
+  'Credits, tokens and API costs': '額度、權杖與 API 成本',
+  'Each plan includes a credit allowance. Search Token packages add capacity. HTTP API method costs apply to the API rate allowance. Contact our team to confirm credit usage for your workflow.':
+    '每個方案都包含可用額度。加購搜尋權杖套件可擴充使用容量。HTTP API 的方法成本計入 API 速率配額（rate allowance）。請聯絡我們的團隊，確認您的工作流程所需的額度用量。',
+  'How do API rate limits work?': 'API 速率限制如何運作？',
+  'Plus: {plus}. Expert: {expert}. Business: {business}. Requests above your plan’s rate receive HTTP 429. These limits control frequency, not the credit balance.':
+    'Plus：{plus}。Expert：{expert}。Business：{business}。超過方案請求速率時，API 會回傳 HTTP 429。這些限制規範請求頻率，並非額度餘額。',
+  'Plus adds API access, CVE context and bucket search. Expert adds full filters and leak-data context; Business adds team access and private scanning.':
+    'Plus 提供 API 存取、CVE 背景資訊與儲存貯體搜尋。Expert 再加入完整篩選器與外洩資料背景資訊；Business 則提供團隊存取與私人掃描。',
+  'Packages are additional purchases. Confirm which balance receives the tokens and when they expire before payment.':
+    '套件需另外購買。付款前，請確認權杖會加入哪個餘額，以及何時到期。',
+  'Annual pricing shows a monthly equivalent and the total billed for a year. The billing switch changes prices, not the credit amounts listed with each plan.':
+    '年繳價格會顯示每月均價與全年總額。切換計費週期只會改變價格，不會改變各方案列出的額度數量。',
+  'When do credits renew?': '額度何時更新？',
+  'Contact our team to confirm annual credit renewal, expiry and unused-credit terms before purchase.':
+    '購買前，請聯絡我們的團隊，確認年繳方案的額度更新、到期及未使用額度處理規則。',
+  'Free includes {credits} credits for one person, with basic search for personal, non-commercial use. Plus adds API access, CVE context and bucket search.':
+    'Free 包含供一人使用的 {credits} 額度，提供個人非商業用途的基本搜尋。Plus 再加入 API 存取、CVE 背景資訊與儲存貯體搜尋。',
+  'How do credits and API costs differ?': '額度與 API 成本有何不同？',
+  'Credits are the allowance listed on each plan. HTTP API methods have separate published costs: {search} for host search and {analytics} for host analytics. Those costs do not specify the debit in credits or Search Tokens.':
+    '各方案列有可用額度。HTTP API 方法另有公開成本：主機搜尋為 {search}，主機分析為 {analytics}。這些數值並未說明額度或搜尋權杖的扣除量。',
+  'Compare usage units and API costs': '比較用量單位與 API 成本',
+  'Example response. total counts matches; hosts contains this page. uts is the last update in Unix seconds.':
+    '回應範例。total 是符合條件的總數；hosts 是此頁結果；uts 是以 Unix 秒數表示的最近更新時間。',
+  'Build a shortlist of candidate hosts, then check their services, observation dates and programme scope.':
+    '整理候選主機清單，再檢查其服務、觀測日期，以及計畫授權的測試範圍。',
+  'Identify candidate hosts with a matching technology, then use service evidence and observation dates to plan advisory checks.':
+    '找出使用相符技術的候選主機，再依服務證據與觀測日期規劃漏洞公告的核對工作。',
+  'Turn an indicator into a next query, keeping the observed service, date and supporting response together.':
+    '從指標找出下一個查詢方向，並保留觀測到的服務、日期與作為依據的回應。',
+  'Send JSON to POST /api/v1/search/hosts. The example requests 20 hosts on page 1; docs_per_page supports up to 100 records.':
+    '以 POST /api/v1/search/hosts 傳送 JSON。範例請求第 1 頁的 20 個主機；docs_per_page 最多支援 100 筆記錄。',
+  "Read total for the number of matches and hosts for this page of results. Keep each host's ports, protocols and update time with your research notes.":
+    'total 表示符合條件的總數，hosts 則包含此頁結果。將各主機的連接埠、通訊協定與更新時間一併記入研究筆記。',
+  'Start with the request example, compare API access and plan an integration around the fields your research needs.':
+    '從請求範例開始，比較 API 存取權限，並依研究所需的欄位規劃整合。',
+  'Search hosts, inspect individual systems and explore indexed storage records. Plus, Expert and Business include access to the public HTTP API.':
+    '搜尋主機、查看個別系統，並探索已建立索引的儲存貯體記錄。Plus、Expert 與 Business 均提供公開 HTTP API 存取權限。',
+  'Find hosts by IP, domain, service or technology. Request analytics with the same filters to understand the matching set.':
+    '依 IP、網域、服務或技術搜尋主機，再以相同篩選條件請求分析，瞭解符合條件的結果分布。',
+  'POST /api/v1/search/hosts': 'POST /api/v1/search/hosts',
+  'GET /api/v1/search/hosts/:ip': 'GET /api/v1/search/hosts/:ip',
+  'Explore buckets.': '探索儲存貯體。',
+  'Search indexed storage records by host, extension or size. Review their file metadata and update time.':
+    '依主機、副檔名或檔案大小搜尋已建立索引的儲存貯體記錄，並查看檔案中繼資料與更新時間。',
+  'POST /api/v1/search/buckets': 'POST /api/v1/search/buckets',
+  'Each HTTP API method has a cost against the rate allowance. The usage guide shows these costs separately from plan credits and Search Token packages.':
+    '每個 HTTP API 方法都有計入速率配額（rate allowance）的成本。用量說明會將這些成本與方案額度及搜尋權杖套件分開列出。',
+  'Fields and values also depend on your plan. HTTP 402 identifies a restriction; HTTP 429 identifies an exceeded request rate.':
+    '可用欄位與值也取決於方案。HTTP 402 表示存取受限；HTTP 429 表示請求速率超過限制。',
+
+  'Monitoring concept': '監控概念',
+  'Explore bucket search via API': '透過 API 探索儲存貯體搜尋',
+  'From a domain to an in-scope host.': '從網域找到授權範圍內的主機。',
+  'example.com stands in for a domain included in a programme scope.':
+    'example.com 代表計畫授權範圍內的網域。',
+  'Enter the permitted domain in the search field. This example uses example.com.':
+    '在搜尋欄輸入獲准的網域。此範例使用 example.com。',
+  'Compare portal.example.com and gateway.example.com in the example results.':
+    '比較範例結果中的 portal.example.com 與 gateway.example.com。',
+  'Check each host against the programme scope before testing its services.':
+    '測試服務前，確認每台主機都在計畫授權範圍內。',
+  'From a product to the hosts running it.': '從產品找到執行它的主機。',
+  'nginx is the product to look for; the example shows version 1.24.0.':
+    '以 nginx 為搜尋目標；範例顯示版本 1.24.0。',
+  'Search for nginx, then inspect the detected version in each host record.':
+    '搜尋 nginx，再查看各主機記錄中偵測到的版本。',
+  'Read the HTTP Server header that supports the nginx version in this example.':
+    '檢視此範例中用來識別 nginx 版本的 HTTP Server 標頭。',
+  'Check the vendor advisory, installed patches and configuration.':
+    '核對廠商公告、已安裝的修補程式與設定。',
+  'From an IP address to its services.': '從 IP 位址查看其服務。',
+  '198.51.100.24 stands in for an IP address from an alert or report.':
+    '198.51.100.24 代表警示或報告中的 IP 位址。',
+  'Enter the complete IP address in the search field.': '在搜尋欄輸入完整的 IP 位址。',
+  'The example connects the IP to portal.example.com and HTTPS on port 443.':
+    '範例將此 IP 連結至 portal.example.com 與連接埠 443 上的 HTTPS。',
+  'Use the hostname or service as the next query, then check the new results.':
+    '以主機名稱或服務作為下一個查詢，再檢視新結果。',
+  'Search for nginx': '搜尋 nginx',
+  'Request body': '請求本文',
+  'Search response': '搜尋回應',
+  String: '字串',
+  Array: '陣列',
+  'Field and type': '欄位與型別',
+  Meaning: '說明',
+  Fields: '欄位',
+  'Interface preview': '介面預覽',
+  'Choose your plan and billing period after signing in.': '登入後，請選擇方案與計費週期。',
+  'Opens a draft in your email app.': '會在您的郵件應用程式中開啟草稿。',
+  'Example balances': '範例餘額',
+  History: '歷史記錄',
+  'Products & CVE': '產品與CVE',
+  Try: '試試',
+  Overview: '總覽',
+  'DNS & domains': 'DNS 與網域',
+  Authentication: '驗證',
+  Endpoints: 'API 端點',
+  'Search buckets': '搜尋儲存空間',
+  'Bucket analytics': '儲存空間分析',
+  'Private search': '私有資料搜尋',
+  'Filter syntax & fields': '篩選語法與欄位',
+  Errors: '錯誤',
+  'Integration guidance': '整合建議',
+  'Private hosts': '私有主機',
+  'Private host details': '私有主機詳細資料',
+  'Private analytics': '私有資料分析',
+  'Result page number.': '結果頁碼。',
+  'Records per page; at most 100 for host search.': '每頁記錄數；主機搜尋最多為 100 筆。',
+  'Ignored for host search: results use uts in descending order.':
+    '主機搜尋會忽略此欄位；結果依 uts 遞減排序。',
+  'Ignored for host search: the order is always descending.':
+    '主機搜尋會忽略此欄位；一律採用遞減排序。',
+  'Search banners, bodies, domains and headers; IP or CIDR text also searches addresses.':
+    '搜尋橫幅、回應本文、網域與標頭；輸入 IP 或 CIDR 時，也會搜尋位址。',
+  'Search exposed-data content; requires Expert or Business.':
+    '搜尋公開資料的內容；需要 Expert 或 Business。',
+  'Search security.txt content; requires Business.': '搜尋 security.txt 的內容；需要 Business。',
+  'Combine field/value filters and nested groups.': '組合欄位／值篩選條件與巢狀群組。',
+  'Minimum exposed-data size in MB; requires Expert or Business.':
+    '公開資料大小下限，單位為 MB；需要 Expert 或 Business。',
+  'Maximum exposed-data size in MB; requires Expert or Business.':
+    '公開資料大小上限，單位為 MB；需要 Expert 或 Business。',
+  'Inclusive numeric or time ranges; field restrictions still apply.':
+    '包含上下限的數值或時間範圍；欄位限制仍然適用。',
+  'Total matching hosts across the result pages.': '所有結果頁中符合條件的主機總數。',
+  'Page size.': '每頁記錄數。',
+  'Host summaries for this page.': '此頁的主機摘要。',
+  'IP address or host identifier; a domain may appear when the IP is empty.':
+    'IP 位址或主機識別碼；IP 為空時，可能顯示網域。',
+  'Operating system, when available.': '作業系統，如有資料。',
+  'Organisation associated with the autonomous system.': '與自治系統相關聯的組織。',
+  'City name.': '城市名稱。',
+  'Country code.': '國家代碼。',
+  'Region name.': '地區名稱。',
+  'Last update time in Unix seconds.': '上次更新時間，以 Unix 秒數表示。',
+  'Labels attached to the host.': '主機的標籤。',
+  'Service summaries with protocol and port.': '包含通訊協定與連接埠的服務摘要。',
+  'IP address or host identifier.': 'IP 位址或主機識別碼。',
+  'Record type: ipv4, ipv6 or domain.': '記錄類型：ipv4、ipv6 或 domain。',
+  'Autonomous-system network block, when available.': '自治系統的網路區塊，如有資料。',
+  'Country name.': '國家名稱。',
+  'Continent name.': '洲別名稱。',
+  'Region code.': '地區代碼。',
+  'Autonomous system number.': '自治系統編號。',
+  'Creation time in Unix seconds.': '建立時間，以 Unix 秒數表示。',
+  'Detailed service records.': '詳細服務記錄。',
+  'Port number.': '連接埠號碼。',
+  'Observed application protocol.': '觀察到的應用層通訊協定。',
+  'Service banner.': '服務橫幅。',
+  'Transport protocol.': '傳輸層通訊協定。',
+  'Observation status, such as closed_port.': '觀察狀態，例如 closed_port。',
+  'TLS and certificate fields in one flat object.': 'TLS 與憑證欄位位於同一個扁平物件中。',
+  'Detected technologies and associated context.': '偵測到的技術與相關資訊。',
+  'SHA-256 of the banner bytes, encoded as hexadecimal.': '橫幅位元組的 SHA-256，以十六進位表示。',
+  'MD5 of the favicon bytes, encoded as hexadecimal.': '網站圖示位元組的 MD5，以十六進位表示。',
+  'Observed response body.': '觀察到的回應本文。',
+  'SHA-256 of the response body bytes, encoded as hexadecimal.':
+    '回應本文位元組的 SHA-256，以十六進位表示。',
+  'Page or service title.': '頁面或服務標題。',
+  'HTTP response status.': 'HTTP 回應狀態。',
+  'Header names mapped to arrays of values.': '標頭名稱及其對應的值陣列。',
+  'Domains found in the certificate.': '憑證中的網域。',
+  'Redirect chain; it may start with the constructed origin URL.':
+    '重新導向鏈；可能以組合出的來源 URL 開始。',
+  'Final URL, or the service origin when no redirect occurred.':
+    '最終 URL；若未發生重新導向，則為服務來源位址。',
+  'Observed security.txt data.': '觀察到的 security.txt 資料。',
+  'Domains found in response headers.': '回應標頭中的網域。',
+  'Observation error, if present.': '觀察期間發生的錯誤，如有。',
+  'TLS version.': 'TLS 版本。',
+  'Negotiated cipher suite.': '協商後的加密套件。',
+  'Server name indication (SNI).': '伺服器名稱指示（SNI）。',
+  'SHA-256 of the certificate DER bytes, encoded as hexadecimal.':
+    'DER 格式憑證位元組的 SHA-256，以十六進位表示。',
+  'JA4S fingerprint.': 'JA4S 指紋。',
+  'Certificate serial number.': '憑證序號。',
+  'Certificate issuer.': '憑證簽發者。',
+  'Certificate subject.': '憑證主體。',
+  'Certificate validity start.': '憑證有效期起始時間。',
+  'Certificate validity end.': '憑證有效期結束時間。',
+  'DNS names in the certificate.': '憑證中的 DNS 名稱。',
+  'Email addresses in the certificate.': '憑證中的電子郵件地址。',
+  'IP addresses in the certificate.': '憑證中的 IP 位址。',
+  'URIs in the certificate.': '憑證中的 URI。',
+  'Public-key algorithm.': '公開金鑰演算法。',
+  'Certificate signature algorithm.': '憑證簽章演算法。',
+  'Certificate key usage.': '憑證金鑰用途。',
+  'Extended certificate key usage.': '延伸的憑證金鑰用途。',
+  'Whether the certificate belongs to a certificate authority.': '憑證是否屬於憑證授權單位。',
+  'OCSP server addresses.': 'OCSP 伺服器位址。',
+  'Certificate revocation-list locations.': '憑證撤銷清單的位置。',
+  'Whether a security.txt file was found.': '是否找到 security.txt 檔案。',
+  'Contents of the observed file.': '觀察到的檔案內容。',
+  'URLs or email addresses from Contact entries.': 'Contact 項目中的 URL 或電子郵件地址。',
+  'Full URL of the observed file.': '觀察到的檔案完整 URL。',
+  'File path, such as /.well-known/security.txt.': '檔案路徑，例如 /.well-known/security.txt。',
+  'Detected product name.': '偵測到的產品名稱。',
+  'Detected vendor name.': '偵測到的供應商名稱。',
+  'Detected product version.': '偵測到的產品版本。',
+  'Labels attached to the detection.': '偵測結果的標籤。',
+  'Product name used for CVE context.': '用於 CVE 關聯資訊的產品名稱。',
+  'Vendor name used for CVE context.': '用於 CVE 關聯資訊的供應商名稱。',
+  'Identifier used for CVE context.': '用於 CVE 關聯資訊的識別碼。',
+  'Associated entries containing cve_id and base_score.': '包含 cve_id 與 base_score 的關聯項目。',
+  'Expert/Business only: field_headers (string[]) and field_value (string[][]).':
+    '僅限 Expert／Business：field_headers（string[]）與 field_value（string[][]）。',
+  'Aggregation groups.': '彙總群組。',
+  'Group name, such as type, port, products or country_name.':
+    '群組名稱，例如 type、port、products 或 country_name。',
+  'Values and their counts for this group.': '此群組中的值及其計數。',
+  'Aggregation value.': '彙總值。',
+  'Count reported for this value.': '此值所回報的計數。',
+  'Sort by cts, uts or size_mb.': '依 cts、uts 或 size_mb 排序。',
+  'Sort direction: asc or desc.': '排序方向：asc 或 desc。',
+  'Storage host to match.': '要比對的儲存主機。',
+  'Stop words.': '停用詞。',
+  'Minimum size in MB.': '大小下限，單位為 MB。',
+  'Maximum size in MB.': '大小上限，單位為 MB。',
+  'Keywords to match.': '要比對的關鍵字。',
+  'File extensions.': '副檔名。',
+  'Alphabets, such as latin or cyrillic.': '字母系統，例如 latin 或 cyrillic。',
+  'Exclude the listed extensions instead of including them.': '排除所列的副檔名，而非納入搜尋。',
+  'Inclusive lower bound for update time, in Unix seconds.':
+    '更新時間下限（包含），以 Unix 秒數表示。',
+  'Inclusive upper bound for update time, in Unix seconds.':
+    '更新時間上限（包含），以 Unix 秒數表示。',
+  'Inclusive lower bound for creation time, in Unix seconds.':
+    '建立時間下限（包含），以 Unix 秒數表示。',
+  'Inclusive upper bound for creation time, in Unix seconds.':
+    '建立時間上限（包含），以 Unix 秒數表示。',
+  'Country codes to include.': '要納入的國家代碼。',
+  'Country codes to exclude.': '要排除的國家代碼。',
+  'Buckets to exclude.': '要排除的儲存空間。',
+  'Product names to match.': '要比對的產品名稱。',
+  'Number of items in this response.': '此回應中的項目數。',
+  'Matching storage records.': '符合條件的儲存記錄。',
+  'Storage host.': '儲存主機。',
+  'HTTP or HTTPS.': 'HTTP 或 HTTPS。',
+  'Storage key or name.': '儲存空間的鍵或名稱。',
+  'Container name, when present.': '容器名稱，如有。',
+  'Detected alphabets.': '偵測到的字母系統。',
+  'Alternative hostnames, when present.': '替代主機名稱，如有。',
+  'Size in MB.': '大小，單位為 MB。',
+  'File extension.': '副檔名。',
+  'Storage hosts and file counts.': '儲存主機與檔案計數。',
+  'File count for this host.': '此主機的檔案數。',
+  'Required for a leaf filter: the field name.': '葉節點篩選條件必填：欄位名稱。',
+  'Required for a leaf filter: a non-empty value.': '葉節點篩選條件必填：非空值。',
+  'AND, OR or NOT.': 'AND、OR 或 NOT。',
+  'Nested filters with the same structure.': '相同結構的巢狀篩選條件。',
+  'Numeric or time field, such as uts, cts, port_count or base_score.':
+    '數值或時間欄位，例如 uts、cts、port_count 或 base_score。',
+  'Inclusive lower bound (gte).': '包含下限（gte）。',
+  'Inclusive upper bound (lte).': '包含上限（lte）。',
+  'Optional task IDs that limit private host search or analytics to those scans.':
+    '選填的任務 ID，可將私有主機搜尋或分析限制在指定掃描中。',
+  'Plain values use the matching rules of the field.': '一般值依欄位的比對規則處理。',
+  'Quoted text matches a phrase in text fields.': '引號中的文字會在文字欄位中比對完整片語。',
+  'Parentheses require all words in a text field.': '括號要求文字欄位包含所有字詞。',
+  'Asterisks and question marks are wildcards for keyword fields.':
+    '星號與問號是 keyword 欄位的萬用字元。',
+  'Comma-separated values match any listed value.': '以逗號分隔的值會比對其中任一值。',
+  'Host and location': '主機與位置',
+  'Products and vulnerability context': '產品與漏洞關聯資訊',
+  'HTTP headers and TLS': 'HTTP 標頭與 TLS',
+  'Security contact and time': '安全聯絡資訊與時間',
+  'Invalid request': '無效請求',
+  'Check the JSON body, parameter types and host identifier.':
+    '請檢查 JSON 本文、參數類型與主機識別碼。',
+  'Invalid API key': '無效的 API 金鑰',
+  'Check that X-API-Key contains a valid account key.': '請確認 X-API-Key 包含有效的帳戶金鑰。',
+  'Plan restriction': '方案限制',
+  'A field or value is unavailable on the current plan. Read the error message before changing the query.':
+    '目前方案無法使用此欄位或值。修改查詢前，請先閱讀錯誤訊息。',
+  'Host not found': '找不到主機',
+  'The individual host lookup did not find the requested address or domain.':
+    '個別主機查詢找不到指定的位址或網域。',
+  'Rate limit exceeded': '超過速率限制',
+  'Reduce request frequency before retrying.': '降低請求頻率後再重試。',
+  'Search or server error': '搜尋或伺服器錯誤',
+  'Read the error message; an unsupported search field can also produce this status.':
+    '請閱讀錯誤訊息；不支援的搜尋欄位也可能產生此狀態。',
+  Default: '預設值',
+  'API overview': 'API 總覽',
+  'API documentation.': 'API 文件。',
+  'HTTP endpoints, filters, response fields and errors for Apcosys integrations.':
+    'Apcosys 整合所需的 HTTP 端點、篩選條件、回應欄位與錯誤說明。',
+  'Connect to the API.': '連接 API。',
+  'Send your account API key in the X-API-Key header. Plus, Expert and Business include HTTP API access; Free does not.':
+    '請在 X-API-Key 標頭中傳送帳戶的 API 金鑰。Plus、Expert 與 Business 包含 HTTP API 存取權；Free 不提供此權限。',
+  'Set APCOSYS_API_KEY in your server environment before using the cURL examples. Keep credentials outside browser code. Examples on this page are copied as text and are never executed here.':
+    '使用 cURL 範例前，請在伺服器環境中設定 APCOSYS_API_KEY。請勿將憑證放入瀏覽器端程式碼。本頁範例僅供複製文字，不會在此執行。',
+  'First host search': '第一次主機搜尋',
+  'Example responses use synthetic records and documentation addresses. Stored observations describe the collection time, not a live check of the host.':
+    '範例回應使用合成記錄與文件專用位址。儲存的觀察資料反映蒐集當時的狀態，並非主機的即時檢查結果。',
+  'Access and request limits.': '存取權與請求限制。',
+  'API access by plan': '各方案的 API 存取權',
+  'Method costs count against the HTTP rate allowance: host search uses 1 unit, analytics 3, bucket search 1 and bucket analytics 1. Other endpoints use 1 unit. These units do not define a conversion to plan credits or Search Tokens.':
+    '方法的權重計入 HTTP 速率額度：主機搜尋為 1 單位、分析為 3、儲存空間搜尋為 1、儲存空間分析為 1；其他端點為 1。這些單位不代表方案額度或 Search Tokens 的換算比率。',
+  'Field and value restrictions also apply inside filters and ranges. A restricted field or value returns HTTP 402. Exceeding the request rate returns HTTP 429.':
+    '欄位與值的限制也適用於篩選條件及範圍。使用受限欄位或值會傳回 HTTP 402；超過請求速率則會傳回 HTTP 429。',
+  'Restricted search fields': '受限的搜尋欄位',
+  'Minimum plan': '最低方案',
+  'Restricted search values': '受限的搜尋值',
+  Values: '值',
+  'Private search requires Business. Exposed-data values in detected-product records are returned only for Expert and Business.':
+    '私有資料搜尋需要 Business。偵測產品記錄中的公開資料值僅向 Expert 與 Business 傳回。',
+  'Endpoint reference.': '端點參考。',
+  'Append these paths to the base URL. POST requests use a JSON body and Content-Type: application/json.':
+    '請將這些路徑接在基底 URL 後方。POST 請求使用 JSON 本文與 Content-Type: application/json。',
+  'Search hosts.': '搜尋主機。',
+  'Find host summaries with pagination and optional filters. A type filter selects ipv4, ipv6 or domain records; without it, all types are searched. Port, HTTP, TLS and product filters select the ports index automatically.':
+    '透過分頁與選填篩選條件取得主機摘要。type 篩選條件可選擇 ipv4、ipv6 或 domain 記錄；未設定時會搜尋所有類型。連接埠、HTTP、TLS 與產品篩選條件會自動選擇 ports 索引。',
+  'Request body · all fields optional': '請求本文 · 所有欄位皆為選填',
+  'Host summary · hosts[]': '主機摘要 · hosts[]',
+  'Example host-search response': '主機搜尋回應範例',
+  'To continue, increase page and keep the same filters. Compare total with the records already returned. The first example requests 20 records; the documented default is 50.':
+    '若要繼續，請增加 page 並保留相同篩選條件。將 total 與已傳回的記錄數比較。第一個範例請求 20 筆記錄；文件中的預設值為 50。',
+  'Inspect one host.': '查看單一主機。',
+  'Set the ip path parameter to an IP address or domain. The response is one detailed host object. A missing record returns 404; an invalid host identifier returns 400.':
+    '在路徑參數 ip 中指定 IP 位址或網域。回應是一個詳細主機物件。找不到記錄時傳回 404；主機識別碼無效時傳回 400。',
+  'Host lookup': '單一主機查詢',
+  'Host detail response': '主機詳細回應',
+  'Service fields': '服務欄位',
+  'TLS and certificate fields': 'TLS 與憑證欄位',
+  'Certificate and handshake properties are directly inside tls_info. There is no nested certificate_info object.':
+    '憑證與交握屬性直接位於 tls_info 中，沒有巢狀的 certificate_info 物件。',
+  'Security contact fields': '安全聯絡欄位',
+  'Detected product fields': '偵測產品欄位',
+  'Each cve_list entry contains cve_id (string) and base_score (number). An associated CVE still needs validation against patches and configuration.':
+    '每個 cve_list 項目包含 cve_id（字串）與 base_score（數值）。關聯 CVE 是否適用，仍須根據修補狀態與設定驗證。',
+  'Aggregate host results.': '彙總主機結果。',
+  'Use the same search filters as host search to request facets. The type filter controls the same IPv4, IPv6 and domain scope.':
+    '使用與主機搜尋相同的篩選條件來取得彙總分面。type 篩選條件同樣控制 IPv4、IPv6 與網域範圍。',
+  'Host analytics request': '主機分析請求',
+  'Analytics response': '分析回應',
+  'Facet names include type, port, status_code, org, country_name, protocol, products, title, cve_id, vendors, labels and redirects.':
+    '分面名稱包括 type、port、status_code、org、country_name、protocol、products、title、cve_id、vendors、labels 與 redirects。',
+  'Example analytics response': '分析回應範例',
+  'Search storage records.': '搜尋儲存記錄。',
+  'Search indexed bucket records by host, file metadata, size and time. Bucket sorting supports the fields below; it differs from host-search sorting.':
+    '依主機、檔案中繼資料、大小與時間搜尋已索引的儲存記錄。儲存空間排序支援下列欄位，與主機搜尋排序不同。',
+  'Bucket search request': '儲存空間搜尋請求',
+  'Bucket request fields': '儲存空間請求欄位',
+  'Bucket response': '儲存空間回應',
+  'Storage record · result[]': '儲存記錄 · result[]',
+  'Aggregate bucket results.': '彙總儲存空間結果。',
+  'Send the same request fields as bucket search. The response groups file counts by storage host.':
+    '傳送與儲存空間搜尋相同的請求欄位。回應會依儲存主機彙總檔案數。',
+  'Bucket analytics request': '儲存空間分析請求',
+  'Bucket analytics response': '儲存空間分析回應',
+  'Query private scan data.': '查詢私有掃描資料。',
+  'Business accounts can query their own private scan data with the three methods below. Their public equivalents define the request and response shapes. The private dataset is selected automatically; a type filter is not required.':
+    'Business 帳戶可透過下列三種方法查詢自己的私有掃描資料。請求與回應結構與對應的公開方法相同。系統會自動選擇私有資料集，不需設定 type 篩選條件。',
+  'Additional private-search field': '私有搜尋的額外欄位',
+  'Private host search': '私有主機搜尋',
+  'Private host lookup': '私有主機查詢',
+  'Private analytics request': '私有分析請求',
+  'Filter syntax and field names.': '篩選語法與欄位名稱。',
+  'Filter item · simple_search_filters[]': '篩選項目 · simple_search_filters[]',
+  'Leaf filters specify a field and a non-empty value. Group filters contain nested filters with AND, OR or NOT. AND is the default operator.':
+    '葉節點篩選條件指定欄位與非空值。群組篩選條件包含使用 AND、OR 或 NOT 的巢狀條件。預設運算子為 AND。',
+  'Nested filter example': '巢狀篩選範例',
+  'Value syntax': '值語法',
+  Example: '範例',
+  'Range item · range_filter[]': '範圍項目 · range_filter[]',
+  'Use headers.k for a header name, headers.v for a value, or headers.Server to match a specific header and value together. The header.{Name} alias is also supported.':
+    '使用 headers.k 比對標頭名稱、headers.v 比對值，或用 headers.Server 同時比對特定標頭及其值。也支援 header.{Name} 別名。',
+  'HTTP header filter': 'HTTP 標頭篩選條件',
+  'security_body searches security.txt content and may be a top-level field or a filter field. It requires Business. Time filters use Unix seconds.':
+    'security_body 搜尋 security.txt 內容，可用作最上層欄位或篩選欄位，需要 Business。時間篩選條件使用 Unix 秒數。',
+  'Values or format': '值或格式',
+  'redirect_paths is accepted as an alias for redirects. To search across service fields, use the full_text_search request field.':
+    'redirect_paths 可作為 redirects 的別名。若要跨服務欄位搜尋，請使用 full_text_search 請求欄位。',
+  'Handle API errors.': '處理 API 錯誤。',
+  'Errors return a JSON object with an error string. Read that message together with the HTTP status.':
+    '錯誤會傳回包含 error 字串的 JSON 物件。請搭配 HTTP 狀態閱讀該訊息。',
+  'Example error response': '錯誤回應範例',
+  'HTTP status codes': 'HTTP 狀態碼',
+  Status: '狀態',
+  'Meaning and next step': '意義與下一步',
+  'Build an integration you can inspect.': '建立可檢查的整合。',
+  'Keep API keys in your server environment and handle 401, 402 and 429 explicitly.':
+    '將 API 金鑰保留在伺服器環境中，並明確處理 401、402 與 429。',
+  'Start with a small page and paginate through the results. Preserve the returned identifiers, service evidence and observation timestamps.':
+    '先使用較小的每頁記錄數，再逐頁取得結果。保留傳回的識別碼、服務資料與觀察時間戳記。',
+  'Use current filter names: products, vendors, cve_id, headers and security_body. Check field restrictions before expanding a query.':
+    '使用目前的篩選欄位名稱：products、vendors、cve_id、headers 與 security_body。擴大查詢前，請先確認欄位限制。',
+  'Treat product and CVE associations as research context. Confirm applicability before reporting a vulnerability.':
+    '將產品與 CVE 關聯視為研究參考。回報漏洞前，請確認其適用性。',
+  'The published reference lists a Postman collection and further examples in the Apcosys dashboard.':
+    '已發布的參考文件指出，Apcosys 控制台中提供 Postman 集合與更多範例。',
+  'Read the full API reference': '開啟完整 API 參考',
+  'Try a domain, IP address or technology from these examples.':
+    '試試這些範例中的網域、IP 位址或技術。',
+  'Example query': '範例查詢',
+  'Search examples': '搜尋範例',
+  'Example queries': '範例查詢',
+  'Start with a target explicitly permitted by programme rules.': '從計畫規則明確允許的目標開始。',
+  'Example matches': '範例比對結果',
+  'Edit query': '編輯查詢',
+  'Select a host to inspect its observed services.': '選取主機，查看觀察到的服務。',
+  'No matching example hosts': '沒有符合條件的範例主機',
+  'This example searches two synthetic records. Try example.com, nginx or one of the listed IP addresses.':
+    '此範例搜尋兩筆合成記錄。請試試 example.com、nginx 或其中一個列出的 IP 位址。',
+  'Show example hosts': '顯示範例主機',
+  'Search this hostname': '搜尋此主機名稱',
+  'Service evidence': '服務資料',
+  TLS: 'TLS',
+  'Server name': '伺服器名稱',
+  'Valid until': '有效期限',
+  'Confirm the scope and rules again before interacting with the host.':
+    '與主機互動前，請再次確認範圍與規則。',
+  'Detected banners and versions can be incomplete or misleading.':
+    '偵測到的橫幅與版本可能不完整或造成誤判。',
+  'Technical similarities are not proof of shared ownership.':
+    '技術上的相似性並不能證明擁有者相同。',
+  'Select a service, then inspect its response or TLS certificate.':
+    '選取服務，然後查看回應或 TLS 憑證。',
+  'Example records. Reserved addresses and synthetic responses.':
+    '範例記錄。使用保留位址與合成回應。',
+  'SEARCH & INVESTIGATION': '搜尋與調查',
+  'Try a query, open a host and inspect its services in this interactive example.':
+    '在這個互動範例中輸入查詢、開啟主機並檢視其服務。',
+  'AUTHORISED BUG BOUNTY': '經授權的漏洞獎勵計畫',
+  'Stay inside the programme scope.': '保持在計畫的授權範圍內。',
+  'VULNERABILITY RESEARCH': '弱點研究',
+  'Technology signals need verification.': '技術線索需要驗證。',
+  'Find an example technology and inspect the response behind its detected version.':
+    '尋找範例技術，並檢視用於識別其版本的回應。',
+  'OSINT & THREAT INVESTIGATION': 'OSINT 與威脅調查',
+  'Follow an indicator, not an assumption.': '依據指標追查，而非假設。',
+  'SECURITY TEAM WORKFLOW': '安全團隊工作流程',
 } satisfies Record<string, string>;

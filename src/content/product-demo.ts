@@ -41,6 +41,15 @@ export const demoHosts: DemoHost[] = [
     ],
   },
 ];
+/** One storage bucket and two file records, using the supported Files metadata fields. */
+export const demoBucket = {
+  host: 'storage.example.com',
+  container: 'public',
+  files: [
+    { key: 'reports/2026/summary.csv', extension: 'csv', sizeMb: 1.2 },
+    { key: 'exports/hosts.ndjson', extension: 'ndjson', sizeMb: 15.8 },
+  ],
+} as const;
 export const demoScenarios: Record<
   EvidenceScenario,
   { label: string; query: string; description: string; hosts: DemoHost[]; next: string }
@@ -67,20 +76,4 @@ export const demoScenarios: Record<
     next: 'Use the HTTPS service or hostname as a new lead. Shared attributes do not establish ownership.',
   },
 };
-export const demoNotice =
-  'Synthetic demonstration. Reserved example addresses and authored service records; no live scan or CVE finding.';
-export const apiRequestExample =
-  'curl --request GET "$APCOSYS_API_ENDPOINT" \\\n  --header "$APCOSYS_AUTH_HEADER: $APCOSYS_API_KEY"';
-export const apiResponseExample = JSON.stringify(
-  {
-    note: 'Illustrative response shape only',
-    host: demoHosts[0]!.ip,
-    services: demoHosts[0]!.services.map(({ port, protocol, technology }) => ({
-      port: Number(port),
-      protocol,
-      technology,
-    })),
-  },
-  null,
-  2,
-);
+export const demoNotice = 'Example records';

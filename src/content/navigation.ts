@@ -1,15 +1,26 @@
-import { apiDocumentationUrl } from '../config/site';
+import { apiDocumentationPath } from '../config/site';
+import type { SitePath } from './routes';
 
-/** Use the on-site guide until the product owner supplies the API reference. */
-const documentationHref = apiDocumentationUrl ?? '/developers/api#documentation';
+type NavigationGroup = {
+  label: string;
+  items: readonly { label: string; href: SitePath }[];
+};
+type FooterGroup = {
+  title: string;
+  links: readonly (readonly [label: string, path: SitePath])[];
+};
 
 export const navigation = [
   {
     label: 'Platform',
     items: [
+      { label: 'About', href: '/about' },
       { label: 'Search & Investigation', href: '/platform/search-investigation' },
       { label: 'Data & Methodology', href: '/platform/data-methodology' },
-      { label: 'Monitoring', href: '/platform/monitoring' },
+      { label: 'Monitoring concept', href: '/platform/monitoring' },
+      { label: 'Responsible Scanning', href: '/responsible-scanning' },
+      { label: 'For Investors', href: '/docs/investors' },
+      { label: 'Talk to Us', href: '/contact' },
     ],
   },
   {
@@ -24,17 +35,18 @@ export const navigation = [
     label: 'Developers',
     items: [
       { label: 'API', href: '/developers/api' },
-      { label: 'Documentation', href: documentationHref },
+      { label: 'Documentation', href: apiDocumentationPath },
     ],
   },
-] as const;
+] as const satisfies readonly NavigationGroup[];
+
 export const footerGroups = [
   {
     title: 'Platform',
     links: [
       ['Search & Investigation', '/platform/search-investigation'],
       ['Data & Methodology', '/platform/data-methodology'],
-      ['Monitoring', '/platform/monitoring'],
+      ['Monitoring concept', '/platform/monitoring'],
       ['Pricing', '/pricing'],
     ],
   },
@@ -43,7 +55,7 @@ export const footerGroups = [
     links: [
       ['Bug Bounty', '/use-cases/bug-bounty'],
       ['Vulnerability Research', '/use-cases/vulnerability-research'],
-      ['OSINT & Threat Investigation', '/use-cases/osint-threat-investigation'],
+      ['OSINT', '/use-cases/osint-threat-investigation'],
     ],
   },
   { title: 'For Teams', links: [['Security Teams', '/teams']] },
@@ -51,13 +63,14 @@ export const footerGroups = [
     title: 'Developers',
     links: [
       ['API', '/developers/api'],
-      ['Documentation', documentationHref],
+      ['Documentation', apiDocumentationPath],
     ],
   },
   {
     title: 'APCOSYS',
     links: [
       ['About', '/about'],
+      ['For Investors', '/docs/investors'],
       ['Responsible Scanning', '/responsible-scanning'],
       ['Talk to Us', '/contact'],
     ],
@@ -73,4 +86,4 @@ export const footerGroups = [
       ['Terms & Conditions', '/legal/terms'],
     ],
   },
-] as const;
+] as const satisfies readonly FooterGroup[];

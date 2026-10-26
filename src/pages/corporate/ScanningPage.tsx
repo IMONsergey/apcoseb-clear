@@ -8,22 +8,22 @@ import { useLocale } from '../../i18n/context';
 export default function ScanningPage() {
   const { t } = useLocale();
   const inquiry =
-    'mailto:' + supportEmail + '?subject=' + encodeURIComponent('Apcosys scanning inquiry');
+    'mailto:' + supportEmail + '?subject=' + encodeURIComponent(t('Apcosys scanning inquiry'));
   const exclusion =
     'mailto:' +
     supportEmail +
     '?subject=' +
-    encodeURIComponent('Apcosys network exclusion request') +
+    encodeURIComponent(t('Apcosys network exclusion request')) +
     '&body=' +
     encodeURIComponent(
       [
-        'Networks / IP ranges:',
+        t('Networks / IP ranges:'),
         '',
-        'My role in managing these networks:',
+        t('My role in managing these networks:'),
         '',
-        'Contact details:',
+        t('Contact details:'),
         '',
-        'Relevant dates and context:',
+        t('Relevant dates and context:'),
         '',
       ].join('\n'),
     );
@@ -85,38 +85,44 @@ export default function ScanningPage() {
         title="Identifying our scanners."
         intro="If you believe traffic came from Apcosys, send the details needed to check its origin. A product name or service banner alone is not enough to verify a scanner."
       >
-        <div className="scanning-request">
+        <div className="scanning-request editorial-pair">
           <div>
             <Text as="h3">What to include</Text>
-            <dl>
-              <div>
-                <Text as="dt">Source</Text>
-                <Text as="dd">The source IP observed in your logs.</Text>
-              </div>
-              <div>
-                <Text as="dt">Destination</Text>
-                <Text as="dd">The affected address, port and protocol.</Text>
-              </div>
-              <div>
-                <Text as="dt">Time</Text>
-                <Text as="dd">The date, time and timezone of the traffic.</Text>
-              </div>
-              <div>
-                <Text as="dt">Context</Text>
-                <Text as="dd">A short description and a relevant, sanitised log excerpt.</Text>
-              </div>
-            </dl>
+            <div className="scanning-request__fields">
+              <dl className="scanning-checklist">
+                <div>
+                  <Text as="dt">Source</Text>
+                  <Text as="dd">The source IP observed in your logs.</Text>
+                </div>
+                <div>
+                  <Text as="dt">Destination</Text>
+                  <Text as="dd">The affected address, port and protocol.</Text>
+                </div>
+                <div>
+                  <Text as="dt">Time</Text>
+                  <Text as="dd">The date, time and timezone of the traffic.</Text>
+                </div>
+                <div>
+                  <Text as="dt">Context</Text>
+                  <Text as="dd">A short description and a relevant, sanitised log excerpt.</Text>
+                </div>
+              </dl>
+            </div>
           </div>
           <aside>
             <Text as="h3">Ask us to verify it.</Text>
-            <Text as="p">
-              Write to the team with the source and destination details. We can review your question
-              against the relevant scanning information.
-            </Text>
-            <Text as="p">Do not send passwords, API keys or unrelated customer data.</Text>
-            <a className="stage-text-link" href={inquiry}>
-              {t('Email {email}', { email: supportEmail })}
-            </a>
+            <div className="editorial-pair__body">
+              <Text as="p">
+                Write to the team with the source and destination details. We can review your
+                question against the relevant scanning information.
+              </Text>
+              <Text as="p" className="scanning-request__privacy">
+                Do not send passwords, API keys or unrelated customer data.
+              </Text>
+              <a className="stage-text-link" href={inquiry}>
+                {t('Email {email}', { email: supportEmail })}
+              </a>
+            </div>
           </aside>
         </div>
       </EditorialSection>
@@ -138,7 +144,7 @@ export default function ScanningPage() {
             },
             {
               title: 'Send the request.',
-              text: 'The email link below prepares a short request. The team will need to confirm the next steps; an email draft does not apply an exclusion automatically.',
+              text: 'Send your IP range and contact details. Our team will review the request.',
             },
           ]}
         />

@@ -53,6 +53,7 @@
   font-size: var(--font-size-48);
   line-height: 1;
   letter-spacing: var(--tracking-display);
+  text-wrap: balance;
   margin-bottom: clamp(20px, calc(28px * var(--space-density)), 28px);
 }
 .audience-copy p {
@@ -160,8 +161,8 @@
     max-width: none;
   }
   .audience-copy h3 {
-    padding: 0 92px 0 0;
-    min-height: 140px;
+    padding: 0;
+    min-height: 0;
     font-size: var(--font-size-24);
     line-height: 1.1;
     margin-bottom: var(--space-5);
@@ -170,10 +171,14 @@
     max-width: none;
   }
   .audience-art {
-    width: 176px;
-    top: 12px;
+    position: relative;
+    width: 160px;
+    height: 160px;
+    top: auto;
     left: auto;
-    right: -36px;
+    right: auto;
+    align-self: center;
+    flex: none;
     transform: none;
   }
   .audience-actions {
@@ -197,12 +202,12 @@
 }
 @container audiences (max-width: 340px) {
   .audience-art {
-    width: 156px;
-    right: -32px;
+    width: 144px;
+    height: 144px;
   }
   .audience-copy h3 {
-    padding: 0 76px 0 0;
-    min-height: 128px;
+    padding: 0;
+    min-height: 0;
     font-size: var(--font-size-24);
     line-height: 1.1;
   }
