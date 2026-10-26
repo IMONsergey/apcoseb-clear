@@ -3,17 +3,17 @@ export default {
   'For investors.': 'Инвесторам.',
   'Investor enquiries': 'Связаться с командой',
   'External digital exposure intelligence. Apcosys turns observations of public internet infrastructure into searchable context for security researchers and teams.':
-    'Аналитика внешней цифровой инфраструктуры. Apcosys превращает наблюдения за открытыми системами интернета в данные для поиска и исследований команд безопасности.',
+    'Мониторинг внешней цифровой инфраструктуры. Apcosys делает данные из открытого интернета понятными и доступными для поиска, помогая исследователям и командам по безопасности.',
   'The opportunity': 'Возможности рынка',
   'Platform foundations': 'Основа платформы',
   'The next stage': 'Следующий этап',
   'For investment enquiries and further company information, contact the Apcosys team directly.':
     'По вопросам инвестиций и для получения информации о компании свяжитесь с командой Apcosys напрямую.',
-  'Visibility beyond the perimeter.': 'Видеть за пределами периметра.',
+  'Visibility beyond the perimeter.': 'Видимость за пределами периметра.',
   'Cloud adoption and distributed infrastructure keep expanding what organisations expose to the public internet.':
     'Облачные сервисы и распределённая инфраструктура увеличивают число систем организаций, доступных из интернета.',
   'Exposed services, infrastructure misconfigurations and data leaks create risks that are difficult to understand from inside an organisation alone. Security teams need an external view of the systems they investigate.':
-    'Открытые сервисы, ошибки конфигурации и утечки данных создают риски, которые сложно оценить только изнутри организации. Командам безопасности нужен внешний взгляд на исследуемые системы.',
+    'Открытые сервисы, ошибки в конфигурациях и утечки данных создают риски, которые сложно оценить изнутри организации. Командам безопасности нужен взгляд со стороны на исследуемые системы.',
   'Apcosys observes publicly accessible infrastructure directly. It brings hosts, services and technologies into a searchable view, helping teams move from a technical signal to the context behind it.':
     'Apcosys напрямую наблюдает за общедоступной инфраструктурой. Платформа объединяет хосты, сервисы и технологии в поиске, помогая командам перейти от технического сигнала к его контексту.',
   'A platform built around observations.': 'Платформа на основе наблюдений.',
@@ -21,10 +21,10 @@ export default {
     'В основе — сбор данных в масштабе интернета, технический контекст и рабочие процессы, которые позволяют применять эти данные на практике.',
   'Internet-wide perspective.': 'Взгляд в масштабе интернета.',
   'Observe publicly accessible hosts and services across networks, rather than relying only on information collected inside a customer environment.':
-    'Наблюдение за общедоступными хостами и сервисами в разных сетях дополняет данные, собранные внутри инфраструктуры клиента.',
+    'Сканируйте общедоступные хосты и сервисы по всем сетям, а не полагайтесь только на данные, собранные внутри инфраструктуры клиента.',
   'Application-layer context.': 'Контекст прикладного уровня.',
   'Connect services, detected technologies and response details so researchers can understand what sits behind an exposed host.':
-    'Связь между сервисами, обнаруженными технологиями и деталями ответов помогает исследователям понять, что стоит за доступным из интернета хостом.',
+    'Связывайте сервисы, найденные технологии и детали ответов, чтобы исследователи понимали, что скрывается за открытым хостом.',
   'An investigation workflow.': 'Процесс исследования.',
   'Move from a query to matching hosts and technical evidence. Refine the search as each observation raises the next question.':
     'Переходите от запроса к найденным хостам и техническим данным. Уточняйте поиск по мере того, как каждое наблюдение ставит новый вопрос.',
@@ -37,7 +37,7 @@ export default {
   'We are developing the platform around the needs of security researchers and enterprise teams: richer infrastructure context, practical workflows and scalable access to data.':
     'Мы развиваем платформу с учётом задач исследователей и корпоративных команд: больше контекста об инфраструктуре, удобные рабочие процессы и масштабируемый доступ к данным.',
   'We welcome conversations with investors who share a long-term interest in internet intelligence and external digital exposure. Get in touch to discuss the company, our direction and the next stage of growth.':
-    'Мы открыты к диалогу с инвесторами, которые видят долгосрочную ценность в исследовании интернета и внешней цифровой инфраструктуры. Свяжитесь с нами, чтобы обсудить компанию, наши планы и следующий этап роста.',
+    'Мы открыты к диалогу с инвесторами, нацеленными на долгосрочную перспективу в интернет-разведке и мониторинге цифровой инфраструктуры. Свяжитесь с нами, чтобы обсудить компанию, её развитие и следующий этап роста.',
   'An open optical structure brings teal infrastructure signals into a shared centre.':
     'Открытая оптическая конструкция объединяет бирюзовые элементы инфраструктуры вокруг общего центра.',
   'Begin with infrastructure you own or are authorised to assess.':
