@@ -1,22 +1,12 @@
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useMotion } from '../../hooks/useMotion';
 import { useLocale } from '../../i18n/context';
+import { getPricingFormatters } from '../../lib/pricing';
 
 /** Digit reels run on the compositor; the actual accessible price updates immediately. */
 export function AnimatedPrice({ amount }: { amount: number }) {
   const { locale } = useLocale();
-  const numberLocale = locale === 'en' ? 'en-US' : locale;
-  const currency = useMemo(
-    () =>
-      new Intl.NumberFormat(numberLocale, {
-        style: 'currency',
-        currency: 'USD',
-        currencyDisplay: 'narrowSymbol',
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 0,
-      }),
-    [numberLocale],
-  );
+  const { currency } = getPricingFormatters(locale);
   const label = currency.format(amount);
   const { reduced } = useMotion();
   const root = useRef<HTMLSpanElement>(null);

@@ -73,7 +73,6 @@
   background: transparent;
   border: 0;
   border-top: 1px solid var(--border-subtle);
-  border-left: 2px solid transparent;
   color: inherit;
   transition: background 180ms var(--ease);
 }
@@ -81,12 +80,12 @@
 .product-evidence__result[aria-pressed='true'] {
   background: var(--surface-tint);
 }
-.product-evidence__result[aria-pressed='true'] {
-  border-left-color: var(--accent-text);
-}
 .product-evidence__result:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: -3px;
+  outline: 0;
+  background: var(--surface-tint);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 .product-evidence__result-main {
   display: grid;

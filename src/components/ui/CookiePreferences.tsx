@@ -27,7 +27,7 @@ export function CookiePreferences() {
           <p>
             <LocaleText>
               {t(
-                'Essential browser storage supports the website theme and your saved preferences. No optional analytics or marketing trackers are enabled in this client preview.',
+                'Essential browser storage supports the website theme and your saved preferences. No optional analytics or marketing trackers are enabled on this website.',
               )}
             </LocaleText>
           </p>
@@ -41,7 +41,7 @@ export function CookiePreferences() {
           <label className="stage-cookie-choice">
             <span>
               <strong>{t('Analytics')}</strong>
-              <small>{t('Not installed in this preview')}</small>
+              <small>{t('Not enabled on this website')}</small>
             </span>
             <input type="checkbox" checked={false} readOnly disabled />
           </label>

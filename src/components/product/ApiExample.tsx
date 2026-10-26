@@ -1,7 +1,6 @@
 import { Text } from '../ui/Text';
 import { useEffect, useRef, useState } from 'react';
-import { MorphPanel } from '../ui/MorphPanel';
-import { apiRequestExample, apiResponseExample } from '../../content/product-demo';
+import { apiRequestExample, apiResponseExample } from '../../content/api-example';
 import { useLocale } from '../../i18n/context';
 export function ApiExample({ compact = false }: { compact?: boolean }) {
   const { t } = useLocale();
@@ -11,6 +10,10 @@ export function ApiExample({ compact = false }: { compact?: boolean }) {
   const copyVersion = useRef(0);
   const code = useRef<HTMLPreElement>(null);
   const snippet = response ? apiResponseExample : apiRequestExample;
+  const requestNote =
+    'Documented HTTP request. Set APCOSYS_API_KEY in your server environment before running it.';
+  const responseNote =
+    'Example response. total counts matches; hosts contains this page. uts is the last update in Unix seconds.';
   const resetCopy = () => {
     copyVersion.current++;
     clearTimeout(copyTimer.current);
@@ -77,26 +80,28 @@ export function ApiExample({ compact = false }: { compact?: boolean }) {
         <div className="stage-api-auth">
           <span>{t('AUTHENTICATION')}</span>
           <Text as="p">
-            Obtain your key inside Apcosys. Set the endpoint and authentication header from the
-            confirmed API reference.
+            Use the X-API-Key header. Keep your API key on a trusted server, outside browser code.
           </Text>
         </div>
       )}
-      <MorphPanel>
+      <div className="stage-code-body">
         <pre
+          key={response ? 'response' : 'request'}
           ref={code}
-          data-morph-enter
           tabIndex={0}
           aria-label={t(response ? 'Illustrative API response' : 'API request template')}
         >
           <code>{snippet}</code>
         </pre>
-        <Text as="p" className="stage-code-note">
-          {response
-            ? 'Synthetic host data, not the production response schema.'
-            : 'Request template. Endpoint and authentication contract require product confirmation.'}
-        </Text>
-      </MorphPanel>
+        <div className="stage-code-notes">
+          <Text as="p" className="stage-code-note">
+            {response ? responseNote : requestNote}
+          </Text>
+          <Text as="p" className="stage-code-note-reserve" aria-hidden="true">
+            {response ? requestNote : responseNote}
+          </Text>
+        </div>
+      </div>
       <span className="sr-only" role="status">
         {copyState === 'Copy'
           ? ''

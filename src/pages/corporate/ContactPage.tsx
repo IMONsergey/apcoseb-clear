@@ -6,12 +6,13 @@ import { supportEmail } from '../../config/site';
 import { PageFrame } from '../../components/layout/PageFrame';
 import { EditorialSection } from '../../components/layout/PageSections';
 import { useLocale } from '../../i18n/context';
+import { readContactDraft } from './contactDraft';
 
 export default function ContactPage() {
   const { t } = useLocale();
   const [topic, setTopic] = useState(() => {
     const initial = new URLSearchParams(window.location.search).get('topic');
-    return topics.some((item) => item === initial) ? initial! : '';
+    return topics.find((item) => item === initial) ?? readContactDraft().topic;
   });
   const chooseTopic = (value: string) => {
     setTopic(value);
@@ -74,9 +75,6 @@ export default function ContactPage() {
             </button>
           ))}
         </div>
-        <Text as="p" className="editorial-note">
-          Billing, scanning or another question? Select the relevant topic in the form below.
-        </Text>
       </EditorialSection>
       <section className="stage-contact section-space">
         <div className="container stage-contact-layout">
@@ -89,15 +87,7 @@ export default function ContactPage() {
             <div className="contact-direct">
               <Text as="h3">Prefer a direct email?</Text>
               <a href={'mailto:' + supportEmail}>{supportEmail}</a>
-              <Text as="p">
-                The form prepares a message in your email application. You review it and send it
-                from there.
-              </Text>
             </div>
-            <Text as="p" className="editorial-note">
-              Keep credentials, access tokens and sensitive third-party findings out of your
-              message.
-            </Text>
           </div>
           <ContactForm topic={topic} onTopicChange={setTopic} />
         </div>

@@ -7,7 +7,7 @@ import {
 } from './animated-shapes';
 import './animated-shapes.css';
 
-export interface AnimatedShapeProps extends ShapeOptions {
+interface AnimatedShapeProps extends ShapeOptions {
   size?: number | string;
   color?: string;
   opacity?: number;
@@ -16,7 +16,7 @@ export interface AnimatedShapeProps extends ShapeOptions {
   style?: CSSProperties;
   label?: string;
 }
-export function AnimatedShape({
+function AnimatedShape({
   kind = 'rosette',
   speed = 1,
   strength = 1,

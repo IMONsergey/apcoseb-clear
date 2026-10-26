@@ -25,12 +25,7 @@ export function TrustMarquee() {
       <p>
         <LocaleText>{t('A closer look at internet infrastructure')}</LocaleText>
       </p>
-      <div
-        className="trust-viewport"
-        tabIndex={0}
-        role="region"
-        aria-label={t('Research areas — focus to pause scrolling')}
-      >
+      <div className="trust-viewport" tabIndex={0} role="region" aria-label={t('Research areas')}>
         <div className="trust-track">
           {[0, 1].map((copy) => (
             <ul className="trust-group" key={copy} aria-hidden={copy === 1 || undefined}>

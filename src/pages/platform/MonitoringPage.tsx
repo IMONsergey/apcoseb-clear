@@ -1,4 +1,5 @@
 import { Text } from '../../components/ui/Text';
+import { LocaleText } from '../../i18n/LocaleText';
 import { primaryContact, linkTo } from '../../components/layout/pageLinks';
 import { MonitoringConcept } from '../../components/product/MonitoringConcept';
 import { PageFrame } from '../../components/layout/PageFrame';
@@ -64,15 +65,14 @@ export default function MonitoringPage() {
           ].map(([title, change, question, text]) => (
             <article key={title}>
               <Text as="h3">{title}</Text>
-              <code>{change}</code>
+              <code>
+                <LocaleText>{change!}</LocaleText>
+              </code>
               <Text as="h4">{question}</Text>
               <Text as="p">{text}</Text>
             </article>
           ))}
         </div>
-        <Text as="p" className="editorial-note">
-          Concept examples only. This page does not connect to live scans or deliver alerts.
-        </Text>
       </EditorialSection>
       <EditorialSection
         id="monitoring-next"

@@ -1,6 +1,59 @@
 import { expect, test } from '@playwright/test';
 import { siteRoutes } from '../../src/content/routes';
-import { readPublicSettings } from '../../src/config/public-settings';
+import { deploymentSettings } from '../helpers/public-settings';
+import { hasLocalizedCopy } from '../../src/i18n/localized-routes';
+
+test('published metadata keeps indexing, sitemap and 404 policies consistent', async ({
+  request,
+  page,
+}) => {
+  const html = await (await request.get('./')).text();
+  const robots = await (await request.get('./robots.txt')).text();
+  const indexable = html.includes('data-indexable="true"');
+  expect(html).toContain(
+    `name="robots" content="${indexable ? 'index, follow' : 'noindex, nofollow'}"`,
+  );
+  expect(robots).toContain(indexable ? 'Allow: /' : 'Disallow: /');
+  const notFound = await (await request.get('./404.html')).text();
+  expect(notFound).toContain('name="robots" content="noindex, nofollow"');
+  const canonical = html.match(/rel="canonical" href="([^"]+)"/)?.[1];
+  if (canonical) {
+    expect(html).toContain('property="og:image"');
+    expect(html).toContain('name="twitter:card" content="summary_large_image"');
+    const socialImage = await request.get('./assets/brand/social-preview.png');
+    expect(socialImage.ok()).toBe(true);
+    expect(socialImage.headers()['content-type']).toContain('image/png');
+    const response = await request.get('./sitemap.xml');
+    expect(response.ok()).toBe(true);
+    const sitemap = await response.text();
+    const expectedRoutes = siteRoutes.reduce(
+      (count, route) => count + (hasLocalizedCopy(route.path) ? 3 : 1),
+      0,
+    );
+    const parsed = await page.evaluate((xml) => {
+      const document = new DOMParser().parseFromString(xml, 'application/xml');
+      return {
+        errors: document.querySelectorAll('parsererror').length,
+        locations: [...document.querySelectorAll('url > loc')].map((node) => node.textContent!),
+      };
+    }, sitemap);
+    expect(parsed.errors).toBe(0);
+    expect(parsed.locations).toHaveLength(expectedRoutes);
+    expect(new Set(parsed.locations).size).toBe(expectedRoutes);
+    expect(parsed.locations).toContain(canonical);
+    expect(parsed.locations.every((url) => url.startsWith(new URL(canonical).origin))).toBe(true);
+    expect(sitemap).not.toContain('/404');
+    expect(robots).toContain(new URL('sitemap.xml', canonical).href);
+  }
+  await page.goto('./missing-indexing-check');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow');
+  await page.locator('.site-header .brand').click();
+  await expect(page.locator('#hero-title')).toBeVisible();
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    'content',
+    indexable ? 'index, follow' : 'noindex, nofollow',
+  );
+});
 
 for (const failure of ['network', 'server'] as const) {
   test(`failed initial page download (${failure}) retains navigation and offers working reload`, async ({
@@ -44,13 +97,22 @@ test('canonical and Open Graph URL follow client navigation', async ({ page }) =
   await page.locator('.site-header').getByRole('link', { name: 'Pricing', exact: true }).click();
   await expect(page.locator('main')).toHaveAttribute('data-route', '/pricing');
   const url = new URL(page.url());
+  const canonicalPath = url.pathname.replace(/\/?$/, '/');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
-    url.origin + url.pathname,
+    url.origin + canonicalPath,
   );
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
     'content',
-    url.origin + url.pathname,
+    url.origin + canonicalPath,
+  );
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    'content',
+    /\/assets\/brand\/social-preview\.png$/,
+  );
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+    'content',
+    'summary_large_image',
   );
 });
 
@@ -89,6 +151,6 @@ test('no-JavaScript search link tracks the configured product origin', async ({ 
   const html = await response.text();
   const fallback = html.match(/<noscript[\s\S]*?<a href="([^"]+)">Open public search<\/a>/);
   expect(fallback, 'search must remain available without JavaScript').not.toBeNull();
-  expect(fallback?.[1]).toBe(new URL('/search', readPublicSettings(process.env).productUrl).href);
+  expect(fallback?.[1]).toBe(new URL('/search', deploymentSettings.productUrl).href);
   expect(html).not.toContain('__APCO_PUBLIC_SEARCH_URL__');
 });

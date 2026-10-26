@@ -1,3 +1,8 @@
+@keyframes search-pending {
+  to {
+    transform: rotate(360deg);
+  }
+}
 /* Section micro-interactions */
 @keyframes feedback-in {
   from {

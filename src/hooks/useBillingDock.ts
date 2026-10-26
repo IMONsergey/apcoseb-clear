@@ -36,6 +36,12 @@ export function useBillingDock(
         keyboardVisible ||
         (viewport?.scale ?? 1) > 1.1;
       const dock = dockRef.current;
+      const inRange = box.top < top + height - bottomInset && box.bottom > top + 24;
+      if (blocked || !inRange) {
+        if (dock?.dataset.occluded === 'true') dock.dataset.occluded = 'false';
+        setEligible((previous) => (previous ? false : previous));
+        return;
+      }
       const dockHeight = dock?.offsetHeight ?? 100;
       const dockBottom = dock ? parseFloat(getComputedStyle(dock).bottom) || 12 : 12;
       const dockTop = top + height - dockHeight - dockBottom;
@@ -48,9 +54,9 @@ export function useBillingDock(
         const item = element.getBoundingClientRect();
         return item.bottom > dockTop - 12 && item.top < top + height - dockBottom + 12;
       });
-      if (dock) dock.dataset.occluded = String(collision);
-      const next =
-        !blocked && !collision && box.top < top + height - bottomInset && box.bottom > top + 24;
+      if (dock && dock.dataset.occluded !== String(collision))
+        dock.dataset.occluded = String(collision);
+      const next = !collision;
       setEligible((previous) => (previous === next ? previous : next));
     };
     const schedule = () => {

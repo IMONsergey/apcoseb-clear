@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 
 test.use({ reducedMotion: 'no-preference' });
 
@@ -20,99 +20,190 @@ function expectContinuous(samples: { height: number; time: number }[], minimumDe
   }
 }
 
-test('original API really plays, then sleeps outside the viewport', async ({ page }) => {
+async function sampleDemoMotion(scene: Locator, duration = 2100) {
+  return scene.evaluate(async (root, observationTime) => {
+    const cursor = root.querySelector<HTMLElement>('.application-demo-cursor');
+    if (!cursor) throw new Error('The animated demonstration must contain a visible cursor.');
+    const read = () => {
+      const style = getComputedStyle(cursor);
+      const matrix = new DOMMatrixReadOnly(
+        style.transform === 'none' ? undefined : style.transform,
+      );
+      const phase = root.getAttribute('data-demo-phase');
+      return {
+        phase: phase === null ? null : Number(phase),
+        transform: style.transform,
+        x: matrix.m41,
+        y: matrix.m42,
+        visible:
+          style.display !== 'none' && style.visibility === 'visible' && Number(style.opacity) > 0,
+      };
+    };
+    const started = performance.now();
+    const samples = [read()];
+    while (performance.now() - started < observationTime) {
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      samples.push(read());
+    }
+    return samples;
+  }, duration);
+}
+
+async function expectDemoMoving(scene: Locator) {
+  await expect(scene).toHaveAttribute('data-demo-playback', 'playing');
+  // The longest phase includes a reading pause and lasts 2.6 seconds.
+  const samples = await sampleDemoMotion(scene, 3100);
+  expect(
+    samples.every(
+      ({ phase }) => phase !== null && Number.isInteger(phase) && phase >= 0 && phase <= 3,
+    ),
+  ).toBe(true);
+  const visible = samples.filter((sample) => sample.visible);
+  expect(visible.length, 'normal-motion playback must show its cursor').toBeGreaterThan(2);
+  expect(new Set(visible.map(({ transform }) => transform)).size).toBeGreaterThan(2);
+  const travel = Math.hypot(
+    Math.max(...visible.map(({ x }) => x)) - Math.min(...visible.map(({ x }) => x)),
+    Math.max(...visible.map(({ y }) => y)) - Math.min(...visible.map(({ y }) => y)),
+  );
+  expect(
+    travel,
+    'the rendered cursor must travel, not only advertise playing state',
+  ).toBeGreaterThan(8);
+  expect(
+    new Set(samples.map(({ phase }) => phase)).size,
+    'the visible demonstration advances',
+  ).toBeGreaterThan(1);
+}
+
+async function expectDemoResting(scene: Locator, playback: 'paused' | 'static') {
+  await expect(scene).toHaveAttribute('data-demo-playback', playback);
+  const samples = await sampleDemoMotion(scene);
+  expect(new Set(samples.map(({ phase, transform }) => `${phase}:${transform}`)).size).toBe(1);
+}
+
+test('application API demonstration moves while visible and sleeps outside the viewport', async ({
+  page,
+}) => {
   await page.goto('./');
   await page.locator('#api').scrollIntoViewIfNeeded();
-  const api = page.locator('api-developer-demo');
+  const api = page.locator('.application-scene[data-scene="api"]');
+  await api.scrollIntoViewIfNeeded();
   await expect(api).toBeVisible();
-  const time = () => api.evaluate((el) => Reflect.get(el, '_timeline')?.time() as number);
-  await expect.poll(time).toBeGreaterThan(0.3);
-  const before = await time();
-  await page.waitForTimeout(250);
-  expect(await time()).toBeGreaterThan(before);
+  await expectDemoMoving(api);
   await page.locator('.hero h1').scrollIntoViewIfNeeded();
-  await expect.poll(() => api.evaluate((el) => Reflect.get(el, '_timeline')?.paused())).toBe(true);
-  const resting = await time();
-  await page.waitForTimeout(250);
-  expect(await time()).toBe(resting);
+  await expectDemoResting(api, 'paused');
 });
 
-test('all five original investigation films mount and animate', async ({ page }) => {
+test('all five application investigation demonstrations move only while visible', async ({
+  page,
+}) => {
+  test.setTimeout(90_000);
   await page.goto('./');
   for (const [index, name] of ['query', 'results', 'host', 'evidence', 'suggestions'].entries()) {
     const card = page.locator('.step-card').nth(index);
     await card.scrollIntoViewIfNeeded();
-    const scene = card.locator('apcosys-product-demo');
+    const scene = card.locator(`.application-scene[data-scene="${name}"]`);
     await scene.scrollIntoViewIfNeeded();
-    await expect(scene).toHaveAttribute('scene', name);
-    await expect
-      .poll(() => scene.evaluate((el) => Reflect.get(el, '_timeline')?.time()))
-      .toBeGreaterThan(0.1);
+    await expectDemoMoving(scene);
+    await page.locator('.hero h1').scrollIntoViewIfNeeded();
+    await expectDemoResting(scene, 'paused');
   }
+});
+
+test('application playback pauses on a document visibility notification and resumes when visible', async ({
+  page,
+}) => {
+  await page.goto('./');
+  const scene = page.locator('.application-scene[data-scene="api"]');
+  await page.locator('#api').scrollIntoViewIfNeeded();
+  await scene.scrollIntoViewIfNeeded();
+  await expectDemoMoving(scene);
+  // Emulate the browser visibility signal, without exposing animation internals.
+  const hidden = await scene.evaluate(async (root) => {
+    const descriptors = ['hidden', 'visibilityState'].map((key) => ({
+      key,
+      descriptor: Object.getOwnPropertyDescriptor(document, key),
+    }));
+    const read = () => ({
+      phase: root.getAttribute('data-demo-phase'),
+      transform: getComputedStyle(root.querySelector('.application-demo-cursor')!).transform,
+    });
+    try {
+      Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+      Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'hidden' });
+      document.dispatchEvent(new Event('visibilitychange'));
+      const started = performance.now();
+      while (
+        root.getAttribute('data-demo-playback') !== 'paused' &&
+        performance.now() - started < 5000
+      )
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      const before = read();
+      await new Promise((resolve) => setTimeout(resolve, 2100));
+      return { before, after: read(), playback: root.getAttribute('data-demo-playback') };
+    } finally {
+      for (const { key, descriptor } of descriptors) {
+        if (descriptor) Object.defineProperty(document, key, descriptor);
+        else Reflect.deleteProperty(document, key);
+      }
+      document.dispatchEvent(new Event('visibilitychange'));
+    }
+  });
+  expect(hidden.playback).toBe('paused');
+  expect(hidden.after).toEqual(hidden.before);
+  await expectDemoMoving(scene);
 });
 
 for (const width of [390, 1440]) {
   test(
-    'API expands continuously, handles interruption and settles at ' + width,
+    'API keeps its viewport stable through rapid request and response switches at ' + width,
     async ({ page }) => {
       await page.setViewportSize({ width, height: 1000 });
       await page.goto('./developers/api');
       await page.locator('.stage-code-window').scrollIntoViewIfNeeded();
+      await page.evaluate(() => document.fonts.ready);
       const samples = await page.locator('.stage-code-window').evaluate(async (root) => {
-        const box = root.querySelector<HTMLElement>('.morph-panel')!;
         const buttons = root.querySelectorAll<HTMLButtonElement>('.stage-code-tabs button');
-        const heights = [{ height: box.getBoundingClientRect().height, time: performance.now() }];
+        const heights = [root.getBoundingClientRect().height];
         buttons[1]!.click();
         for (let i = 0; i < 42; i++) {
           await new Promise(requestAnimationFrame);
-          heights.push({ height: box.getBoundingClientRect().height, time: performance.now() });
+          heights.push(root.getBoundingClientRect().height);
         }
         return heights;
       });
-      expectContinuous(samples);
+      expect(Math.max(...samples) - Math.min(...samples)).toBeLessThanOrEqual(1);
       const buttons = page.locator('.stage-code-tabs button');
       await buttons.first().click();
       await buttons.last().click();
       await buttons.first().click();
-      await expect
-        .poll(() =>
-          page
-            .locator('.stage-code-window .morph-panel')
-            .evaluate((el) => el.getAttribute('data-morphing')),
-        )
-        .toBe('false');
-      await expect(page.locator('.stage-code-window pre')).toContainText('APCOSYS_API_ENDPOINT');
+      await expect(page.locator('.stage-code-window pre')).toContainText(
+        'https://api.apcosys.net/api/v1/search/hosts',
+      );
+      expect((await page.locator('.stage-code-window').boundingBox())!.height).toBeCloseTo(
+        samples[0]!,
+        0,
+      );
     },
   );
 }
 
-test('service selection produces the matching banner and animation can be paused', async ({
-  page,
-}) => {
-  await page.goto('./platform/search-investigation');
-  const sample = page.locator('.stage-workbench__record');
+test('Home service selection keeps the response banner connected to its host', async ({ page }) => {
+  await page.goto('./');
+  const sample = page.locator('.search-scene__results .product-evidence');
   await sample.getByRole('button', { name: /80.*HTTP/ }).click();
   await expect(sample.locator('.evidence-response')).toContainText('301 Moved Permanently');
+  await expect(sample.locator('.evidence-response')).toContainText('portal.example.com');
   await sample.locator('.product-evidence__result').nth(1).click();
   await sample.getByRole('button', { name: /22.*SSH/ }).click();
   await expect(sample.locator('.evidence-response')).toContainText('SSH-2.0-OpenSSH_9.6');
-  await sample.getByRole('button', { name: 'Pause product animation' }).click();
-  await expect(sample.getByRole('button', { name: 'Play product animation' })).toHaveAttribute(
-    'aria-pressed',
-    'true',
-  );
+  await sample.getByRole('button', { name: /443.*HTTPS/ }).click();
+  await expect(sample.locator('.evidence-response')).toContainText('Server: nginx/1.24.0');
 });
 
-test('capability and monitoring switches resize through intermediate frames on mobile', async ({
-  page,
-}) => {
+test('monitoring switches resize through intermediate frames on mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   for (const [route, panel, button] of [
-    [
-      './',
-      '.home-capabilities > .container > .morph-panel',
-      '.home-capabilities__tabs button:nth-child(4)',
-    ],
     [
       './platform/monitoring',
       '.stage-monitor-console__body > .morph-panel',
@@ -139,17 +230,31 @@ test('capability and monitoring switches resize through intermediate frames on m
   }
 });
 
-test('reduced motion keeps API and evidence readable without playback', async ({ page }) => {
+test('reduced motion keeps all application scenes and product evidence readable without playback', async ({
+  page,
+}) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('./');
+  for (const [index, name] of ['query', 'results', 'host', 'evidence', 'suggestions'].entries()) {
+    const card = page.locator('.step-card').nth(index);
+    await card.scrollIntoViewIfNeeded();
+    const scene = card.locator(`.application-scene[data-scene="${name}"]`);
+    await expect(scene).toBeVisible();
+    await expect(scene).toHaveAttribute('data-demo-playback', 'static');
+    await expect(scene).toHaveAttribute('data-demo-phase', '0');
+    await expect(scene.locator('.application-demo-cursor')).toBeHidden();
+  }
   await page.locator('#api').scrollIntoViewIfNeeded();
-  await expect(page.locator('api-developer-demo')).toBeVisible();
-  expect(
-    await page.locator('api-developer-demo').evaluate((el) => Reflect.get(el, '_timeline')),
-  ).toBeNull();
-  await page.goto('./platform/search-investigation');
-  await expect(page.locator('.evidence-response')).toContainText('HTTP/1.1 200 OK');
-  await expect(page.locator('.evidence-cursor')).toBeHidden();
+  const api = page.locator('.application-scene[data-scene="api"]');
+  await api.scrollIntoViewIfNeeded();
+  await expect(api).toBeVisible();
+  await expect(api.locator('.application-api__heading')).toHaveText('API access');
+  await expect(api.locator('.application-demo-cursor')).toBeHidden();
+  await expectDemoResting(api, 'static');
+  const evidence = page.locator('.search-scene__results .product-evidence');
+  await evidence.scrollIntoViewIfNeeded();
+  await expect(evidence.locator('.evidence-response')).toContainText('HTTP/1.1 200 OK');
+  await expect(evidence.locator('.evidence-cursor')).toBeHidden();
 });
 
 test('team signal field animates only while visible and respects reduced motion', async ({

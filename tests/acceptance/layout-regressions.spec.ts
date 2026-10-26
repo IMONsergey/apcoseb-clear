@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { chooseSelectOption } from '../helpers/select';
 
 for (const reduced of [false, true]) {
   test(`same-page navigation preserves focus and uses appropriate motion: ${reduced}`, async ({
@@ -53,6 +54,7 @@ test('Business action lands on the named plan', async ({ page }) => {
   await page.getByRole('link', { name: 'View Business Plan', exact: true }).first().click();
   await expect(page).toHaveURL(/\/pricing#plan-business$/);
   await expect(page.locator('#plan-business')).toBeInViewport();
+  await expect(page.locator('#plan-business')).toBeFocused();
 });
 
 for (const denied of [false, true]) {
@@ -95,33 +97,57 @@ test('contact requirements are explicit and whitespace cannot bypass message len
   page,
 }) => {
   await page.goto('./contact');
-  await expect(page.getByText('All fields are required except company.')).toBeVisible();
+  await expect(page.locator('#contact-form [name="name"]')).toHaveAttribute('required', '');
   await expect(page.getByLabel('Company (optional)')).not.toHaveAttribute('required');
   await page.getByRole('textbox', { name: 'Name', exact: true }).fill('Audit');
   await page.getByRole('textbox', { name: 'Work email', exact: true }).fill('audit@example.com');
-  await page.getByRole('combobox', { name: 'Topic' }).selectOption('Other');
+  await chooseSelectOption(page.locator('#contact-form'), 'Other');
   await page.getByRole('textbox', { name: 'Message', exact: true }).fill('         ok         ');
   // No real email is sent: the invalid message must be rejected before the mailto action.
   await page.getByRole('checkbox').check();
-  await page.getByRole('button', { name: 'Prepare email' }).click();
+  await page.getByRole('button', { name: 'Email us' }).click();
   await expect(page.locator('.stage-form-status')).toContainText('at least 10 characters');
   await expect(page.getByRole('textbox', { name: 'Message', exact: true })).toBeFocused();
   await expect(page).toHaveURL(/\/contact\/?$/);
 });
 
 for (const width of [320, 768, 1440]) {
-  test(`controls retain usable sizes and right-edge alignment at ${width}px`, async ({ page }) => {
+  test(`controls retain usable targets and form actions fit at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('./contact');
-    await expect(page.locator('.stage-contact-submit')).toBeVisible();
-    const geometry = await page.evaluate(() => {
-      const form = document.querySelector('.stage-contact-form')!.getBoundingClientRect();
-      const submit = document.querySelector('.stage-contact-submit')!.getBoundingClientRect();
-      const footer = document.querySelector('.footer-email')!.getBoundingClientRect();
-      return { right: form.right - submit.right, emailHeight: footer.height };
-    });
-    expect(Math.abs(geometry.right)).toBeLessThan(1);
-    expect(geometry.emailHeight).toBeGreaterThanOrEqual(44);
+    const form = page.locator('.stage-contact-form');
+    await expect(form).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const formBounds = (await form.boundingBox())!;
+    const actions = [];
+    for (const name of ['Email us']) {
+      const button = form.getByRole('button', { name, exact: true });
+      await expect(button).toBeVisible();
+      await expect(button).toBeEnabled();
+      const bounds = (await button.boundingBox())!;
+      expect(bounds.width, `${name} target width`).toBeGreaterThanOrEqual(44);
+      expect(bounds.height, `${name} target height`).toBeGreaterThanOrEqual(44);
+      expect(bounds.x, `${name} left edge`).toBeGreaterThanOrEqual(formBounds.x - 1);
+      expect(bounds.x + bounds.width, `${name} right edge`).toBeLessThanOrEqual(
+        formBounds.x + formBounds.width + 1,
+      );
+      expect(bounds.y, `${name} top edge`).toBeGreaterThanOrEqual(formBounds.y - 1);
+      expect(bounds.y + bounds.height, `${name} bottom edge`).toBeLessThanOrEqual(
+        formBounds.y + formBounds.height + 1,
+      );
+      actions.push({ name, ...bounds });
+    }
+    expect(
+      Math.abs(actions[0]!.x - formBounds.x),
+      'primary action starts at the form edge',
+    ).toBeLessThan(1);
+    await expect(form.locator('.stage-form-actions button')).toHaveCount(1);
+    const topic = (await form.getByRole('combobox', { name: 'Topic' }).boundingBox())!;
+    const chevron = (await form.locator('.select-field__trigger > svg').boundingBox())!;
+    expect(Math.abs(chevron.y + chevron.height / 2 - topic.y - topic.height / 2)).toBeLessThan(1);
+    expect(topic.x + topic.width - chevron.x - chevron.width).toBeGreaterThanOrEqual(14);
+    expect(topic.x + topic.width - chevron.x - chevron.width).toBeLessThanOrEqual(18);
+    expect((await page.locator('.footer-email').boundingBox())!.height).toBeGreaterThanOrEqual(44);
     await page.goto('./developers/api');
     await expect(page.locator('.stage-code-copy')).toBeVisible();
     expect(
@@ -129,9 +155,13 @@ for (const width of [320, 768, 1440]) {
     ).toBeLessThanOrEqual(1);
     await page.goto('./legal/privacy-policy');
     if (width >= 768) {
-      const heights = await page
-        .locator('.legal-sidebar a')
-        .evaluateAll((els) => els.map((e) => e.getBoundingClientRect().height));
+      const contentsLinks = page.locator('.legal-sidebar a');
+      await expect(contentsLinks.first()).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
+      const heights = await contentsLinks.evaluateAll((els) =>
+        els.map((e) => e.getBoundingClientRect().height),
+      );
+      expect(heights.length).toBeGreaterThan(0);
       expect(Math.min(...heights)).toBeGreaterThanOrEqual(44);
     }
   });

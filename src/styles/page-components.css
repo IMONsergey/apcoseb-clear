@@ -286,8 +286,11 @@
   text-align: right;
 }
 .stage-code-window pre {
+  block-size: clamp(224px, 32svh, 336px);
   max-width: 100%;
-  overflow-x: auto;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
   margin: 0;
   padding: clamp(28px, 4vw, 55px);
   font: 400 var(--font-size-16)/1.7 var(--font-mono);
@@ -296,12 +299,21 @@
 .stage-code-window code {
   white-space: pre;
 }
-.stage-code-note {
+.stage-code-notes {
+  display: grid;
+}
+.stage-code-note,
+.stage-code-note-reserve {
+  grid-area: 1 / 1;
   padding: 17px clamp(28px, 4vw, 55px);
   border-top: 1px solid var(--border-subtle);
   color: var(--text-muted);
   font-size: var(--font-size-14);
   line-height: 1.5;
+}
+.stage-code-note-reserve {
+  visibility: hidden;
+  user-select: none;
 }
 .stage-contact {
   background: var(--surface-card);
@@ -343,7 +355,6 @@
   min-width: 0;
 }
 .stage-contact-form input:not([type='checkbox']),
-.stage-contact-form select,
 .stage-contact-form textarea {
   width: 100%;
   min-width: 0;
@@ -355,7 +366,7 @@
   font: 400 var(--font-size-16)/1.5 var(--font-sans);
   resize: vertical;
 }
-.stage-contact-form :is(input, select, textarea):focus-visible {
+.stage-contact-form :is(input, textarea):focus-visible {
   outline: 2px solid var(--accent-text);
   outline-offset: 2px;
 }
@@ -386,9 +397,6 @@
   z-index: 3;
 }
 
-.stage-not-found {
-  padding-block: var(--space-10);
-}
 @media (max-width: 899px) {
   .stage-contact-layout {
     grid-template-columns: 1fr;

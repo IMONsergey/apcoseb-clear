@@ -8,6 +8,7 @@ type CatalogModule = { default: Catalog };
 
 const catalogs: Partial<Record<Locale, Catalog>> = { en: {} };
 const pending = new Map<Locale, Promise<Catalog>>();
+const pluralRules = new Map<Locale, Intl.PluralRules>();
 
 const loaders: Record<Exclude<Locale, 'en'>, () => Promise<CatalogModule>> = {
   ru: () => import('./translations/ru'),
@@ -20,10 +21,6 @@ function isCatalog(value: unknown): value is Catalog {
     value !== null &&
     Object.values(value).every((message) => typeof message === 'string')
   );
-}
-
-export function isLocale(value: string): value is Locale {
-  return value === 'en' || value === 'ru' || value === 'zh-Hant';
 }
 
 /** Load and activate a catalog before React renders the corresponding document. */
@@ -45,7 +42,18 @@ export async function loadLocale(locale: Locale): Promise<void> {
 }
 
 export function translate(locale: Locale, source: string, values: MessageValues = {}): string {
-  const template = catalogs[locale]?.[source] ?? source;
+  const catalog = catalogs[locale];
+  let template = catalog?.[source] ?? source;
+  // Optional CLDR variants keep grammatical forms with the translated message.
+  // Existing messages and the English source fallback retain their current behavior.
+  if (typeof values.count === 'number' && Number.isFinite(values.count)) {
+    let rules = pluralRules.get(locale);
+    if (!rules) {
+      rules = new Intl.PluralRules(locale);
+      pluralRules.set(locale, rules);
+    }
+    template = catalog?.[`${source}#${rules.select(values.count)}`] ?? template;
+  }
   const message = template.replace(/\{(\w+)\}/g, (token, name: string) =>
     String(values[name] ?? token),
   );

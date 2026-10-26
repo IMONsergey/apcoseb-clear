@@ -104,6 +104,30 @@
     backdrop-filter: blur(0);
   }
 }
+@media (prefers-reduced-motion: no-preference) {
+  .site:has(> #main[data-route='/']) .mobile-navigation[data-modal-phase='opening']::backdrop {
+    animation-name: home-menu-backdrop-in;
+  }
+  .site:has(> #main[data-route='/']) .mobile-navigation[data-modal-phase='closing']::backdrop {
+    animation-name: home-menu-backdrop-out;
+  }
+}
+@keyframes home-menu-backdrop-in {
+  from {
+    background-color: #102d3500;
+  }
+  to {
+    background-color: #102d354d;
+  }
+}
+@keyframes home-menu-backdrop-out {
+  from {
+    background-color: #102d354d;
+  }
+  to {
+    background-color: #102d3500;
+  }
+}
 @media (max-width: 1199px) {
   .search-scene {
     width: 88%;

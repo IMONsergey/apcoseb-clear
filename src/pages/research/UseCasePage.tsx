@@ -45,7 +45,7 @@ export default function UseCasePage({ path }: { path: string }) {
           kind === 'scope'
             ? 'Start free. Upgrade when your research needs more credits, filters or API access.'
             : kind === 'technology'
-              ? 'Search observed products and versions. CVE context is available from Plus in the plan preview.'
+              ? 'Search observed products and versions. The plan comparison lists CVE context from Plus.'
               : 'Start with an IP or domain, or use the API to bring repeat lookups into your investigation workflow.',
       }}
       links={[
@@ -54,9 +54,9 @@ export default function UseCasePage({ path }: { path: string }) {
             path === '/use-cases/bug-bounty'
               ? 'Search your scope'
               : path === '/use-cases/vulnerability-research'
-                ? 'Search by technology'
+                ? 'Search for nginx'
                 : 'Look up an IP or domain',
-          href: productUrl + '/search',
+          href: productUrl + (kind === 'technology' ? '/search?search_value=nginx' : '/search'),
         },
         config.next,
       ]}

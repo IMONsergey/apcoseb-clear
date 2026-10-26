@@ -69,7 +69,7 @@ for (const width of [768, 1000]) {
       const form = document.querySelector('#contact-form')!.getBoundingClientRect();
       const container = document.querySelector('.stage-contact-layout')!.getBoundingClientRect();
       const fields = [
-        ...document.querySelectorAll('.stage-form-row input, .stage-form-row select'),
+        ...document.querySelectorAll('.stage-form-row input, .stage-form-row [role="combobox"]'),
       ].map((el) => el.getBoundingClientRect().width);
       const topics = [...document.querySelectorAll('.contact-topics button')].map(
         (el) => el.getBoundingClientRect().y,
@@ -80,7 +80,7 @@ for (const width of [768, 1000]) {
     expect(Math.min(...geometry.fields)).toBeGreaterThanOrEqual(220);
     expect(new Set(geometry.topics.map((y) => Math.round(y))).size).toBe(3);
     await page.getByRole('button', { name: /Teams & procurement/ }).click();
-    await expect(page.getByRole('combobox', { name: 'Topic', exact: true })).toHaveValue(
+    await expect(page.getByRole('combobox', { name: 'Topic', exact: true })).toHaveText(
       'Team & Business plan',
     );
   });

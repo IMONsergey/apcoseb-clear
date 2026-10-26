@@ -1,0 +1,284 @@
+{
+  "/legal/api-data-license-agreement": {
+    "title": "Apcosys API 與資料授權協議",
+    "updated": "August 4, 2025",
+    "updatedISO": "2025-08-04",
+    "sourceUrl": "https://apcosys.net/legal/api-data-license-agreement",
+    "sourceSha256": "b24ab848d215a20f1d51b19f9b1706e114da01854470e76f27853f36380a0ecf",
+    "headings": [
+      { "id": "1-license-grant", "title": "1. 授權範圍", "level": 2 },
+      { "id": "2-usage-restrictions", "title": "2. 使用限制", "level": 2 },
+      {
+        "id": "3-data-retention--compliance",
+        "title": "3. 資料保留與法規遵循",
+        "level": 2
+      },
+      {
+        "id": "4-api-access--limitations",
+        "title": "4. API 存取與限制",
+        "level": 2
+      },
+      { "id": "5-intellectual-property", "title": "5. 智慧財產權", "level": 2 },
+      { "id": "6-fees--payment", "title": "6. 費用與付款", "level": 2 },
+      { "id": "7-termination", "title": "7. 終止", "level": 2 },
+      {
+        "id": "8-disclaimer--limitation-of-liability",
+        "title": "8. 免責聲明與責任限制",
+        "level": 2
+      },
+      {
+        "id": "9-governing-law--dispute-resolution",
+        "title": "9. 準據法與爭議解決",
+        "level": 2
+      },
+      { "id": "10-amendments", "title": "10. 修訂", "level": 2 }
+    ],
+    "html": "<p>本 API 與資料授權協議（「本協議」）是您（「被授權人」）與 Apcosys LLC（「Apcosys」或「我們」）之間具有法律約束力的契約。本協議規範您存取及使用 Apcosys API（「API」），以及透過 API 或獨立資料集提供的任何資料（「資料」）。存取或使用 API 或資料，即表示您同意受本協議約束。如不同意，您必須立即停止使用。</p>\n<h2 id=\"1-license-grant\" tabindex=\"-1\">1. 授權範圍</h2>\n<p>Apcosys 授予您<strong>非專屬、不可轉讓、可撤銷的有限授權</strong>，讓您在遵守本協議及 Apcosys 服務條款的前提下，存取及使用 API 以取得資料。不同定價方案提供不同的資料使用權利：</p>\n<ul>\n<li><strong>Personal 與 Free 方案：</strong> 資料僅限個人非商業用途，不得轉售或分享。</li>\n<li><strong>Business 與 Enterprise 方案：</strong> 資料可用於商業用途，轉售則須遵守額外條款。</li>\n</ul>\n<p>除非 Apcosys 以書面明確允許，否則您不得轉售、再授權、散布或公開展示資料。</p>\n<h2 id=\"2-usage-restrictions\" tabindex=\"-1\">2. 使用限制</h2>\n<p>您同意<strong>不</strong>從事下列行為：</p>\n<ul>\n<li>以違反任何適用法律或法規的方式使用 API 或資料。</li>\n<li>超過請求速率限制，或規避 API 存取的技術限制。</li>\n<li>為轉售而儲存、修改或再散布資料，除非您的定價方案明確允許。</li>\n<li>與第三方共用 API 金鑰或存取憑證。</li>\n<li>利用 API 或資料開發競爭產品或服務。</li>\n<li>以傷害個人、違反隱私法律或支持非法活動的方式使用資料。</li>\n</ul>\n<p><strong>禁止濫用免費帳戶：</strong></p>\n<ul>\n<li>免費帳戶受到嚴格的使用限制，不得用於規避限制。</li>\n<li>嚴禁建立多個免費帳戶以規避限制。</li>\n<li>違規可能導致帳戶暫停或永久禁止使用 Apcosys 服務。</li>\n</ul>\n<h2 id=\"3-data-retention--compliance\" tabindex=\"-1\">3. 資料保留與法規遵循</h2>\n<ul>\n<li>您僅可在達成合法業務或研究目的所需的期間內保留 Apcosys 資料。</li>\n<li>處理個人或敏感資料時，您必須遵守 <strong>GDPR、CCPA 及其他相關隱私法律</strong>。</li>\n<li>收到 Apcosys 要求時，您必須刪除所有從 Apcosys 取得的資料，除非法律要求保留。</li>\n</ul>\n<h2 id=\"4-api-access--limitations\" tabindex=\"-1\">4. API 存取與限制</h2>\n<ul>\n<li>使用配額及請求速率限制取決於您的定價方案。</li>\n<li>Apcosys 可自行決定修改、暫停或終止 API 存取，無須事先通知。</li>\n<li>您有責任保護 API 存取憑證，並對使用您的 API 金鑰所進行的任何行為負責。</li>\n</ul>\n<h2 id=\"5-intellectual-property\" tabindex=\"-1\">5. 智慧財產權</h2>\n<p>API 與資料的一切權利、所有權及利益均由 <strong>Apcosys</strong> 保留。本協議不授予 API、資料或任何相關智慧財產權的所有權。</p>\n<h2 id=\"6-fees--payment\" tabindex=\"-1\">6. 費用與付款</h2>\n<ul>\n<li>存取特定 API 端點或資料集可能需要付費訂閱或單次付款。</li>\n<li>付款條件載明於您的訂閱方案或購買協議。</li>\n<li><strong>所有付款均為最終付款，且不允許付款爭議退款（chargeback）。</strong></li>\n<li>未支付必要費用可能導致存取權暫停或終止。</li>\n</ul>\n<h2 id=\"7-termination\" tabindex=\"-1\">7. 終止</h2>\n<p>如您有下列情形，Apcosys 可立即終止本協議：</p>\n<ul>\n<li>違反本協議的任何條款。</li>\n<li>未經授權使用 API 或資料。</li>\n<li>未遵守適用法律。</li>\n</ul>\n<p>協議終止後，您必須停止使用 API，並<strong>永久刪除所有已儲存的資料</strong>。</p>\n<h2 id=\"8-disclaimer--limitation-of-liability\" tabindex=\"-1\">8. 免責聲明與責任限制</h2>\n<ul>\n<li>API 與資料均按 <strong>「現狀」</strong> 提供，不附任何保證。</li>\n<li>Apcosys 對您使用 API 或資料所造成的任何損害<strong>不承擔責任</strong>。</li>\n<li>Apcosys 不保證 API 存取持續不中斷或完全無錯誤。</li>\n</ul>\n<h2 id=\"9-governing-law--dispute-resolution\" tabindex=\"-1\">9. 準據法與爭議解決</h2>\n<p>本協議以<strong>亞美尼亞</strong>法律為準據法。任何爭議均由亞美尼亞法院處理。</p>\n<h2 id=\"10-amendments\" tabindex=\"-1\">10. 修訂</h2>\n<p>Apcosys 可隨時更新本協議。變更發布後繼續使用 API 或資料，即表示您接受修訂後的條款。</p>\n",
+    "translationSha256": "92bf97795e251efec23031bde2e9b8d3e95eb3a597bb90d1e4d4933266cdc136"
+  },
+  "/legal/cookie-policy": {
+    "title": "Apcosys Cookie 政策",
+    "updated": "August 4, 2025",
+    "updatedISO": "2025-08-04",
+    "sourceUrl": "https://apcosys.net/legal/cookie-policy",
+    "sourceSha256": "f94e749e96992207de3dc7398c996fad305dee1fda8005f8f7a98b00e318976a",
+    "headings": [
+      { "id": "introduction", "title": "簡介", "level": 2 },
+      { "id": "use-of-cookies", "title": "Cookie 的用途", "level": 2 },
+      {
+        "id": "cookies-we-may-use",
+        "title": "我們可能使用的 Cookie",
+        "level": 2
+      },
+      {
+        "id": "strictly-necessary-cookies",
+        "title": "必要 Cookie",
+        "level": 3
+      },
+      { "id": "personalization-cookies", "title": "個人化 Cookie", "level": 3 },
+      { "id": "analytics-cookies", "title": "分析 Cookie", "level": 3 },
+      { "id": "advertising-cookies", "title": "廣告 Cookie", "level": 3 },
+      { "id": "control-of-cookies", "title": "Cookie 控制", "level": 2 },
+      {
+        "id": "other-tracking-technologies",
+        "title": "其他追蹤技術",
+        "level": 2
+      },
+      { "id": "privacy-policy", "title": "隱私權政策", "level": 2 }
+    ],
+    "html": "<h2 id=\"introduction\" tabindex=\"-1\">簡介</h2>\n<p>當您造訪我們的網站 <a href=\"https://apcosys.net/\">https://apcosys.net/</a>，包括任何相關媒體形式、頻道、行動網站或應用程式（統稱「本網站」）時，Apcosys LLC（「我們」）會使用 Cookie、網路信標、像素標籤及其他追蹤技術。這些技術協助我們改善您的體驗，並提供個人化的網站功能。</p>\n<p>我們可隨時更新本 Cookie 政策。變更將透過更新「最後更新」日期呈現。更新一經發布於本網站即生效，您繼續使用本網站即表示接受修訂後的政策。我們建議您定期查閱本 Cookie 政策以掌握最新資訊。</p>\n<h2 id=\"use-of-cookies\" tabindex=\"-1\">Cookie 的用途</h2>\n<p>Cookie 是儲存在您裝置上的小型資料檔案，會為您指定一個唯一識別碼。當您與本網站互動時，瀏覽器會使用此識別碼來協助處理您的請求。</p>\n<p>Cookie 讓我們能夠：</p>\n<ul>\n<li>追蹤使用的服務。</li>\n<li>儲存註冊資料。</li>\n<li>記住偏好設定。</li>\n<li>維持登入工作階段。</li>\n<li>簡化購買流程。</li>\n<li>監測頁面造訪。</li>\n</ul>\n<p>它們協助我們分析網站使用情形，並改善您的體驗。</p>\n<p>我們使用下列 Cookie 類型來最佳化您的體驗：</p>\n<ul>\n<li><strong>必要 Cookie：</strong> 本網站核心功能所必需，包括安全性、身分驗證及付款處理。</li>\n<li><strong>個人化 Cookie：</strong> 儲存偏好與設定，以調整您的使用體驗。</li>\n<li><strong>分析 Cookie：</strong> 提供網站使用情形的資訊，以改善我們的服務。</li>\n<li><strong>廣告 Cookie：</strong> 投放相關廣告並衡量其成效。</li>\n</ul>\n<h2 id=\"cookies-we-may-use\" tabindex=\"-1\">我們可能使用的 Cookie</h2>\n<h3 id=\"strictly-necessary-cookies\" tabindex=\"-1\">必要 Cookie</h3>\n<p>這些 Cookie 對安全性、網路管理及無障礙使用至關重要。透過瀏覽器設定停用它們可能影響網站功能。</p>\n<ul>\n<li><strong>登陸頁面 Cookie：</strong> 儲存隱私設定、登入或表單提交的偏好。</li>\n<li><strong>CSRF 防護 Cookie：</strong> 在您與本網站互動時保護資料。</li>\n<li><strong>Google reCAPTCHA 服務 Cookie：</strong> 防止垃圾訊息及濫用。</li>\n<li><strong>Google 儲存 Cookie：</strong> 支援身分驗證及防詐騙等安全功能。</li>\n<li><strong>付款服務供應商 Cookie：</strong> 透過我們的付款供應商 Paddle.com 促進安全交易。</li>\n</ul>\n<h3 id=\"personalization-cookies\" tabindex=\"-1\">個人化 Cookie</h3>\n<p>這些 Cookie 可識別回訪者，並支援語言設定等功能。</p>\n<ul>\n<li><strong>Google 功能儲存 Cookie：</strong> 改善語言偏好等網站功能。</li>\n<li><strong>Google 個人化儲存 Cookie：</strong> 提供個人化內容，例如影片推薦。</li>\n</ul>\n<h3 id=\"analytics-cookies\" tabindex=\"-1\">分析 Cookie</h3>\n<p>分析 Cookie（包括 Google Analytics Cookie）協助我們了解網站使用情形，進而改善效能。</p>\n<h3 id=\"advertising-cookies\" tabindex=\"-1\">廣告 Cookie</h3>\n<p>這些 Cookie 用於投放個人化廣告及追蹤廣告成效，包括：</p>\n<ul>\n<li><strong>Google 廣告儲存 Cookie：</strong> 支援廣告投放。</li>\n<li><strong>Google 廣告資料同意 Cookie：</strong> 管理為廣告目的傳送給 Google 的使用者資料。</li>\n<li><strong>Google 個人化廣告同意 Cookie：</strong> 提供個人化廣告體驗。</li>\n</ul>\n<h2 id=\"control-of-cookies\" tabindex=\"-1\">Cookie 控制</h2>\n<p>您可透過本網站的 Cookie 同意設定管理偏好，但提供服務所需的<strong>必要 Cookie</strong>除外。</p>\n<p>多數瀏覽器預設接受 Cookie，但您可變更設定以拒絕或移除 Cookie。請注意，這可能影響網站功能。</p>\n<p>如需 Cookie 管理說明，請查閱瀏覽器或裝置設定，或參閱下列產品的說明：</p>\n<ul>\n<li>Apple Safari</li>\n<li>Google Chrome</li>\n<li>Mozilla Firefox</li>\n<li>Opera</li>\n<li>Android (Chrome)</li>\n<li>iPhone 或 iPad (Chrome)</li>\n<li>iPhone 或 iPad (Safari)</li>\n</ul>\n<h2 id=\"other-tracking-technologies\" tabindex=\"-1\">其他追蹤技術</h2>\n<p>我們可能使用網路信標、像素標籤或類似技術，來自訂網站並改善您的體驗。</p>\n<p>這些嵌入網頁或電子郵件的工具會追蹤頁面造訪或郵件開啟等指標，並收集 Cookie 編號、時間戳記及頁面詳細資訊等有限資料。</p>\n<p>雖然您無法拒絕網路信標或像素標籤，但<strong>控制與其互動的 Cookie</strong>可限制其功能。</p>\n<h2 id=\"privacy-policy\" tabindex=\"-1\">隱私權政策</h2>\n<p>關於我們如何處理透過 Cookie 及追蹤技術收集的資料，請參閱本網站的<strong><a href=\"/legal/privacy-policy\">隱私權政策</a></strong>。</p>\n<p>本 Cookie 政策是我們隱私權政策的一部分，並納入其中。使用本網站即表示您同意兩項政策。</p>\n",
+    "translationSha256": "d83250b13c18212ed20da1c65350d1f8eeeafdee91654ad43d4bda796c1c5e7c"
+  },
+  "/legal/data-collection-policy": {
+    "title": "Apcosys 資料收集政策",
+    "updated": "August 4, 2025",
+    "updatedISO": "2025-08-04",
+    "sourceUrl": "https://apcosys.net/legal/data-collection-policy",
+    "sourceSha256": "f3a0996ed230291486f4c3c342f4ac5c26937b8fd1a1fed0732a7c47085f5a3a",
+    "headings": [
+      {
+        "id": "what-and-how-apcosys-collects",
+        "title": "Apcosys 收集哪些資料及如何收集",
+        "level": 2
+      },
+      { "id": "purpose", "title": "目的", "level": 2 },
+      { "id": "legislation", "title": "法律遵循", "level": 2 },
+      {
+        "id": "how-to-make-information-private",
+        "title": "如何將資訊設為非公開",
+        "level": 2
+      }
+    ],
+    "html": "<h2 id=\"what-and-how-apcosys-collects\" tabindex=\"-1\">Apcosys 收集哪些資料及如何收集</h2>\n<p>Apcosys 應用程式僅透過<strong>非侵入式</strong>方法，收集<strong>公開且可從外部存取的資料</strong>。我們的演算法使用標準化的開放網路協定查詢主機，並取得特定屬性。收集的資料範例包括：</p>\n<ul>\n<li><p><strong>開放連接埠：</strong><br>網路應用程式使用特定連接埠進行通訊，例如用於網頁流量的 TCP 連接埠 80 或 443。安全最佳實務建議僅開放必要的連接埠。這些連接埠背後的服務通常會分享稱為 <strong>「橫幅（banners）」</strong> 的公開中繼資料。</p>\n</li>\n<li><p><strong>SSL 憑證：</strong><br>這些憑證可啟用加密通訊，並包含公開金鑰、網域名稱及憑證簽發者詳細資料等<strong>公開資訊</strong>，以確保安全連線。</p>\n</li>\n<li><p><strong>Whois 資料庫：</strong><br>這包含網域、註冊人及註冊商的<strong>公開資訊</strong>；網際網路名稱與數字位址分配機構（ICANN）要求這些資訊可透過 Whois 目錄供公眾查閱。</p>\n</li>\n</ul>\n<p>這些資料類型的收集屬於非侵入式行為，因為任何人都可使用標準網路工具公開存取它們。</p>\n<h2 id=\"purpose\" tabindex=\"-1\">目的</h2>\n<p>我們的目標是協助使用者進行<strong>研究、行銷及提升網路安全</strong>。我們希望促成更安全、更穩健的網際網路，並遵循 <a href=\"https://www.mozilla.org/en-US/about/manifesto/\">https://www.mozilla.org/en-US/about/manifesto/</a> 等文件所述的原則。Apcosys 透過提供協助知情決策的工具，支持這項願景。</p>\n<p><strong>未經明確同意且確認所有權</strong>，我們<strong>不會</strong>使用侵入式技術、進行滲透測試、規避安全措施或存取私人資料。應您的要求，我們可使用侵入式方法對您擁有的主機進行詳細掃描，結果僅提供給您。</p>\n<h2 id=\"legislation\" tabindex=\"-1\">法律遵循</h2>\n<p>Apcosys 僅收集公開資料，不進行未經授權的存取，以遵守包括<strong>美國《電腦詐欺及濫用法》（CFAA）</strong> 在內的適用法律。我們的營運設計旨在尊重數位資產的<strong>機密性、完整性及可用性</strong>。</p>\n<h2 id=\"how-to-make-information-private\" tabindex=\"-1\">如何將資訊設為非公開</h2>\n<p>如果 Apcosys 顯示您希望保密的主機資訊，您可透過<strong>重新設定軟體</strong>來限制存取。使用 Apcosys <strong>重新掃描您的主機</strong>，並驗證安全邊界的變更。</p>\n",
+    "translationSha256": "8249dd55814729fca9ee5c6a3b25c0d0b85287c35f009c388a1d894241ff78cd"
+  },
+  "/legal/data-processing-agreement": {
+    "title": "Apcosys 資料處理協議",
+    "updated": "August 4, 2025",
+    "updatedISO": "2025-08-04",
+    "sourceUrl": "https://apcosys.net/legal/data-processing-agreement",
+    "sourceSha256": "e51ff5b737c5067f4e0ad29018f8ddf7dc54342e5d8c6425cb3e98d7416aac11",
+    "headings": [
+      { "id": "1-definitions", "title": "1. 定義", "level": 2 },
+      {
+        "id": "2-scope-of-this-agreement",
+        "title": "2. 本協議的適用範圍",
+        "level": 2
+      },
+      {
+        "id": "3-what-data-we-process",
+        "title": "3. 我們處理的資料",
+        "level": 2
+      },
+      {
+        "id": "4-how-we-protect-your-data",
+        "title": "4. 我們如何保護您的資料",
+        "level": 2
+      },
+      { "id": "5-subprocessors", "title": "5. 次處理者", "level": 2 },
+      { "id": "6-data-transfers", "title": "6. 資料傳輸", "level": 2 },
+      { "id": "7-your-rights", "title": "7. 您的權利", "level": 2 },
+      { "id": "8-data-breaches", "title": "8. 資料安全侵害", "level": 2 },
+      { "id": "9-data-retention", "title": "9. 資料保留", "level": 2 },
+      {
+        "id": "10-changes-to-this-agreement",
+        "title": "10. 本協議的變更",
+        "level": 2
+      },
+      { "id": "11-contact-us", "title": "11. 聯絡我們", "level": 2 },
+      { "id": "acceptance-of-terms", "title": "接受條款", "level": 2 }
+    ],
+    "html": "<p>本資料處理協議（「本協議」）說明 Apcosys LLC（「我們」）如何代表我們服務的使用者（「您」）處理個人資料。本協議確保遵守 <strong>《一般資料保護規則》（GDPR）</strong> 及其他適用的資料保護法律。使用我們的服務即表示您同意本協議。</p>\n<h2 id=\"1-definitions\" tabindex=\"-1\">1. 定義</h2>\n<ul>\n<li><strong>GDPR：</strong> 《一般資料保護規則》（EU）2016/679。</li>\n<li><strong>個人資料：</strong> 可識別個人的資訊，例如姓名、電子郵件地址或 IP 位址。</li>\n<li><strong>處理：</strong> 對個人資料進行的任何操作，包括收集、儲存或分享。</li>\n<li><strong>次處理者：</strong> 我們委託處理個人資料的第三方供應商。</li>\n</ul>\n<h2 id=\"2-scope-of-this-agreement\" tabindex=\"-1\">2. 本協議的適用範圍</h2>\n<ul>\n<li>本協議適用於您使用我們服務時提供的所有個人資料。</li>\n<li>我們依照<strong><a href=\"/legal/privacy-policy\">隱私權政策</a></strong>所述，處理您的個人資料以提供及改善服務。</li>\n<li>我們擔任您個人資料的<strong>資料處理者</strong>，而您作為<strong>資料控制者</strong>，決定資料收集及處理的目的與方式。</li>\n</ul>\n<h2 id=\"3-what-data-we-process\" tabindex=\"-1\">3. 我們處理的資料</h2>\n<p>我們可能處理下列個人資料：</p>\n<ul>\n<li>姓名、電子郵件地址及聯絡資訊。</li>\n<li>IP 位址及您使用我們服務時產生的中繼資料。</li>\n<li>您透過帳戶或與我們通訊時提交的其他資料。</li>\n</ul>\n<h2 id=\"4-how-we-protect-your-data\" tabindex=\"-1\">4. 我們如何保護您的資料</h2>\n<p>我們重視您的隱私，並採取穩健措施保護資料，包括：</p>\n<ul>\n<li><strong>加密：</strong> 資料在傳輸過程中受到加密保護。</li>\n<li><strong>存取控制：</strong> 僅授權人員可存取個人資料。</li>\n<li><strong>監測：</strong> 持續評估以偵測並處理漏洞。</li>\n</ul>\n<h2 id=\"5-subprocessors\" tabindex=\"-1\">5. 次處理者</h2>\n<p>我們委託可信賴的第三方次處理者支援服務，包括：</p>\n<ul>\n<li><strong>Paddle.com：</strong> 處理付款。</li>\n<li><strong>Pipedrive：</strong> 管理客戶關係。</li>\n<li><strong>Postmark (ActiveCampaign)：</strong> 協助傳送電子郵件。</li>\n</ul>\n<p>如需最新次處理者清單，請聯絡 <a href=\"mailto:info@apcosys.net\">info@apcosys.net</a>。</p>\n<h2 id=\"6-data-transfers\" tabindex=\"-1\">6. 資料傳輸</h2>\n<ul>\n<li>必要時，個人資料可能傳輸至歐洲經濟區（EEA）以外，並透過<strong>標準契約條款（SCCs）</strong> 等保障措施遵守 GDPR。</li>\n<li>對於其他地區的使用者，我們遵守當地資料保護法律，以確保安全。</li>\n</ul>\n<h2 id=\"7-your-rights\" tabindex=\"-1\">7. 您的權利</h2>\n<p>依 GDPR 及其他隱私法律，您享有下列權利：</p>\n<ul>\n<li><strong>存取：</strong> 取得您的個人資料副本。</li>\n<li><strong>更正：</strong> 修正不正確的資料。</li>\n<li><strong>刪除：</strong> 要求刪除您的資料。</li>\n<li><strong>限制：</strong> 限制資料的使用。</li>\n<li><strong>可攜性：</strong> 將資料移轉至另一家供應商。</li>\n</ul>\n<p>如欲行使這些權利，請聯絡 <strong><a href=\"mailto:info@apcosys.net\">info@apcosys.net</a></strong>。</p>\n<h2 id=\"8-data-breaches\" tabindex=\"-1\">8. 資料安全侵害</h2>\n<p>若發生影響您個人資料的資料安全侵害事件，我們將儘速通知您，並詳述：</p>\n<ul>\n<li>安全侵害事件的性質。</li>\n<li>可能造成的影響。</li>\n<li>已採取的緩解措施。</li>\n</ul>\n<h2 id=\"9-data-retention\" tabindex=\"-1\">9. 資料保留</h2>\n<p>我們僅在達成下列目的所需的期間內保留個人資料：</p>\n<ul>\n<li>提供我們的服務。</li>\n<li>履行法律義務。</li>\n</ul>\n<p>不再需要的資料會安全刪除。</p>\n<h2 id=\"10-changes-to-this-agreement\" tabindex=\"-1\">10. 本協議的變更</h2>\n<p>我們可能修訂本協議，以反映服務或法律要求的更新。變更將發布於此，並清楚標示生效日期。</p>\n<h2 id=\"11-contact-us\" tabindex=\"-1\">11. 聯絡我們</h2>\n<p>若對本協議或我們的資料處理方式有任何疑問，請與我們聯絡。</p>\n<h2 id=\"acceptance-of-terms\" tabindex=\"-1\">接受條款</h2>\n<p>使用我們的服務，即表示您接受本資料處理協議的條款。如不同意，請停止使用我們的服務。</p>\n",
+    "translationSha256": "5258692b32849c01dc3734e4292cedd8c831721e89a331f8a8851e410c2fe161"
+  },
+  "/legal/privacy-policy": {
+    "title": "Apcosys 隱私權政策",
+    "updated": "August 4, 2025",
+    "updatedISO": "2025-08-04",
+    "sourceUrl": "https://apcosys.net/legal/privacy-policy",
+    "sourceSha256": "540d9f98c4e26d6e4425bc69e72b3853f7fe849c6177ff2532f11cc21eb59964",
+    "headings": [
+      { "id": "introduction", "title": "簡介", "level": 2 },
+      {
+        "id": "collection-of-your-information",
+        "title": "您的資訊之收集",
+        "level": 2
+      },
+      { "id": "personal-data", "title": "個人資料", "level": 3 },
+      { "id": "derivative-data", "title": "衍生資料", "level": 3 },
+      { "id": "financial-data", "title": "財務資料", "level": 3 },
+      { "id": "mobile-device-data", "title": "行動裝置資料", "level": 3 },
+      { "id": "third-party-data", "title": "第三方資料", "level": 3 },
+      {
+        "id": "data-from-contests-giveaways-and-surveys",
+        "title": "競賽、贈獎及調查資料",
+        "level": 3
+      },
+      {
+        "id": "use-of-your-information",
+        "title": "您的資訊之使用",
+        "level": 2
+      },
+      {
+        "id": "disclosure-of-your-information",
+        "title": "您的資訊之揭露",
+        "level": 2
+      },
+      {
+        "id": "by-law-or-to-protect-rights",
+        "title": "依法或為保護權利",
+        "level": 3
+      },
+      {
+        "id": "third-party-service-providers",
+        "title": "第三方服務供應商",
+        "level": 3
+      },
+      { "id": "marketing-communications", "title": "行銷通訊", "level": 3 },
+      { "id": "affiliates", "title": "關係企業", "level": 3 },
+      { "id": "other-third-parties", "title": "其他第三方", "level": 3 },
+      { "id": "sale-or-bankruptcy", "title": "出售或破產", "level": 3 },
+      { "id": "tracking-technologies", "title": "追蹤技術", "level": 2 },
+      {
+        "id": "cookies-and-web-beacons",
+        "title": "Cookie 與網路信標",
+        "level": 3
+      },
+      {
+        "id": "internet-based-advertising",
+        "title": "網際網路廣告",
+        "level": 3
+      },
+      { "id": "website-analytics", "title": "網站分析", "level": 3 },
+      { "id": "third-party-websites", "title": "第三方網站", "level": 2 },
+      {
+        "id": "security-of-your-information",
+        "title": "您的資訊之安全",
+        "level": 2
+      },
+      { "id": "policy-for-children", "title": "兒童政策", "level": 2 },
+      {
+        "id": "controls-for-do-not-track-features",
+        "title": "Do-Not-Track 功能控制",
+        "level": 2
+      },
+      {
+        "id": "options-regarding-your-information",
+        "title": "您對資訊的選擇",
+        "level": 2
+      },
+      { "id": "account-information", "title": "帳戶資訊", "level": 3 },
+      {
+        "id": "emails-and-communications",
+        "title": "電子郵件及通訊",
+        "level": 3
+      },
+      { "id": "california-privacy-rights", "title": "加州隱私權", "level": 2 },
+      { "id": "contact-us", "title": "聯絡我們", "level": 2 }
+    ],
+    "html": "<h2 id=\"introduction\" tabindex=\"-1\">簡介</h2>\n<p>Apcosys LLC（「我們」）致力於保護使用者（「您」）的隱私。本隱私權政策說明，當您造訪我們的網站 <a href=\"https://apcosys.net/\">https://apcosys.net/</a>，包括相關媒體形式、頻道、行動網站或應用程式（統稱「本網站」）時，我們如何收集、使用、分享及保護您的資訊。請仔細閱讀本政策。如不同意其條款，請勿使用本網站。</p>\n<p>我們可隨時更新本隱私權政策。變更將透過更新「最後更新」日期標示。更新一經發布即生效，繼續使用本網站即表示接受修訂後的政策。我們鼓勵您定期查閱本政策。</p>\n<h2 id=\"collection-of-your-information\" tabindex=\"-1\">您的資訊之收集</h2>\n<p>我們透過多種方式收集您的資訊，包括：</p>\n<h3 id=\"personal-data\" tabindex=\"-1\">個人資料</h3>\n<p>您在註冊、參與聊天室或留言板等網站活動，或與我們的服務互動時，自願提供的資訊，例如姓名、電子郵件地址或電話號碼。提供這些資訊並非強制，但拒絕提供可能限制您使用某些功能。</p>\n<h3 id=\"derivative-data\" tabindex=\"-1\">衍生資料</h3>\n<p>由我們的伺服器自動收集的資料，例如您的 IP 位址、瀏覽器類型、作業系統、存取時間，以及存取本網站前後瀏覽的頁面。</p>\n<h3 id=\"financial-data\" tabindex=\"-1\">財務資料</h3>\n<p>在購買或詢問服務時收集的付款相關資訊，例如信用卡號碼、卡片品牌及到期日。這些資料由我們的付款處理商儲存，建議您查閱其隱私權政策以了解詳情。</p>\n<h3 id=\"mobile-device-data\" tabindex=\"-1\">行動裝置資料</h3>\n<p>如果您透過行動裝置存取本網站，我們會收集裝置詳細資訊，例如行動裝置識別碼、型號或製造商。</p>\n<h3 id=\"third-party-data\" tabindex=\"-1\">第三方資料</h3>\n<p>經您同意後從第三方取得的資訊，例如行銷潛在客戶資料或個人資料。</p>\n<h3 id=\"data-from-contests-giveaways-and-surveys\" tabindex=\"-1\">競賽、贈獎及調查資料</h3>\n<p>您參與競賽、贈獎或調查時提供的資訊。</p>\n<h2 id=\"use-of-your-information\" tabindex=\"-1\">您的資訊之使用</h2>\n<p>準確的資訊讓我們能提供順暢、高效且個人化的體驗。我們可能將您的資訊用於：</p>\n<ul>\n<li>管理競賽、促銷或抽獎活動。</li>\n<li>彙整匿名統計資料供內部或第三方分析。</li>\n<li>建立及維護您的帳戶。</li>\n<li>提供定向廣告、電子報或促銷更新。</li>\n<li>就您的帳戶或訂單與您溝通。</li>\n<li>處理購買、付款及退款。</li>\n<li>建立個人化資料檔案，以改善您日後造訪網站的體驗。</li>\n<li>最佳化網站效能及功能。</li>\n<li>分析使用趨勢，以改善使用者體驗。</li>\n<li>通知您網站更新或新服務。</li>\n<li>防止詐騙、監測竊盜或防範非法活動。</li>\n<li>處理爭議、排除問題或回應服務請求。</li>\n<li>發送電子報或徵求對網站的支持。</li>\n</ul>\n<h2 id=\"disclosure-of-your-information\" tabindex=\"-1\">您的資訊之揭露</h2>\n<p>我們可能在下列情況分享您的資訊：</p>\n<h3 id=\"by-law-or-to-protect-rights\" tabindex=\"-1\">依法或為保護權利</h3>\n<p>如法律要求、為處理違反政策的行為，或為保護他人的權利、財產或安全，我們可能揭露您的資訊，包括與相關機構分享資訊以防止詐騙或降低信用風險。</p>\n<h3 id=\"third-party-service-providers\" tabindex=\"-1\">第三方服務供應商</h3>\n<p>我們可能與提供付款處理、資料分析、電子郵件傳送、主機代管、客戶支援或行銷等服務的第三方分享您的資訊。</p>\n<h3 id=\"marketing-communications\" tabindex=\"-1\">行銷通訊</h3>\n<p>經您同意，在法律允許的範圍內，我們可能與第三方分享您的資訊以供行銷使用。您可隨時撤回同意。</p>\n<h3 id=\"affiliates\" tabindex=\"-1\">關係企業</h3>\n<p>我們可能與關係企業分享您的資訊，這些企業必須遵守本隱私權政策。關係企業包括我們的母公司、子公司或受共同控制的實體。</p>\n<h3 id=\"other-third-parties\" tabindex=\"-1\">其他第三方</h3>\n<p>我們可能與投資人等第三方分享您的資訊，以進行一般業務分析。</p>\n<h3 id=\"sale-or-bankruptcy\" tabindex=\"-1\">出售或破產</h3>\n<p>發生合併、資產出售或破產時，您的資訊可能移轉至承受實體，而該實體可能不遵守本政策所作的承諾。</p>\n<blockquote>\n<p>我們不對第三方就您資料所採取的行為負責。如欲停止接收第三方通訊，請直接與其聯絡。</p>\n</blockquote>\n<h2 id=\"tracking-technologies\" tabindex=\"-1\">追蹤技術</h2>\n<h3 id=\"cookies-and-web-beacons\" tabindex=\"-1\">Cookie 與網路信標</h3>\n<p>我們使用 Cookie、網路信標及其他追蹤技術，以改善並個人化您的網站體驗。詳情請參閱納入本隱私權政策的 Cookie 政策。使用本網站即表示同意 Cookie 政策。</p>\n<h3 id=\"internet-based-advertising\" tabindex=\"-1\">網際網路廣告</h3>\n<p>我們可能使用第三方軟體進行電子郵件行銷或互動活動，這些軟體可能採用 Cookie 或類似技術來最佳化您的體驗。您可透過 Digital Advertising Alliance 退出工具，退出以興趣為基礎的廣告。</p>\n<h3 id=\"website-analytics\" tabindex=\"-1\">網站分析</h3>\n<p>我們與 Google Analytics 等第三方供應商合作，透過第一方及第三方 Cookie 追蹤網站使用情形與內容受歡迎程度。存取本網站即表示您同意此類資料收集。請查閱供應商的隱私權政策以了解詳情，或透過其設定或 Digital Advertising Alliance 退出工具拒絕收集。變更裝置或瀏覽器可能影響退出設定。</p>\n<h2 id=\"third-party-websites\" tabindex=\"-1\">第三方網站</h2>\n<p>本網站可能連結至與我們無關的第三方網站、廣告或服務。您向這些第三方提供的資訊不受本隱私權政策規範，我們亦無法保證其安全。分享資料前，請查閱其隱私權政策。我們不對第三方內容或做法負責。</p>\n<h2 id=\"security-of-your-information\" tabindex=\"-1\">您的資訊之安全</h2>\n<p>我們採取行政、技術及實體保護措施來保護您的個人資訊。然而，任何安全措施都無法保證萬無一失，資料傳輸仍存在遭攔截或濫用的風險。我們無法保證您提供資訊的絕對安全。</p>\n<h2 id=\"policy-for-children\" tabindex=\"-1\">兒童政策</h2>\n<p>我們不會明知而收集未滿 13 歲兒童的資料，也不會向其行銷。如果發現我們已收集此類資料，請與我們聯絡，我們將採取適當行動。</p>\n<h2 id=\"controls-for-do-not-track-features\" tabindex=\"-1\">Do-Not-Track 功能控制</h2>\n<p>多數瀏覽器及行動裝置提供 Do-Not-Track（DNT）功能，以表達您不希望遭到線上追蹤的偏好。目前尚無通用 DNT 標準，因此我們現階段不回應 DNT 訊號。如有標準獲採用，我們將據此更新本政策。</p>\n<h2 id=\"options-regarding-your-information\" tabindex=\"-1\">您對資訊的選擇</h2>\n<h3 id=\"account-information\" tabindex=\"-1\">帳戶資訊</h3>\n<p>您可透過下列方式查閱、更新或終止帳戶：</p>\n<ul>\n<li>進入帳戶設定以修改資訊。</li>\n<li>使用下列聯絡資訊與我們聯絡。</li>\n</ul>\n<p>帳戶終止後，我們會停用或刪除您的帳戶及使用中資料庫內的資料，但可能為防詐騙、疑難排解、調查或法律遵循而保留部分資訊。</p>\n<h3 id=\"emails-and-communications\" tabindex=\"-1\">電子郵件及通訊</h3>\n<p>如欲停止接收我們的通訊，您可以：</p>\n<ul>\n<li>在帳戶註冊時或帳戶設定中更新偏好。</li>\n<li>使用下列聯絡資訊與我們聯絡。</li>\n</ul>\n<p>對於第三方通訊，請直接聯絡該第三方。</p>\n<h2 id=\"california-privacy-rights\" tabindex=\"-1\">加州隱私權</h2>\n<p>依加州「Shine The Light」法律（民法第 1798.83 條），加州居民每年可免費要求一次資訊，了解前一曆年為直接行銷目的而向第三方分享的個人資料。請使用下列聯絡資訊提出要求。</p>\n<p>已註冊帳戶且未滿 18 歲的加州居民可要求移除公開發布的資料。請提供帳戶電子郵件及加州居住聲明與我們聯絡。我們會確保資料不再公開顯示，但不保證從系統中完全移除。</p>\n<h2 id=\"contact-us\" tabindex=\"-1\">聯絡我們</h2>\n<p>若對本隱私權政策有疑問或疑慮，請透過 <a href=\"mailto:info@apcosys.net\">info@apcosys.net</a> 與我們聯絡。</p>\n",
+    "translationSha256": "2dce29b0251e50fd32d3b9a338eb6da6519e8973bf30bf97796abac47cb63ac0"
+  },
+  "/legal/terms": {
+    "title": "Apcosys 條款與條件",
+    "updated": "August 4, 2025",
+    "updatedISO": "2025-08-04",
+    "sourceUrl": "https://apcosys.net/legal/terms",
+    "sourceSha256": "0af4e10b34b92fc30b09975b2e49c8da7370ccfe7b324709156b0650ae160d4a",
+    "headings": [
+      {
+        "id": "intellectual-property-rights",
+        "title": "智慧財產權",
+        "level": 2
+      },
+      { "id": "user-representations", "title": "使用者聲明", "level": 2 },
+      { "id": "user-registration", "title": "使用者註冊", "level": 2 },
+      {
+        "id": "data-processing-agreement",
+        "title": "資料處理協議",
+        "level": 2
+      },
+      { "id": "payments-and-refunds", "title": "付款與退款", "level": 2 },
+      { "id": "prohibited-activities", "title": "禁止活動", "level": 2 },
+      {
+        "id": "user-generated-contributions",
+        "title": "使用者產生的投稿",
+        "level": 2
+      },
+      { "id": "contribution-license", "title": "投稿授權", "level": 2 },
+      { "id": "guidelines-for-reviews", "title": "評論準則", "level": 2 },
+      { "id": "social-media", "title": "社群媒體", "level": 2 },
+      { "id": "submissions", "title": "提交意見", "level": 2 },
+      {
+        "id": "third-party-websites-and-content",
+        "title": "第三方網站與內容",
+        "level": 2
+      },
+      { "id": "site-management", "title": "網站管理", "level": 2 },
+      { "id": "privacy-policy", "title": "隱私權政策", "level": 2 },
+      { "id": "copyright-infringements", "title": "著作權侵害", "level": 2 },
+      { "id": "term-and-termination", "title": "期間與終止", "level": 2 },
+      {
+        "id": "modifications-and-interruptions",
+        "title": "修改與中斷",
+        "level": 2
+      },
+      { "id": "governing-law", "title": "準據法", "level": 2 },
+      { "id": "dispute-resolution", "title": "爭議解決", "level": 2 },
+      { "id": "corrections", "title": "更正", "level": 2 },
+      { "id": "disclaimer", "title": "免責聲明", "level": 2 },
+      { "id": "limitations-of-liability", "title": "責任限制", "level": 2 },
+      { "id": "indemnification", "title": "賠償", "level": 2 },
+      { "id": "user-data", "title": "使用者資料", "level": 2 },
+      {
+        "id": "electronic-communications-transactions-and-signatures",
+        "title": "電子通訊、交易及簽名",
+        "level": 2
+      },
+      { "id": "miscellaneous", "title": "其他條款", "level": 2 },
+      { "id": "contact-us", "title": "聯絡我們", "level": 2 }
+    ],
+    "html": "<p>本條款與條件構成您（無論個人或實體，以下稱「您」）與 Apcosys LLC（「我們」）之間具有法律約束力的協議，規範您存取及使用 <a href=\"https://apcosys.net\">https://apcosys.net</a> 網站，包括任何相關媒體形式、頻道、行動網站或應用程式（統稱「本網站」）。</p>\n<p>存取本網站即表示您確認已閱讀、理解並同意受本條款與條件約束，包括我們的<strong><a href=\"/legal/data-processing-agreement\">資料處理協議</a></strong>。如不同意，您不得使用本網站，並須立即停止使用。</p>\n<p><strong><a href=\"/legal/privacy-policy\">隱私權政策</a></strong>與 <strong><a href=\"/legal/cookie-policy\">Cookie 政策</a></strong>等補充條款以引用方式納入本協議，並詳細說明我們如何處理您的資料。我們可隨時修改本條款與條件，變更於發布時生效，並以更新後的「最後更新」日期標示。變更後繼續使用本網站即表示您接受變更。您有責任定期查閱這些條款。</p>\n<p>本網站資訊不適用於使用該資訊會違反法律或要求我們登記的司法管轄區。從此類地區存取本網站的使用者有責任遵守當地法律。本網站供年滿 18 歲的使用者使用；未滿 18 歲者不得註冊。</p>\n<h2 id=\"intellectual-property-rights\" tabindex=\"-1\">智慧財產權</h2>\n<p>本網站，包括所有原始碼、資料庫、功能、軟體、設計、音訊、影片、文字、照片及圖像（「內容」），以及商標、服務標章與標誌（「標章」），均為我們所有或經授權供我們使用，並受美國、其他國家及國際著作權、商標及其他智慧財產權法律保護。</p>\n<p>內容及標章按「現狀」提供，僅供您個人資訊用途。除本條款允許者外，未經我們事先書面同意，不得複製、重製、重新發布、上傳、張貼、展示、編碼、翻譯、傳輸、散布、銷售、授權或以商業方式利用本網站、內容或標章的任何部分。</p>\n<p>符合資格的使用者獲授有限的非商業授權，可存取及使用本網站，並下載或列印其合法取得的內容。我們保留所有未明確授予的權利。</p>\n<h2 id=\"user-representations\" tabindex=\"-1\">使用者聲明</h2>\n<p>使用本網站即表示您聲明並保證：</p>\n<ol>\n<li>所有註冊資訊均真實、準確、最新且完整，您將維持其準確性。</li>\n<li>您具有法律行為能力，並同意遵守本條款與條件。</li>\n<li>您至少年滿 18 歲，且在您的司法管轄區並非未成年人。</li>\n<li>您不會透過自動化或非人為方式（例如機器人、指令碼）存取本網站。</li>\n<li>您不會將本網站用於非法或未經授權的目的，亦不會違反適用法律。</li>\n<li>您對任何違反本條款與條件的行為負責。</li>\n</ol>\n<p>提供虛假、不準確或不完整的資訊，可能導致帳戶暫停或終止。</p>\n<h2 id=\"user-registration\" tabindex=\"-1\">使用者註冊</h2>\n<p>使用本網站可能需要註冊。您同意保密您的密碼，並對所有帳戶活動負責。我們可移除或變更被認定為不適當、猥褻或令人反感的使用者名稱。</p>\n<h2 id=\"data-processing-agreement\" tabindex=\"-1\">資料處理協議</h2>\n<p>使用本網站即表示您同意我們的<strong><a href=\"/legal/data-processing-agreement\">資料處理協議</a></strong>，該協議詳述我們如何依 GDPR、CCPA 等法律處理、儲存及保護您的個人資料，其範圍包括：</p>\n<ul>\n<li>處理的資料類型，例如姓名、電子郵件地址、IP 位址及使用中繼資料。</li>\n<li>資料處理方法與安全措施。</li>\n<li>您存取、更正、刪除或移轉資料的權利。</li>\n<li>第三方次處理者的使用。</li>\n</ul>\n<h2 id=\"payments-and-refunds\" tabindex=\"-1\">付款與退款</h2>\n<p>數位服務付款均為最終付款。購買即表示您確認服務立即開始，並放棄法定撤回權，但法律另有規定者除外。退款僅可由我們的名義銷售商（Merchant of Record）Paddle 自行酌情決定，並依 Paddle 退款政策及適用消費者保護法律辦理。若退款獲准，將不無故延遲地處理，且最遲不超過提交申請後 14 天。</p>\n<h2 id=\"prohibited-activities\" tabindex=\"-1\">禁止活動</h2>\n<p>本網站僅可用於其預定用途，不得用於未經核准的商業活動。您同意不從事下列行為：</p>\n<ol>\n<li>未經許可，系統性收集資料以建立集合或資料庫。</li>\n<li>未經授權使用本網站，例如收集使用者資訊以寄送未經請求的電子郵件，或以虛假理由建立帳戶。</li>\n<li>使用採購代理人進行網站交易。</li>\n<li>在本網站宣傳或銷售商品或服務。</li>\n<li>規避安全功能或內容使用限制。</li>\n<li>未經授權以框架嵌入或連結本網站。</li>\n<li>試圖欺騙我們或使用者，尤其是為取得敏感資訊。</li>\n<li>濫用支援服務或提交虛假報告。</li>\n<li>使用自動化系統（例如指令碼、資料探勘工具）與本網站互動。</li>\n<li>干擾本網站或其網路，或使其負荷過重。</li>\n<li>冒充其他使用者或使用其憑證。</li>\n<li>出售或轉讓您的個人檔案。</li>\n<li>利用網站資訊騷擾或傷害他人。</li>\n<li>使用本網站與我們競爭，或產生商業收入。</li>\n<li>對網站軟體進行逆向工程。</li>\n<li>規避存取限制。</li>\n<li>騷擾或威脅我們的員工或代理人。</li>\n<li>移除著作權或專有權聲明。</li>\n<li>複製或改作網站軟體，例如 Flash、PHP、HTML、JavaScript。</li>\n<li>上傳病毒、特洛伊木馬或干擾性材料，包括發送垃圾訊息。</li>\n<li>在標準搜尋引擎使用範圍之外，使用自動化系統，例如蜘蛛程式或機器人。</li>\n<li>貶損或傷害我們或本網站。</li>\n<li>以違法方式使用本網站或將其用於非法活動。</li>\n</ol>\n<h2 id=\"user-generated-contributions\" tabindex=\"-1\">使用者產生的投稿</h2>\n<p>本網站可能允許透過聊天、部落格、論壇或其他功能投稿，包括文字、影片、照片或其他材料（「投稿」）。投稿可能公開且不具機密性。提交投稿即表示您聲明並保證：</p>\n<ol>\n<li>投稿不侵犯第三方專有權利，例如著作權或商標權。</li>\n<li>您擁有投稿，或有權使用並授權使用投稿。</li>\n<li>您已取得投稿中任何可識別個人的同意。</li>\n<li>投稿準確且不具誤導性。</li>\n<li>投稿不是未經請求的廣告、垃圾訊息或令人反感的內容。</li>\n<li>投稿不違反法律、隱私權或形象公開權。</li>\n<li>投稿不剝削未成年人，亦不含針對受保護特徵的冒犯性言論。</li>\n</ol>\n<p>違規可能導致網站存取權終止或暫停。</p>\n<h2 id=\"contribution-license\" tabindex=\"-1\">投稿授權</h2>\n<p>發布投稿即表示您授予我們不受限制、永久、非專屬、可轉讓、免權利金且全球有效的授權，可為任何目的、以任何媒體格式使用、重製、散布、展示您的投稿及製作其衍生作品。這包括您提供的姓名、公司名稱或商標。您放棄著作人格權，並確認您有權授予此授權。我們可自行決定編輯、重新分類或移除投稿，且不對其內容負責。您仍對自己的投稿負責。</p>\n<h2 id=\"guidelines-for-reviews\" tabindex=\"-1\">評論準則</h2>\n<p>如您發布評論或評分，其內容必須：</p>\n<ol>\n<li>基於親身經驗。</li>\n<li>避免冒犯、辱罵或歧視性語言。</li>\n<li>不提及非法活動或與競爭者的關聯。</li>\n<li>準確且不具誤導性。</li>\n<li>不屬於有組織的評論活動。</li>\n</ol>\n<p>我們可自行決定接受、拒絕或移除評論，且不對其負責。發布評論即表示您授予我們永久、非專屬且全球有效的使用及散布授權。</p>\n<h2 id=\"social-media\" tabindex=\"-1\">社群媒體</h2>\n<p>您可依第三方條款，透過提供登入資料或授予存取權，將網站帳戶連結至第三方帳戶，例如社群媒體。您確認自己有權揭露這些資訊，且不會違反第三方協議。我們可依您的隱私設定，存取並在本網站展示您的第三方帳戶內容，例如好友名單。若第三方帳戶無法使用，其內容可能不再顯示於本網站。您可透過設定或聯絡我們來解除帳戶連結。我們不對第三方帳戶內容或協議負責。</p>\n<h2 id=\"submissions\" tabindex=\"-1\">提交意見</h2>\n<p>關於本網站的問題、評論、建議或回饋（「提交意見」）不具機密性，並成為我們的財產。我們可為任何合法目的使用提交意見，無須支付報酬或註明來源，且您放棄著作人格權。您確認提交意見是原創，或您有權提交。</p>\n<h2 id=\"third-party-websites-and-content\" tabindex=\"-1\">第三方網站與內容</h2>\n<p>本網站可能包含第三方網站或內容的連結，例如文章、圖片或軟體。我們不驗證其準確性或適當性，亦不對其負責。您須自行承擔存取第三方網站或內容的風險，且本條款與條件不再適用。使用前請查閱第三方條款與隱私權政策。我們不背書第三方產品或服務，也不對相關損害或損失負責。</p>\n<h2 id=\"site-management\" tabindex=\"-1\">網站管理</h2>\n<p>我們可以但沒有義務：</p>\n<ol>\n<li>監測本網站是否有違規行為。</li>\n<li>對違規者採取法律行動，包括向主管機關通報。</li>\n<li>限制或移除投稿。</li>\n<li>移除過量或造成負擔的內容。</li>\n<li>管理本網站，以保護我們的權利並確保正常運作。</li>\n</ol>\n<h2 id=\"privacy-policy\" tabindex=\"-1\">隱私權政策</h2>\n<p>我們重視資料隱私與安全。請查閱納入本條款的<strong><a href=\"/legal/privacy-policy\">隱私權政策</a></strong>。依美國《兒童網路隱私保護法》，我們不會明知而收集未滿 13 歲兒童的資料。</p>\n<h2 id=\"copyright-infringements\" tabindex=\"-1\">著作權侵害</h2>\n<p>如您認為網站內容侵犯您的著作權，請提供詳細資訊通知我們。虛假主張可能導致法律責任；如有疑慮，請諮詢律師。</p>\n<h2 id=\"term-and-termination\" tabindex=\"-1\">期間與終止</h2>\n<p>本條款與條件於您使用本網站期間適用。我們可基於任何理由，包括違反條款或法律，無須通知即拒絕存取或終止您的帳戶。遭終止的使用者不得建立新帳戶。我們可針對違規行為採取法律行動。</p>\n<h2 id=\"modifications-and-interruptions\" tabindex=\"-1\">修改與中斷</h2>\n<p>我們可無須通知即修改或停止本網站或其內容，且不對因此產生的損失負責。本網站可能因技術問題或維護而中斷，我們沒有維護或更新本網站的義務。</p>\n<h2 id=\"governing-law\" tabindex=\"-1\">準據法</h2>\n<p>本條款與條件以亞美尼亞法律為準據法，爭議由亞美尼亞法院專屬管轄。</p>\n<h2 id=\"dispute-resolution\" tabindex=\"-1\">爭議解決</h2>\n<p>爭議須先於書面通知後進行非正式協商。任何法律訴訟均須向亞美尼亞法院提出。</p>\n<h2 id=\"corrections\" tabindex=\"-1\">更正</h2>\n<p>我們可無須通知即更正網站上的錯誤或不準確資訊。</p>\n<h2 id=\"disclaimer\" tabindex=\"-1\">免責聲明</h2>\n<p>本網站按「現狀」及「現有可用狀態」提供。我們不作任何明示或默示保證，包括適售性、特定用途適用性及不侵權保證。我們不對下列事項負責：</p>\n<ol>\n<li>內容錯誤或不準確之處。</li>\n<li>使用本網站造成的人身傷害或財產損害。</li>\n<li>未經授權存取我們的伺服器或資料。</li>\n<li>網站中斷或停止。</li>\n<li>第三方病毒或有害材料。</li>\n<li>使用網站內容造成的損失。</li>\n</ol>\n<p>我們不背書或保證在本網站上宣傳的第三方產品或服務。</p>\n<h2 id=\"limitations-of-liability\" tabindex=\"-1\">責任限制</h2>\n<p>我們及我們的董事、員工或代理人不對使用本網站造成的直接、間接、衍生或其他損害負責，責任以您在提出任何請求前六個月內支付給我們的金額為限。某些司法管轄區可能不允許這些限制。</p>\n<h2 id=\"indemnification\" tabindex=\"-1\">賠償</h2>\n<p>您同意就因您的投稿、網站使用、違反本條款或侵犯第三方權利所引起的請求、損害或損失（包括法律費用），賠償我們、我們的子公司、關係企業及人員。</p>\n<h2 id=\"user-data\" tabindex=\"-1\">使用者資料</h2>\n<p>我們為管理網站而保留您傳送的資料，但您須自行對資料遺失或損毀負責。我們不對此類問題負責。</p>\n<h2 id=\"electronic-communications-transactions-and-signatures\" tabindex=\"-1\">電子通訊、交易及簽名</h2>\n<p>網站互動、電子郵件及表單均構成電子通訊。您同意以電子方式接收通知及協議，且此方式符合書面形式的法律要求。您放棄對非電子紀錄或簽名的要求。</p>\n<h2 id=\"miscellaneous\" tabindex=\"-1\">其他條款</h2>\n<p>本條款與條件連同已發布的政策構成完整協議。我們未執行條款並不代表放棄權利。我們可讓與權利，且不對超出我們控制範圍的延誤負責。無法執行的條款可與其餘條款分離，本協議不成立合資或代理關係。不得因我們起草本條款而作出對我們不利的解釋。</p>\n<h2 id=\"contact-us\" tabindex=\"-1\">聯絡我們</h2>\n<p>如有疑問，請透過 <a href=\"mailto:info@apcosys.net\">info@apcosys.net</a> 與我們聯絡。</p>\n",
+    "translationSha256": "9bcfa3ed52e7cab4f1437a79a656d08581bb5eed9ec7e9d5196be04212762938"
+  }
+}

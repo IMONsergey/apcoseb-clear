@@ -4,20 +4,21 @@ Change a shared role before adding a local value. Components own their geometry;
 
 ## Editing map
 
-| Concern                                                       | Owner                                                                  |
-| ------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| Semantic colors, spacing, radius, elevation and page rails    | `src/styles/tokens.css`                                                |
-| Font sizes, font recipes, tracking and responsive page titles | `src/styles/type-scale.css`                                            |
-| Document defaults, reset, container and accessibility helpers | `src/styles/base.css`                                                  |
-| Dark palette and theme controls                               | `src/styles/theme.css`                                                 |
-| Shared buttons and interaction states                         | `src/styles/controls.css`                                              |
-| Header and language disclosure                                | `navigation.css`, `localization.css`, `interface-layout.css`           |
-| Homepage                                                      | `home-layout.css`, `home-product.css`, owning section CSS              |
-| Inner-page composition, reading groups and responsive grids   | `inner-pages.css`                                                      |
-| Reusable page components, workspaces and research scenarios   | `page-components.css`, `workspaces.css`, `research-scenarios.css`      |
-| Legal layout, navigation and print                            | `legal-pages.css`                                                      |
-| Contained product fragments and evidence motion               | `compact-experience.css`, `product-evidence.css`, `product-motion.css` |
-| Original engines and private scene palette adapter            | `src/visuals/`, `theme-demos.css`                                      |
+| Concern                                                       | Owner                                                                               |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Semantic colors, spacing, radius, elevation and page rails    | `src/styles/tokens.css`                                                             |
+| Font sizes, font recipes, tracking and responsive page titles | `src/styles/type-scale.css`                                                         |
+| Document defaults, reset, container and accessibility helpers | `src/styles/base.css`                                                               |
+| Dark palette and theme controls                               | `src/styles/theme.css`                                                              |
+| Shared buttons and interaction states                         | `src/styles/controls.css`                                                           |
+| Header and language disclosure                                | `site.css`, `navigation.css`, `localization.css`                                    |
+| Homepage                                                      | `home-layout.css`, `home-product.css`, owning section CSS                           |
+| Inner-page composition, reading groups and responsive grids   | `inner-pages.css`                                                                   |
+| Reusable page components, workspaces and research scenarios   | `page-components.css`, `workspaces.css`, `research-scenarios.css`                   |
+| Legal layout, navigation and print                            | `legal-pages.css`                                                                   |
+| Contained product fragments and evidence motion               | `compact-experience.css`, `product-evidence.css`, `product-motion.css`              |
+| Original rendering engines                                    | `src/visuals/`                                                                      |
+| Application scene geometry and private light/dark palette     | `components/visuals/application/application-scene.css`, `application-api-scene.css` |
 
 `main.tsx` establishes global order. Lazy page groups load their own CSS; do not promote it into the initial bundle solely to simplify imports. Do not add a new stylesheet whose only purpose is to override a previous review. Existing `stage-*` class names are stable component selectors, not a second design system.
 
@@ -31,7 +32,7 @@ The three entry stylesheets contain only ordered `@import` statements. Vite inli
 | `inner-pages.css`        | `inner-pages/foundation`, `editorial-components`, `reading-rails`, `editorial-surfaces`, `content-adaptations`                                                                        |
 | `compact-experience.css` | `compact-experience/product-fragments`, `responsive-fragments`, `search-contour`                                                                                                      |
 
-Names above omit `.css`. Homepage modules follow actual section ownership; inner-page modules separate shared structure, reading layout and surfaces. Responsive adaptations retain their cascade position. Do not sort these imports alphabetically or append a new “fix” file. Find the existing rule and its later responsive states before editing. Keep responsive and interaction selectors separate where cascade order matters. Shared tablet hero sizing accommodates typographed copy without page-specific height overrides.
+Names above omit `.css`. Homepage modules follow actual section ownership; inner-page modules separate shared structure, reading layout and surfaces. Responsive adaptations retain their cascade position. Do not sort these imports alphabetically or append a new “fix” file. Find the existing rule and its later responsive states before editing. Keep responsive and interaction selectors separate where cascade order matters. Shared tablet hero sizing accommodates typographed copy. Pricing owns a compact introduction in its section stylesheet so visitors reach prices sooner without changing other page families.
 
 ## Typography
 
@@ -44,7 +45,7 @@ The ten font recipes are `--type-display`, `page`, `section`, `card`, `lead`, `b
 | Headings/numerals    | 24, 32, 40, 48, 64, 80             | Responsive stops and metrics                                       |
 | Fluid headings       | display, page, section, subsection | Shared responsive recipes; page families may adjust their inputs   |
 
-There are **12 discrete size steps**. The full `font-size` inventory has 22 expressions: 12 scale references, three fluid size references, one contained price formula, five print point sizes and `inherit`. The display role is used through a `font` recipe and is documented separately; this inventory is not a claim that the browser computes only 22 possible sizes.
+There are **12 approved discrete size steps**. The `font-size` inventory reports the expressions actually used: scale references, fluid role references, the contained price formula, print point sizes and `inherit`. A step may be used through a `font` recipe rather than an explicit `font-size` declaration. Run `npm run verify:styles` for the current source count; it does not describe the number of computed sizes in the browser.
 
 All declarations and font recipes share **six unitless line heights: 1, 1.1, 1.25, 1.5, 1.6, 1.7**. Tight display, heading, short title, interface, descriptive and long-form text respectively reuse these steps. No pixel line heights or local near-neighbours. Tracking roles remain display −0.05 em, heading −0.04 em, compact −0.025 em and label +0.04 em. Print retains physical point sizing; pricing numerals retain one container-relative formula.
 
@@ -64,7 +65,7 @@ Use these for ordinary margins, padding and gaps. `--layout-gap`, `--gutter`, `-
 
 Corners: detail 2 px; control 5 px; panel 7 px; frame 12 px; scene 24 px; round 50%; pill 999 px. Most UI uses **control or panel**. Frame/scene belong to illustrated product screens. A straight edge is `0`; attached surfaces can inherit a parent radius. Do not introduce a new corner for one card.
 
-There are **five shared shadow recipes**, including effects: `--shadow-low`, `popover`, `modal`, `inset` and `accent`. Only the first three are elevation levels and have dark-theme overrides. Floating disclosures reuse popover elevation. Search hover/focus reuse one accent shadow; their masked gradient contour still carries the interaction. Selected controls and animated evidence use outlines, which describe their state without introducing extra elevation. Decorative metric glows were removed.
+There are **five shared shadow recipes**, including effects: `--shadow-low`, `popover`, `modal`, `inset` and `accent`. Only the first three are elevation levels and have dark-theme overrides. Floating disclosures reuse popover elevation. Search uses the shared form border and low shadow at rest; only `:focus-within` adds the accent outline and shadow, without a persistent gradient contour. Product demonstrations do not paint decorative focus rectangles. Interactive demonstration controls use a quiet selected background or underline; their keyboard focus remains visible through a contrasting surface and underlined text. Decorative metric glows were removed.
 
 ## Palette
 
@@ -74,7 +75,7 @@ There are **five shared shadow recipes**, including effects: `--shadow-low`, `po
 - Dividers: `--border-subtle`, `--border-strong`.
 - Art direction: `--brand-mark`, `--api-surface`, `--visual-ink`.
 
-Dark values override the same roles. Do not restore synonyms such as `--white`, `--ink`, `--page` or `--line`. Masks, fixed-color artwork, print and original shadow-root demonstrations have separate physical requirements; their literals are included in inventory totals but are not public UI palette roles. Dark illustrations are separate files, never inverted light files.
+Dark values override the same roles. Do not restore synonyms such as `--white`, `--ink`, `--page` or `--line`. Masks, fixed-color artwork, print and theme adapters have separate physical requirements; their literals are included in the application inventory but are not public UI palette roles. Private engine styles under `src/visuals/` are excluded from that inventory and require their own rendered review. Dark illustrations are separate files, never inverted light files.
 
 ## Container-aware components
 
@@ -97,4 +98,4 @@ Keep global viewport queries for navigation, shell composition, input-device pre
 5. `design-system.spec.ts` compares cold and client-navigated pages in both themes. `style-contract.spec.ts` checks legal alignment and Sign In; `inner-hero-layout.spec.ts` checks 12 viewport widths and doubled text.
 6. For a measurable before/after report: `tsx scripts/verify-styles.ts --ref <commit>`. Its totals count source expressions, not computed styles or semantic roles. Fewer files or replacing every number with a variable is not proof of a simpler system.
 
-Large composition files remain explicit CSS, rather than a new utility framework or runtime style library. The application retains four runtime dependencies. Original engine checksums, reduced-motion behavior and interruption-safe transitions remain release gates.
+Large composition files remain explicit CSS, rather than a new utility framework or runtime style library. The application has three runtime dependencies: React, React DOM and Typograf. Original engine checksums, reduced-motion behavior and interruption-safe transitions remain release gates.

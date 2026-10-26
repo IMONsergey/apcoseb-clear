@@ -83,8 +83,7 @@
   align-items: center;
   gap: 0.8cqw;
   padding: 0.75cqw 1.15cqw;
-  border: 1px solid #d5d9dd;
-  border-radius: 0.55cqw;
+  color: var(--text-muted);
   font: 500 1cqw/1.25 var(--font-sans);
   white-space: nowrap;
 }
@@ -112,9 +111,9 @@
   font: 500 1cqw/1.25 var(--font-mono);
   margin-left: 0.6cqw;
 }
-.search-chrome__account .search-chrome__upgrade {
+.search-chrome__account .search-chrome__preview {
   color: var(--action-hover-fill);
-  background: var(--surface-tint);
+  background: transparent;
 }
 .search-chrome__mobile-brand {
   display: none;
@@ -269,12 +268,6 @@
   }
 }
 @media (max-width: 340px) {
-  .search-scene {
-    aspect-ratio: 320/568;
-  }
-  .search-scene__heading {
-    top: 34%;
-  }
   .search-scene__heading h2 {
     line-height: 1;
   }

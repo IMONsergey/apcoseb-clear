@@ -1,6 +1,6 @@
 import { legalRoutes } from './legal-routes';
 
-/** Client-preview routes, including the locally hosted legal documents. */
+/** Published routes, page metadata and lazy-loading groups. */
 export const siteRoutes = [
   {
     path: '/',
@@ -58,6 +58,12 @@ export const siteRoutes = [
     description: 'Integrate Apcosys internet infrastructure data into your workflows.',
   },
   {
+    path: '/developers/api/docs',
+    group: 'documentation',
+    title: 'API Documentation',
+    description: 'HTTP endpoints, filters, response fields and errors for Apcosys integrations.',
+  },
+  {
     path: '/pricing',
     group: 'commercial',
     title: 'Pricing',
@@ -68,6 +74,13 @@ export const siteRoutes = [
     group: 'corporate',
     title: 'About',
     description: 'Learn about the approach behind Apcosys internet intelligence.',
+  },
+  {
+    path: '/docs/investors',
+    group: 'investors',
+    title: 'Investors',
+    description:
+      'Explore Apcosys external exposure intelligence and contact the team about investment.',
   },
   {
     path: '/responsible-scanning',

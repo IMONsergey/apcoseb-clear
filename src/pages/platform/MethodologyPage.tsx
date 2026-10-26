@@ -1,22 +1,20 @@
 import { Text } from '../../components/ui/Text';
 import { primarySearch, linkTo } from '../../components/layout/pageLinks';
-import { metrics } from '../../content/metrics';
+import { metrics, metricsSource } from '../../content/metrics';
 import { EvidenceFlow } from '../../components/product/EvidenceFlow';
 import { PageFrame } from '../../components/layout/PageFrame';
 import { EditorialSection, FeatureColumns } from '../../components/layout/PageSections';
 import { useLocale } from '../../i18n/context';
 
-const coverageDefinitions = [
-  ['IPv4', 'Observed IPv4 address entries'],
-  ['IPv6', 'Observed IPv6 address entries'],
-  ['Domains', 'Domain observations connected to infrastructure'],
-  ['Detected Products', 'Product detections derived from service responses'],
-  ['CVE Associations', 'Potential links between detected products and CVEs'],
-  ['Protocols', 'Protocols represented in the dataset'],
-] as const;
-
 export default function MethodologyPage() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
+  const number = new Intl.NumberFormat(locale);
+  const date = new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(metricsSource.timestamp));
   return (
     <PageFrame
       artwork="methodology"
@@ -91,23 +89,32 @@ export default function MethodologyPage() {
       <EditorialSection
         id="coverage"
         title="Coverage, defined."
-        intro="These figures describe different parts of the dataset. Product detections and CVE associations are records, not counts of distinct vulnerable systems."
+        intro="These figures reproduce the public statistics endpoint. Read them alongside the source and its update date."
       >
         <div className="coverage-register" role="region" aria-label={t('Coverage metrics')}>
-          {metrics.map((metric, i) => (
+          {metrics.map((metric) => (
             <article key={metric.id}>
               <div>
                 <Text as="h3">{metric.label}</Text>
-                <Text as="p">{coverageDefinitions[i]?.[1]}</Text>
+                <p>{t('Total reported in the {field} field.', { field: metric.id })}</p>
               </div>
-              <strong>{metric.value}</strong>
+              <strong>{number.format(metric.value)}</strong>
             </article>
           ))}
         </div>
-        <Text as="p" className="editorial-note">
-          Client-preview figures. Measurement date and final counting definitions have not been
-          supplied; these are not live totals.
-        </Text>
+        <p className="editorial-note coverage-source">
+          <time dateTime={metricsSource.timestamp}>
+            {t('Coverage snapshot · {date}', { date })}
+          </time>
+          {' · '}
+          <a href={metricsSource.url} target="_blank" rel="noopener noreferrer">
+            {t('View statistics source')}
+          </a>
+          <br />
+          {t(
+            'This is a dated snapshot, not a live total. The endpoint does not specify counting or deduplication rules.',
+          )}
+        </p>
       </EditorialSection>
       <EditorialSection
         id="collection"
@@ -143,8 +150,8 @@ export default function MethodologyPage() {
               </div>
             </dl>
             <Text as="p" className="editorial-note">
-              The exact meanings of Created and Updated, and the scan cadence, still require
-              confirmation.
+              Coverage totals do not indicate when an individual service was last observed. Check
+              the timestamps attached to the record.
             </Text>
           </div>
         </div>

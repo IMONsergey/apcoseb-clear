@@ -36,7 +36,8 @@ export function ProductEvidence({
   const selected = Math.min(selectedHost ?? localSelection, data.hosts.length - 1);
   const host = data.hosts[selected]!;
   const [serviceIndex, setServiceIndex] = useState(0);
-  const service = host.services[serviceIndex] ?? host.services[0]!;
+  const activeServiceIndex = Math.min(serviceIndex, host.services.length - 1);
+  const service = host.services[activeServiceIndex]!;
   const banner =
     service.protocol === 'HTTPS'
       ? ['HTTP/1.1 200 OK', 'Server: ' + service.technology.replace(' ', '/')]
@@ -44,8 +45,8 @@ export function ProductEvidence({
         ? ['SSH-2.0-OpenSSH_9.6', 'Protocol: SSH / TCP']
         : ['HTTP/1.1 301 Moved Permanently', 'Location: https://' + host.hostname];
   const root = useRef<HTMLDivElement>(null);
-  const [paused, setPaused] = useState(false);
-  useEvidencePlayback(root, scenario + mode + host.ip + service.port, paused);
+  const [playbackCaption, setPlaybackCaption] = useState('Query, host, service, context');
+  useEvidencePlayback(root, scenario + mode + host.ip + service.port, false, setPlaybackCaption);
   return (
     <div
       ref={root}
@@ -65,18 +66,6 @@ export function ProductEvidence({
             Apcosys <span className="product-evidence__slash">/</span>{' '}
             <LocaleText>{t(mode === 'cve' ? 'CVE CONTEXT' : 'INVESTIGATION')}</LocaleText>
           </span>
-          <button
-            className="evidence-playback-toggle"
-            type="button"
-            aria-label={t(paused ? 'Play product animation' : 'Pause product animation')}
-            aria-pressed={paused}
-            onClick={() => setPaused(!paused)}
-          >
-            <LocaleText>{t(paused ? 'Play' : 'Pause')}</LocaleText>
-            <svg viewBox="0 0 10 12" aria-hidden="true">
-              <path d={paused ? 'M1 0L10 6L1 12Z' : 'M1 0H4V12H1ZM6 0H9V12H6Z'} />
-            </svg>
-          </button>
         </div>
         <div className="product-evidence__query">
           <span className="product-evidence__mono">
@@ -172,7 +161,7 @@ export function ProductEvidence({
                     <LocaleText>{t('Evidence source')}</LocaleText>
                   </span>
                   <strong>
-                    <LocaleText>{t('Authored demonstration')}</LocaleText>
+                    <LocaleText>{t('Example record')}</LocaleText>
                   </strong>
                 </div>
                 <div>
@@ -194,7 +183,7 @@ export function ProductEvidence({
                   type="button"
                   className="product-evidence__service"
                   key={service.port}
-                  aria-pressed={serviceIndex === index}
+                  aria-pressed={activeServiceIndex === index}
                   onClick={() => setServiceIndex(index)}
                 >
                   <span className="product-evidence__port">
@@ -236,7 +225,7 @@ export function ProductEvidence({
                     <dt>
                       <LocaleText>{t('Detected product')}</LocaleText>
                     </dt>
-                    <dd>{host.services[0]!.technology}</dd>
+                    <dd>{service.technology}</dd>
                   </div>
                   <div>
                     <dt>
@@ -273,7 +262,7 @@ export function ProductEvidence({
           <div className="evidence-playback" aria-hidden="true">
             <span className="evidence-playback__dot" />
             <span data-playback-label>
-              <LocaleText>{t('Query, host, service, context')}</LocaleText>
+              <LocaleText>{playbackCaption}</LocaleText>
             </span>
             <span className="evidence-playback__track">
               <i data-playback-progress />

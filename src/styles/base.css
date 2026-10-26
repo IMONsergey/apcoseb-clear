@@ -14,7 +14,8 @@
 }
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-height) + 24px);
+  scroll-padding-top: calc(var(--anchor-header-height, var(--header-height)) + 24px);
+  scrollbar-gutter: stable;
 }
 body {
   margin: 0;

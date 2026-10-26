@@ -3,16 +3,22 @@ import '../../styles/billing-dock.css';
 import { siteHref } from '../../app/paths';
 import { LocaleText } from '../../i18n/LocaleText';
 import { useLocale } from '../../i18n/context';
-import { useMemo, useRef, useState, type MouseEvent } from 'react';
+import { useRef, useState, type MouseEvent } from 'react';
 import { MobileBillingDock } from './MobileBillingDock';
 import { plans, type Plan } from '../../content/plans';
-import { productUrl } from '../../config/site';
+import { signInUrl } from '../../config/site';
+import { PlanHandoff } from './PlanHandoff';
 import { DoubleButton } from '../ui/DoubleButton';
 import { Modal } from '../ui/Modal';
 import { Visual } from '../visuals/Visual';
 import { BillingSwitch } from '../ui/BillingSwitch';
 import { AnimatedPrice } from '../ui/AnimatedPrice';
-import { calculatePrice, ANNUAL_DISCOUNT_PERCENT, type BillingPeriod } from '../../lib/pricing';
+import {
+  calculatePrice,
+  getPricingFormatters,
+  ANNUAL_DISCOUNT_PERCENT,
+  type BillingPeriod,
+} from '../../lib/pricing';
 export function PricingSection({
   showTeamBanner = true,
   title,
@@ -23,29 +29,13 @@ export function PricingSection({
   comparisonHref?: string;
 }) {
   const { locale, t } = useLocale();
-  const numberLocale = locale === 'en' ? 'en-US' : locale;
-  const currency = useMemo(
-    () =>
-      new Intl.NumberFormat(numberLocale, {
-        style: 'currency',
-        currency: 'USD',
-        currencyDisplay: 'narrowSymbol',
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 0,
-      }),
-    [numberLocale],
-  );
-  const count = useMemo(() => new Intl.NumberFormat(numberLocale), [numberLocale]);
+  const { currency, count } = getPricingFormatters(locale);
   const formatPrice = (amount: number) => currency.format(amount);
   const formatCount = (value: number) => count.format(value);
-  const formatCredits = (value: number, compact = false) => {
-    const formatted = formatCount(value);
-    return compact && locale === 'en' ? formatted.replaceAll(',', '\u00a0') : formatted;
-  };
   const [compare, setCompare] = useState(false);
   const rangeRef = useRef<HTMLDivElement>(null);
   const [planOpen, setPlanOpen] = useState(false);
-  const [period, setPeriod] = useState<BillingPeriod>('monthly');
+  const [period, setPeriod] = useState<BillingPeriod>('annually');
   const [selected, setSelected] = useState<Plan | null>(null);
   return (
     <section className="pricing section-space" id="pricing" aria-labelledby="pricing-title">
@@ -142,7 +132,7 @@ export function PricingSection({
                     <dt>
                       <LocaleText>{t('Credits')}</LocaleText>
                     </dt>
-                    <dd>{formatCredits(plan.credits, true)}</dd>
+                    <dd>{formatCount(plan.credits)}</dd>
                   </div>
                   <div>
                     <dt>
@@ -153,7 +143,7 @@ export function PricingSection({
                 </dl>
                 <div className="plan-actions">
                   {plan.id === 'free' ? (
-                    <a className="plan-button" href={`${productUrl}/register`}>
+                    <a className="plan-button" href={signInUrl}>
                       <LocaleText>{t(plan.action)}</LocaleText>
                     </a>
                   ) : (
@@ -193,7 +183,9 @@ export function PricingSection({
                     },
                   })}
             >
-              <LocaleText>{t('View a detailed comparison')}</LocaleText>
+              <LocaleText>
+                {t(comparisonHref ? 'View a detailed comparison' : 'Compare plans')}
+              </LocaleText>
             </DoubleButton>
           </div>
         </div>
@@ -224,9 +216,7 @@ export function PricingSection({
         <div className="table-scroll" tabIndex={0} role="region" aria-label={t('Plan comparison')}>
           <table>
             <caption>
-              <LocaleText>
-                {t('Allowances and access shown in the current landing concept')}
-              </LocaleText>
+              <LocaleText>{t('Plan allowances and access')}</LocaleText>
             </caption>
             <thead>
               <tr>
@@ -264,7 +254,7 @@ export function PricingSection({
                   <LocaleText>{t('Credits')}</LocaleText>
                 </th>
                 {plans.map((p) => (
-                  <td key={p.id}>{formatCredits(p.credits, true)}</td>
+                  <td key={p.id}>{formatCount(p.credits)}</td>
                 ))}
               </tr>
               <tr>
@@ -288,6 +278,13 @@ export function PricingSection({
             </tbody>
           </table>
         </div>
+        <DoubleButton
+          variant="secondary"
+          href={siteHref('/pricing') + '#compare-plans'}
+          className="comparison-full-link"
+        >
+          <LocaleText>{t('View all plan features')}</LocaleText>
+        </DoubleButton>
         <p className="modal-note">
           <LocaleText>
             {t(
@@ -295,7 +292,7 @@ export function PricingSection({
             )}
           </LocaleText>
         </p>
-        <DoubleButton href={`${productUrl}/register`}>
+        <DoubleButton href={signInUrl}>
           <LocaleText>{t('Continue in Apcosys')}</LocaleText>
         </DoubleButton>
       </Modal>
@@ -328,7 +325,7 @@ export function PricingSection({
                 <dt>
                   <LocaleText>{t('Credits')}</LocaleText>
                 </dt>
-                <dd>{formatCredits(selected.credits, true)}</dd>
+                <dd>{formatCount(selected.credits)}</dd>
               </div>
               <div>
                 <dt>
@@ -345,16 +342,7 @@ export function PricingSection({
                 </dd>
               </div>
             </dl>
-            <p className="modal-note">
-              <LocaleText>
-                {t(
-                  'The selected plan is shown for comparison only. Plan selection is not transferred to registration. Confirm the plan, pricing and billing inside Apcosys before purchase.',
-                )}
-              </LocaleText>
-            </p>
-            <DoubleButton href={`${productUrl}/register`}>
-              <LocaleText>{t('Continue in Apcosys')}</LocaleText>
-            </DoubleButton>
+            <PlanHandoff />
           </>
         )}
       </Modal>

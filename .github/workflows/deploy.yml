@@ -10,17 +10,70 @@ on:
 permissions:
   contents: read
 
+env:
+  VITE_APCO_PRODUCT_URL: ${{ vars.VITE_APCO_PRODUCT_URL }}
+  VITE_APCO_SUPPORT_EMAIL: ${{ vars.VITE_APCO_SUPPORT_EMAIL }}
+  VITE_APCO_SIGN_IN_URL: ${{ vars.VITE_APCO_SIGN_IN_URL }}
+  APCO_PUBLIC_SITE_ORIGIN: ${{ vars.APCO_PUBLIC_SITE_ORIGIN }}
+  APCO_SITE_INDEXABLE: ${{ vars.APCO_SITE_INDEXABLE || 'false' }}
+
 concurrency:
   group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  configuration:
+    runs-on: ubuntu-24.04
+    outputs:
+      base: ${{ steps.target.outputs.base }}
+      origin: ${{ steps.target.outputs.origin }}
+    steps:
+      - name: Resolve Pages destination
+        id: target
+        shell: bash
+        env:
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          BASE_OVERRIDE: ${{ vars.APCO_SITE_BASE }}
+        run: |
+          set -euo pipefail
+          if [ -n "$BASE_OVERRIDE" ]; then
+            base="$BASE_OVERRIDE"
+          elif [[ "$REPOSITORY_NAME" == *.github.io ]]; then
+            base="/"
+          else
+            base="/$REPOSITORY_NAME/"
+          fi
+          if [[ ! "$base" =~ ^/([a-zA-Z0-9_-]+/)*$ ]]; then
+            echo "APCO_SITE_BASE must be / or a directory path such as /site/." >&2
+            exit 1
+          fi
+          origin="$APCO_PUBLIC_SITE_ORIGIN"
+          if [ -z "$origin" ]; then
+            owner="${REPOSITORY_OWNER,,}"
+            origin="https://$owner.github.io"
+          fi
+          while [[ "$origin" == */ ]]; do origin="${origin%/}"; done
+          if [[ ! "$origin" =~ ^https://[^/?#[:space:]@]+$ ]]; then
+            echo "APCO_PUBLIC_SITE_ORIGIN must be an HTTPS origin without a path or credentials." >&2
+            exit 1
+          fi
+          if [[ "$APCO_SITE_INDEXABLE" != 'true' && "$APCO_SITE_INDEXABLE" != 'false' ]]; then
+            echo "APCO_SITE_INDEXABLE must be true or false." >&2
+            exit 1
+          fi
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "origin=$origin" >> "$GITHUB_OUTPUT"
+
   validate:
+    needs: configuration
+    env:
+      APCO_PUBLIC_SITE_ORIGIN: ${{ needs.configuration.outputs.origin }}
     permissions:
       contents: read
       pages: read
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 45
     steps:
       - name: Check out source
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -33,48 +86,111 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
-      - name: Audit production dependencies
-        run: npm run audit:production
+      - name: Audit all dependencies
+        run: npm audit --audit-level=high
       - name: Lint and typecheck
         run: npm run check
-      - name: Resolve Pages base
-        id: pages-base
-        shell: bash
-        env:
-          REPOSITORY_NAME: ${{ github.event.repository.name }}
-          BASE_OVERRIDE: ${{ vars.APCO_SITE_BASE }}
-        run: |
-          if [ -n "$BASE_OVERRIDE" ]; then
-            base="$BASE_OVERRIDE"
-          elif [[ "$REPOSITORY_NAME" == *.github.io ]]; then
-            base="/"
-          else
-            base="/$REPOSITORY_NAME/"
-          fi
-          echo "base=$base" >> "$GITHUB_OUTPUT"
       - name: Build
-        run: npm run build -- --base="${{ steps.pages-base.outputs.base }}"
+        run: npm run build -- --base="${{ needs.configuration.outputs.base }}"
       - name: Install browser
         run: npx playwright install --with-deps chromium
+      - name: Install Traditional Chinese fonts for localized checks
+        run: sudo apt-get install --no-install-recommends -y fonts-noto-cjk
       - name: Browser regression suite
+        run: >-
+          npm run test:release -- tests/acceptance/route-motion.spec.ts tests/acceptance/routes.spec.ts
+          tests/acceptance/localization.spec.ts tests/acceptance/layout-regressions.spec.ts
+          tests/acceptance/legal-pages.spec.ts tests/acceptance/legal-localization.spec.ts
+          tests/acceptance/theme-transitions.spec.ts
+          --grep 'Initial theme applies|Delayed route keeps|Cold anchored navigation|reload preserves the latest|complete published text|full translated text and stable anchors|continuous scrolling|history restores the reading position|reselecting the current route|language round trip|Business action lands'
+        env:
+          APCO_TEST_BASE_PATH: ${{ needs.configuration.outputs.base }}
+      - name: Full release acceptance
         run: npm run test:release
         env:
-          APCO_TEST_BASE_PATH: ${{ steps.pages-base.outputs.base }}
+          APCO_TEST_BASE_PATH: ${{ needs.configuration.outputs.base }}
+      - name: Preserve validation evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: validation-${{ github.sha }}
+          retention-days: 7
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
       - name: Configure Pages
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
       - name: Upload static output
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: dist
 
+  cross-browser:
+    needs: configuration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [firefox, webkit]
+    env:
+      APCO_PUBLIC_SITE_ORIGIN: ${{ needs.configuration.outputs.origin }}
+      APCO_TEST_BASE_PATH: ${{ needs.configuration.outputs.base }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Build the same Pages destination
+        run: npm run build -- --base="${{ needs.configuration.outputs.base }}"
+      - name: Install browser
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Install Traditional Chinese fonts for localized checks
+        run: sudo apt-get install --no-install-recommends -y fonts-noto-cjk
+      - name: Initial navigation and recovery
+        run: >-
+          npm test -- --project=${{ matrix.browser }}
+          tests/acceptance/routes.spec.ts tests/acceptance/handoff.spec.ts
+          tests/acceptance/interactions.spec.ts
+          tests/acceptance/route-motion.spec.ts tests/acceptance/localization.spec.ts
+          tests/acceptance/layout-regressions.spec.ts
+          tests/acceptance/legal-pages.spec.ts tests/acceptance/legal-localization.spec.ts
+          tests/acceptance/theme-transitions.spec.ts
+          --grep 'Initial theme applies|Delayed route keeps|Cold anchored navigation|reload preserves the latest|complete published text|full translated text and stable anchors|Early navigation|failed initial page download|documentation links open the localized standalone API reference|continuous scrolling|history restores the reading position|reselecting the current route|language round trip|Business action lands'
+      - name: Repeated cold navigation
+        run: >-
+          npm test -- --project=${{ matrix.browser }} tests/acceptance/routes.spec.ts tests/acceptance/route-motion.spec.ts
+          --grep 'Early navigation|Cold anchored navigation|Delayed route keeps' --repeat-each=5 --retries=0
+      - name: Full release acceptance
+        run: npm test -- --project=${{ matrix.browser }}
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: validation-${{ matrix.browser }}-${{ github.sha }}
+          retention-days: 7
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
 
   handoff-package:
     if: github.event_name == 'pull_request'
-    needs: validate
+    needs: [configuration, validate, cross-browser]
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    env:
+      APCO_PUBLIC_SITE_ORIGIN: ${{ needs.configuration.outputs.origin }}
     steps:
       - name: Check out the actual candidate commit
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -103,7 +219,7 @@ jobs:
           test -f "$source/public/assets/brand/logo.svg"
           test -f "$source/public/fonts/LICENSE-Instrument-Sans.txt"
           test -f "$source/public/fonts/LICENSE-IBM-Plex-Mono.txt"
-          test -f "$source/src/visuals/api/GSAP-NOTICE.txt"
+          test -f "$source/public/fonts/LICENSE-Onest.txt"
           test -f "$source/docs/legal-sources/privacy-policy.md"
           test ! -e "$source/.git"
           test ! -e "$source/docs/archive"
@@ -124,7 +240,7 @@ jobs:
         working-directory: .work/isolated/apcosys-web
         env:
           APCO_TEST_BASE_PATH: /recipient-site/
-        run: npx playwright test --config=playwright.release.config.ts handoff.spec.ts routes.spec.ts
+        run: npm run test:relocation
       - name: Verify root-domain relocation
         working-directory: .work/isolated/apcosys-web
         run: npm run build:root
@@ -132,15 +248,16 @@ jobs:
         working-directory: .work/isolated/apcosys-web
         env:
           APCO_TEST_BASE_PATH: /
-        run: npx playwright test --config=playwright.release.config.ts handoff.spec.ts routes.spec.ts
-      - name: Check custom SaaS origin in static no-JavaScript fallback
+        run: npm run test:relocation
+      - name: Check custom product destinations and static no-JavaScript fallback
         working-directory: .work/isolated/apcosys-web
         env:
           VITE_APCO_PRODUCT_URL: https://product.example.org
+          VITE_APCO_SIGN_IN_URL: https://product.example.org/login
+          APCO_TEST_BASE_PATH: /
         run: |
           npm run build:root
-          grep -F 'href="https://product.example.org/search"' dist/index.html
-          ! grep -q '__APCO_PUBLIC_SEARCH_URL__' dist/index.html
+          npm run test:relocation
       - name: Publish verified handoff archive
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v4
         with:
@@ -151,9 +268,9 @@ jobs:
           if-no-files-found: error
 
   deploy:
-    # A clean repository import only validates code. Publishing requires an explicit workflow dispatch.
-    if: github.event_name == 'workflow_dispatch'
-    needs: validate
+    # Only a fully validated main revision can replace the public Pages site.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: [validate, cross-browser]
     runs-on: ubuntu-24.04
     permissions:
       pages: write
@@ -172,7 +289,7 @@ jobs:
     if: github.event_name != 'pull_request'
     needs: deploy
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 45
     steps:
       - name: Check out published source
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
@@ -187,6 +304,8 @@ jobs:
         run: npm ci
       - name: Install browser
         run: npx playwright install --with-deps chromium
+      - name: Install Traditional Chinese fonts for localized checks
+        run: sudo apt-get install --no-install-recommends -y fonts-noto-cjk
       - name: Check actual Pages deployment
         run: npm run test:release
         env:

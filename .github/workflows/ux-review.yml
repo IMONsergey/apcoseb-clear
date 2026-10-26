@@ -1,12 +1,18 @@
 name: Cross-browser UX review
 
 on:
-  pull_request:
-    branches: [main]
+  # Pull requests already run all three engines in deploy.yml.
   workflow_dispatch:
 
 permissions:
   contents: read
+
+env:
+  VITE_APCO_PRODUCT_URL: ${{ vars.VITE_APCO_PRODUCT_URL }}
+  VITE_APCO_SUPPORT_EMAIL: ${{ vars.VITE_APCO_SUPPORT_EMAIL }}
+  VITE_APCO_SIGN_IN_URL: ${{ vars.VITE_APCO_SIGN_IN_URL }}
+  APCO_PUBLIC_SITE_ORIGIN: ${{ vars.APCO_PUBLIC_SITE_ORIGIN }}
+  APCO_SITE_INDEXABLE: ${{ vars.APCO_SITE_INDEXABLE || 'false' }}
 
 concurrency:
   group: ux-review-${{ github.ref }}
@@ -16,6 +22,10 @@ jobs:
   verify:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
@@ -25,17 +35,57 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - run: npm run audit:production
+      - run: npm audit --audit-level=high
       - run: npm run check
-      - run: npm run build
-      - run: npx playwright install --with-deps chromium firefox webkit
-      - name: Full release acceptance in Chromium, Firefox and WebKit
-        run: npm test
+      - name: Resolve review destination
+        id: target
+        shell: bash
+        env:
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          BASE_OVERRIDE: ${{ vars.APCO_SITE_BASE }}
+        run: |
+          set -euo pipefail
+          if [ -n "$BASE_OVERRIDE" ]; then
+            base="$BASE_OVERRIDE"
+          elif [[ "$REPOSITORY_NAME" == *.github.io ]]; then
+            base="/"
+          else
+            base="/$REPOSITORY_NAME/"
+          fi
+          if [[ ! "$base" =~ ^/([a-zA-Z0-9_-]+/)*$ ]]; then
+            echo "APCO_SITE_BASE must be / or a directory path such as /site/." >&2
+            exit 1
+          fi
+          origin="$APCO_PUBLIC_SITE_ORIGIN"
+          if [ -z "$origin" ]; then
+            owner="${REPOSITORY_OWNER,,}"
+            origin="https://$owner.github.io"
+          fi
+          while [[ "$origin" == */ ]]; do origin="${origin%/}"; done
+          if [[ ! "$origin" =~ ^https://[^/?#[:space:]@]+$ ]]; then
+            echo "APCO_PUBLIC_SITE_ORIGIN must be an HTTPS origin without a path or credentials." >&2
+            exit 1
+          fi
+          if [[ "$APCO_SITE_INDEXABLE" != 'true' && "$APCO_SITE_INDEXABLE" != 'false' ]]; then
+            echo "APCO_SITE_INDEXABLE must be true or false." >&2
+            exit 1
+          fi
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "APCO_PUBLIC_SITE_ORIGIN=$origin" >> "$GITHUB_ENV"
+      - run: npm run build -- --base="${{ steps.target.outputs.base }}"
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Install Traditional Chinese fonts for localized checks
+        run: sudo apt-get install --no-install-recommends -y fonts-noto-cjk
+      - name: Full release acceptance
+        run: npm test -- --project=${{ matrix.browser }}
+        env:
+          APCO_TEST_BASE_PATH: ${{ steps.target.outputs.base }}
       - name: Preserve review evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
-          name: ux-review-${{ github.sha }}
+          name: ux-review-${{ matrix.browser }}-${{ github.sha }}
           retention-days: 7
           path: |
             test-results/

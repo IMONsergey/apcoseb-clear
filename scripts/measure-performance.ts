@@ -9,6 +9,7 @@ interface PerformanceSampleState {
   longTasks: number[];
   events: number[];
   firstResponse: number;
+  shifts: { time: number; value: number }[];
 }
 
 declare global {
@@ -30,6 +31,13 @@ interface PerformanceSample {
   route: string;
   run: number;
   lcpMs: number;
+  fcpMs: number;
+  cls: number;
+  requestCount: number;
+  scriptBytes: number;
+  styleBytes: number;
+  fontBytes: number;
+  imageBytes: number;
   longTaskCount: number;
   blockingMs: number;
   longestTaskMs: number;
@@ -39,10 +47,29 @@ interface PerformanceSample {
 }
 
 type MetricKey =
-  'lcpMs' | 'blockingMs' | 'longestTaskMs' | 'clickToFrameMs' | 'observedEventMs' | 'resourceBytes';
+  | 'lcpMs'
+  | 'blockingMs'
+  | 'longestTaskMs'
+  | 'clickToFrameMs'
+  | 'observedEventMs'
+  | 'resourceBytes'
+  | 'fcpMs'
+  | 'cls'
+  | 'requestCount'
+  | 'scriptBytes'
+  | 'styleBytes'
+  | 'fontBytes'
+  | 'imageBytes';
 
 const metricKeys: readonly MetricKey[] = [
   'lcpMs',
+  'fcpMs',
+  'cls',
+  'requestCount',
+  'scriptBytes',
+  'styleBytes',
+  'fontBytes',
+  'imageBytes',
   'blockingMs',
   'longestTaskMs',
   'clickToFrameMs',
@@ -51,12 +78,14 @@ const metricKeys: readonly MetricKey[] = [
 ];
 
 const args = process.argv.slice(2);
-const options = new Set<string>(['--output', '--dist', '--runs']);
+const options = new Set<string>(['--output', '--dist', '--runs', '--routes', '--screenshots']);
 for (let i = 0; i < args.length; i += 2) {
   const name = args[i];
   const value = args[i + 1];
   if (!name || !options.has(name) || !value || value.startsWith('--')) {
-    throw new Error('Use --output <file>, --dist <directory>, or --runs <1–10>.');
+    throw new Error(
+      'Use --output <file>, --dist <directory>, --runs <1–10>, --routes </path/,/path/>, or --screenshots <directory>.',
+    );
   }
 }
 const option = (name: string, fallback: string): string => {
@@ -68,6 +97,11 @@ const option = (name: string, fallback: string): string => {
 };
 const output = option('--output', '.work/performance.json');
 const dist = option('--dist', 'dist');
+const routes = [...new Set(option('--routes', '/,/about/,/legal/privacy-policy/').split(','))];
+if (!routes.length || routes.some((route) => !/^\/(?:[a-z0-9-]+\/)*$/.test(route)))
+  throw new Error('Measurement routes must be absolute directory paths.');
+const screenshots = option('--screenshots', '');
+if (screenshots) await mkdir(resolve(screenshots), { recursive: true });
 const runs = Number(option('--runs', '3'));
 if (!Number.isInteger(runs) || runs < 1 || runs > 10) throw new Error('Runs must be 1–10.');
 const previewPath = process.env.APCO_TEST_BASE_PATH || '/apcoseb-clear/';
@@ -122,7 +156,7 @@ try {
     { name: 'mobile-constrained', width: 390, cpu: 4, latency: 80, download: 200000 },
   ];
   for (const profile of profiles)
-    for (const route of ['', 'about/', 'legal/privacy-policy/']) {
+    for (const route of routes) {
       for (let run = 1; run <= runs; run++) {
         const context = await activeBrowser.newContext({
           viewport: { width: profile.width, height: 900 },
@@ -146,11 +180,19 @@ try {
             longTasks: [],
             events: [],
             firstResponse: 0,
+            shifts: [],
           };
           window.__performanceSample = report;
           new PerformanceObserver((list) => {
             for (const entry of list.getEntries()) report.lcp = entry.startTime;
           }).observe({ type: 'largest-contentful-paint', buffered: true });
+          new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              const shift = entry as PerformanceEntry & { value: number; hadRecentInput: boolean };
+              if (!shift.hadRecentInput)
+                report.shifts.push({ time: shift.startTime, value: shift.value });
+            }
+          }).observe({ type: 'layout-shift', buffered: true });
           new PerformanceObserver((list) => {
             for (const entry of list.getEntries()) report.longTasks.push(entry.duration);
           }).observe({ type: 'longtask', buffered: true });
@@ -187,13 +229,45 @@ try {
             { once: true },
           );
         });
-        await page.goto(base + route, { waitUntil: 'load' });
+        await page.goto(base + route.slice(1), { waitUntil: 'load' });
         await page.locator('main h1').waitFor({ state: 'visible' });
         await page.evaluate(() => document.fonts.ready);
         await page.waitForTimeout(1200);
         const load = await page.evaluate(() => {
           const r = window.__performanceSample;
+          const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+          let scriptBytes = 0,
+            styleBytes = 0,
+            fontBytes = 0,
+            imageBytes = 0;
+          for (const entry of resources) {
+            const path = new URL(entry.name).pathname;
+            if (/\.js$/.test(path)) scriptBytes += entry.transferSize;
+            else if (/\.css$/.test(path)) styleBytes += entry.transferSize;
+            else if (/\.woff2$/.test(path)) fontBytes += entry.transferSize;
+            else if (/\.(?:webp|svg|png)$/.test(path)) imageBytes += entry.transferSize;
+          }
+          let start = 0,
+            last = 0,
+            sum = 0,
+            cls = 0;
+          for (const shift of r.shifts) {
+            if (shift.time - last > 1000 || shift.time - start > 5000) {
+              start = shift.time;
+              sum = 0;
+            }
+            sum += shift.value;
+            last = shift.time;
+            cls = Math.max(cls, sum);
+          }
           return {
+            fcpMs: performance.getEntriesByName('first-contentful-paint')[0]?.startTime ?? 0,
+            cls,
+            requestCount: resources.length,
+            scriptBytes,
+            styleBytes,
+            fontBytes,
+            imageBytes,
             lcpMs: r.lcp,
             longTaskCount: r.longTasks.length,
             blockingMs: r.longTasks.reduce((sum, duration) => sum + Math.max(0, duration - 50), 0),
@@ -207,6 +281,13 @@ try {
               ),
           };
         });
+        if (screenshots && run === 1)
+          await page.screenshot({
+            path: resolve(
+              screenshots,
+              `${profile.name}-${route.replace(/\//g, '-').replace(/^-|-$/g, '') || 'home'}.png`,
+            ),
+          });
         await page.locator(profile.width < 1200 ? '.menu-toggle' : '.theme-trigger').click();
         await page.waitForTimeout(500);
         const response = await page.evaluate(() => ({
@@ -219,12 +300,14 @@ try {
       console.log(`${profile.name} ${route || '/'}: ${runs} cold runs complete`);
     }
   const median = (values: readonly number[]): number => {
-    const value = [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
+    const sorted = [...values].sort((a, b) => a - b);
+    const middle = Math.floor(sorted.length / 2);
+    const value = sorted[middle];
     if (value === undefined) throw new Error('Cannot calculate a median without samples.');
-    return value;
+    return sorted.length % 2 ? value : (sorted[middle - 1]! + value) / 2;
   };
   const summary = profiles.flatMap(({ name }) =>
-    ['', 'about/', 'legal/privacy-policy/'].map((route) => {
+    routes.map((route) => {
       const rows = samples.filter(
         (sample) => sample.profile === name && sample.route === (route || '/'),
       );
@@ -232,7 +315,12 @@ try {
         profile: name,
         route: route || '/',
         ...Object.fromEntries(
-          metricKeys.map((key) => [key, Math.round(median(rows.map((row) => row[key])))]),
+          metricKeys.map((key) => [
+            key,
+            key === 'cls'
+              ? Number(median(rows.map((row) => row[key])).toFixed(4))
+              : Math.round(median(rows.map((row) => row[key]))),
+          ]),
         ),
       };
     }),
@@ -241,6 +329,7 @@ try {
     collectedAt: new Date().toISOString(),
     browser: activeBrowser.version(),
     runs,
+    routes,
     profiles,
     scope:
       'Cold-cache Chromium lab measurements with live motion. Medians of controlled samples, not field Core Web Vitals. blockingMs sums long-task excess above 50ms until the load checkpoint; it is not Lighthouse TBT. observedEventMs and clickToFrameMs describe one scripted menu interaction, not page INP. transferSize may be zero for resources without timing access on remote hosts.',

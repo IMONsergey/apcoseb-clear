@@ -115,7 +115,7 @@ function inventory(sources: readonly CssSource[], validate: boolean): StyleInven
       for (const match of value.matchAll(/#[\da-f]{3,8}\b|(?:rgba?|hsla?)\([^)]*\)/gi)) {
         colors.add(match[0].toLowerCase().replace(/\s+/g, ' '));
       }
-      if (!validate || file.endsWith('theme-demos.css')) return;
+      if (!validate) return;
       let parent: Node | undefined = declaration.parent;
       let print = false;
       while (parent) {

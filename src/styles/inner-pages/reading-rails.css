@@ -38,10 +38,7 @@
   text-decoration: underline;
   text-underline-offset: 6px;
 }
-.site
-  .inner-pages
-  :is(.collection-layout, .team-handoff, .api-access-layout, .scanning-request)
-  > * {
+.site .inner-pages :is(.collection-layout, .team-handoff) > * {
   min-width: 0;
   padding-top: 28px;
   border-top: 1px solid var(--border-subtle);
@@ -117,10 +114,5 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-  }
-}
-@media (min-width: 768px) {
-  .site .inner-pages .team-workflow__layout {
-    grid-template-columns: var(--reading-columns);
   }
 }

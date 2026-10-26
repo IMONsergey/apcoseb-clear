@@ -7,7 +7,7 @@ import {
 import { observeFirstPaint } from '../firstPaint';
 import './turquoise-flow.css';
 
-export interface TurquoiseFlowProps extends FlowOptions {
+interface TurquoiseFlowProps extends FlowOptions {
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;
@@ -15,7 +15,7 @@ export interface TurquoiseFlowProps extends FlowOptions {
 }
 
 /** A normal container: it can be a card, section, hero, or absolute background. */
-export function TurquoiseFlow({
+function TurquoiseFlow({
   children,
   className = '',
   style,
@@ -30,21 +30,26 @@ export function TurquoiseFlow({
 }: TurquoiseFlowProps) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const controller = useRef<FlowController | null>(null);
+  const stopReadiness = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    if (!canvas.current) return;
-    controller.current = createTurquoiseFlow(canvas.current);
-    const stopReadiness = observeFirstPaint(canvas.current, controller.current, onReady);
     return () => {
-      stopReadiness();
+      stopReadiness.current?.();
+      stopReadiness.current = null;
       controller.current?.destroy();
       controller.current = null;
     };
   }, [onReady]);
 
   useEffect(() => {
-    controller.current?.update({ speed, strength, fps, resolution, paused, adaptive, theme });
-  }, [speed, strength, fps, resolution, paused, adaptive, theme]);
+    const options = { speed, strength, fps, resolution, paused, adaptive, theme };
+    if (controller.current) {
+      controller.current.update(options);
+    } else if (canvas.current) {
+      controller.current = createTurquoiseFlow(canvas.current, options);
+      stopReadiness.current = observeFirstPaint(canvas.current, controller.current, onReady);
+    }
+  }, [speed, strength, fps, resolution, paused, adaptive, theme, onReady]);
 
   return (
     <div className={`turquoise-flow ${className}`.trim()} style={style}>

@@ -68,6 +68,14 @@
 .site .inner-pages .editorial-opening--illustrated .editorial-heading {
   margin-bottom: 0;
 }
+.site .inner-pages .editorial-opening--illustrated > *,
+.site .inner-pages .about-statement > *,
+.site .inner-pages .related-reading > a {
+  min-width: 0;
+}
+.site .inner-pages .editorial-section :is(h2, h3, p, dt, dd) {
+  overflow-wrap: break-word;
+}
 .site .inner-pages .editorial-opening--illustrated h2 {
   max-width: 18ch;
 }
@@ -261,13 +269,20 @@
   max-width: 55ch;
   color: var(--color-text-body);
 }
-.related-reading__image {
+.related-reading__media {
+  /* Reserve the subgrid row before the lazy image gains an intrinsic size. */
+  position: relative;
   width: 100%;
-  height: 190px;
-  object-fit: contain;
-  background: var(--surface-card);
-  border-radius: var(--radius-panel);
+  aspect-ratio: 3 / 2;
   margin-bottom: 26px;
+}
+.related-reading__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-panel);
 }
 .site .inner-pages .related-reading h3 {
   font-size: var(--font-size-24);
@@ -289,11 +304,6 @@
 .site .inner-pages .stage-contact-submit {
   justify-self: end;
 }
-.site .inner-pages .stage-contact-form :is(.stage-form-hint, .stage-note) {
-  font-size: var(--font-size-14);
-  line-height: 1.6;
-  color: var(--text-muted);
-}
 .stage-form-label {
   display: flex;
   align-items: baseline;
@@ -308,6 +318,26 @@
   font-size: var(--font-size-16);
   line-height: 1.6;
 }
+.stage-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+.stage-form-actions .double-button {
+  max-width: 100%;
+}
+.stage-form-actions .double-button__label {
+  white-space: normal;
+  text-align: left;
+}
+.site .inner-pages .stage-contact-email-hint {
+  color: var(--text-muted);
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+  max-width: 32ch;
+  margin: 0;
+}
 @media (min-width: 1001px) {
   .stage-table-hint {
     display: none;
@@ -315,9 +345,6 @@
 }
 .site .inner-pages .stage-usage-guide__questions h3 {
   font-size: var(--font-size-24);
-}
-.site .inner-pages .stage-data-table tbody tr:nth-child(even) {
-  background: color-mix(in srgb, var(--surface-card) 60%, transparent);
 }
 .site .inner-pages .stage-related {
   padding-block: var(--space-10) 88px;
@@ -376,9 +403,6 @@
   }
   .site .inner-pages .about-statement p {
     font-size: var(--font-size-18);
-  }
-  .related-reading__image {
-    height: 170px;
   }
   .site .inner-pages .stage-related {
     padding-block: var(--space-8) var(--space-10);

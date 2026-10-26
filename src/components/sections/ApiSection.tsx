@@ -3,7 +3,6 @@ import { LocaleText } from '../../i18n/LocaleText';
 import { useLocale } from '../../i18n/context';
 import { siteHref } from '../../app/paths';
 import { DoubleButton } from '../ui/DoubleButton';
-import { Icon } from '../ui/Icon';
 import { Visual } from '../visuals/Visual';
 import { ApiIllustration } from '../visuals/ApiIllustration';
 export function ApiSection() {
@@ -24,7 +23,6 @@ export function ApiSection() {
               <LocaleText>{t('Bring Apcosys data into your own tools.')}</LocaleText>
             )}
           </h2>
-          <Icon name="focus" width="25" height="25" />
           <p>
             <LocaleText>
               {t(

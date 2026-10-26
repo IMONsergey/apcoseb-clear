@@ -19,7 +19,7 @@ for (let i = 0; i < args.length; i++) {
     );
   }
 }
-const env = { ...process.env, ...loadEnv('production', process.cwd(), 'APCO_PUBLIC_SITE_ORIGIN') };
+const env = { ...process.env, ...loadEnv('production', process.cwd(), 'APCO_') };
 function run(script: string, scriptArgs: readonly string[] = []): void {
   const result = spawnSync(process.execPath, [script, ...scriptArgs], { stdio: 'inherit', env });
   if (result.error) throw result.error;

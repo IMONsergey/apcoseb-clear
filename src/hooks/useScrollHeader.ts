@@ -8,7 +8,7 @@ export function useScrollHeader(ref: RefObject<HTMLElement | null>, locked: bool
     let previous = scrollY;
     let travel = 0;
     let frame = 0;
-    let keyboardPinned = Boolean(location.hash);
+    let interactionPinned = Boolean(location.hash);
     const update = () => {
       frame = 0;
       const y = Math.max(0, scrollY);
@@ -16,7 +16,7 @@ export function useScrollHeader(ref: RefObject<HTMLElement | null>, locked: bool
       previous = y;
       if (Math.sign(delta) !== Math.sign(travel)) travel = delta;
       else travel += delta;
-      const pinned = locked || keyboardPinned || !!ref.current?.querySelector(':focus-visible');
+      const pinned = locked || interactionPinned || !!ref.current?.querySelector(':focus-visible');
       setState((current) => {
         const compact = y > 80;
         const hidden =
@@ -33,7 +33,7 @@ export function useScrollHeader(ref: RefObject<HTMLElement | null>, locked: bool
       if (event.key !== 'Tab') return;
       travel = 0;
       previous = Math.max(0, scrollY);
-      keyboardPinned = true;
+      interactionPinned = true;
       // Restore the controls before the browser computes its next native tab stop.
       flushSync(() =>
         setState((current) => (current.hidden ? { ...current, hidden: false } : current)),
@@ -51,8 +51,12 @@ export function useScrollHeader(ref: RefObject<HTMLElement | null>, locked: bool
       // Set the smaller scroll inset before the browser starts its native anchor scroll.
       flushSync(() => setState((current) => ({ ...current, compact })));
     };
-    const pointer = () => {
-      keyboardPinned = false;
+    const pointer = (event: Event) => {
+      // A pending anchor scroll must not hide a control between pointerdown and click.
+      interactionPinned =
+        event.type !== 'wheel' &&
+        event.target instanceof Node &&
+        !!ref.current?.contains(event.target);
     };
     schedule();
     window.addEventListener('scroll', schedule, { passive: true });

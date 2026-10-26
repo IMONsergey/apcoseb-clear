@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { legalRoutes } from '../../src/content/legal-routes';
+import { deploymentSettings } from '../helpers/public-settings';
 
 for (const width of [320, 390, 600, 768, 900, 1000, 1280, 1440, 1920]) {
   test(`legal first screen stays aligned across all documents at ${width}px`, async ({ page }) => {
@@ -44,7 +45,7 @@ for (const width of [390, 1440]) {
         ? page.getByRole('dialog', { name: 'Navigation' })
         : page.locator('.site-header');
     const link = scope.getByRole('link', { name: 'Sign In', exact: true });
-    await expect(link).toHaveAttribute('href', 'https://apcosys.net/');
+    await expect(link).toHaveAttribute('href', deploymentSettings.signInUrl);
     await expect(link).not.toHaveAttribute('aria-disabled', 'true');
     const style = await link.evaluate((e) => ({
       background: getComputedStyle(e).backgroundColor,
@@ -54,10 +55,10 @@ for (const width of [390, 1440]) {
     expect(style.background).toBe('rgb(236, 238, 241)');
     expect(style.transition.split(',').some((value) => parseFloat(value) > 0)).toBe(true);
     expect(style.pointer).not.toBe('none');
-    await page.route('https://apcosys.net/', (route) =>
+    await page.route(deploymentSettings.signInUrl, (route) =>
       route.fulfill({ contentType: 'text/html', body: '<h1>Client website</h1>' }),
     );
     await link.click();
-    await expect(page).toHaveURL('https://apcosys.net/');
+    await expect(page).toHaveURL(deploymentSettings.signInUrl);
   });
 }

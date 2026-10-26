@@ -670,7 +670,7 @@ export default function Arcade404() {
 
   const onPointerMove = (event: ReactPointerEvent<HTMLCanvasElement>) => {
     if (event.pointerType === 'mouse' && activePointerRef.current === null) {
-      if (phaseRef.current === 'idle') startNewGame();
+      // Hover can preview paddle placement, but only explicit activation starts play.
       moveFromPointer(event.clientX);
       return;
     }

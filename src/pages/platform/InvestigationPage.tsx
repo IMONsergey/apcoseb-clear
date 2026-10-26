@@ -61,8 +61,7 @@ export default function InvestigationPage() {
           ))}
         </div>
         <Text as="p" className="editorial-note">
-          Illustrative inputs, not query syntax. Use the syntax and filters provided in Apcosys
-          search.
+          Example inputs.
         </Text>
       </EditorialSection>
       <EditorialSection

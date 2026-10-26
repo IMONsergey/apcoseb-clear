@@ -1,4 +1,5 @@
-import manifest from './asset-manifest';
+import type manifest from './asset-manifest';
+import { assetDirectories, artwork } from './asset-manifest';
 
 export type AssetGroup = keyof typeof manifest.groups;
 export type AssetFile<G extends AssetGroup> = (typeof manifest.groups)[G]['files'][number];
@@ -11,7 +12,7 @@ function publicAssetUrl(path: string): string {
 }
 
 export function assetUrl<G extends AssetGroup>(group: G, filename: AssetFile<G>): string {
-  return publicAssetUrl(`${manifest.groups[group].directory}/${filename}`);
+  return publicAssetUrl(`${assetDirectories[group]}/${filename}`);
 }
 
 /** Separate light/dark files, with responsive variants declared by the asset owner. */
@@ -20,22 +21,8 @@ export function artworkSources(asset: ThemedAsset, theme: 'light' | 'dark') {
   const src = publicAssetUrl(`assets/${stem}.webp`);
   return {
     src,
-    ...(manifest.artwork[asset].responsive
+    ...(artwork[asset].responsive
       ? { srcSet: `${publicAssetUrl(`assets/${stem}-600.webp`)} 600w, ${src} 1200w` }
       : {}),
   };
-}
-
-/** Derived theme/resolution filenames are checked against the same manifest. */
-export function assetVariantUrl<G extends 'closing' | 'walkthrough'>(
-  group: G,
-  filename: AssetFile<G>,
-  theme: 'light' | 'dark',
-  width?: 360 | 600,
-): string {
-  const stem = filename.replace(/\.webp$/, '');
-  const variant = `${stem}${theme === 'dark' ? '-dark' : ''}${width ? `-${width}` : ''}.webp`;
-  if (!(manifest.groups[group].files as readonly string[]).includes(variant))
-    throw new Error(`Missing ${group} asset variant: ${variant}`);
-  return assetUrl(group, variant as AssetFile<G>);
 }

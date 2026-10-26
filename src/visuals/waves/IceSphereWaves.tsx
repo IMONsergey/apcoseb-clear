@@ -2,7 +2,7 @@ import { useEffect, useRef, type CSSProperties } from 'react';
 import { createIceWaves, type IceWavesController } from './ice-sphere-waves-themed';
 import './ice-sphere-waves.css';
 
-export interface IceSphereWavesProps {
+interface IceSphereWavesProps {
   /** 0–3; 1 preserves the approved slow motion. */
   speed?: number;
   paused?: boolean;
@@ -11,7 +11,7 @@ export interface IceSphereWavesProps {
   style?: CSSProperties;
 }
 
-export function IceSphereWaves({
+function IceSphereWaves({
   speed = 1,
   paused = false,
   theme = 'light',

@@ -24,14 +24,15 @@ export function Modal({ open, onClose, title, children, className = '', fallback
   const [canScroll, setCanScroll] = useState(false);
   useEffect(() => {
     const dialog = ref.current;
-    if (!dialog) return;
+    if (!dialog || (!open && !dialog.open)) return;
     const interrupted = animation.current?.playState === 'running';
-    const previousStyle = getComputedStyle(dialog);
-    const previousFrame = {
-      opacity: previousStyle.opacity,
-      transform: previousStyle.transform,
-      clipPath: previousStyle.clipPath,
-    };
+    const previousFrame: Keyframe = {};
+    if (interrupted) {
+      const previousStyle = getComputedStyle(dialog);
+      previousFrame.opacity = previousStyle.opacity;
+      previousFrame.transform = previousStyle.transform;
+      previousFrame.clipPath = previousStyle.clipPath;
+    }
     animation.current?.cancel();
     contentAnimations.current.forEach((item) => item.cancel());
     contentAnimations.current = [];
@@ -70,9 +71,9 @@ export function Modal({ open, onClose, title, children, className = '', fallback
         dialog
           .querySelector<HTMLButtonElement>('.modal__header button')
           ?.focus({ preventScroll: true });
-      dialog.dataset.modalPhase = 'opening';
+      dialog.dataset.modalPhase = reduced ? 'open' : 'opening';
       if (!reduced) {
-        animation.current = dialog.animate(
+        const openAnimation = dialog.animate(
           navigation
             ? [
                 interrupted
@@ -90,6 +91,10 @@ export function Modal({ open, onClose, title, children, className = '', fallback
               ],
           { duration: navigation ? 380 : 220, easing: 'cubic-bezier(.16,1,.3,1)' },
         );
+        animation.current = openAnimation;
+        openAnimation.onfinish = () => {
+          if (animation.current === openAnimation) dialog.dataset.modalPhase = 'open';
+        };
         if (navigation) {
           contentAnimations.current = [...dialog.querySelectorAll<HTMLElement>('nav > *')].map(
             (item, index) =>
@@ -206,7 +211,6 @@ export function Modal({ open, onClose, title, children, className = '', fallback
           className="icon-button"
           onClick={onClose}
           aria-label={t('Close dialog')}
-          autoFocus
         >
           <Icon name="close" />
         </button>

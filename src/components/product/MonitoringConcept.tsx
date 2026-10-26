@@ -1,4 +1,5 @@
 import { Text } from '../ui/Text';
+import { Icon } from '../ui/Icon';
 import { useState, useRef, useEffect } from 'react';
 import { MorphPanel } from '../ui/MorphPanel';
 import { siteHref } from '../../app/paths';
@@ -10,14 +11,13 @@ const views = [
     id: 'scope',
     label: 'Scope',
     headline: 'Choose what to observe.',
-    detail:
-      'Begin with infrastructure you own or are authorised to assess. Select an example target below.',
+    detail: 'Begin with infrastructure you own or are authorised to assess.',
   },
   {
     id: 'observations',
     label: 'Observe',
     headline: 'Compare recorded observations.',
-    detail: 'Two authored snapshots show how a service difference can become a research lead.',
+    detail: 'Compare two recorded snapshots of the selected host.',
   },
   {
     id: 'change',
@@ -48,6 +48,10 @@ export function MonitoringConcept() {
   const view = views[current]!;
   const asset = demoHosts[assetIndex]!;
   const service = asset.services[1]!;
+  const response =
+    service.protocol === 'SSH'
+      ? 'SSH-2.0-OpenSSH_9.6'
+      : 'HTTP/1.1 301 Moved Permanently\nLocation: https://' + asset.hostname;
   useEffect(() => {
     const el = nav.current;
     const active = el?.querySelector<HTMLElement>('[aria-pressed="true"]');
@@ -70,10 +74,7 @@ export function MonitoringConcept() {
               An observation is a starting point.
             </Text>
           </div>
-          <Text as="p">
-            Explore a potential monitoring workflow with synthetic snapshots. This concept does not
-            connect to live scans or alerts.
-          </Text>
+          <Text as="p">Compare observations and investigate changes.</Text>
         </div>
         <div className="stage-monitor-console">
           <div className="stage-monitor-console__body">
@@ -92,10 +93,6 @@ export function MonitoringConcept() {
             </div>
             <MorphPanel>
               <div className="stage-monitor-console__main">
-                <Text as="h3" data-morph-enter>
-                  {view.headline}
-                </Text>
-                <Text as="p">{view.detail}</Text>
                 <div className="stage-monitor-assets">
                   <div className="stage-monitor-assets__list">
                     {demoHosts.map((host, i) => (
@@ -106,128 +103,112 @@ export function MonitoringConcept() {
                         onClick={() => setAssetIndex(i)}
                       >
                         <span>
-                          <strong>
-                            <LocaleText>{t(host.role)}</LocaleText>
-                          </strong>
-                          <small>{host.ip}</small>
+                          <strong>{t(host.role)}</strong>
+                          <small>{host.hostname}</small>
                         </span>
-                        <span>
-                          <LocaleText>{t(assetIndex === i ? 'Selected' : 'Select')}</LocaleText>
-                        </span>
+                        <svg viewBox="0 0 20 20" aria-hidden="true">
+                          <path d="m5 10 3 3 7-7" />
+                        </svg>
                       </button>
                     ))}
                   </div>
-                  <div className="stage-monitor-assets__details" aria-live="polite">
-                    <span>
-                      <LocaleText>{t('Selected example')}</LocaleText>
-                    </span>
-                    <strong>{asset.ip}</strong>
-                    <div>
-                      <span>
-                        <LocaleText>{t('Hostname')}</LocaleText>
-                      </span>
-                      <span>{asset.hostname}</span>
+                </div>
+                <div className="stage-monitor-console__workspace">
+                  <div className="stage-monitor-console__guide">
+                    <Text as="h3" data-morph-enter>
+                      {view.headline}
+                    </Text>
+                    <Text as="p">{view.detail}</Text>
+                    <a
+                      className="stage-monitor-console__link"
+                      href={
+                        siteHref('/platform/search-investigation') +
+                        '?demoHost=' +
+                        encodeURIComponent(asset.ip)
+                      }
+                    >
+                      <LocaleText>{t('Explore Search & Investigation')}</LocaleText>
+                      <Icon name="external" />
+                    </a>
+                  </div>
+                  <div className="stage-monitor-console__evidence" aria-live="polite">
+                    <div className="stage-monitor-assets__details">
+                      <span>{t('Selected example')}</span>
+                      <strong>{asset.ip}</strong>
+                      <code>{asset.hostname}</code>
                     </div>
-                    <div>
-                      <span>
-                        <LocaleText>{t('Snapshot source')}</LocaleText>
-                      </span>
-                      <span>
-                        <LocaleText>{t('Authored concept · no scan date')}</LocaleText>
-                      </span>
-                    </div>
+                    {current <= 1 ? (
+                      <div className="stage-monitor-console__summary">
+                        <div>
+                          <span>
+                            {t(current === 0 ? 'Authorised scope' : 'Snapshot A / earlier')}
+                          </span>
+                          <strong>{current === 0 ? 'example.com' : '443 / HTTPS'}</strong>
+                          <Text as="p">
+                            {current === 0
+                              ? 'Confirm permission before observing.'
+                              : 'nginx 1.24.0 · HTTP Server header'}
+                          </Text>
+                        </div>
+                        <div>
+                          <span>
+                            {t(current === 0 ? 'Objects to review' : 'Snapshot B / later')}
+                          </span>
+                          <strong>
+                            {current === 0
+                              ? t('{count} service records', {
+                                  count: count.format(asset.services.length),
+                                })
+                              : '443 / HTTPS + ' + service.port + ' / ' + service.protocol}
+                          </strong>
+                          <Text as="p">
+                            {current === 0
+                              ? asset.services
+                                  .map((item) => item.port + ' / ' + item.protocol)
+                                  .join(' · ')
+                              : t('Added in this example: {technology}', {
+                                  technology: service.technology,
+                                })}
+                          </Text>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="monitor-context" data-morph-enter>
+                        <Text as="h4">
+                          {current === 4
+                            ? 'Create the next research task.'
+                            : 'Inspect the changed service.'}
+                        </Text>
+                        <dl>
+                          <div>
+                            <dt>{t('Changed service')}</dt>
+                            <dd>
+                              {service.port} / {service.protocol}
+                            </dd>
+                          </div>
+                          <div>
+                            <dt>{t('Technology')}</dt>
+                            <dd>{service.technology}</dd>
+                          </div>
+                          <div>
+                            <dt>{t('Evidence source')}</dt>
+                            <dd>{t(service.evidence)}</dd>
+                          </div>
+                        </dl>
+                        {current === 3 && <pre>{response}</pre>}
+                        {current === 4 && (
+                          <Text as="p">
+                            {
+                              'Continue with the selected host in Search & Investigation. Keep the observation context with the task.'
+                            }
+                          </Text>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
-                {current <= 2 ? (
-                  <div className="stage-monitor-console__summary" aria-live="polite">
-                    <div>
-                      <span>
-                        <LocaleText>
-                          {t(current === 0 ? 'Authorised scope' : 'Snapshot A / earlier')}
-                        </LocaleText>
-                      </span>
-                      <strong>{current === 0 ? asset.hostname : '443 / HTTPS'}</strong>
-                      <Text as="p">
-                        {current === 0
-                          ? 'Confirm permission before observing.'
-                          : 'nginx 1.24.0 · HTTP Server header'}
-                      </Text>
-                    </div>
-                    <div>
-                      <span>
-                        <LocaleText>
-                          {t(current === 0 ? 'Objects to review' : 'Snapshot B / later')}
-                        </LocaleText>
-                      </span>
-                      <strong>
-                        {current === 0
-                          ? t('{count} service records', {
-                              count: count.format(asset.services.length),
-                            })
-                          : '443 / HTTPS + ' + service.port + ' / ' + service.protocol}
-                      </strong>
-                      <Text as="p">
-                        {current === 0
-                          ? t(asset.role)
-                          : t('Added in this example: {technology}', {
-                              technology: service.technology,
-                            })}
-                      </Text>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="monitor-context" data-morph-enter>
-                    <Text as="h4">
-                      {current === 3
-                        ? 'Inspect the changed service.'
-                        : 'Create the next research task.'}
-                    </Text>
-                    <dl>
-                      <div>
-                        <dt>
-                          <LocaleText>{t('Host')}</LocaleText>
-                        </dt>
-                        <dd>{asset.hostname}</dd>
-                      </div>
-                      <div>
-                        <dt>
-                          <LocaleText>{t('Changed service')}</LocaleText>
-                        </dt>
-                        <dd>
-                          {service.port} / {service.protocol}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt>
-                          <LocaleText>{t('Technology')}</LocaleText>
-                        </dt>
-                        <dd>{service.technology}</dd>
-                      </div>
-                    </dl>
-                    <Text as="p">
-                      {current === 3
-                        ? 'Review the response and validate the observation before treating a change as a security finding.'
-                        : 'Continue with the selected host in Search & Investigation. Keep the observation context with the task.'}
-                    </Text>
-                  </div>
-                )}
-                <a
-                  className="stage-monitor-console__link"
-                  href={
-                    siteHref('/platform/search-investigation') +
-                    '?demoHost=' +
-                    encodeURIComponent(asset.ip)
-                  }
-                >
-                  <LocaleText>{t('Explore Search & Investigation')}</LocaleText>
-                </a>
               </div>
             </MorphPanel>
-          </div>
-          <div className="stage-monitor-console__footer">
-            <LocaleText>
-              {t('Concept only · NO LIVE ALERTS · Illustrative service records')}
-            </LocaleText>
           </div>
         </div>
       </div>

@@ -4,7 +4,6 @@ import { EditorialHeading } from '../layout/PageSections';
 import { useEffect, useRef, useState } from 'react';
 import { useMotion } from '../../hooks/useMotion';
 import { MorphPanel } from '../ui/MorphPanel';
-import { LocaleText } from '../../i18n/LocaleText';
 import { useLocale } from '../../i18n/context';
 
 /** One flowing field of observations: depth comes from the wave, without a wire grid. */
@@ -16,6 +15,23 @@ export function TeamSignal({ inverse = false }: { inverse?: boolean }) {
     const context = canvas?.getContext('2d');
     if (!canvas || !context) return;
     const state = { phase: 1.2 };
+    const tilt = 0.94;
+    const sinTilt = Math.sin(tilt);
+    const cosTilt = Math.cos(tilt);
+    const points = Array.from({ length: 17 * 27 }, (_, index) => {
+      const row = Math.floor(index / 27);
+      const col = index % 27;
+      return {
+        gridX: (col - 13) * 18,
+        gridZ: (row - 8) * 21,
+        edge: Math.min(1, (Math.min(col, 26 - col, row, 16 - row) + 1) / 3),
+        x: 0,
+        y: 0,
+        depth: 0,
+        radius: 0,
+        alpha: 0,
+      };
+    });
     let width = 600,
       height = 440,
       visible = false,
@@ -27,45 +43,32 @@ export function TeamSignal({ inverse = false }: { inverse?: boolean }) {
       context.clearRect(0, 0, width, height);
       const phase = state.phase;
       const turn = -0.24 + Math.sin(phase) * 0.035;
-      const tilt = 0.94;
+      const sinTurn = Math.sin(turn);
+      const cosTurn = Math.cos(turn);
       const scale = Math.min(width / 510, height / 410);
-      const project = (x: number, y: number, z: number) => {
-        const rx = x * Math.cos(turn) + z * Math.sin(turn);
-        const rz = z * Math.cos(turn) - x * Math.sin(turn);
-        const ry = y * Math.cos(tilt) - rz * Math.sin(tilt);
-        const depth = y * Math.sin(tilt) + rz * Math.cos(tilt);
-        const perspective = 820 / (820 + depth);
-        return {
-          x: width / 2 + rx * scale * perspective,
-          y: height / 2 + ry * scale * perspective,
-          depth,
-          perspective,
-        };
-      };
-      const rgb = inverse ? '219,251,253' : '3,122,143';
-      const points: (ReturnType<typeof project> & { radius: number; alpha: number })[] = [];
-      for (let row = 0; row < 17; row++) {
-        for (let col = 0; col < 27; col++) {
-          const x = (col - 13) * 18;
-          const z = (row - 8) * 21;
-          const wave = Math.sin(x * 0.016 - phase) * 58 + Math.cos(z * 0.02 + phase) * 18;
-          const point = project(x, wave, z);
-          const crest = (wave + 76) / 152;
-          const edge = Math.min(1, (Math.min(col, 26 - col, row, 16 - row) + 1) / 3);
-          points.push({
-            ...point,
-            radius: (1.45 + crest * 0.8) * scale * point.perspective,
-            alpha: (0.24 + crest * 0.62) * edge,
-          });
-        }
+      for (const point of points) {
+        const { gridX: x, gridZ: z } = point;
+        const wave = Math.sin(x * 0.016 - phase) * 58 + Math.cos(z * 0.02 + phase) * 18;
+        const rx = x * cosTurn + z * sinTurn;
+        const rz = z * cosTurn - x * sinTurn;
+        const ry = wave * cosTilt - rz * sinTilt;
+        point.depth = wave * sinTilt + rz * cosTilt;
+        const perspective = 820 / (820 + point.depth);
+        const crest = (wave + 76) / 152;
+        point.x = width / 2 + rx * scale * perspective;
+        point.y = height / 2 + ry * scale * perspective;
+        point.radius = (1.45 + crest * 0.8) * scale * perspective;
+        point.alpha = (0.24 + crest * 0.62) * point.edge;
       }
       points.sort((a, b) => b.depth - a.depth);
+      context.fillStyle = inverse ? 'rgb(219,251,253)' : 'rgb(3,122,143)';
       for (const point of points) {
+        context.globalAlpha = point.alpha;
         context.beginPath();
         context.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
-        context.fillStyle = `rgba(${rgb},${point.alpha})`;
         context.fill();
       }
+      context.globalAlpha = 1;
     };
     let frame = 0;
     let lastTick = 0;
@@ -140,6 +143,29 @@ const teamStages = [
     meta: 'Workflow handoff',
   },
 ];
+const teamRecords = [
+  [
+    ['Domain', 'example.com'],
+    ['Host', '198.51.100.24'],
+    ['Services', '443 / HTTPS · 80 / HTTP'],
+  ],
+  [
+    ['Host', '198.51.100.24'],
+    ['Technology', 'nginx 1.24.0'],
+    ['Evidence source', 'HTTP Server header'],
+  ],
+  [
+    ['Observed signal', 'HTTP Server header'],
+    ['Version applicability', 'Check vendor advisory'],
+    ['Patch state', 'Needs validation'],
+  ],
+  [
+    ['Host', '198.51.100.24'],
+    ['Technology', 'nginx 1.24.0'],
+    ['Workflow handoff', 'Scripts and internal reports'],
+  ],
+] as const;
+
 export function TeamWorkflow() {
   const { t } = useLocale();
   const [selected, setSelected] = useState(0);
@@ -152,62 +178,63 @@ export function TeamWorkflow() {
           intro="Follow one lead through a shared research process. Choose a step to see which evidence and open questions move with it."
         />
         <div className="team-workflow__layout">
-          <div className="team-workflow__visual">
-            <div className="team-sequence" aria-label={t('Illustrative analyst handoff')}>
-              {['Investigation brief', 'Service observations', 'Research notes', 'API handoff'].map(
-                (label, i) => (
-                  <div className={selected === i ? 'is-current' : ''} key={label}>
-                    <span>0{i + 1}</span>
-                    <div>
-                      <strong>
-                        <LocaleText>{t(label)}</LocaleText>
-                      </strong>
-                      <small>
-                        {t(
-                          [
-                            'Domain or technical attribute',
-                            'Host · protocol · technology',
-                            'Evidence and open questions',
-                            'Scripts and internal reports',
-                          ][i]!,
-                        )}
-                      </small>
-                    </div>
-                    <i aria-hidden="true" />
-                  </div>
-                ),
-              )}
-            </div>
-            <MorphPanel>
-              <div className="team-workflow__record">
+          <div
+            className="team-workflow__tabs team-sequence"
+            role="group"
+            aria-label={t('Team workflow')}
+          >
+            {teamStages.map((stage, index) => (
+              <button
+                type="button"
+                aria-pressed={selected === index}
+                aria-controls="team-workflow-record"
+                className={selected === index ? 'is-current' : ''}
+                onClick={() => setSelected(index)}
+                key={stage.name}
+              >
+                <span>0{index + 1}</span>
                 <span>
-                  <LocaleText>{t(item.meta)}</LocaleText>
+                  <strong>
+                    {t(
+                      [
+                        'Investigation brief',
+                        'Service observations',
+                        'Research notes',
+                        'API handoff',
+                      ][index]!,
+                    )}
+                  </strong>
+                  <small>{t(stage.name)}</small>
                 </span>
-                <code>{t(item.record)}</code>
-              </div>
-            </MorphPanel>
+                <svg viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M4 10h12m-5-5 5 5-5 5" />
+                </svg>
+              </button>
+            ))}
           </div>
-          <div>
-            <div className="team-workflow__tabs" role="group" aria-label={t('Team workflow')}>
-              {teamStages.map((s, i) => (
-                <button
-                  type="button"
-                  aria-pressed={selected === i}
-                  onClick={() => setSelected(i)}
-                  key={s.name}
-                >
-                  <span>0{i + 1}</span>
-                  <LocaleText>{t(s.name)}</LocaleText>
-                </button>
-              ))}
-            </div>
-            <MorphPanel>
+          <MorphPanel>
+            <div className="team-workflow__visual" id="team-workflow-record" aria-live="polite">
               <div className="team-workflow__detail" data-morph-enter>
+                <div className="team-workflow__label">
+                  <span>{t(item.meta)}</span>
+                  <span aria-hidden="true">0{selected + 1} / 04</span>
+                </div>
                 <Text as="h3">{item.title}</Text>
                 <Text as="p">{item.text}</Text>
               </div>
-            </MorphPanel>
-          </div>
+              <div className="team-workflow__record">
+                <code>{t(item.record)}</code>
+                <dl>
+                  {teamRecords[selected]!.map(([label, value]) => (
+                    <div key={label}>
+                      <dt>{t(label)}</dt>
+                      <dd>{t(value)}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+          </MorphPanel>
         </div>
       </div>
     </section>

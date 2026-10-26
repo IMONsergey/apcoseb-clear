@@ -62,7 +62,7 @@
   --button-bg: var(--button-hover);
 }
 .double-button:active {
-  filter: brightness(0.95);
+  filter: brightness(0.97);
 }
 .double-button:disabled {
   --button-bg: var(--surface-elevated);
@@ -163,4 +163,10 @@ html[data-theme='dark'] .double-button--dark {
   --button-bg: var(--action-fill);
   --button-hover: var(--action-hover-fill);
   --button-color: var(--on-action);
+}
+
+@media (min-width: 1600px) {
+  .double-button {
+    font-size: var(--font-size-14);
+  }
 }

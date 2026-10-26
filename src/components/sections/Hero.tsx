@@ -17,7 +17,7 @@ export function Hero() {
         </h1>
         <div className="hero-bottom">
           <p className="lead">
-            {locale === 'en' ? (
+            {locale === 'en' || locale === 'ru' ? (
               <>
                 <LocaleText>
                   {t(

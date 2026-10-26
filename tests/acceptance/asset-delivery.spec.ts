@@ -3,11 +3,11 @@ import { expect, test } from '@playwright/test';
 const essentialAssets = [
   'assets/brand/favicon.svg',
   'assets/brand/logo.svg',
-  'assets/illustrations/api/api-layers.webp',
+  'assets/application/code.svg',
   'assets/illustrations/closing/start-desktop.webp',
   'assets/illustrations/closing/start-390-dark.webp',
-  'assets/illustrations/walkthrough/step-query.webp',
-  'assets/illustrations/walkthrough/step-host-dark-600.webp',
+  'assets/inner/search.webp',
+  'assets/editorial/evidence-dark-600.webp',
   'fonts/instrument-sans-latin.woff2',
   'fonts/ibm-plex-mono-latin.woff2',
 ] as const;
