@@ -1,5 +1,17 @@
 import { expect, test, type Page } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 import { wcagAxe } from '../helpers/accessibility';
+
+const contract = JSON.parse(
+  readFileSync(new URL('../../public/api/client.openapi.json', import.meta.url), 'utf8'),
+) as {
+  'x-apcosys-index-selection': {
+    types: string[];
+    type_aliases: Record<string, string>;
+    ports_when: string;
+  };
+};
+const indexSelection = contract['x-apcosys-index-selection'];
 
 async function documentationTitle(page: Page) {
   return page.locator('.api-docs h1').evaluate((heading) => {
@@ -22,14 +34,14 @@ async function documentationTitle(page: Page) {
 }
 
 const documentedMethods = [
-  ['POST', '/search/hosts'],
-  ['GET', '/search/hosts/:ip'],
-  ['POST', '/search/analytics'],
-  ['POST', '/search/buckets'],
-  ['POST', '/search/buckets/analytics'],
-  ['POST', '/search/private/hosts'],
-  ['GET', '/search/private/hosts/:ip'],
-  ['POST', '/search/private/analytics'],
+  ['POST', '/api/v1/search/hosts'],
+  ['GET', '/api/v1/search/hosts/{host}'],
+  ['POST', '/api/v1/search/analytics'],
+  ['POST', '/api/v1/search/buckets'],
+  ['POST', '/api/v1/search/buckets/analytics'],
+  ['POST', '/api/v1/search/private/hosts'],
+  ['GET', '/api/v1/search/private/hosts/{host}'],
+  ['POST', '/api/v1/search/private/analytics'],
 ] as const;
 
 test('API reference contains the eight published methods, schemas and error guidance', async ({
@@ -47,13 +59,19 @@ test('API reference contains the eight published methods, schemas and error guid
     await expect(target).toHaveCount(1);
     await expect(target).toContainText(path);
   }
-  await expect(page.locator('#search-hosts')).toContainText('at most 100');
-  await expect(page.locator('#search-hosts')).toContainText('descending order');
+  await expect(page.locator('#search-hosts')).toContainText(
+    'zero or a value above 100 becomes 50; values 1–100 are kept',
+  );
+  await expect(page.locator('#search-hosts')).toContainText('uts descending');
   await expect(
     page.locator('#search-hosts tbody th').filter({ hasText: /^open_ports/ }),
   ).toHaveCount(1);
-  await expect(page.locator('#search-buckets')).toContainText('Number of items in this response.');
+  await expect(page.locator('#search-buckets')).toContainText('Matching files across all pages.');
+  await expect(page.locator('#bucket-analytics')).toContainText('can exceed result length');
   await expect(page.locator('#private-search')).toContainText('task_ids');
+  await expect(page.locator('#private-search')).toContainText('Free is allowed');
+  await expect(page.locator('#host-details')).toContainText('Public host absence is HTTP 500');
+  await expect(page.locator('#private-search')).toContainText('404 host not found');
   const tls = page
     .locator('#host-details details')
     .filter({ has: page.locator('summary', { hasText: 'ports[].tls_info' }) });
@@ -120,6 +138,36 @@ for (const locale of [
   { prefix: 'ru/', lang: 'ru', title: 'Документация API.' },
   { prefix: 'zh-hant/', lang: 'zh-Hant', title: 'API 文件。' },
 ]) {
+  test(`${locale.lang} API source metadata stays verbatim while UI remains localized`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 1000 });
+    await page.goto(`./${locale.prefix}developers/api/docs#search-hosts`);
+    await expect(page.locator('.api-docs h1')).toHaveText(locale.title);
+    await expect(page.locator('html')).toHaveAttribute('lang', locale.lang);
+    await page.evaluate(() => document.fonts.ready);
+    const disclosure = page.locator('#search-hosts details');
+    await disclosure.locator('summary').click();
+    const fieldRow = (name: string) =>
+      disclosure.locator('tbody tr').filter({ has: page.getByText(name, { exact: true }) });
+    for (const field of ['types', 'type_aliases'] as const) {
+      const row = fieldRow(field);
+      await expect(row).toHaveCount(1);
+      const description = row.locator('td p');
+      await expect(description).toBeVisible();
+      await expect(description).toHaveAttribute('lang', 'en');
+      expect(await description.textContent()).toBe(JSON.stringify(indexSelection[field]));
+    }
+    const portsWhen = fieldRow('ports_when').locator('td');
+    expect(await portsWhen.locator('p').textContent()).toBe(indexSelection.ports_when);
+    const overflow = await portsWhen.evaluate((cell) => ({
+      cell: cell.scrollWidth - cell.clientWidth,
+      document: document.documentElement.scrollWidth - innerWidth,
+    }));
+    expect(overflow.cell).toBeLessThanOrEqual(1);
+    expect(overflow.document).toBeLessThanOrEqual(1);
+  });
+
   for (const theme of ['light', 'dark'] as const) {
     test(`${locale.lang} API documentation keeps readable tables and navigation in ${theme}`, async ({
       page,
@@ -257,3 +305,66 @@ for (const locale of [
     });
   }
 }
+
+test('API document exposes artifact version, source and a base-safe JSON link in every locale', async ({
+  page,
+}) => {
+  for (const prefix of ['', 'ru/', 'zh-hant/']) {
+    await page.goto('./' + prefix + 'developers/api/docs');
+    await expect(page.locator('[data-document-version]')).toContainText('OpenAPI 3.1.1');
+    await expect(page.locator('.api-docs__header')).toContainText('CLIENT_API_DOCS_EN.md');
+    const link = page.locator('.api-docs__header a[href$="/api/client.openapi.json"]');
+    await expect(link).toHaveCount(1);
+    const href = await link.getAttribute('href');
+    expect(href).not.toContain('/ru/api/');
+    expect(href).not.toContain('/zh-hant/api/');
+    const response = await page.request.get(href!);
+    expect(response.ok()).toBe(true);
+    const json = await response.json();
+    expect(json.openapi).toBe('3.1.1');
+    await expect(page.locator('[data-document-version]')).toHaveAttribute(
+      'data-document-version',
+      json.info.version,
+    );
+  }
+});
+
+test('API canonical operation aliases and legacy section anchors retain query context', async ({
+  page,
+}) => {
+  for (const anchor of [
+    'host-details',
+    'get-host',
+    'analytics',
+    'host-analytics',
+    'private-search',
+    'private-hosts',
+    'get-private-host',
+    'private-analytics',
+  ]) {
+    await page.goto('./developers/api/docs?reference=public#' + anchor);
+    await expect(page.locator('#' + anchor)).toBeInViewport();
+    await expect(page).toHaveURL(
+      (url) => url.searchParams.get('reference') === 'public' && url.hash === '#' + anchor,
+    );
+  }
+});
+
+test('API metadata preserves source uncertainty and whole-query type selection', async ({
+  page,
+}) => {
+  await page.goto('./developers/api/docs#search-hosts');
+  const disclosure = page.locator('#search-hosts details');
+  await disclosure.locator('summary').click();
+  await expect(disclosure).toContainText('Several type leaves search several catalogues.');
+  await expect(disclosure).toContainText('all three catalogues');
+  await expect(disclosure).toContainText('"domains":"domain"');
+  await expect(disclosure).toContainText('query_moves_as_a_whole');
+  await expect(page.locator('#filters')).toContainText(
+    'conflicts with the documented empty named-header existence match',
+  );
+  await expect(page.locator('#access-limits')).toContainText('100 tokens per second, burst 10');
+  await expect(page.locator('#access-limits')).not.toContainText(
+    'Method costs count against the HTTP rate allowance',
+  );
+});

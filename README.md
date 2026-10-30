@@ -66,6 +66,7 @@ The current Playwright acceptance suite is the release baseline. Visual changes 
 The official source repository is [IMONsergey/apcoseb-clear](https://github.com/IMONsergey/apcoseb-clear); its GitHub Pages target is https://imonsergey.github.io/apcoseb-clear/. Confirm the successful publication workflow before sharing that URL. A main push runs the full Chromium, Firefox and WebKit acceptance gates before publication, followed by Chromium checks against the actual deployment. Vercel root-build settings are included, but hosting must be connected separately. Review copies default to `noindex`; `APCO_SITE_INDEXABLE=true` requires a valid final HTTPS site origin.
 
 - [Developer handoff and integration boundaries](docs/HANDOFF.md)
+- [Replaceable public OpenAPI documentation source](docs/PUBLIC-API-DOCUMENTATION.md)
 - [Move into a fresh repository](docs/MIGRATION.md)
 - [Architecture and editing recipes](docs/ARCHITECTURE.md)
 - [Localization strategy and translation release gates](docs/LOCALIZATION.md)

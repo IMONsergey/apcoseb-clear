@@ -31,6 +31,11 @@
   color: var(--color-text-body);
   margin-top: var(--space-4);
 }
+.api-docs__header > .api-docs__note {
+  font: var(--type-small);
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
 .api-docs__base {
   display: flex;
   flex-wrap: wrap;
@@ -94,6 +99,7 @@
   margin-bottom: var(--space-6);
 }
 .api-docs__section > p,
+.api-docs__operation > p:not(.api-docs__method),
 .api-docs__disclosure > p,
 .api-docs__guidance {
   font: var(--type-body);
@@ -123,6 +129,7 @@
 }
 .api-docs__table th,
 .api-docs__table td {
+  overflow-wrap: anywhere;
   vertical-align: top;
   padding: var(--space-4);
   border-bottom: 1px solid var(--border-subtle);
@@ -163,6 +170,9 @@
 }
 .api-docs__errors th:first-child {
   width: 16%;
+}
+.api-docs__errors td > div + div {
+  margin-top: var(--space-5);
 }
 .api-docs__errors strong {
   display: block;

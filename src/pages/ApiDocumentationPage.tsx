@@ -2,37 +2,17 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { siteHref } from '../app/paths';
 import { Text } from '../components/ui/Text';
 import { Icon } from '../components/ui/Icon';
-import { plans, httpApiMethodCosts } from '../content/plans';
-import { formatApiRate } from '../lib/pricing';
+import { apiSpecUrl } from '../config/site';
+import type { PublicApiDocumentResult } from '../lib/public-api-loader';
+import { publicApiSpecTimeoutMs } from '../lib/public-api-policy';
+import type { ApiField } from '../lib/public-api-document';
+import type { ApiOperationView } from '../lib/public-api-view';
 import { useLocale } from '../i18n/context';
 import { useReadingPosition } from '../hooks/useReadingPosition';
 import {
-  apiBaseUrl,
   apiDocsNavigation,
-  apiEndpoints,
-  apiDocExamples,
-  apiErrors,
-  hostRequestFields,
-  hostSearchResponseFields,
-  hostSummaryFields,
-  hostDetailFields,
-  portFields,
-  tlsFields,
-  securityTxtFields,
-  productFields,
-  analyticsFields,
-  bucketRequestFields,
-  bucketResponseFields,
-  bucketFields,
-  bucketAnalyticsFields,
-  filterFields,
-  rangeFields,
-  privateFields,
-  restrictedFields,
-  restrictedValues,
-  valueSyntax,
-  filterCatalogue,
-  type ApiField,
+  apiOperationLabels,
+  bundledApiDocumentation,
 } from '../content/api-documentation';
 import './api-documentation.css';
 
@@ -69,11 +49,12 @@ function FieldTable({ title, fields }: { title: string; fields: readonly ApiFiel
         </tr>
       </thead>
       <tbody role="rowgroup">
-        {fields.map(({ name, type, description, defaultValue }) => (
+        {fields.map(({ name, type, description, defaultValue, required }) => (
           <tr role="row" key={name}>
             <th role="rowheader" scope="row">
               <code>{name}</code>
               <span className="api-docs__type">{type}</span>
+              {required && <small>{t('Required')}</small>}
               {defaultValue !== undefined && (
                 <small>
                   {t('Default')}: <code>{defaultValue}</code>
@@ -81,7 +62,7 @@ function FieldTable({ title, fields }: { title: string; fields: readonly ApiFiel
               )}
             </th>
             <td role="cell">
-              <Text as="p">{description}</Text>
+              <p lang="en">{description}</p>
             </td>
           </tr>
         ))}
@@ -90,7 +71,20 @@ function FieldTable({ title, fields }: { title: string; fields: readonly ApiFiel
   );
 }
 
-function DocCode({ label, code, example }: { label: string; code: string; example: string }) {
+function DocCode(props: { label: string; code: string; example: string }) {
+  // A replacement document must not report an old, still-pending copy as successful.
+  return <CopyableDocCode key={props.code} {...props} />;
+}
+
+function CopyableDocCode({
+  label,
+  code,
+  example,
+}: {
+  label: string;
+  code: string;
+  example: string;
+}) {
   const { t } = useLocale();
   const [status, setStatus] = useState('Copy');
   const pre = useRef<HTMLPreElement>(null);
@@ -146,17 +140,87 @@ function DocCode({ label, code, example }: { label: string; code: string; exampl
   );
 }
 
-function Method({ method, path }: { method: string; path: string }) {
+function Method({ operation }: { operation: ApiOperationView }) {
   return (
-    <p className="api-docs__method">
-      <span>{method}</span>
-      <code>{path}</code>
+    <p
+      className="api-docs__method"
+      id={operation.operationId !== operation.sectionId ? operation.operationId : undefined}
+      tabIndex={-1}
+    >
+      <span>{operation.method}</span>
+      <code>{operation.path}</code>
     </p>
   );
 }
 
 export default function ApiDocumentationPage() {
   const { t } = useLocale();
+  const [loaded, setLoaded] = useState<PublicApiDocumentResult>({
+    document: bundledApiDocumentation,
+    source: 'bundled',
+    fallback: false,
+  });
+  const [checking, setChecking] = useState(Boolean(apiSpecUrl));
+  useEffect(() => {
+    const sourceUrl = apiSpecUrl;
+    if (!sourceUrl) return;
+    const controller = new AbortController();
+    const deadline = performance.now() + publicApiSpecTimeoutMs;
+    const fallback: PublicApiDocumentResult = {
+      document: bundledApiDocumentation,
+      source: 'bundled',
+      fallback: true,
+    };
+    // The deadline includes loading the transport chunk, fetching and validating the document.
+    const timer = setTimeout(() => finish(), publicApiSpecTimeoutMs);
+    function finish(result: PublicApiDocumentResult = fallback) {
+      if (controller.signal.aborted) return;
+      clearTimeout(timer);
+      const next = performance.now() < deadline ? result : fallback;
+      controller.abort();
+      setLoaded(next);
+      setChecking(false);
+    }
+    void import('../lib/public-api-loader')
+      .then(async ({ loadPublicApiDocument }) => {
+        if (controller.signal.aborted) return;
+        const remaining = deadline - performance.now();
+        if (remaining <= 0) {
+          finish();
+          return;
+        }
+        const result = await loadPublicApiDocument({
+          bundled: bundledApiDocumentation,
+          url: sourceUrl,
+          signal: controller.signal,
+          timeoutMs: remaining,
+        });
+        finish(result);
+      })
+      .catch(() => finish());
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, []);
+  const document = loaded.document;
+  const {
+    endpoints: apiEndpoints,
+    byId,
+    hostSummaryFields,
+    portFields,
+    tlsFields,
+    securityTxtFields,
+    productFields,
+    analyticsFields,
+    bucketFields,
+    bucketAnalyticsFields,
+    filterFields,
+    rangeFields,
+    privateFields,
+    valueSyntax,
+    filterCatalogue,
+  } = document;
   const active = useReadingPosition(apiDocsNavigation.map(({ id }) => id));
   const contents = (
     <nav aria-label={t('On this page')}>
@@ -169,7 +233,7 @@ export default function ApiDocumentationPage() {
               onClick={(event) => {
                 const disclosure = event.currentTarget.closest('details');
                 if (disclosure) disclosure.open = false;
-                document.getElementById(item.id)?.focus({ preventScroll: true });
+                window.document.getElementById(item.id)?.focus({ preventScroll: true });
               }}
             >
               {t(item.label)}
@@ -191,8 +255,41 @@ export default function ApiDocumentationPage() {
         </Text>
         <div className="api-docs__base">
           <span>{t('Base URL')}</span>
-          <code>{apiBaseUrl}</code>
+          <code>{document.serverUrl}</code>
         </div>
+        <div className="api-docs__base" data-document-version={document.version}>
+          <span>{t('Documentation version')}</span>
+          <code>{document.version}</code>
+          <span>OpenAPI {document.openapi}</span>
+        </div>
+        <Text as="p" className="api-docs__note">
+          This version identifies the documentation artifact, not a backend release.
+        </Text>
+        <p className="api-docs__note" role="status" data-document-source={loaded.source}>
+          {checking
+            ? t('Checking the configured document. The bundled reference remains available.')
+            : loaded.fallback
+              ? t(
+                  'The configured document is unavailable or incompatible. Showing the bundled reference.',
+                )
+              : loaded.source === 'remote'
+                ? t('Showing the validated configured document.')
+                : t('Showing the bundled reference.')}
+        </p>
+        <Text as="p" className="api-docs__note">
+          Technical descriptions come from the English source contract. Navigation and interface
+          labels remain in your selected language.
+        </Text>
+        <p className="api-docs__note">
+          <a
+            className="api-docs__link"
+            href={loaded.source === 'remote' ? apiSpecUrl : siteHref('/api/client.openapi.json')}
+          >
+            {t('View OpenAPI JSON')}
+          </a>
+          {' · '}
+          {t('Source document')}: <code>{document.source.name}</code>
+        </p>
       </header>
       <div className="api-docs__layout container">
         <aside className="api-docs__sidebar">
@@ -206,8 +303,8 @@ export default function ApiDocumentationPage() {
           </details>
           <ApiDocsSection id="authentication" title="Connect to the API.">
             <Text as="p">
-              Send your account API key in the X-API-Key header. Plus, Expert and Business include
-              HTTP API access; Free does not.
+              Send your account API key in the X-API-Key header. The method allow-list below is
+              separate from the website rules for issuing an API key.
             </Text>
             <Text as="p">
               Set APCOSYS_API_KEY in your server environment before using the cURL examples. Keep
@@ -216,50 +313,73 @@ export default function ApiDocumentationPage() {
             </Text>
             <DocCode
               label="First host search"
-              code={apiDocExamples.hosts}
+              code={byId['search-hosts'].requestExample}
               example="first-request"
             />
             <Text as="p" className="api-docs__note">
               Example responses use synthetic records and documentation addresses. Stored
               observations describe the collection time, not a live check of the host.
             </Text>
+            <p lang="en">{document.authenticationNote}</p>
           </ApiDocsSection>
 
           <ApiDocsSection id="access-limits" title="Access and request limits.">
-            <table className="api-docs__table">
-              <caption>{t('API access by plan')}</caption>
-              <thead>
-                <tr>
-                  <th scope="col">{t('Plan')}</th>
-                  <th scope="col">{t('API access')}</th>
-                  <th scope="col">{t('Plan rate limit')}</th>
+            <table role="table" className="api-docs__table api-docs__fields">
+              <caption>{t('HTTP method allow-list')}</caption>
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th role="columnheader" scope="col">
+                    {t('Method')}
+                  </th>
+                  <th role="columnheader" scope="col">
+                    {t('Plans and credit weight')}
+                  </th>
                 </tr>
               </thead>
-              <tbody>
-                {plans.map((plan) => (
-                  <tr key={plan.id}>
-                    <th scope="row">{t(plan.name[0] + plan.name.slice(1).toLowerCase())}</th>
-                    <td>{t(plan.api ? 'Yes' : 'No')}</td>
-                    <td>{formatApiRate(plan, t)}</td>
+              <tbody role="rowgroup">
+                {apiEndpoints.map((operation) => (
+                  <tr role="row" key={operation.operationId}>
+                    <th role="rowheader" scope="row">
+                      <code>
+                        {operation.method} {operation.path}
+                      </code>
+                    </th>
+                    <td role="cell">
+                      <p>{operation.plans.map((plan) => t(plan)).join(', ')}</p>
+                      <p>
+                        {t('Credit weight')}: <code>{operation.creditWeight}</code>
+                      </p>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
             <Text as="p">
-              Method costs count against the HTTP rate allowance: host search uses 1 unit, analytics
-              3, bucket search 1 and bucket analytics 1. Other endpoints use 1 unit. These units do
-              not define a conversion to plan credits or Search Tokens.
+              Rate limits and credit charges are separate. Credit weight is not a rate-limit unit.
             </Text>
-            <dl className="api-docs__costs">
-              {Object.entries(httpApiMethodCosts).map(([method, cost]) => (
-                <div key={method}>
-                  <dt>
-                    <code>{method === 'bucketAnalytics' ? 'bucket_analytics' : method}</code>
-                  </dt>
-                  <dd>{cost}</dd>
-                </div>
-              ))}
-            </dl>
+            <Text as="p">
+              {t(
+                'Default HTTP token bucket: {rate} tokens per second, burst {burst}. These are server defaults, not the pricing-table API rates.',
+                {
+                  rate: document.rate.tokensPerSecond,
+                  burst: document.rate.burst,
+                },
+              )}
+            </Text>
+            <p lang="en">
+              {document.rate.scope}. {document.rate.failureMode}.
+            </p>
+            <Text as="p">
+              {t('Credit reuse window: {seconds} seconds.', {
+                seconds: document.credits.reuseSeconds,
+              })}
+            </Text>
+            <p lang="en">
+              {document.credits.reuseScope}. {document.credits.bodyKey}.
+            </p>
+            <p lang="en">
+              {document.credits.balanceOwner}. {document.credits.analyticsWeight}.
+            </p>
             <Text as="p">
               Field and value restrictions also apply inside filters and ranges. A restricted field
               or value returns HTTP 402. Exceeding the request rate returns HTTP 429.
@@ -269,20 +389,22 @@ export default function ApiDocumentationPage() {
               <thead role="rowgroup">
                 <tr role="row">
                   <th role="columnheader" scope="col">
-                    {t('Fields')}
+                    {t('Plan')}
                   </th>
                   <th role="columnheader" scope="col">
-                    {t('Minimum plan')}
+                    {t('Blocked fields')}
                   </th>
                 </tr>
               </thead>
               <tbody role="rowgroup">
-                {restrictedFields.map(({ name, plan }) => (
-                  <tr role="row" key={name}>
+                {document.planRestrictions.map(({ plan, fields }) => (
+                  <tr role="row" key={plan}>
                     <th role="rowheader" scope="row">
-                      <code>{name}</code>
+                      {t(plan)}
                     </th>
-                    <td role="cell">{t(plan)}</td>
+                    <td role="cell">
+                      {fields.length ? <code>{fields.join(', ')}</code> : t('None')}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -292,28 +414,51 @@ export default function ApiDocumentationPage() {
               <thead role="rowgroup">
                 <tr role="row">
                   <th role="columnheader" scope="col">
-                    {t('Values')}
+                    {t('Plan')}
                   </th>
                   <th role="columnheader" scope="col">
-                    {t('Minimum plan')}
+                    {t('Blocked values')}
                   </th>
                 </tr>
               </thead>
               <tbody role="rowgroup">
-                {restrictedValues.map(({ name, plan }) => (
-                  <tr role="row" key={name}>
+                {document.planRestrictions.map(({ plan, values }) => (
+                  <tr role="row" key={plan}>
                     <th role="rowheader" scope="row">
-                      <code>{name}</code>
+                      {t(plan)}
                     </th>
-                    <td role="cell">{t(plan)}</td>
+                    <td role="cell">
+                      {values.length ? <code>{values.join(', ')}</code> : t('None')}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <Text as="p">
-              Private search requires Business. Exposed-data values in detected-product records are
-              returned only for Expert and Business.
-            </Text>
+            <table role="table" className="api-docs__table api-docs__fields">
+              <caption>{t('Fields hidden from host detail responses')}</caption>
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th role="columnheader" scope="col">
+                    {t('Plan')}
+                  </th>
+                  <th role="columnheader" scope="col">
+                    {t('Hidden fields')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody role="rowgroup">
+                {document.planRestrictions.map(({ plan, hiddenFields }) => (
+                  <tr role="row" key={plan}>
+                    <th role="rowheader" scope="row">
+                      {t(plan)}
+                    </th>
+                    <td role="cell">
+                      {hiddenFields.length ? <code>{hiddenFields.join(', ')}</code> : t('None')}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
             <a className="api-docs__link" href={siteHref('/pricing')}>
               {t('Compare plans')} →
             </a>
@@ -325,48 +470,55 @@ export default function ApiDocumentationPage() {
               application/json.
             </Text>
             <div className="api-docs__endpoint-list">
-              {apiEndpoints.map(({ id, method, path, title }) => (
-                <a href={'#' + id} key={method + path}>
+              {apiEndpoints.map(({ operationId, sectionId, method, path }) => (
+                <a href={'#' + sectionId} key={method + path}>
                   <span>{method}</span>
                   <code>{path}</code>
-                  <span>{t(title)}</span>
+                  <span>{t(apiOperationLabels[operationId])}</span>
                 </a>
               ))}
             </div>
           </ApiDocsSection>
 
           <ApiDocsSection id="search-hosts" title="Search hosts.">
-            <Method method="POST" path="/search/hosts" />
-            <Text as="p">
-              Find host summaries with pagination and optional filters. A type filter selects ipv4,
-              ipv6 or domain records; without it, all types are searched. Port, HTTP, TLS and
-              product filters select the ports index automatically.
-            </Text>
+            <Method operation={byId['search-hosts']} />
+            <p lang="en">{byId['search-hosts'].description}</p>
+            <details className="api-docs__disclosure">
+              <summary>{t('Index selection and host types')}</summary>
+              <FieldTable
+                title={t('Index selection and host types')}
+                fields={document.indexSelectionFields}
+              />
+            </details>
             <FieldTable
-              title={t('Request body · all fields optional')}
-              fields={hostRequestFields}
+              title={t('Request body fields')}
+              fields={byId['search-hosts'].requestFields}
             />
-            <FieldTable title={t('Search response')} fields={hostSearchResponseFields} />
+            <FieldTable title={t('Search response')} fields={byId['search-hosts'].responseFields} />
             <FieldTable title={t('Host summary · hosts[]')} fields={hostSummaryFields} />
             <DocCode
               label="Example host-search response"
-              code={apiDocExamples.hostsResponse}
+              code={byId['search-hosts'].responseExample}
               example="hosts-response"
             />
             <Text as="p">
               To continue, increase page and keep the same filters. Compare total with the records
-              already returned. The first example requests 20 records; the documented default is 50.
+              already returned.
             </Text>
           </ApiDocsSection>
 
           <ApiDocsSection id="host-details" title="Inspect one host.">
-            <Method method="GET" path="/search/hosts/:ip" />
-            <Text as="p">
-              Set the ip path parameter to an IP address or domain. The response is one detailed
-              host object. A missing record returns 404; an invalid host identifier returns 400.
-            </Text>
-            <DocCode label="Host lookup" code={apiDocExamples.host} example="host-details" />
-            <FieldTable title={t('Host detail response')} fields={hostDetailFields} />
+            <Method operation={byId['get-host']} />
+            <p lang="en">{byId['get-host'].description}</p>
+            <DocCode
+              label="Host lookup"
+              code={byId['get-host'].requestExample}
+              example="host-details"
+            />
+            <FieldTable
+              title={t('Host detail response')}
+              fields={byId['get-host'].responseFields}
+            />
             <details className="api-docs__disclosure">
               <summary>
                 <code>ports[]</code> — {t('Service fields')}
@@ -391,6 +543,12 @@ export default function ApiDocumentationPage() {
             </details>
             <details className="api-docs__disclosure">
               <summary>
+                <code>ports[].robots_txt</code>
+              </summary>
+              <FieldTable title={t('Robots fields')} fields={document.robotsTxtFields} />
+            </details>
+            <details className="api-docs__disclosure">
+              <summary>
                 <code>ports[].detected_products[]</code>
               </summary>
               <FieldTable title={t('Detected product fields')} fields={productFields} />
@@ -402,96 +560,90 @@ export default function ApiDocumentationPage() {
           </ApiDocsSection>
 
           <ApiDocsSection id="analytics" title="Aggregate host results.">
-            <Method method="POST" path="/search/analytics" />
-            <Text as="p">
-              Use the same search filters as host search to request facets. The type filter controls
-              the same IPv4, IPv6 and domain scope.
-            </Text>
+            <Method operation={byId['host-analytics']} />
+            <p lang="en">{byId['host-analytics'].description}</p>
             <DocCode
               label="Host analytics request"
-              code={apiDocExamples.analytics}
+              code={byId['host-analytics'].requestExample}
               example="analytics"
             />
             <FieldTable title={t('Analytics response')} fields={analyticsFields} />
-            <Text as="p">
-              Facet names include type, port, status_code, org, country_name, protocol, products,
-              title, cve_id, vendors, labels and redirects.
-            </Text>
+
             <DocCode
               label="Example analytics response"
-              code={apiDocExamples.analyticsResponse}
+              code={byId['host-analytics'].responseExample}
               example="analytics-response"
             />
           </ApiDocsSection>
 
           <ApiDocsSection id="search-buckets" title="Search storage records.">
-            <Method method="POST" path="/search/buckets" />
-            <Text as="p">
-              Search indexed bucket records by host, file metadata, size and time. Bucket sorting
-              supports the fields below; it differs from host-search sorting.
-            </Text>
+            <Method operation={byId['search-buckets']} />
+            <p lang="en">{byId['search-buckets'].description}</p>
             <DocCode
               label="Bucket search request"
-              code={apiDocExamples.buckets}
+              code={byId['search-buckets'].requestExample}
               example="buckets"
             />
-            <FieldTable title={t('Bucket request fields')} fields={bucketRequestFields} />
-            <FieldTable title={t('Bucket response')} fields={bucketResponseFields} />
+            <FieldTable
+              title={t('Bucket request fields')}
+              fields={byId['search-buckets'].requestFields}
+            />
+            <FieldTable
+              title={t('Bucket response')}
+              fields={byId['search-buckets'].responseFields}
+            />
             <FieldTable title={t('Storage record · result[]')} fields={bucketFields} />
           </ApiDocsSection>
 
           <ApiDocsSection id="bucket-analytics" title="Aggregate bucket results.">
-            <Method method="POST" path="/search/buckets/analytics" />
-            <Text as="p">
-              Send the same request fields as bucket search. The response groups file counts by
-              storage host.
-            </Text>
+            <Method operation={byId['bucket-analytics']} />
+            <p lang="en">{byId['bucket-analytics'].description}</p>
             <DocCode
               label="Bucket analytics request"
-              code={apiDocExamples.bucketAnalytics}
+              code={byId['bucket-analytics'].requestExample}
               example="bucket-analytics"
             />
             <FieldTable title={t('Bucket analytics response')} fields={bucketAnalyticsFields} />
           </ApiDocsSection>
 
           <ApiDocsSection id="private-search" title="Query private scan data.">
-            <Text as="p">
-              Business accounts can query their own private scan data with the three methods below.
-              Their public equivalents define the request and response shapes. The private dataset
-              is selected automatically; a type filter is not required.
-            </Text>
             {apiEndpoints
-              .filter(({ id }) => id === 'private-search')
-              .map(({ method, path }) => (
-                <Method key={path} method={method} path={path} />
+              .filter(({ sectionId }) => sectionId === 'private-search')
+              .map((operation) => (
+                <div className="api-docs__operation" key={operation.operationId}>
+                  <Method operation={operation} />
+                  <p lang="en">{operation.description}</p>
+                </div>
               ))}
-            <FieldTable title={t('Additional private-search field')} fields={privateFields} />
+            <FieldTable title={t('Private-search scope fields')} fields={privateFields} />
+            <details className="api-docs__disclosure">
+              <summary>{t('Private service fields')}</summary>
+              <FieldTable title={t('Private service fields')} fields={document.privatePortFields} />
+            </details>
             <DocCode
               label="Private host search"
-              code={apiDocExamples.privateHosts}
+              code={byId['private-hosts'].requestExample}
               example="private-hosts"
             />
             <DocCode
               label="Private host lookup"
-              code={apiDocExamples.privateHost}
+              code={byId['get-private-host'].requestExample}
               example="private-host"
             />
             <DocCode
               label="Private analytics request"
-              code={apiDocExamples.privateAnalytics}
+              code={byId['private-analytics'].requestExample}
               example="private-analytics"
             />
           </ApiDocsSection>
 
           <ApiDocsSection id="filters" title="Filter syntax and field names.">
             <FieldTable title={t('Filter item · simple_search_filters[]')} fields={filterFields} />
-            <Text as="p">
-              Leaf filters specify a field and a non-empty value. Group filters contain nested
-              filters with AND, OR or NOT. AND is the default operator.
-            </Text>
+            <p lang="en">{document.filterDescription}</p>
+            <p lang="en">{document.headerNote}</p>
             <DocCode
               label="Nested filter example"
-              code={apiDocExamples.nested}
+              code={document.filterExample}
               example="nested-filters"
             />
             <table role="table" className="api-docs__table api-docs__fields">
@@ -513,7 +665,7 @@ export default function ApiDocumentationPage() {
                       <code>{name}</code>
                     </th>
                     <td role="cell">
-                      <Text as="p">{description}</Text>
+                      <p lang="en">{description}</p>
                     </td>
                   </tr>
                 ))}
@@ -527,13 +679,34 @@ export default function ApiDocumentationPage() {
             </Text>
             <DocCode
               label="HTTP header filter"
-              code={apiDocExamples.header}
+              code={document.headerExample}
               example="header-filter"
             />
-            <Text as="p">
-              security_body searches security.txt content and may be a top-level field or a filter
-              field. It requires Business. Time filters use Unix seconds.
-            </Text>
+            <table role="table" className="api-docs__table api-docs__fields">
+              <caption>{t('Field aliases')}</caption>
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th role="columnheader" scope="col">
+                    {t('Alias')}
+                  </th>
+                  <th role="columnheader" scope="col">
+                    {t('Field')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody role="rowgroup">
+                {document.aliases.map(({ name, value }) => (
+                  <tr role="row" key={name}>
+                    <th role="rowheader" scope="row">
+                      <code>{name}</code>
+                    </th>
+                    <td role="cell">
+                      <code>{value}</code>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
             {filterCatalogue.map(({ title, fields }) => (
               <table role="table" className="api-docs__table api-docs__fields" key={title}>
                 <caption>{t(title)}</caption>
@@ -573,7 +746,7 @@ export default function ApiDocumentationPage() {
               Errors return a JSON object with an error string. Read that message together with the
               HTTP status.
             </Text>
-            <DocCode label="Example error response" code={apiDocExamples.error} example="error" />
+            <DocCode label="Example error response" code={document.errorExample} example="error" />
             <table className="api-docs__table api-docs__errors">
               <caption>{t('HTTP status codes')}</caption>
               <thead>
@@ -583,14 +756,20 @@ export default function ApiDocumentationPage() {
                 </tr>
               </thead>
               <tbody>
-                {apiErrors.map(({ code, title, description }) => (
+                {document.errors.map(({ code, rows }) => (
                   <tr key={code}>
                     <th scope="row">
                       <code>{code}</code>
                     </th>
                     <td>
-                      <strong>{t(title)}</strong>
-                      <Text as="p">{description}</Text>
+                      {rows.map(({ error, when }) => (
+                        <div key={error + when}>
+                          <strong>
+                            <code>{error}</code>
+                          </strong>
+                          <p lang="en">{when}</p>
+                        </div>
+                      ))}
                     </td>
                   </tr>
                 ))}
@@ -616,10 +795,14 @@ export default function ApiDocumentationPage() {
                 reporting a vulnerability.
               </Text>
             </ul>
-            <Text as="p">
-              The published reference lists a Postman collection and further examples in the Apcosys
-              dashboard.
-            </Text>
+            <details className="api-docs__disclosure">
+              <summary>{t('Contract notes and unresolved details')}</summary>
+              {document.notes.map(({ id, note }) => (
+                <p lang="en" key={id}>
+                  <code>{id}</code> — {note}
+                </p>
+              ))}
+            </details>
             <div className="api-docs__closing">
               <a href={siteHref('/developers/api')}>
                 {t('API overview')} <Icon name="arrow" />
