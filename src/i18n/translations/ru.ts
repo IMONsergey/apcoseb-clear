@@ -1766,4 +1766,49 @@ export default {
   'OSINT & THREAT INVESTIGATION': 'OSINT И ИССЛЕДОВАНИЕ УГРОЗ',
   'Follow an indicator, not an assumption.': 'Следуйте индикаторам, а не предположениям.',
   'SECURITY TEAM WORKFLOW': 'РАБОЧИЙ ПРОЦЕСС КОМАНДЫ БЕЗОПАСНОСТИ',
+  Required: 'Обязательное',
+  'Documentation version': 'Версия документации',
+  'This version identifies the documentation artifact, not a backend release.':
+    'Эта версия относится к документу, а не к выпуску серверной части.',
+  'Checking the configured document. The bundled reference remains available.':
+    'Проверяем настроенный документ. Встроенная документация остаётся доступной.',
+  'The configured document is unavailable or incompatible. Showing the bundled reference.':
+    'Настроенный документ недоступен или несовместим. Показана встроенная документация.',
+  'Showing the validated configured document.': 'Показан проверенный настроенный документ.',
+  'Showing the bundled reference.': 'Показана встроенная документация.',
+  'Technical descriptions come from the English source contract. Navigation and interface labels remain in your selected language.':
+    'Технические описания приведены из исходного контракта на английском. Навигация и подписи интерфейса остаются на выбранном языке.',
+  'View OpenAPI JSON': 'Открыть OpenAPI JSON',
+  'Source document': 'Исходный документ',
+  'Send your account API key in the X-API-Key header. The method allow-list below is separate from the website rules for issuing an API key.':
+    'Передавайте API-ключ аккаунта в заголовке X-API-Key. Список разрешённых методов ниже не определяет правила выдачи API-ключа на сайте.',
+  'HTTP method allow-list': 'Разрешённые методы HTTP API',
+  'Plans and credit weight': 'Тарифы и кредитный вес',
+  'Credit weight': 'Кредитный вес',
+  'Rate limits and credit charges are separate. Credit weight is not a rate-limit unit.':
+    'Ограничения частоты и списание кредитов — разные механизмы. Кредитный вес не является единицей лимита частоты.',
+  'Default HTTP token bucket: {rate} tokens per second, burst {burst}. These are server defaults, not the pricing-table API rates.':
+    'Параметры HTTP token bucket по умолчанию: {rate} токенов в секунду, burst — {burst}. Это настройки сервера, а не лимиты API из таблицы тарифов.',
+  'Credit reuse window: {seconds} seconds.':
+    'Окно повторного использования списания: {seconds} секунд.',
+  'Blocked fields': 'Недоступные поля',
+  'Blocked values': 'Недоступные значения',
+  None: 'Нет',
+  'Fields hidden from host detail responses': 'Поля, скрытые в подробных ответах о хосте',
+  'Hidden fields': 'Скрытые поля',
+  'Request body fields': 'Поля тела запроса',
+  'To continue, increase page and keep the same filters. Compare total with the records already returned.':
+    'Для продолжения увеличьте page, сохранив фильтры. Сравнивайте total с количеством уже полученных записей.',
+  'Private-search scope fields': 'Поля области приватного поиска',
+  'Field aliases': 'Псевдонимы полей',
+  Alias: 'Псевдоним',
+  Field: 'Поле',
+  'Contract notes and unresolved details': 'Примечания к контракту и неуточнённые детали',
+  'Robots fields': 'Поля robots.txt',
+  'Private service fields': 'Поля приватных сервисов',
+  'Host and geo': 'Хост и геоданные',
+  'Port, HTTP, products': 'Порты, HTTP и продукты',
+  'Headers and TLS': 'Заголовки и TLS',
+  'security.txt, robots.txt, exposed data': 'security.txt, robots.txt и открытые данные',
+  'Index selection and host types': 'Выбор индекса и типы хостов',
 } satisfies Record<string, string>;

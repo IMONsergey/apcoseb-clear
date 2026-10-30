@@ -1,0 +1,3853 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Apcosys Client HTTP API",
+    "version": "2026-10-30-draft",
+    "description": "Candidate contract transcribed from the supplied CLIENT_API_DOCS_EN.md (907 lines), not from live calls. This is the API-key client HTTP API, explicitly separate from the website HTTP/WebSocket contract. The version labels this generated artifact, not an undocumented backend release. All eight documented operations are represented; no extra endpoint is invented. Success is HTTP 200 with a JSON object; there is no code or remaining-credit member. Omitted optional fields and non-null empty loaded arrays are preserved. Unresolved details appear in x-contract-note / x-apcosys-contract-notes."
+  },
+  "servers": [
+    {
+      "url": "https://api.apcosys.net",
+      "description": "Documented HTTPS API server; each path below includes /api/v1."
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Public search",
+      "description": "API-key access to public host search, host lookup, and configured facets."
+    },
+    {
+      "name": "Cloud files",
+      "description": "API-key bucket-file search and bucket aggregation; Plus, Expert and Business."
+    },
+    {
+      "name": "Private search",
+      "description": "API-key access to caller-owned scans, authorized as hosts/analytics even on Free."
+    }
+  ],
+  "paths": {
+    "/api/v1/search/hosts": {
+      "post": {
+        "operationId": "search-hosts",
+        "summary": "Search public hosts",
+        "tags": [
+          "Public search"
+        ],
+        "description": "Search the public catalogue, one row per host. Body fields are optional and unknown JSON keys are ignored. Hosts are ordered by uts descending; sort inputs are accepted but ignored. Page 0/omitted becomes 1; host page sizes 1–100 are kept and 0/>100 becomes 50. Website plan page caps and the plan docs_per_page field are not applied. Index choice, field restrictions, and raw-body credit reuse are described in x-apcosys metadata.",
+        "x-apcosys-doc-id": "search-hosts",
+        "x-apcosys-method-name": "hosts",
+        "x-apcosys-plans": [
+          "Free",
+          "Plus",
+          "Expert",
+          "Business"
+        ],
+        "x-apcosys-credit-weight": 1,
+        "x-apcosys-source-lines": [
+          415,
+          470
+        ],
+        "requestBody": {
+          "description": "JSON object as described by the supplied contract. Send Content-Type: application/json.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              },
+              "examples": {
+                "documented": {
+                  "$ref": "#/components/examples/HostSearchRequest"
+                }
+              }
+            }
+          },
+          "x-contract-note": "The source specifies a JSON-object body and parsing failures, but does not separately mark body presence mandatory. requestBody.required is intentionally unset pending confirmation; this is not a promise that an omitted HTTP body is accepted."
+        },
+        "responses": {
+          "200": {
+            "description": "Matching hosts. hosts is [] when no rows match.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HostSearchResponse"
+                },
+                "examples": {
+                  "documented": {
+                    "$ref": "#/components/examples/HostSearchResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InvalidJsonRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/AuthenticationFailure"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentOrRestrictionFailure"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimitFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/HostSearchFailure"
+          }
+        },
+        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/hosts\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"page\":1,\"docs_per_page\":20,\"simple_search_filters\":[{\"field\":\"port\",\"value\":\"443\"},{\"field\":\"products\",\"value\":\"nginx\"}]}'"
+      }
+    },
+    "/api/v1/search/hosts/{host}": {
+      "get": {
+        "operationId": "get-host",
+        "summary": "Get a public host",
+        "tags": [
+          "Public search"
+        ],
+        "description": "Look up one public host using the URL path, with no request body. Closed ports are omitted and plan-hidden fields removed. Public host absence is HTTP 500. GET lookups share the method hosts and effective charge-cache body {} across hosts for 10 minutes; see the explicit POST{} collision note.",
+        "x-apcosys-doc-id": "get-host",
+        "x-apcosys-method-name": "hosts",
+        "x-apcosys-plans": [
+          "Free",
+          "Plus",
+          "Expert",
+          "Business"
+        ],
+        "x-apcosys-credit-weight": 1,
+        "x-apcosys-source-lines": [
+          472,
+          505
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/HostPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Public host object; optional empty fields may be omitted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Host"
+                },
+                "examples": {
+                  "documented": {
+                    "$ref": "#/components/examples/HostLookupResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InvalidHost"
+          },
+          "401": {
+            "$ref": "#/components/responses/AuthenticationFailure"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentOrRestrictionFailure"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimitFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/HostLookupFailure"
+          }
+        },
+        "x-apcosys-curl-example": "curl -sS \"https://api.apcosys.net/api/v1/search/hosts/203.0.113.10\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\""
+      }
+    },
+    "/api/v1/search/analytics": {
+      "post": {
+        "operationId": "host-analytics",
+        "summary": "Aggregate public host facets",
+        "tags": [
+          "Public search"
+        ],
+        "description": "Facet counts for the same search object. page and docs_per_page are ignored. If full_text_search and simple_search_filters are empty, only type is returned—even if another body field is populated. Otherwise every enabled account facet is returned in account order; saved website analytics_settings replaces the default list, type is mandatory, disabled/unknown keys are dropped. Top buckets: type 3, status_code 10, others 100; type additionally appends results. Credit weight uses the configured enabled-facet count before the empty-query rule and integer division (count + 3) / 4.",
+        "x-apcosys-doc-id": "host-analytics",
+        "x-apcosys-method-name": "analytics",
+        "x-apcosys-plans": [
+          "Free",
+          "Plus",
+          "Expert",
+          "Business"
+        ],
+        "x-apcosys-credit-weight": "integer_division(enabled_facet_count + 3, 4)",
+        "x-apcosys-source-lines": [
+          507,
+          577
+        ],
+        "requestBody": {
+          "description": "JSON object as described by the supplied contract. Send Content-Type: application/json.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              },
+              "examples": {
+                "documented": {
+                  "$ref": "#/components/examples/AnalyticsRequest"
+                }
+              }
+            }
+          },
+          "x-contract-note": "The source specifies a JSON-object body and parsing failures, but does not separately mark body presence mandatory. requestBody.required is intentionally unset pending confirmation; this is not a promise that an omitted HTTP body is accepted."
+        },
+        "responses": {
+          "200": {
+            "description": "Account-ordered loaded facets; no unique_hosts field.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyticsResponse"
+                },
+                "examples": {
+                  "documented": {
+                    "$ref": "#/components/examples/AnalyticsResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InvalidJsonRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/AuthenticationFailure"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentOrRestrictionFailure"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimitFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/AnalyticsFailure"
+          }
+        },
+        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/analytics\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"simple_search_filters\":[{\"field\":\"country_code\",\"value\":\"DE\"}]}'"
+      }
+    },
+    "/api/v1/search/buckets": {
+      "post": {
+        "operationId": "search-buckets",
+        "summary": "Search indexed bucket files",
+        "tags": [
+          "Cloud files"
+        ],
+        "description": "Search files in open buckets. Zero/omitted page becomes 1; zero/omitted docs_per_page becomes 50, with no upper cap on this route. File results use the bucket-specific filters and sort fields. size_mb is rounded to four decimal places. country_code_include, country_code_exclude, and excluded_buckets are accepted but not applied.",
+        "x-apcosys-doc-id": "search-buckets",
+        "x-apcosys-method-name": "buckets",
+        "x-apcosys-plans": [
+          "Plus",
+          "Expert",
+          "Business"
+        ],
+        "x-apcosys-credit-weight": 1,
+        "x-apcosys-source-lines": [
+          579,
+          647
+        ],
+        "requestBody": {
+          "description": "JSON object as described by the supplied contract. Send Content-Type: application/json.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BucketRequest"
+              },
+              "examples": {
+                "documented": {
+                  "$ref": "#/components/examples/BucketSearchRequest"
+                }
+              }
+            }
+          },
+          "x-contract-note": "The source specifies a JSON-object body and parsing failures, but does not separately mark body presence mandatory. requestBody.required is intentionally unset pending confirmation; this is not a promise that an omitted HTTP body is accepted."
+        },
+        "responses": {
+          "200": {
+            "description": "Matching file count and one page of files; a past-end page returns result: [].",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BucketSearchResponse"
+                },
+                "examples": {
+                  "documented": {
+                    "$ref": "#/components/examples/BucketSearchResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InvalidBucketRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/AuthenticationFailure"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentOrRestrictionFailure"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimitFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/BucketSearchFailure"
+          }
+        },
+        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/buckets\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"page\":1,\"docs_per_page\":20,\"host\":\"acct.blob.core.windows.net/public\",\"key_words\":[\"backup\"],\"extensions\":[\"sql\"],\"sort_field\":\"uts\",\"sort_direction\":\"desc\"}'"
+      }
+    },
+    "/api/v1/search/buckets/analytics": {
+      "post": {
+        "operationId": "bucket-analytics",
+        "summary": "Aggregate matching bucket hosts",
+        "tags": [
+          "Cloud files"
+        ],
+        "description": "Return unique bucket-host/container rows for the same filters as bucket search. page/docs_per_page are normalized but do not slice the response. At most 5000 rows are returned, ordered by file_count descending, then host, then container; result_count can exceed returned length. Products without containers omit container.",
+        "x-apcosys-doc-id": "bucket-analytics",
+        "x-apcosys-method-name": "bucket_analytics",
+        "x-apcosys-plans": [
+          "Plus",
+          "Expert",
+          "Business"
+        ],
+        "x-apcosys-credit-weight": 1,
+        "x-apcosys-source-lines": [
+          649,
+          688
+        ],
+        "requestBody": {
+          "description": "JSON object as described by the supplied contract. Send Content-Type: application/json.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BucketRequest"
+              },
+              "examples": {
+                "documented": {
+                  "$ref": "#/components/examples/BucketAnalyticsRequest"
+                }
+              }
+            }
+          },
+          "x-contract-note": "The source specifies a JSON-object body and parsing failures, but does not separately mark body presence mandatory. requestBody.required is intentionally unset pending confirmation; this is not a promise that an omitted HTTP body is accepted."
+        },
+        "responses": {
+          "200": {
+            "description": "Distinct bucket count and up to 5000 ordered rows.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BucketAnalyticsResponse"
+                },
+                "examples": {
+                  "documented": {
+                    "$ref": "#/components/examples/BucketAnalyticsResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InvalidBucketRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/AuthenticationFailure"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentOrRestrictionFailure"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimitFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/BucketAnalyticsFailure"
+          }
+        },
+        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/buckets/analytics\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"product_names\":[\"azureblobstorage\"],\"extensions\":[\"sql\"]}'"
+      }
+    },
+    "/api/v1/search/private/hosts": {
+      "post": {
+        "operationId": "private-hosts",
+        "summary": "Search the caller's private hosts",
+        "tags": [
+          "Private search"
+        ],
+        "description": "Query only scans owned by the API key's username; the server replaces any client user_name. Authorization/charging use public method names hosts or analytics, so Free is allowed. Non-empty task_ids limits private POST requests. Private host search does not use the public catalogue and is described as not cached; the relationship to the separate credit-reuse cache remains explicitly noted. Response shape and host page-size behavior match public host search.",
+        "x-apcosys-doc-id": "private-hosts",
+        "x-apcosys-method-name": "hosts",
+        "x-apcosys-plans": [
+          "Free",
+          "Plus",
+          "Expert",
+          "Business"
+        ],
+        "x-apcosys-credit-weight": 1,
+        "x-apcosys-source-lines": [
+          690,
+          733
+        ],
+        "requestBody": {
+          "description": "JSON object as described by the supplied contract. Send Content-Type: application/json.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivateSearchRequest"
+              },
+              "examples": {
+                "documented": {
+                  "$ref": "#/components/examples/PrivateHostSearchRequest"
+                }
+              }
+            }
+          },
+          "x-contract-note": "The source specifies a JSON-object body and parsing failures, but does not separately mark body presence mandatory. requestBody.required is intentionally unset pending confirmation; this is not a promise that an omitted HTTP body is accepted."
+        },
+        "responses": {
+          "200": {
+            "description": "Same host-search response shape as the public route. The example is the documented shared shape, not captured private account data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HostSearchResponse"
+                },
+                "examples": {
+                  "documented": {
+                    "$ref": "#/components/examples/HostSearchResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InvalidJsonRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/PrivateAuthenticationFailure"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentOrRestrictionFailure"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimitFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/HostSearchFailure"
+          }
+        },
+        "x-contract-note": "The source states private host search is not cached, but also gives the same method/weight charging rules. Result caching must be distinguished from the 10-minute charge-reuse memo before claiming private requests are always charged.",
+        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/private/hosts\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"page\":1,\"docs_per_page\":20,\"task_ids\":[\"task_123\"],\"simple_search_filters\":[{\"field\":\"port\",\"value\":\"443\"}]}'"
+      }
+    },
+    "/api/v1/search/private/hosts/{host}": {
+      "get": {
+        "operationId": "get-private-host",
+        "summary": "Get the caller's private host",
+        "tags": [
+          "Private search"
+        ],
+        "description": "Look up one host in the API key username's private store. Same host path validation as public GET; no request body and task_ids is not read. Missing rows return 404 host not found. Closed ports are omitted. Private ports do not store TLS, headers, certificate domains, redirects, security.txt or robots.txt. protocol http gets http://host:port; protocol https has no link.",
+        "x-apcosys-doc-id": "get-private-host",
+        "x-apcosys-method-name": "hosts",
+        "x-apcosys-plans": [
+          "Free",
+          "Plus",
+          "Expert",
+          "Business"
+        ],
+        "x-apcosys-credit-weight": 1,
+        "x-apcosys-source-lines": [
+          690,
+          733
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/HostPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Same stored identity/ASN/geo/timestamp fields with private-port subset. The shared host example has empty ports and does not imply private TLS/header support.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateHost"
+                },
+                "examples": {
+                  "documented": {
+                    "$ref": "#/components/examples/HostLookupResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InvalidHost"
+          },
+          "401": {
+            "$ref": "#/components/responses/PrivateAuthenticationFailure"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentOrRestrictionFailure"
+          },
+          "404": {
+            "$ref": "#/components/responses/PrivateHostNotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimitFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/PrivateHostLookupFailure"
+          }
+        },
+        "x-contract-note": "The private section refers to public errors except for explicit 404 absence, but does not give the exact non-not-found private 500 wrapper. The response stays an unconstrained Error object, with no invented text or copied public-absence example.",
+        "x-apcosys-curl-example": "curl -sS \"https://api.apcosys.net/api/v1/search/private/hosts/203.0.113.10\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\""
+      }
+    },
+    "/api/v1/search/private/analytics": {
+      "post": {
+        "operationId": "private-analytics",
+        "summary": "Aggregate the caller's private facets",
+        "tags": [
+          "Private search"
+        ],
+        "description": "Query only scans owned by the API key's username; the server replaces any client user_name. Authorization/charging use public method names hosts or analytics, so Free is allowed. Non-empty task_ids limits private POST requests. Private host search does not use the public catalogue and is described as not cached; the relationship to the separate credit-reuse cache remains explicitly noted. Facet counts for the same search object. page and docs_per_page are ignored. If full_text_search and simple_search_filters are empty, only type is returned—even if another body field is populated. Otherwise every enabled account facet is returned in account order; saved website analytics_settings replaces the default list, type is mandatory, disabled/unknown keys are dropped. Top buckets: type 3, status_code 10, others 100; type additionally appends results. Credit weight uses the configured enabled-facet count before the empty-query rule and integer division (count + 3) / 4.",
+        "x-apcosys-doc-id": "private-analytics",
+        "x-apcosys-method-name": "analytics",
+        "x-apcosys-plans": [
+          "Free",
+          "Plus",
+          "Expert",
+          "Business"
+        ],
+        "x-apcosys-credit-weight": "integer_division(enabled_facet_count + 3, 4)",
+        "x-apcosys-source-lines": [
+          690,
+          733
+        ],
+        "requestBody": {
+          "description": "JSON object as described by the supplied contract. Send Content-Type: application/json.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivateSearchRequest"
+              },
+              "examples": {
+                "documented": {
+                  "$ref": "#/components/examples/AnalyticsRequest"
+                }
+              }
+            }
+          },
+          "x-contract-note": "The source specifies a JSON-object body and parsing failures, but does not separately mark body presence mandatory. requestBody.required is intentionally unset pending confirmation; this is not a promise that an omitted HTTP body is accepted."
+        },
+        "responses": {
+          "200": {
+            "description": "Same analytics response shape as the public route, restricted to the caller's private rows.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyticsResponse"
+                },
+                "examples": {
+                  "documented": {
+                    "$ref": "#/components/examples/AnalyticsResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InvalidJsonRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/PrivateAuthenticationFailure"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentOrRestrictionFailure"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimitFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/AnalyticsFailure"
+          }
+        },
+        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/private/analytics\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"simple_search_filters\":[{\"field\":\"country_code\",\"value\":\"DE\"}]}'"
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key",
+        "description": "Required on every operation. Value is trimmed; missing/blank gives 401 api_key is required, unknown gives 401 invalid API key. Website regenerate_api_key issues the account key but is not a client HTTP endpoint in this specification."
+      }
+    },
+    "parameters": {
+      "HostPath": {
+        "name": "host",
+        "in": "path",
+        "required": true,
+        "description": "Trimmed IPv4, bare IPv6 (without brackets), or a domain with at least two labels. Letter case is retained and matched against stored ip. Percent-encode /, ?, # and spaces. There is no GET body; private GET ignores task_ids.",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "ipv4": {
+            "value": "203.0.113.10"
+          },
+          "ipv6": {
+            "value": "2001:db8::1"
+          },
+          "domain": {
+            "value": "example.com"
+          }
+        }
+      }
+    },
+    "schemas": {
+      "UnixSeconds": {
+        "type": "integer",
+        "description": "Unix seconds. No range or sign constraint is documented.",
+        "format": "int64",
+        "x-apcosys-source-lines": [
+          36,
+          38
+        ]
+      },
+      "FilterLeaf": {
+        "type": "object",
+        "description": "A leaf has field and value. OR leaves are optional against other leaves: at least one OR leaf must match and every AND leaf must match.",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Search field name. The field catalog, dynamic header-name syntax, aliases, and stripped .keyword/.raw suffixes are documented in x-apcosys-filter-catalog and x-apcosys-filter-syntax.",
+            "minLength": 1
+          },
+          "value": {
+            "type": "string",
+            "description": "Always a string, including numbers. Empty headers.Server / header.Server values are documented as header-existence matches.",
+            "x-contract-note": "The generic empty-value 402 error conflicts with the documented empty named-header existence match. No minLength is imposed on value pending clarification."
+          },
+          "operator": {
+            "type": "string",
+            "description": "Empty or omitted means AND on a leaf.",
+            "enum": [
+              "AND",
+              "OR",
+              "NOT",
+              ""
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "value"
+        ],
+        "additionalProperties": true,
+        "x-apcosys-source-lines": [
+          196,
+          223
+        ]
+      },
+      "FilterGroup": {
+        "type": "object",
+        "description": "A group contains filters; operator is optional because the source specifies a default AND.",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "description": "A group defaults to AND. OR matches any child; NOT excludes its children.",
+            "enum": [
+              "AND",
+              "OR",
+              "NOT",
+              ""
+            ]
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilterNode"
+            },
+            "description": "Recursive filter children."
+          }
+        },
+        "required": [
+          "filters"
+        ],
+        "additionalProperties": true,
+        "x-contract-note": "Behavior for empty children, mixed leaf/group members, and unrecognized operators is not fully specified. Empty groups are not given an invented minItems constraint.",
+        "x-apcosys-source-lines": [
+          196,
+          223
+        ]
+      },
+      "FilterNode": {
+        "description": "Recursive search condition. A valid node is a leaf or group; anyOf intentionally does not prohibit a hybrid node whose server behavior is undocumented.",
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/FilterLeaf"
+          },
+          {
+            "$ref": "#/components/schemas/FilterGroup"
+          }
+        ],
+        "examples": [
+          {
+            "operator": "AND",
+            "filters": [
+              {
+                "field": "port",
+                "value": "443"
+              },
+              {
+                "operator": "OR",
+                "filters": [
+                  {
+                    "field": "country_name",
+                    "value": "Germany"
+                  },
+                  {
+                    "field": "country_name",
+                    "value": "France"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "x-contract-note": "The source describes leaf and group shapes but does not state whether they are exclusive.",
+        "x-apcosys-source-lines": [
+          196,
+          223
+        ]
+      },
+      "RangeFilter": {
+        "type": "object",
+        "description": "A range requires a non-empty field; either bound may be omitted. Unsupported fields produce the documented unsupported-range error.",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Inclusive range field. cts and port_count are host-only ranges; base_score remains host-index-only when the rest of the query stays on that index. status_code is ports-index; uts can apply on both indices.",
+            "enum": [
+              "uts",
+              "cts",
+              "port_count",
+              "base_score",
+              "status_code"
+            ]
+          },
+          "start": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "description": "Inclusive gte bound. A number or numeric string is accepted; zero is treated as omitted.",
+            "x-contract-note": "Numeric-string grammar, negative bounds, and reversed bounds are not specified. No numeric-string pattern is invented."
+          },
+          "end": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "description": "Inclusive lte bound. A number or numeric string is accepted; zero is treated as omitted.",
+            "x-contract-note": "Numeric-string grammar, negative bounds, and reversed bounds are not specified. No numeric-string pattern is invented."
+          }
+        },
+        "required": [
+          "field"
+        ],
+        "additionalProperties": true,
+        "examples": [
+          {
+            "field": "uts",
+            "start": 1729000000,
+            "end": 1729600000
+          }
+        ],
+        "x-apcosys-source-lines": [
+          225,
+          241
+        ]
+      },
+      "SearchRequest": {
+        "type": "object",
+        "description": "Body of host search, analytics, and private equivalents. Every property is explicitly optional. Unknown JSON keys are ignored. Index selection and plan restrictions are described in the top-level x-apcosys metadata.",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "1-based host-search page. Zero or omitted becomes 1. Analytics ignores page.",
+            "default": 1,
+            "x-contract-note": "Negative page behavior is not documented."
+          },
+          "docs_per_page": {
+            "type": "integer",
+            "description": "Host search: zero or a value above 100 becomes 50; values 1–100 are kept. Analytics ignores it. This is normalization, not a validation maximum.",
+            "x-contract-note": "Negative values and the omitted-value rule are not separately stated in the host request table; no maximum is imposed because values above 100 are explicitly accepted and normalized."
+          },
+          "simple_search_filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilterNode"
+            },
+            "description": "Recursive search filters."
+          },
+          "full_text_search": {
+            "type": "string",
+            "description": "Port-index free text across banner, body, analyzed domain and exact lowercased domain, header names and values; IP/CIDR text also matches ip. Double quotes select a phrase; parentheses require every word."
+          },
+          "security_body": {
+            "type": "string",
+            "description": "Words from security.txt; ports index. Blocked below Business. AND-ed with filter nodes."
+          },
+          "robots_body": {
+            "type": "string",
+            "description": "Words from robots.txt; ports index. AND-ed with filter nodes."
+          },
+          "exposed_data": {
+            "type": "string",
+            "description": "Words from exposed-data values; ports index. Blocked on Free and Plus. AND-ed with filter nodes."
+          },
+          "min_size_mb": {
+            "type": "number",
+            "description": "Inclusive lower bound on exposed_data.size_mb. A positive value selects the ports index and is blocked on Free and Plus."
+          },
+          "max_size_mb": {
+            "type": "number",
+            "description": "Inclusive upper bound on exposed_data.size_mb. A positive value selects the ports index and is blocked on Free and Plus."
+          },
+          "range_filter": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RangeFilter"
+            },
+            "description": "Inclusive ranges; a range other than cts, port_count, or base_score selects the ports index."
+          },
+          "task_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "When non-empty, require these task IDs. Private POST routes use this to limit the caller's scan tasks."
+          },
+          "user_name": {
+            "type": "string",
+            "description": "When non-empty, require this owner. Private routes overwrite it with the API key account's username."
+          },
+          "sort_field": {
+            "type": "string",
+            "description": "Accepted and ignored. Host results are ordered by uts descending.",
+            "x-apcosys-ignored": true
+          },
+          "sort_direction": {
+            "type": "string",
+            "description": "Accepted and ignored.",
+            "x-apcosys-ignored": true
+          },
+          "ip": {
+            "type": "string",
+            "description": "Accepted and ignored on POST. Host lookup reads its URL path instead.",
+            "x-apcosys-ignored": true
+          },
+          "host": {
+            "type": "string",
+            "description": "Accepted and ignored.",
+            "x-apcosys-ignored": true
+          },
+          "cve_ID": {
+            "type": "string",
+            "description": "Accepted and ignored. Exact documented spelling is cve_ID.",
+            "x-apcosys-ignored": true,
+            "x-contract-note": "This explicit key spelling is an exception to the source's general all-snake_case statement."
+          }
+        },
+        "additionalProperties": true,
+        "x-apcosys-unknown-properties": "ignored",
+        "x-apcosys-source-lines": [
+          168,
+          194
+        ]
+      },
+      "PrivateSearchRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SearchRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "user_name": {
+                "type": "string",
+                "description": "Accepted but replaced with the API key account's username, regardless of the supplied value.",
+                "x-apcosys-overwritten": "API key account username"
+              },
+              "task_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "When non-empty, restrict the caller's private rows to these scan task IDs."
+              }
+            }
+          }
+        ],
+        "description": "Same search object as public search. The server pins user_name to the API key's username; the client cannot select another account. Free may call this route because its authorization method is hosts or analytics, not the website's private_* methods.",
+        "x-apcosys-source-lines": [
+          690,
+          733
+        ]
+      },
+      "OpenPort": {
+        "type": "object",
+        "description": "A host-card open-port entry.",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "description": "Protocol name; https is an example, not an exhaustive enum."
+          },
+          "port": {
+            "type": "integer",
+            "description": "Port number. The source does not specify numeric limits."
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-apcosys-source-lines": [
+          740,
+          754
+        ]
+      },
+      "HostCard": {
+        "type": "object",
+        "description": "One element of a host-search hosts list. Other card fields are omitted when empty.",
+        "properties": {
+          "ip": {
+            "type": "string",
+            "description": "Address, or the domain when the address is empty."
+          },
+          "os": {
+            "type": "string",
+            "description": "Operating system."
+          },
+          "org": {
+            "type": "string",
+            "description": "ASN organization."
+          },
+          "city_name": {
+            "type": "string",
+            "description": "City."
+          },
+          "country_code": {
+            "type": "string",
+            "description": "Country code."
+          },
+          "region": {
+            "type": "string",
+            "description": "Region."
+          },
+          "uts": {
+            "$ref": "#/components/schemas/UnixSeconds"
+          },
+          "labels_list": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Always present as an array, including when empty."
+          },
+          "open_ports": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OpenPort"
+            },
+            "description": "Always present as an array, including when empty. On ports-index searches, at most 200 open ports are attached in port order; no universal array maximum is asserted for host-index results."
+          }
+        },
+        "required": [
+          "labels_list",
+          "open_ports"
+        ],
+        "additionalProperties": true,
+        "x-apcosys-source-lines": [
+          740,
+          754
+        ]
+      },
+      "HostSearchResponse": {
+        "type": "object",
+        "description": "Public and private host-search response envelope.",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": "Matching host count; a distinct-host count on ports-index searches."
+          },
+          "page": {
+            "type": "integer",
+            "description": "The page that was searched."
+          },
+          "docs_per_page": {
+            "type": "integer",
+            "description": "Page size after host-search normalization."
+          },
+          "hosts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HostCard"
+            },
+            "description": "One row per host. Empty matches return [], never null."
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-apcosys-source-lines": [
+          429,
+          459
+        ]
+      },
+      "ExposedData": {
+        "type": "object",
+        "description": "Exposed-data table; removed from products for Free and Plus.",
+        "properties": {
+          "field_headers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Column headings."
+          },
+          "field_value": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Rows of strings aligned with field_headers."
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable. Column/row alignment is described but is not enforced with invented length constraints.",
+        "x-apcosys-hidden-for-plans": [
+          "Free",
+          "Plus"
+        ],
+        "x-apcosys-source-lines": [
+          870,
+          884
+        ]
+      },
+      "CveSummary": {
+        "type": "object",
+        "description": "A detected product's CVE entry.",
+        "properties": {
+          "cve_id": {
+            "type": "string",
+            "description": "CVE ID."
+          },
+          "base_score": {
+            "type": "number",
+            "description": "Base score; numeric bounds are not supplied by this document."
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-apcosys-source-lines": [
+          870,
+          884
+        ]
+      },
+      "Product": {
+        "type": "object",
+        "description": "Detected product.",
+        "properties": {
+          "product": {
+            "type": "string"
+          },
+          "vendor": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cve_product": {
+            "type": "string"
+          },
+          "cve_vendor": {
+            "type": "string"
+          },
+          "cve_identifier": {
+            "type": "string",
+            "description": "CPE identifier."
+          },
+          "cve_list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CveSummary"
+            }
+          },
+          "exposed_data": {
+            "$ref": "#/components/schemas/ExposedData",
+            "description": "Removed on Free and Plus.",
+            "x-apcosys-hidden-for-plans": [
+              "Free",
+              "Plus"
+            ]
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-apcosys-source-lines": [
+          870,
+          884
+        ]
+      },
+      "TlsInfo": {
+        "type": "object",
+        "description": "Flat TLS object on tls_info. Dates are RFC3339.",
+        "properties": {
+          "tls_version": {
+            "type": "string"
+          },
+          "cipher_suite": {
+            "type": "string"
+          },
+          "server_name": {
+            "type": "string",
+            "description": "SNI."
+          },
+          "sha256": {
+            "type": "string",
+            "description": "Certificate SHA-256."
+          },
+          "ja4s": {
+            "type": "string"
+          },
+          "serial_number": {
+            "type": "string"
+          },
+          "issuer": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "not_before": {
+            "type": "string",
+            "description": "RFC3339 certificate date-time.",
+            "format": "date-time"
+          },
+          "not_after": {
+            "type": "string",
+            "description": "RFC3339 certificate date-time.",
+            "format": "date-time"
+          },
+          "dns_names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "email_addresses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ip_addresses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "uris": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "public_key_algorithm": {
+            "type": "string"
+          },
+          "signature_algorithm": {
+            "type": "string"
+          },
+          "key_usage": {
+            "type": "string"
+          },
+          "ext_key_usage": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "description": "Extended key usage code."
+            }
+          },
+          "is_ca": {
+            "type": "boolean"
+          },
+          "ocsp_server": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "crl_distribution_points": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable. tls_info.expired is documented as a searchable field but is not listed as a TLS response member, so it is not invented here.",
+        "x-apcosys-source-lines": [
+          825,
+          851
+        ]
+      },
+      "SecurityTxt": {
+        "type": "object",
+        "description": "Observed security.txt.",
+        "properties": {
+          "is_security_txt": {
+            "type": "boolean",
+            "description": "Present even when false if the security_txt object exists."
+          },
+          "body": {
+            "type": "string",
+            "description": "File body."
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Contact values."
+          },
+          "url": {
+            "type": "string",
+            "description": "Full URL."
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "Path."
+          }
+        },
+        "required": [
+          "is_security_txt"
+        ],
+        "additionalProperties": true,
+        "x-apcosys-source-lines": [
+          853,
+          861
+        ]
+      },
+      "RobotsTxt": {
+        "type": "object",
+        "description": "Observed robots.txt.",
+        "properties": {
+          "status_code": {
+            "type": "integer",
+            "description": "HTTP status of the robots.txt file."
+          },
+          "body": {
+            "type": "string",
+            "description": "File body."
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-apcosys-source-lines": [
+          863,
+          868
+        ]
+      },
+      "Port": {
+        "type": "object",
+        "description": "A public host port; closed_port entries are omitted.",
+        "properties": {
+          "port": {
+            "type": "integer",
+            "description": "Port number."
+          },
+          "protocol": {
+            "type": "string",
+            "description": "Protocol name, for example https."
+          },
+          "banner": {
+            "type": "string",
+            "description": "Banner."
+          },
+          "transport": {
+            "type": "string",
+            "description": "Transport, for example tcp."
+          },
+          "uts": {
+            "$ref": "#/components/schemas/UnixSeconds"
+          },
+          "status": {
+            "type": "string",
+            "description": "Service status. closed_port entries are removed before returning the response."
+          },
+          "title": {
+            "type": "string",
+            "description": "Page or service title."
+          },
+          "status_code": {
+            "type": "integer",
+            "description": "Observed HTTP status."
+          },
+          "body": {
+            "type": "string",
+            "description": "Response body."
+          },
+          "body_sha256": {
+            "type": "string",
+            "description": "Hex SHA-256 of the body."
+          },
+          "banner_sha256": {
+            "type": "string",
+            "description": "Hex SHA-256 of the banner."
+          },
+          "favicon_md5": {
+            "type": "string",
+            "description": "Hex MD5 of the favicon."
+          },
+          "headers": {
+            "type": "object",
+            "description": "Header name to array of values.",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "cert_domains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "DNS names from the certificate."
+          },
+          "redirects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Redirect chain."
+          },
+          "link": {
+            "type": "string",
+            "description": "Set only when protocol is http: the last redirect, or scheme://host:port if there is none. The scheme is https when tls_info.tls_version is set."
+          },
+          "header_domains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Domains taken from headers."
+          },
+          "error": {
+            "type": "string",
+            "description": "Probe error."
+          },
+          "tls_info": {
+            "$ref": "#/components/schemas/TlsInfo"
+          },
+          "security_txt": {
+            "$ref": "#/components/schemas/SecurityTxt"
+          },
+          "robots_txt": {
+            "$ref": "#/components/schemas/RobotsTxt"
+          },
+          "detected_products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable. Hash string lengths, protocol/status enums, numeric port limits, and URI validation are not inferred from examples.",
+        "x-apcosys-source-lines": [
+          798,
+          823
+        ]
+      },
+      "PrivatePort": {
+        "type": "object",
+        "description": "Private-store port subset. Closed ports are omitted. TLS, headers, certificate domains, redirects, security.txt, and robots.txt are not stored for a private port.",
+        "properties": {
+          "port": {
+            "type": "integer",
+            "description": "Port number."
+          },
+          "protocol": {
+            "type": "string",
+            "description": "Protocol name, for example https."
+          },
+          "transport": {
+            "type": "string",
+            "description": "Transport, for example tcp."
+          },
+          "uts": {
+            "$ref": "#/components/schemas/UnixSeconds"
+          },
+          "status": {
+            "type": "string",
+            "description": "Service status. closed_port entries are removed before returning the response."
+          },
+          "title": {
+            "type": "string",
+            "description": "Page or service title."
+          },
+          "status_code": {
+            "type": "integer",
+            "description": "Observed HTTP status."
+          },
+          "banner": {
+            "type": "string",
+            "description": "Banner."
+          },
+          "body": {
+            "type": "string",
+            "description": "Response body."
+          },
+          "banner_sha256": {
+            "type": "string",
+            "description": "Hex SHA-256 of the banner."
+          },
+          "body_sha256": {
+            "type": "string",
+            "description": "Hex SHA-256 of the body."
+          },
+          "favicon_md5": {
+            "type": "string",
+            "description": "Hex MD5 of the favicon."
+          },
+          "error": {
+            "type": "string",
+            "description": "Probe error."
+          },
+          "detected_products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          },
+          "link": {
+            "type": "string",
+            "description": "Only protocol http receives http://host:port because a private port has no TLS object. A protocol https private port has no link."
+          }
+        },
+        "additionalProperties": true,
+        "x-apcosys-absent-fields": [
+          "tls_info",
+          "headers",
+          "cert_domains",
+          "redirects",
+          "security_txt",
+          "robots_txt"
+        ],
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable. header_domains is not enumerated in the private-port list and is not added by inference. additionalProperties stays open for forward compatibility; x-apcosys-absent-fields records the explicit current omissions.",
+        "x-apcosys-source-lines": [
+          718,
+          718
+        ]
+      },
+      "Host": {
+        "type": "object",
+        "description": "Public GET host response.",
+        "properties": {
+          "ip": {
+            "type": "string",
+            "description": "Address or host key."
+          },
+          "type": {
+            "type": "string",
+            "description": "Catalogue type.",
+            "enum": [
+              "ipv4",
+              "ipv6",
+              "domain"
+            ]
+          },
+          "as_cidr": {
+            "type": "string",
+            "description": "ASN prefix."
+          },
+          "os": {
+            "type": "string",
+            "description": "Operating system."
+          },
+          "country_code": {
+            "type": "string"
+          },
+          "country_name": {
+            "type": "string"
+          },
+          "continent_name": {
+            "type": "string"
+          },
+          "city_name": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "region_code": {
+            "type": "string"
+          },
+          "asn": {
+            "type": "integer",
+            "description": "AS number; omitted when zero."
+          },
+          "org": {
+            "type": "string",
+            "description": "AS organization."
+          },
+          "cts": {
+            "$ref": "#/components/schemas/UnixSeconds"
+          },
+          "uts": {
+            "$ref": "#/components/schemas/UnixSeconds"
+          },
+          "ports": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Port"
+            },
+            "description": "Host ports; closed_port entries removed."
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable. ports:[] appears in the example, but an always-present guarantee is not explicit; ports is not marked required.",
+        "x-apcosys-source-lines": [
+          756,
+          796
+        ]
+      },
+      "PrivateHost": {
+        "type": "object",
+        "description": "Private GET host response using the fields stored for the API key's username.",
+        "properties": {
+          "ip": {
+            "type": "string",
+            "description": "Address or host key."
+          },
+          "type": {
+            "type": "string",
+            "description": "Catalogue type.",
+            "enum": [
+              "ipv4",
+              "ipv6",
+              "domain"
+            ]
+          },
+          "as_cidr": {
+            "type": "string",
+            "description": "ASN prefix."
+          },
+          "os": {
+            "type": "string",
+            "description": "Operating system."
+          },
+          "country_code": {
+            "type": "string"
+          },
+          "country_name": {
+            "type": "string"
+          },
+          "continent_name": {
+            "type": "string"
+          },
+          "city_name": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "region_code": {
+            "type": "string"
+          },
+          "asn": {
+            "type": "integer",
+            "description": "AS number; omitted when zero."
+          },
+          "org": {
+            "type": "string",
+            "description": "AS organization."
+          },
+          "cts": {
+            "$ref": "#/components/schemas/UnixSeconds"
+          },
+          "uts": {
+            "$ref": "#/components/schemas/UnixSeconds"
+          },
+          "ports": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PrivatePort"
+            },
+            "description": "Private-store ports; closed_port entries removed."
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-apcosys-source-lines": [
+          690,
+          733
+        ]
+      },
+      "FacetValue": {
+        "type": "object",
+        "description": "Facet bucket; no unique_hosts field is documented.",
+        "properties": {
+          "key": {
+            "type": [
+              "string",
+              "number"
+            ],
+            "description": "String or number. Port and status_code facets always use a string. Empty keys are removed."
+          },
+          "doc_count": {
+            "type": "integer",
+            "description": "For type, org, and country_name: host count. For other facets: record count."
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-apcosys-source-lines": [
+          529,
+          548
+        ]
+      },
+      "Facet": {
+        "type": "object",
+        "description": "Account-ordered facet. type appends a synthetic results bucket summing the other type bucket counts.",
+        "properties": {
+          "facet_name": {
+            "type": "string",
+            "description": "Loaded facet name.",
+            "enum": [
+              "type",
+              "port",
+              "status_code",
+              "org",
+              "country_name",
+              "protocol",
+              "products",
+              "title",
+              "cve_id",
+              "vendors",
+              "labels",
+              "redirects"
+            ]
+          },
+          "facet_values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FacetValue"
+            },
+            "description": "Loaded facet buckets; an empty loaded list is [], not null."
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "facet_name"
+              ],
+              "properties": {
+                "facet_name": {
+                  "enum": [
+                    "port",
+                    "status_code"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "facet_values": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "key": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "x-apcosys-source-lines": [
+          529,
+          548
+        ]
+      },
+      "AnalyticsResponse": {
+        "type": "object",
+        "description": "Public and private analytics response. No unique_hosts, code, or remaining-credit field is documented.",
+        "properties": {
+          "facets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Facet"
+            },
+            "description": "One object per loaded facet in account order; empty loaded arrays are [], never null."
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-apcosys-source-lines": [
+          523,
+          570
+        ]
+      },
+      "BucketRequest": {
+        "type": "object",
+        "description": "Bucket filters. Date bounds are inclusive and zero means unset. No field is marked mandatory in the bucket parameter table.",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Zero or omitted becomes 1.",
+            "default": 1
+          },
+          "docs_per_page": {
+            "type": "integer",
+            "description": "Zero or omitted becomes 50. No upper cap on bucket search. Bucket analytics normalizes this but does not slice its response.",
+            "default": 50
+          },
+          "sort_field": {
+            "type": "string",
+            "description": "Empty selects index order. Non-empty must be cts, uts, or size_mb.",
+            "enum": [
+              "",
+              "cts",
+              "uts",
+              "size_mb"
+            ]
+          },
+          "sort_direction": {
+            "type": "string",
+            "description": "Non-empty must be asc or desc. Empty together with sort_field becomes desc.",
+            "enum": [
+              "",
+              "asc",
+              "desc"
+            ]
+          },
+          "host": {
+            "type": "string",
+            "description": "Bucket host. host/container also sets the first path segment after the host as container. * and ? are wildcards."
+          },
+          "key_words": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "File key must match at least one entry. Entries containing wildcard or regex metacharacters become case-insensitive wildcard matches; others are match queries on key."
+          },
+          "stop_words": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Exclude matching file keys; same wildcard rule as key_words."
+          },
+          "extensions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Exact extensions."
+          },
+          "exclude_extensions": {
+            "type": "boolean",
+            "description": "True excludes extensions. False or omitted requires the listed extensions.",
+            "default": false
+          },
+          "alphabets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Exact alphabet tags, for example latin."
+          },
+          "min_size_mb": {
+            "type": "number",
+            "description": "Inclusive lower size bound; zero means unset."
+          },
+          "max_size_mb": {
+            "type": "number",
+            "description": "Inclusive upper size bound; zero means unset."
+          },
+          "gte_cts": {
+            "$ref": "#/components/schemas/UnixSeconds",
+            "description": "Inclusive created-at lower bound, Unix seconds; zero means unset."
+          },
+          "lte_cts": {
+            "$ref": "#/components/schemas/UnixSeconds",
+            "description": "Inclusive created-at upper bound, Unix seconds; zero means unset."
+          },
+          "gte_uts": {
+            "$ref": "#/components/schemas/UnixSeconds",
+            "description": "Inclusive updated-at lower bound, Unix seconds; zero means unset."
+          },
+          "lte_uts": {
+            "$ref": "#/components/schemas/UnixSeconds",
+            "description": "Inclusive updated-at upper bound, Unix seconds; zero means unset."
+          },
+          "product_names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Exact product names, for example azureblobstorage."
+          },
+          "country_code_include": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Accepted and not applied.",
+            "x-apcosys-ignored": true
+          },
+          "country_code_exclude": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Accepted and not applied.",
+            "x-apcosys-ignored": true
+          },
+          "excluded_buckets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Accepted and not applied.",
+            "x-apcosys-ignored": true
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "Unlike SearchRequest, the source does not explicitly state all bucket fields are optional or that unknown keys are ignored. No required set, negative-value rule, reversed-bound rule, or metacharacter grammar is invented; additionalProperties is open pending clarification.",
+        "x-apcosys-source-lines": [
+          591,
+          613
+        ]
+      },
+      "BucketFile": {
+        "type": "object",
+        "description": "One indexed file in a bucket.",
+        "properties": {
+          "host": {
+            "type": "string"
+          },
+          "protocol": {
+            "type": "string",
+            "description": "Documented schemes.",
+            "enum": [
+              "http",
+              "https"
+            ]
+          },
+          "key": {
+            "type": "string",
+            "description": "Object key."
+          },
+          "container": {
+            "type": "string",
+            "description": "Present when the product has a container."
+          },
+          "alphabets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "alias_hosts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cts": {
+            "$ref": "#/components/schemas/UnixSeconds"
+          },
+          "uts": {
+            "$ref": "#/components/schemas/UnixSeconds"
+          },
+          "size_mb": {
+            "type": "number",
+            "description": "Megabytes rounded to four decimal places."
+          },
+          "extension": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable. Rounding is documented in prose; a floating-point multipleOf constraint is not invented.",
+        "x-apcosys-source-lines": [
+          886,
+          899
+        ]
+      },
+      "BucketSearchResponse": {
+        "type": "object",
+        "description": "Bucket file-search response.",
+        "properties": {
+          "result_count": {
+            "type": "integer",
+            "description": "Matching files across all pages."
+          },
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BucketFile"
+            },
+            "description": "This page. Empty or past-end lists are [], never null."
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-apcosys-source-lines": [
+          615,
+          637
+        ]
+      },
+      "BucketAnalyticsRow": {
+        "type": "object",
+        "description": "Unique bucket-host/container row.",
+        "properties": {
+          "host": {
+            "type": "string"
+          },
+          "container": {
+            "type": "string",
+            "description": "Omitted when the product has no container; present for products such as Azure."
+          },
+          "file_count": {
+            "type": "integer",
+            "description": "Files in that bucket."
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-apcosys-source-lines": [
+          901,
+          907
+        ]
+      },
+      "BucketAnalyticsResponse": {
+        "type": "object",
+        "description": "Bucket analytics response; page and docs_per_page do not slice this list.",
+        "properties": {
+          "result_count": {
+            "type": "integer",
+            "description": "Distinct buckets matching the filters; can exceed result length."
+          },
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BucketAnalyticsRow"
+            },
+            "description": "Rows ordered by file_count descending, then host, then container.",
+            "maxItems": 5000
+          }
+        },
+        "additionalProperties": true,
+        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-apcosys-source-lines": [
+          665,
+          679
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "description": "Failure response body.",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Exact server error text or documented error template."
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "additionalProperties": true,
+        "x-apcosys-source-lines": [
+          367,
+          411
+        ]
+      },
+      "RateLimitError": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Error"
+          },
+          {
+            "type": "object",
+            "required": [
+              "retry_after"
+            ],
+            "properties": {
+              "error": {
+                "type": "string",
+                "const": "rate_limit_exceeded"
+              },
+              "retry_after": {
+                "type": "integer",
+                "const": 1,
+                "description": "Documented retry delay in seconds; always integer 1."
+              }
+            }
+          }
+        ],
+        "description": "HTTP 429 response. The source documents retry_after in the body, not an HTTP Retry-After header.",
+        "x-apcosys-source-lines": [
+          94,
+          103
+        ]
+      }
+    },
+    "responses": {
+      "InvalidJsonRequest": {
+        "description": "The POST body is not the JSON object for the route. Error text begins invalid request body: ... . JSON parsing occurs after authorization and credit charging; a paid malformed-body call can be charged.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        },
+        "x-apcosys-error-prefix": "invalid request body: "
+      },
+      "InvalidHost": {
+        "description": "Missing/invalid host path segment. Accepts trimmed IPv4, bare IPv6, or a domain with at least two labels; letter case is preserved.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "MissingHostPath": {
+                "$ref": "#/components/examples/MissingHostPath"
+              },
+              "InvalidHostPath": {
+                "$ref": "#/components/examples/InvalidHostPath"
+              }
+            }
+          }
+        }
+      },
+      "InvalidBucketRequest": {
+        "description": "Invalid request JSON or bucket sorting: sort_field must be cts, uts, or size_mb; non-empty direction must be asc or desc. The documented spelling paramet is preserved.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "BadBucketSortField": {
+                "$ref": "#/components/examples/BadBucketSortField"
+              },
+              "BadBucketSortDirection": {
+                "$ref": "#/components/examples/BadBucketSortDirection"
+              }
+            }
+          }
+        }
+      },
+      "AuthenticationFailure": {
+        "description": "Missing, blank, unknown API key, or account not loaded. The header value is trimmed.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "ApiKeyRequired": {
+                "$ref": "#/components/examples/ApiKeyRequired"
+              },
+              "InvalidApiKey": {
+                "$ref": "#/components/examples/InvalidApiKey"
+              },
+              "Unauthorized": {
+                "$ref": "#/components/examples/Unauthorized"
+              }
+            }
+          }
+        }
+      },
+      "PrivateAuthenticationFailure": {
+        "description": "Common API-key failures, or a private request whose API-key account has no username.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "ApiKeyRequired": {
+                "$ref": "#/components/examples/ApiKeyRequired"
+              },
+              "InvalidApiKey": {
+                "$ref": "#/components/examples/InvalidApiKey"
+              },
+              "Unauthorized": {
+                "$ref": "#/components/examples/Unauthorized"
+              },
+              "PrivateUserNameMissing": {
+                "$ref": "#/components/examples/PrivateUserNameMissing"
+              }
+            }
+          }
+        }
+      },
+      "PaymentOrRestrictionFailure": {
+        "description": "Subscription, credit, or search-field/value restriction failure. Exact strings and templates, including the literal (402 Payment Required) prefix where present, are preserved in x-apcosys-error-catalog.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "SubscriptionRequired": {
+                "$ref": "#/components/examples/SubscriptionRequired"
+              },
+              "SubscriptionExpired": {
+                "$ref": "#/components/examples/SubscriptionExpired"
+              },
+              "MethodDenied": {
+                "$ref": "#/components/examples/MethodDenied"
+              },
+              "BillingExpired": {
+                "$ref": "#/components/examples/BillingExpired"
+              },
+              "NoCredits": {
+                "$ref": "#/components/examples/NoCredits"
+              }
+            }
+          }
+        }
+      },
+      "RateLimitFailure": {
+        "description": "The per-account token bucket is empty. Body retry_after is always integer 1. A response-header Retry-After is not documented.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RateLimitError"
+            },
+            "examples": {
+              "RateLimited": {
+                "$ref": "#/components/examples/RateLimited"
+              }
+            }
+          }
+        }
+      },
+      "HostSearchFailure": {
+        "description": "Host search failure; text begins search failed: ... . Unsupported search/range fields and incompatible host-only ranges are possible.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "HostSearchUnsupportedField": {
+                "$ref": "#/components/examples/HostSearchUnsupportedField"
+              }
+            }
+          }
+        }
+      },
+      "HostLookupFailure": {
+        "description": "Public host lookup failure, including a missing public host. Endpoint-specific documented prefix is failed to get host: ... . A missing public host is HTTP 500, not 404.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "PublicHostMissing": {
+                "$ref": "#/components/examples/PublicHostMissing"
+              }
+            }
+          }
+        },
+        "x-contract-note": "The global error table also mentions search failed: no results found on a public lookup. This operation follows its dedicated endpoint section; the prefix discrepancy requires clarification."
+      },
+      "AnalyticsFailure": {
+        "description": "HTTP 500 with the analytics error text, without an invented uniform wrapper. Examples include unsupported search field: ... , unsupported range field: ... , and the host-only range error.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "AnalyticsHostOnlyRange": {
+                "$ref": "#/components/examples/AnalyticsHostOnlyRange"
+              }
+            }
+          }
+        }
+      },
+      "BucketSearchFailure": {
+        "description": "HTTP 500 with search failed: ... .",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "BucketAnalyticsFailure": {
+        "description": "HTTP 500 with aggregation failed: ... .",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "PrivateHostNotFound": {
+        "description": "No host row for the API-key account's username.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "PrivateHostMissing": {
+                "$ref": "#/components/examples/PrivateHostMissing"
+              }
+            }
+          }
+        }
+      },
+      "PrivateHostLookupFailure": {
+        "description": "Other private host lookup failures use the referenced public error family, but the exact non-not-found private 500 text is not specified. A missing private row is 404 host not found, never represented by this response.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        },
+        "x-contract-note": "No public missing-host 500 example is copied onto the private route."
+      }
+    },
+    "examples": {
+      "HostSearchRequest": {
+        "summary": "Documented public host query",
+        "value": {
+          "page": 1,
+          "docs_per_page": 20,
+          "simple_search_filters": [
+            {
+              "field": "port",
+              "value": "443"
+            },
+            {
+              "field": "products",
+              "value": "nginx"
+            }
+          ]
+        }
+      },
+      "HostSearchResult": {
+        "summary": "Documented host-search response",
+        "value": {
+          "total": 1,
+          "page": 1,
+          "docs_per_page": 50,
+          "hosts": [
+            {
+              "ip": "203.0.113.10",
+              "org": "Example ASN",
+              "country_code": "DE",
+              "city_name": "Berlin",
+              "region": "Berlin",
+              "os": "Linux",
+              "uts": 1729500000,
+              "labels_list": [
+                "web"
+              ],
+              "open_ports": [
+                {
+                  "protocol": "https",
+                  "port": 443
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "HostLookupResult": {
+        "summary": "Documented host object",
+        "value": {
+          "ip": "203.0.113.10",
+          "as_cidr": "203.0.113.0/24",
+          "os": "Linux",
+          "type": "ipv4",
+          "country_code": "DE",
+          "country_name": "Germany",
+          "continent_name": "Europe",
+          "city_name": "Berlin",
+          "region": "Berlin",
+          "region_code": "BE",
+          "asn": 64500,
+          "org": "Example ASN",
+          "cts": 1729000000,
+          "uts": 1729500000,
+          "ports": []
+        }
+      },
+      "AnalyticsRequest": {
+        "summary": "Documented country facet query",
+        "value": {
+          "simple_search_filters": [
+            {
+              "field": "country_code",
+              "value": "DE"
+            }
+          ]
+        }
+      },
+      "AnalyticsResult": {
+        "summary": "Documented analytics response",
+        "value": {
+          "facets": [
+            {
+              "facet_name": "type",
+              "facet_values": [
+                {
+                  "key": "ipv4",
+                  "doc_count": 5000
+                },
+                {
+                  "key": "domain",
+                  "doc_count": 3000
+                },
+                {
+                  "key": "results",
+                  "doc_count": 8000
+                }
+              ]
+            },
+            {
+              "facet_name": "port",
+              "facet_values": [
+                {
+                  "key": "443",
+                  "doc_count": 2000
+                },
+                {
+                  "key": "80",
+                  "doc_count": 1500
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "BucketSearchRequest": {
+        "summary": "Documented Azure SQL-file query",
+        "value": {
+          "page": 1,
+          "docs_per_page": 20,
+          "host": "acct.blob.core.windows.net/public",
+          "key_words": [
+            "backup"
+          ],
+          "extensions": [
+            "sql"
+          ],
+          "sort_field": "uts",
+          "sort_direction": "desc"
+        }
+      },
+      "BucketSearchResult": {
+        "summary": "Documented bucket file response",
+        "value": {
+          "result_count": 1,
+          "result": [
+            {
+              "host": "acct.blob.core.windows.net",
+              "container": "public",
+              "protocol": "https",
+              "key": "backup/db.sql",
+              "extension": "sql",
+              "alphabets": [
+                "latin"
+              ],
+              "cts": 1728500000,
+              "uts": 1729500000,
+              "size_mb": 12.5
+            }
+          ]
+        }
+      },
+      "BucketAnalyticsRequest": {
+        "summary": "Documented bucket analytics query",
+        "value": {
+          "product_names": [
+            "azureblobstorage"
+          ],
+          "extensions": [
+            "sql"
+          ]
+        }
+      },
+      "BucketAnalyticsResult": {
+        "summary": "Documented bucket analytics response",
+        "value": {
+          "result_count": 1,
+          "result": [
+            {
+              "host": "acct.blob.core.windows.net",
+              "container": "public",
+              "file_count": 40
+            }
+          ]
+        }
+      },
+      "PrivateHostSearchRequest": {
+        "summary": "Documented caller-owned scan query",
+        "value": {
+          "page": 1,
+          "docs_per_page": 20,
+          "task_ids": [
+            "task_123"
+          ],
+          "simple_search_filters": [
+            {
+              "field": "port",
+              "value": "443"
+            }
+          ]
+        }
+      },
+      "ApiKeyRequired": {
+        "value": {
+          "error": "api_key is required"
+        }
+      },
+      "InvalidApiKey": {
+        "value": {
+          "error": "invalid API key"
+        }
+      },
+      "Unauthorized": {
+        "value": {
+          "error": "unauthorized"
+        }
+      },
+      "PrivateUserNameMissing": {
+        "value": {
+          "error": "user_name is missing"
+        }
+      },
+      "SubscriptionRequired": {
+        "value": {
+          "error": "subscription required"
+        }
+      },
+      "SubscriptionExpired": {
+        "value": {
+          "error": "subscription has expired"
+        }
+      },
+      "MethodDenied": {
+        "value": {
+          "error": "access denied for this subscription"
+        }
+      },
+      "BillingExpired": {
+        "value": {
+          "error": "subscription expired, please renew your plan"
+        }
+      },
+      "NoCredits": {
+        "value": {
+          "error": "not enough credits on team owner's account"
+        }
+      },
+      "MissingHostPath": {
+        "value": {
+          "error": "ip is required"
+        }
+      },
+      "InvalidHostPath": {
+        "value": {
+          "error": "invalid ip or host"
+        }
+      },
+      "BadBucketSortField": {
+        "value": {
+          "error": "sort_field must be cts, uts, or size_mb"
+        }
+      },
+      "BadBucketSortDirection": {
+        "value": {
+          "error": "write correct sort paramet(asc/desc)"
+        }
+      },
+      "PublicHostMissing": {
+        "value": {
+          "error": "failed to get host: no results found"
+        }
+      },
+      "PrivateHostMissing": {
+        "value": {
+          "error": "host not found"
+        }
+      },
+      "RateLimited": {
+        "value": {
+          "error": "rate_limit_exceeded",
+          "retry_after": 1
+        }
+      },
+      "HostSearchUnsupportedField": {
+        "value": {
+          "error": "search failed: unsupported search field: product_name"
+        }
+      },
+      "AnalyticsHostOnlyRange": {
+        "value": {
+          "error": "range field cts is host-only and cannot be applied on ports index; combine it only with host-index filters"
+        }
+      }
+    }
+  },
+  "x-apcosys-source-document": {
+    "name": "CLIENT_API_DOCS_EN.md",
+    "sha256": "54073167aad07c0404b6f8bb841eb99201221ac3e5da7f5d66bb97e797e6e7fb",
+    "lines": 907,
+    "role": "sole endpoint/behavior source"
+  },
+  "x-contract-note": "This is a reviewable, replaceable candidate. No live requests were made. Required membership is deliberately conservative; sample presence does not imply a response guarantee. Unresolved source contradictions are not silently repaired.",
+  "x-apcosys-contract-notes": [
+    {
+      "id": "C01",
+      "source_lines": [
+        9,
+        191
+      ],
+      "note": "The source says all fields are snake_case but explicitly accepts ignored cve_ID. Preserve the exact exception."
+    },
+    {
+      "id": "C02",
+      "source_lines": [
+        115,
+        170
+      ],
+      "note": "GET charging uses body {} and method hosts. The text says POST and GET use different windows because POST is not {}, but an empty SearchRequest object is permitted. POST{} collision behavior needs confirmation."
+    },
+    {
+      "id": "C03",
+      "source_lines": [
+        113,
+        126,
+        704
+      ],
+      "note": "Private/public routes share method names; whether route/store scope contributes to charging deduplication beyond account, method and raw body is not separately shown. Do not promise independent public/private windows."
+    },
+    {
+      "id": "C04",
+      "source_lines": [
+        113,
+        704
+      ],
+      "note": "Private search 'not cached' must be distinguished from the 10-minute credit-reuse memo. Result-cache and charge-cache behavior should be stated separately."
+    },
+    {
+      "id": "C05",
+      "source_lines": [
+        344,
+        388
+      ],
+      "note": "Empty named-header values match header presence, while the generic error list rejects empty filter values. No universal non-empty value rule is imposed."
+    },
+    {
+      "id": "C06",
+      "source_lines": [
+        405,
+        406,
+        501,
+        502
+      ],
+      "note": "The global error table mentions both search failed and failed to get host for missing public hosts. The dedicated public GET section is followed: 500 failed to get host: no results found."
+    },
+    {
+      "id": "C07",
+      "source_lines": [
+        174,
+        175,
+        225,
+        239,
+        594,
+        595
+      ],
+      "note": "Negative paging/sizes, numeric-string grammar, reversed ranges, and out-of-range numbers are unspecified. No invented bounds/patterns are imposed."
+    },
+    {
+      "id": "C08",
+      "source_lines": [
+        198,
+        208,
+        389
+      ],
+      "note": "Empty groups and hybrid leaf/group nodes are not fully specified. FilterNode uses anyOf rather than an invented exclusive oneOf, and imposes no minItems on groups."
+    },
+    {
+      "id": "C09",
+      "source_lines": [
+        170,
+        591,
+        613
+      ],
+      "note": "SearchRequest properties are explicitly optional; bucket property requiredness and unknown-key handling are not explicitly stated. POST body presence is not separately marked mandatory. These remain annotated rather than inferred."
+    },
+    {
+      "id": "C10",
+      "source_lines": [
+        431,
+        459,
+        527,
+        738,
+        754,
+        857
+      ],
+      "note": "Response members are not made required merely because they appear in a table/example. Explicit required guarantees retained: HostCard labels_list/open_ports; SecurityTxt is_security_txt; error and 429 retry_after."
+    },
+    {
+      "id": "C11",
+      "source_lines": [
+        130
+      ],
+      "note": "Full-access roles skip charging and field restrictions, but the role list is not supplied. No role names are invented."
+    },
+    {
+      "id": "C12",
+      "source_lines": [
+        152,
+        160,
+        605,
+        606
+      ],
+      "note": "The scope of global per-plan min/max-size restrictions across bucket-vs-host request objects with overlapping names is not separately clarified; preserve the global table without inventing bucket-specific exceptions."
+    },
+    {
+      "id": "C13",
+      "source_lines": [
+        600,
+        601
+      ],
+      "note": "The exact set/grammar of regex metacharacters that triggers case-insensitive wildcard matching is not supplied."
+    },
+    {
+      "id": "C14",
+      "source_lines": [
+        718,
+        798,
+        825
+      ],
+      "note": "Private ports intentionally omit the named unsupported public fields and protocol https has no link. Header-derived domains are not separately enumerated for private ports."
+    },
+    {
+      "id": "C15",
+      "source_lines": [
+        38,
+        58,
+        106,
+        130
+      ],
+      "note": "No remaining-credit/code response fields, Retry-After response header, role names, live-session endpoints, web API methods, WebSocket operations, or extra public routes are added."
+    },
+    {
+      "id": "C16",
+      "source_lines": [
+        76,
+        85,
+        140
+      ],
+      "note": "HTTP method allow-lists are separate from website key issuance and the api_access/pricing api_rate_limit flags. Do not reuse website access gates as this REST authorization contract."
+    }
+  ],
+  "x-apcosys-authentication": {
+    "header": "X-API-Key",
+    "trimmed": true,
+    "all_routes_require_key": true,
+    "subscription_required": true,
+    "expired_subscription_rejected": true,
+    "paused_subscription_expiry_check_skipped": true,
+    "api_access_flag_used": false,
+    "note": "The allow-list method name determines route access; website key issuance is a separate contract. The error catalog also preserves the inner-billing expiry error."
+  },
+  "x-apcosys-rate-limit": {
+    "scope": "one token bucket per account id, separate from website socket limits",
+    "default_tokens_per_second": 100,
+    "default_burst": 10,
+    "rate_environment_variable": "APCOSYS_HTTP_API_RATE_LIMIT",
+    "burst_environment_variable": "APCOSYS_HTTP_API_RATE_BURST",
+    "pricing_api_rate_limit_used": false,
+    "pricing_api_rate_limit_values": {
+      "Free": 0,
+      "Plus": 1,
+      "Expert": 2,
+      "Business": 5
+    },
+    "failure_mode": "allow request if limiter process cannot start or limit store is unreachable",
+    "rejection": {
+      "status": 429,
+      "body": {
+        "error": "rate_limit_exceeded",
+        "retry_after": 1
+      }
+    }
+  },
+  "x-apcosys-credit-policy": {
+    "authorization_order": [
+      "Read X-API-Key and load account",
+      "Take a rate-limit token",
+      "Check plan and charge credits",
+      "Run method"
+    ],
+    "balance_owner": "team owner; team members spend the owner's search credits",
+    "balance_returned_in_http_body": false,
+    "charge_reuse_seconds": 600,
+    "charge_reuse_scope": "same account, same method name, same raw body bytes",
+    "body_key": "SHA-256 of raw body bytes; key order, spaces, and trailing newline matter",
+    "reused_call_still_runs_search": true,
+    "effective_get_body": "{}",
+    "rejected_auth_or_rate_limit_charged": false,
+    "malformed_json_can_be_charged": true,
+    "analytics_weight": "integer division (enabled_facet_count + 3) / 4; calculated before the empty-query rule",
+    "default_enabled_facet_count": 12,
+    "default_analytics_weight": 3,
+    "full_access_roles": {
+      "charging_skipped": true,
+      "field_restrictions_skipped": true,
+      "rate_limit_still_applies": true,
+      "x-contract-note": "Role names are not provided."
+    }
+  },
+  "x-apcosys-plan-method-allow-list": {
+    "hosts": [
+      "Free",
+      "Plus",
+      "Expert",
+      "Business"
+    ],
+    "analytics": [
+      "Free",
+      "Plus",
+      "Expert",
+      "Business"
+    ],
+    "buckets": [
+      "Plus",
+      "Expert",
+      "Business"
+    ],
+    "bucket_analytics": [
+      "Plus",
+      "Expert",
+      "Business"
+    ]
+  },
+  "x-apcosys-plan-field-restrictions": {
+    "exact_match": true,
+    "note": "leak and leaked are different values. Hidden result fields are removed from public/private GET host responses; host lists do not contain exposed_data.",
+    "Free": {
+      "blocked_fields": [
+        "exposed_data",
+        "cve_id",
+        "base_score",
+        "min_size_mb",
+        "max_size_mb",
+        "cts",
+        "uts",
+        "port_count",
+        "security_body"
+      ],
+      "blocked_values": [
+        "leak",
+        "vulnerability",
+        "bucket",
+        "security_txt"
+      ],
+      "hidden_result_fields": [
+        "exposed_data"
+      ],
+      "included_search_credits": 500
+    },
+    "Plus": {
+      "blocked_fields": [
+        "exposed_data",
+        "min_size_mb",
+        "max_size_mb",
+        "cts",
+        "uts",
+        "port_count",
+        "security_body"
+      ],
+      "blocked_values": [
+        "leak",
+        "security_txt"
+      ],
+      "hidden_result_fields": [
+        "exposed_data"
+      ],
+      "included_search_credits": 25000
+    },
+    "Expert": {
+      "blocked_fields": [
+        "security_body"
+      ],
+      "blocked_values": [
+        "security_txt"
+      ],
+      "hidden_result_fields": [],
+      "included_search_credits": 250000
+    },
+    "Business": {
+      "blocked_fields": [],
+      "blocked_values": [],
+      "hidden_result_fields": [],
+      "included_search_credits": 1500000
+    }
+  },
+  "x-apcosys-pagination": {
+    "website_page_caps_applied": false,
+    "plan_docs_per_page_applied": false,
+    "host_search": "page 0/omitted -> 1; docs_per_page 0/>100 -> 50; 1–100 kept",
+    "bucket_search": "page 0/omitted -> 1; docs_per_page 0/omitted -> 50; no upper cap",
+    "analytics": "host analytics ignores paging; bucket analytics normalizes it but does not slice and returns at most 5000 rows"
+  },
+  "x-apcosys-index-selection": {
+    "default_index_family": "hosts",
+    "ports_when": "non-empty full_text_search/exposed_data/security_body/robots_body, positive min_size_mb/max_size_mb, range other than cts/port_count/base_score, or any port-only filter field",
+    "query_moves_as_a_whole": true,
+    "types": [
+      "ipv4",
+      "ipv6",
+      "domain"
+    ],
+    "type_aliases": {
+      "domains": "domain"
+    },
+    "without_type_filter": "all three catalogues",
+    "multiple_type_filters": "Several type leaves search several catalogues.",
+    "ports_results": "distinct host total, one row per host, up to 200 attached open ports ordered by port",
+    "host_results_order": "uts descending; supplied host sort fields/directions ignored"
+  },
+  "x-apcosys-filter-catalog": [
+    {
+      "field": "ip",
+      "type": "ip",
+      "description": "`203.0.113.10` or `203.0.113.0/24`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "cidr",
+      "type": "ip",
+      "description": "`203.0.113.0/24`. Same field as `ip`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "domain",
+      "type": "keyword",
+      "description": "`example.com`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "type",
+      "type": "keyword",
+      "description": "`ipv4`, `ipv6`, `domain`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "asn",
+      "type": "long",
+      "description": "`15169`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "org",
+      "type": "keyword",
+      "description": "`Google LLC`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "as_cidr",
+      "type": "keyword",
+      "description": "`203.0.113.0/24`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "country_code",
+      "type": "keyword",
+      "description": "`DE`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "country_name",
+      "type": "keyword",
+      "description": "`Germany`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "continent_name",
+      "type": "keyword",
+      "description": "`Europe`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "city_name",
+      "type": "keyword",
+      "description": "`Berlin`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "region",
+      "type": "keyword",
+      "description": "`Berlin`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "region_code",
+      "type": "keyword",
+      "description": "`BE`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "os",
+      "type": "keyword",
+      "description": "`Linux`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "user_name",
+      "type": "keyword",
+      "description": "Owner on a private document",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "task_ids",
+      "type": "keyword array",
+      "description": "A private scan task id",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "rate_index",
+      "type": "long",
+      "description": "`1`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "port_count",
+      "type": "long",
+      "description": "`10`. Also a [range](#range) field",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "port",
+      "type": "integer",
+      "description": "`443`. On the host document this is `ports.port`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "protocol",
+      "type": "keyword",
+      "description": "`https`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "labels",
+      "type": "keyword array",
+      "description": "`web`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "products",
+      "type": "keyword array",
+      "description": "`nginx`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "vendors",
+      "type": "keyword array",
+      "description": "`f5`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "cve_id",
+      "type": "keyword",
+      "description": "`CVE-2024-0001`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "base_score",
+      "type": "float",
+      "description": "`9.8`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "cts",
+      "type": "date",
+      "description": "Unix seconds, usually via `range_filter`",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "uts",
+      "type": "date",
+      "description": "Unix seconds",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
+      "field": "transport",
+      "type": "keyword",
+      "description": "`tcp`",
+      "group": "Port, HTTP, products",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "status_code",
+      "type": "integer",
+      "description": "`200`",
+      "group": "Port, HTTP, products",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "title",
+      "type": "text",
+      "description": "`Welcome to nginx`",
+      "group": "Port, HTTP, products",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "banner",
+      "type": "text",
+      "description": "`SSH-2.0-OpenSSH`",
+      "group": "Port, HTTP, products",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "body",
+      "type": "text",
+      "description": "HTML or a service banner body",
+      "group": "Port, HTTP, products",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "banner_sha256",
+      "type": "keyword",
+      "description": "hex SHA-256 of the banner",
+      "group": "Port, HTTP, products",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "body_sha256",
+      "type": "keyword",
+      "description": "hex SHA-256 of the body",
+      "group": "Port, HTTP, products",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "favicon_md5",
+      "type": "keyword",
+      "description": "hex MD5 of the favicon",
+      "group": "Port, HTTP, products",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "redirects",
+      "type": "text",
+      "description": "A redirect path. `redirect_paths` is the same field",
+      "group": "Port, HTTP, products",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "headers.k",
+      "type": "nested keyword",
+      "description": "`Server`",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "headers.v",
+      "type": "nested text",
+      "description": "`nginx`",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "headers.{Name}",
+      "type": "nested",
+      "description": "`{ \"field\": \"headers.Server\", \"value\": \"nginx\" }`",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "header.{Name}",
+      "type": "nested",
+      "description": "Same match as `headers.{Name}`",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.server_name",
+      "type": "keyword",
+      "description": "`example.com`",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.tls_version",
+      "type": "keyword",
+      "description": "`TLS 1.3`",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.cipher_suite",
+      "type": "keyword",
+      "description": "`TLS_AES_128_GCM_SHA256`",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.ja4s",
+      "type": "keyword",
+      "description": "JA4S fingerprint",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.serial_number",
+      "type": "keyword",
+      "description": "Certificate serial",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.issuer",
+      "type": "text",
+      "description": "Issuer DN",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.subject",
+      "type": "text",
+      "description": "Subject DN",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.sha256",
+      "type": "keyword",
+      "description": "Certificate SHA-256",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.expired",
+      "type": "boolean",
+      "description": "`true`",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.dns_names",
+      "type": "text",
+      "description": "`example.com`",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.public_key_algorithm",
+      "type": "keyword",
+      "description": "`ECDSA`",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.signature_algorithm",
+      "type": "keyword",
+      "description": "`ECDSA-SHA256`",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "tls_info.key_usage",
+      "type": "keyword",
+      "description": "`DigitalSignature`",
+      "group": "Headers and TLS",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "security_body",
+      "type": "text",
+      "description": "`hackerone`. Alias of `security_txt.body`",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "security_txt.body",
+      "type": "text",
+      "description": "Same field",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "security_txt.contacts",
+      "type": "text",
+      "description": "`mailto:security@example.com`",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "security_txt.url",
+      "type": "text",
+      "description": "Full URL of the file",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "security_txt.endpoint",
+      "type": "text",
+      "description": "`/.well-known/security.txt`",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "security_txt.is_security_txt",
+      "type": "boolean",
+      "description": "`true`",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "robots_body",
+      "type": "text",
+      "description": "`Disallow`. Alias of `robots_txt.body`",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "robots_txt.body",
+      "type": "text",
+      "description": "Same field",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "robots_status_code",
+      "type": "integer",
+      "description": "`200`. Alias of `robots_txt.status_code`",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "robots_txt.status_code",
+      "type": "integer",
+      "description": "Same field",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "exposed_data",
+      "type": "text",
+      "description": "A cell from exposed data",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "exposed_data.product",
+      "type": "keyword",
+      "description": "Product name on the exposed-data row",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "exposed_data.field_headers",
+      "type": "keyword array",
+      "description": "`email`",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "exposed_data.size_mb",
+      "type": "float",
+      "description": "`1.5`",
+      "group": "security.txt, robots.txt, exposed data",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    }
+  ],
+  "x-apcosys-filter-syntax": {
+    "rules": [
+      {
+        "form": "`nginx`",
+        "fields": "text",
+        "meaning": "Match"
+      },
+      {
+        "form": "`\"Welcome to nginx\"`",
+        "fields": "text",
+        "meaning": "Phrase. The quotes are part of the JSON string"
+      },
+      {
+        "form": "`(apache httpd)`",
+        "fields": "text",
+        "meaning": "Every word"
+      },
+      {
+        "form": "`CVE-2021-*`",
+        "fields": "keyword, or a text field that has a keyword sub-field",
+        "meaning": "Wildcard `*` and `?`"
+      },
+      {
+        "form": "`80,443`",
+        "fields": "keyword, integer, long, float",
+        "meaning": "Any of the values"
+      },
+      {
+        "form": "`nginx,apache`",
+        "fields": "array keyword (`products`, `vendors`, `labels`, `task_ids`, `exposed_data.field_headers`)",
+        "meaning": "Any of the values. A single value is still a terms query"
+      },
+      {
+        "form": "`true` / `false`",
+        "fields": "boolean",
+        "meaning": "Also `1` / `0` and `yes` / `no`"
+      },
+      {
+        "form": "`1.1.0.0/16`",
+        "fields": "`ip`, `cidr`",
+        "meaning": "Every address in the prefix. `cidr` is an alias of `ip`"
+      }
+    ],
+    "stripped_field_suffixes": [
+      ".keyword",
+      ".raw"
+    ],
+    "aliases": {
+      "cidr": "ip",
+      "redirect_paths": "redirects",
+      "security_body": "security_txt.body",
+      "robots_body": "robots_txt.body",
+      "robots_status_code": "robots_txt.status_code",
+      "header.{Name}": "headers.{Name}"
+    },
+    "named_header_empty_value": "Header presence with any value; generic empty-value restriction conflict is noted.",
+    "top_level_and_fields": [
+      "security_body",
+      "robots_body",
+      "exposed_data"
+    ]
+  },
+  "x-apcosys-analytics": {
+    "default_facet_order": [
+      "type",
+      "port",
+      "status_code",
+      "org",
+      "country_name",
+      "protocol",
+      "products",
+      "title",
+      "cve_id",
+      "vendors",
+      "labels",
+      "redirects"
+    ],
+    "saved_setting_source": "website analytics_settings",
+    "mandatory_facet": "type",
+    "disabled_keys_dropped": true,
+    "unknown_keys_dropped": true,
+    "empty_query_rule": "full_text_search empty AND simple_search_filters empty -> only type; other body fields are not named in this condition",
+    "top_bucket_limits": {
+      "type": 3,
+      "status_code": 10,
+      "other": 100
+    },
+    "synthetic_type_bucket": {
+      "key": "results",
+      "doc_count": "sum of other type buckets"
+    },
+    "host_count_facets": [
+      "type",
+      "org",
+      "country_name"
+    ],
+    "other_doc_counts": "number of matching records",
+    "always_string_key_facets": [
+      "port",
+      "status_code"
+    ],
+    "empty_keys_removed": true,
+    "unique_hosts_returned": false
+  },
+  "x-apcosys-error-catalog": [
+    {
+      "status": 400,
+      "error": "invalid request body: ...",
+      "when": "The `POST` body is not the JSON object for that route"
+    },
+    {
+      "status": 400,
+      "error": "ip is required",
+      "when": "The host path segment is empty"
+    },
+    {
+      "status": 400,
+      "error": "invalid ip or host",
+      "when": "The path is not an IPv4 address, an IPv6 address, or a domain with at least two labels"
+    },
+    {
+      "status": 400,
+      "error": "sort_field must be cts, uts, or size_mb",
+      "when": "Bucket sort field"
+    },
+    {
+      "status": 400,
+      "error": "write correct sort paramet(asc/desc)",
+      "when": "Bucket `sort_direction` is set and is neither `asc` nor `desc`"
+    },
+    {
+      "status": 401,
+      "error": "api_key is required",
+      "when": "Missing key"
+    },
+    {
+      "status": 401,
+      "error": "invalid API key",
+      "when": "Unknown key"
+    },
+    {
+      "status": 401,
+      "error": "unauthorized",
+      "when": "The account was not loaded"
+    },
+    {
+      "status": 401,
+      "error": "user_name is missing",
+      "when": "Private route, and the account has no username"
+    },
+    {
+      "status": 402,
+      "error": "subscription required",
+      "when": "No subscription at authentication"
+    },
+    {
+      "status": 402,
+      "error": "subscription has expired",
+      "when": "Expired, and the subscription is not paused"
+    },
+    {
+      "status": 402,
+      "error": "access denied for this subscription",
+      "when": "The plan cannot call this method"
+    },
+    {
+      "status": 402,
+      "error": "subscription expired, please renew your plan",
+      "when": "The plan check inside billing saw an expiry"
+    },
+    {
+      "status": 402,
+      "error": "not enough credits on team owner's account",
+      "when": "The owner's search credits cannot cover the weight"
+    },
+    {
+      "status": 402,
+      "error": "search field cannot be empty",
+      "when": "A filter has `value` and an empty `field`"
+    },
+    {
+      "status": 402,
+      "error": "search value cannot be empty",
+      "when": "A filter has `field` and an empty `value`"
+    },
+    {
+      "status": 402,
+      "error": "(402 Payment Required) empty search filter",
+      "when": "A node has neither a leaf nor nested `filters`"
+    },
+    {
+      "status": 402,
+      "error": "(402 Payment Required) field '<field>' is not available with your current subscription",
+      "when": "`field` is blocked for the plan"
+    },
+    {
+      "status": 402,
+      "error": "(402 Payment Required) search value '<value>' is not available with your current subscription",
+      "when": "`value` is blocked for the plan"
+    },
+    {
+      "status": 402,
+      "error": "(402 Payment Required) all search filters were blocked by subscription restrictions",
+      "when": "Every child of a group was blocked"
+    },
+    {
+      "status": 402,
+      "error": "range filter field cannot be empty",
+      "when": "A range has an empty `field`"
+    },
+    {
+      "status": 402,
+      "error": "(402 Payment Required) range filter field '<field>' is not available with your current subscription",
+      "when": "That range field is blocked"
+    },
+    {
+      "status": 402,
+      "error": "(402 Payment Required) exposed_data field is not available with your current subscription",
+      "when": "Top-level `exposed_data` is blocked"
+    },
+    {
+      "status": 402,
+      "error": "(402 Payment Required) exposed_data value '<value>' is not available with your current subscription",
+      "when": "That exposed-data value is blocked"
+    },
+    {
+      "status": 402,
+      "error": "(402 Payment Required) security_body field is not available with your current subscription",
+      "when": "Top-level `security_body` is blocked"
+    },
+    {
+      "status": 402,
+      "error": "(402 Payment Required) robots_body field is not available with your current subscription",
+      "when": "Top-level `robots_body` is blocked. Current plans do not block it"
+    },
+    {
+      "status": 402,
+      "error": "(402 Payment Required) size filtering (max_size_mb) is not available with your current subscription",
+      "when": "`max_size_mb` > 0 and the plan blocks it"
+    },
+    {
+      "status": 402,
+      "error": "(402 Payment Required) size filtering (min_size_mb) is not available with your current subscription",
+      "when": "Same for `min_size_mb`"
+    },
+    {
+      "status": 402,
+      "error": "(402 Payment Required) subscription required to access search features. Please upgrade your plan to continue",
+      "when": "Search validation saw no subscription"
+    },
+    {
+      "status": 404,
+      "error": "host not found",
+      "when": "Private host lookup found no row for this account"
+    },
+    {
+      "status": 429,
+      "error": "rate_limit_exceeded",
+      "when": "Bucket empty. Body also has `retry_after`"
+    },
+    {
+      "status": 500,
+      "error": "search failed: ...",
+      "when": "Host or bucket search failed. Includes `unsupported search field: ...` and `no results found` on a public host lookup"
+    },
+    {
+      "status": 500,
+      "error": "failed to get host: ...",
+      "when": "Public host lookup failed. A missing public host is `failed to get host: no results found`"
+    },
+    {
+      "status": 500,
+      "error": "aggregation failed: ...",
+      "when": "Bucket analytics failed"
+    },
+    {
+      "status": 500,
+      "error": "the analytics error text",
+      "when": "Analytics failed. Unknown field: `unsupported search field: ...`"
+    }
+  ]
+}

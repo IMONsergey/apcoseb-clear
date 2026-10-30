@@ -1701,4 +1701,48 @@ export default {
   'OSINT & THREAT INVESTIGATION': 'OSINT 與威脅調查',
   'Follow an indicator, not an assumption.': '依據指標追查，而非假設。',
   'SECURITY TEAM WORKFLOW': '安全團隊工作流程',
+  Required: '必填',
+  'Documentation version': '文件版本',
+  'This version identifies the documentation artifact, not a backend release.':
+    '此版本標示文件，而非後端發行版本。',
+  'Checking the configured document. The bundled reference remains available.':
+    '正在檢查設定的文件。內附參考文件仍可使用。',
+  'The configured document is unavailable or incompatible. Showing the bundled reference.':
+    '設定的文件無法取得或不相容。目前顯示內附參考文件。',
+  'Showing the validated configured document.': '目前顯示已驗證的設定文件。',
+  'Showing the bundled reference.': '目前顯示內附參考文件。',
+  'Technical descriptions come from the English source contract. Navigation and interface labels remain in your selected language.':
+    '技術說明取自英文來源契約。導覽與介面標籤仍使用您選擇的語言。',
+  'View OpenAPI JSON': '檢視 OpenAPI JSON',
+  'Source document': '來源文件',
+  'Send your account API key in the X-API-Key header. The method allow-list below is separate from the website rules for issuing an API key.':
+    '請在 X-API-Key 標頭中傳送帳戶 API 金鑰。下方的方法允許清單與網站核發 API 金鑰的規則分開。',
+  'HTTP method allow-list': 'HTTP 方法允許清單',
+  'Plans and credit weight': '方案與點數權重',
+  'Credit weight': '點數權重',
+  'Rate limits and credit charges are separate. Credit weight is not a rate-limit unit.':
+    '速率限制與點數扣款是不同機制。點數權重並非速率限制的單位。',
+  'Default HTTP token bucket: {rate} tokens per second, burst {burst}. These are server defaults, not the pricing-table API rates.':
+    'HTTP 權杖桶預設為每秒 {rate} 個權杖，突發容量為 {burst}。這些是伺服器預設值，不是價目表中的 API 速率。',
+  'Credit reuse window: {seconds} seconds.': '點數扣款重用時段：{seconds} 秒。',
+  'Blocked fields': '禁止的欄位',
+  'Blocked values': '禁止的值',
+  None: '無',
+  'Fields hidden from host detail responses': '主機詳細回應中隱藏的欄位',
+  'Hidden fields': '隱藏欄位',
+  'Request body fields': '請求主體欄位',
+  'To continue, increase page and keep the same filters. Compare total with the records already returned.':
+    '若要繼續，請增加 page 並保持相同篩選條件。將 total 與已傳回的記錄數比較。',
+  'Private-search scope fields': '私人搜尋範圍欄位',
+  'Field aliases': '欄位別名',
+  Alias: '別名',
+  Field: '欄位',
+  'Contract notes and unresolved details': '契約註記與待釐清細節',
+  'Robots fields': 'robots.txt 欄位',
+  'Private service fields': '私人服務欄位',
+  'Host and geo': '主機與地理位置',
+  'Port, HTTP, products': '連接埠、HTTP 與產品',
+  'Headers and TLS': '標頭與 TLS',
+  'security.txt, robots.txt, exposed data': 'security.txt、robots.txt 與暴露資料',
+  'Index selection and host types': '索引選擇與主機類型',
 } satisfies Record<string, string>;
