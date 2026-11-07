@@ -379,15 +379,28 @@ for (const prefix of ['', 'ru/', 'zh-hant/']) {
         await page.emulateMedia({ colorScheme: theme });
         await page.goto('./' + prefix + 'developers/api/docs');
         await expect(page.locator('[data-document-version]')).toContainText('2026-11-07-draft');
-        const disclosure = page.locator('.api-docs__disclosure');
-        await expect(disclosure).toHaveCount(1);
-        await expect(disclosure).toHaveJSProperty('open', false);
+        const disclosures = page.locator('details.api-docs__disclosure');
+        await expect(disclosures).toHaveCount(8);
+        const disclosureStates = () =>
+          disclosures.evaluateAll((elements) =>
+            elements.map((element) => (element as HTMLDetailsElement).open),
+          );
+        const allClosed = Array<boolean>(8).fill(false);
+        const allOpen = Array<boolean>(8).fill(true);
+        await expect.poll(disclosureStates).toEqual(allClosed);
+        const disclosureText = await disclosures.allTextContents();
         const code = page.locator('.api-docs__code pre');
         const before = await code.allTextContents();
         expect(before.length).toBeGreaterThan(0);
         await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
         await page.emulateMedia({ media: 'print' });
-        await expect(disclosure).toHaveJSProperty('open', true);
+        await expect.poll(disclosureStates).toEqual(allOpen);
+        expect(await disclosures.allTextContents()).toEqual(disclosureText);
+        for (let index = 0; index < 8; index += 1) {
+          const contents = disclosures.nth(index).locator(':scope > :not(summary)');
+          expect(await contents.count()).toBeGreaterThan(0);
+          for (const content of await contents.all()) await expect(content).toBeVisible();
+        }
         await expect(page.locator('.site-header')).toBeHidden();
         await expect(page.locator('footer')).toBeHidden();
         await expect(page.locator('.api-docs__sidebar')).toBeHidden();
@@ -419,14 +432,15 @@ for (const prefix of ['', 'ru/', 'zh-hant/']) {
         }
         await page.emulateMedia({ media: 'screen' });
         await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
-        await expect(disclosure).toHaveJSProperty('open', false);
-        await disclosure.locator('summary').click();
-        await expect(disclosure).toHaveJSProperty('open', true);
-        await page.evaluate(() => {
-          window.dispatchEvent(new Event('beforeprint'));
-          window.dispatchEvent(new Event('afterprint'));
-        });
-        await expect(disclosure).toHaveJSProperty('open', true);
+        await expect.poll(disclosureStates).toEqual(allClosed);
+        const mixed = [true, false, false, false, false, false, false, true];
+        for (const index of [0, 7]) await disclosures.nth(index).locator('summary').click();
+        await expect.poll(disclosureStates).toEqual(mixed);
+        await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
+        await expect.poll(disclosureStates).toEqual(allOpen);
+        expect(await disclosures.allTextContents()).toEqual(disclosureText);
+        await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
+        await expect.poll(disclosureStates).toEqual(mixed);
       },
     );
   }

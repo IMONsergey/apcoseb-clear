@@ -795,7 +795,7 @@
     grid-template-rows: auto 1fr;
   }
   .site .inner-pages .stage-api-table :is(th, td) {
-    padding-inline: var(--space-2);
+    padding-inline: var(--space-1);
   }
   .site .inner-pages .contact-topics {
     grid-template-columns: minmax(0, 1fr);
