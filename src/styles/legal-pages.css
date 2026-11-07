@@ -284,6 +284,10 @@
   .legal-description {
     min-block-size: 6.4em;
   }
+  .legal-tools {
+    min-block-size: 96px;
+    align-content: end;
+  }
 }
 @media print {
   @page {
