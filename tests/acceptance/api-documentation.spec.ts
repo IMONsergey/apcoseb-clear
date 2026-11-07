@@ -368,3 +368,66 @@ test('API metadata preserves source uncertainty and whole-query type selection',
     'Method costs count against the HTTP rate allowance',
   );
 });
+
+for (const prefix of ['', 'ru/', 'zh-hant/']) {
+  for (const theme of ['light', 'dark'] as const) {
+    test(
+      'canonical API print keeps complete examples and disclosure state: ' +
+        (prefix || 'en') +
+        theme,
+      async ({ page }) => {
+        await page.emulateMedia({ colorScheme: theme });
+        await page.goto('./' + prefix + 'developers/api/docs');
+        await expect(page.locator('[data-document-version]')).toContainText('2026-11-07-draft');
+        const disclosure = page.locator('.api-docs__disclosure');
+        await expect(disclosure).toHaveCount(1);
+        await expect(disclosure).toHaveJSProperty('open', false);
+        const code = page.locator('.api-docs__code pre');
+        const before = await code.allTextContents();
+        expect(before.length).toBeGreaterThan(0);
+        await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
+        await page.emulateMedia({ media: 'print' });
+        await expect(disclosure).toHaveJSProperty('open', true);
+        await expect(page.locator('.site-header')).toBeHidden();
+        await expect(page.locator('footer')).toBeHidden();
+        await expect(page.locator('.api-docs__sidebar')).toBeHidden();
+        await expect(page.locator('.api-docs__mobile-nav')).toBeHidden();
+        await expect(page.locator('[data-document-version]')).toBeVisible();
+        await expect(page.locator('[data-document-source]')).toBeVisible();
+        await expect(page.locator('.api-docs')).toContainText(
+          'The pricing field api_rate_limit (0, 1, 2, 5 by plan) is not read.',
+        );
+        await expect(page.locator('.api-docs')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+        expect(await code.allTextContents()).toEqual(before);
+        for (const box of await code.evaluateAll((elements) =>
+          elements.map((element) => {
+            const style = getComputedStyle(element);
+            return {
+              maxHeight: style.maxHeight,
+              overflowX: style.overflowX,
+              overflowY: style.overflowY,
+              whiteSpace: style.whiteSpace,
+              overflow: element.scrollWidth - element.clientWidth,
+            };
+          }),
+        )) {
+          expect(box.maxHeight).toBe('none');
+          expect(box.overflowX).toBe('visible');
+          expect(box.overflowY).toBe('visible');
+          expect(box.whiteSpace).toBe('pre-wrap');
+          expect(box.overflow).toBeLessThanOrEqual(1);
+        }
+        await page.emulateMedia({ media: 'screen' });
+        await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
+        await expect(disclosure).toHaveJSProperty('open', false);
+        await disclosure.locator('summary').click();
+        await expect(disclosure).toHaveJSProperty('open', true);
+        await page.evaluate(() => {
+          window.dispatchEvent(new Event('beforeprint'));
+          window.dispatchEvent(new Event('afterprint'));
+        });
+        await expect(disclosure).toHaveJSProperty('open', true);
+      },
+    );
+  }
+}

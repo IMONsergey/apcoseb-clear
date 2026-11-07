@@ -383,7 +383,16 @@ export function adaptPublicApiDocument(input: unknown) {
   });
   const rate = object(root['x-apcosys-rate-limit']);
   const credits = object(root['x-apcosys-credit-policy']);
-  if (rate.pricing_api_rate_limit_used !== false || credits.balance_returned_in_http_body !== false)
+  const pricingValues = list(rate.api_rate_limit_documented_values);
+  const pricingFieldNote = plain(text(rate.api_rate_limit_note));
+  if (
+    rate.api_rate_limit_field !== 'api_rate_limit' ||
+    rate.api_rate_limit_read !== false ||
+    Object.hasOwn(rate, 'pricing_api_rate_limit_used') ||
+    pricingValues.length !== 4 ||
+    pricingValues.some((value, index) => value !== [0, 1, 2, 5][index]) ||
+    credits.balance_returned_in_http_body !== false
+  )
     throw new Error('Unsupported rate-limit or credit-policy profile.');
   const notes = list(root['x-apcosys-contract-notes']).map((value) => {
     const note = object(value);
@@ -405,6 +414,7 @@ export function adaptPublicApiDocument(input: unknown) {
       tokensPerSecond: finite(rate.default_tokens_per_second),
       burst: finite(rate.default_burst),
       failureMode: plain(text(rate.failure_mode)),
+      pricingFieldNote,
     },
     credits: {
       balanceOwner: plain(text(credits.balance_owner)),

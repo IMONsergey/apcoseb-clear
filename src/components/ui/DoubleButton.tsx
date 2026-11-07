@@ -1,5 +1,7 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
 import { Icon, type IconName } from './Icon';
+import { useProductLanguage } from '../../hooks/useProductLanguage';
+import { ProductLanguageMarker } from './ProductHandoffLink';
 type Shared = {
   children: ReactNode;
   variant?: 'primary' | 'secondary' | 'inverse' | 'dark';
@@ -21,19 +23,35 @@ export function DoubleButton({
   compact = false,
   ...rest
 }: Props) {
+  const language = useProductLanguage(
+    'href' in rest ? rest.href : undefined,
+    rest['aria-describedby'],
+  );
   const classes =
     `double-button double-button--${variant}${compact ? ' double-button--compact' : ''} ${className}`.trim();
   const content = (
     <>
       <span className="double-button__label">{children}</span>
-      <span className="double-button__icon">
+      <span
+        className={
+          'double-button__icon' + (language.isProductHref ? ' double-button__icon--product' : '')
+        }
+      >
+        {language.isProductHref && (
+          <ProductLanguageMarker id={language.descriptionId} description={language.description} />
+        )}
         <Icon name={icon} />
       </span>
     </>
   );
   if ('href' in rest && rest.href)
     return (
-      <a {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)} className={classes}>
+      <a
+        {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)}
+        className={classes}
+        aria-describedby={language.describedBy}
+        data-product-language={language.isProductHref ? 'en' : undefined}
+      >
         {content}
       </a>
     );

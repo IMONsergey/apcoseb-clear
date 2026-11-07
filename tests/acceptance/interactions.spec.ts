@@ -355,9 +355,15 @@ for (const locale of [
     await expectDocumentation();
 
     await page.goto(`${home}developers/api`);
-    const actions = page.locator('main').getByRole('link', { name: locale.action, exact: true });
+    const actions = page
+      .locator('.stage-page-hero, .stage-related')
+      .getByRole('link', { name: locale.action, exact: true });
     await expect(actions).toHaveCount(2);
     for (const action of await actions.all()) await expect(action).toHaveAttribute('href', href);
+    const rateLinks = page.locator('.stage-api-table a');
+    await expect(rateLinks).toHaveCount(3);
+    for (const rateLink of await rateLinks.all())
+      await expect(rateLink).toHaveAttribute('href', href + '#access-limits');
     await actions.last().click();
     await expectDocumentation();
     await page.goto(home);

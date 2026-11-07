@@ -2,8 +2,12 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Apcosys Client HTTP API",
-    "version": "2026-10-30-draft",
-    "description": "Candidate contract transcribed from the supplied CLIENT_API_DOCS_EN.md (907 lines), not from live calls. This is the API-key client HTTP API, explicitly separate from the website HTTP/WebSocket contract. The version labels this generated artifact, not an undocumented backend release. All eight documented operations are represented; no extra endpoint is invented. Success is HTTP 200 with a JSON object; there is no code or remaining-credit member. Omitted optional fields and non-null empty loaded arrays are preserved. Unresolved details appear in x-contract-note / x-apcosys-contract-notes."
+    "version": "2026-11-07-draft",
+    "description": "Candidate contract transcribed from the supplied CLIENT_API_DOCS_EN.md (907 lines), not from live calls. This is the API-key client HTTP API, explicitly separate from the website HTTP/WebSocket contract. The version labels this generated artifact, not an undocumented backend release. All eight documented operations are represented; no extra endpoint is invented. Success is HTTP 200 with a JSON object; there is no code or remaining-credit member. Omitted optional fields and non-null empty loaded arrays are preserved. Unresolved details appear in x-contract-note / x-apcosys-contract-notes.",
+    "x-apcosys-stable-ids": [
+      "operationId",
+      "x-apcosys-doc-id"
+    ]
   },
   "servers": [
     {
@@ -91,7 +95,7 @@
             "$ref": "#/components/responses/AuthenticationFailure"
           },
           "402": {
-            "$ref": "#/components/responses/PaymentOrRestrictionFailure"
+            "$ref": "#/components/responses/SearchPaymentOrRestrictionFailure"
           },
           "429": {
             "$ref": "#/components/responses/RateLimitFailure"
@@ -100,7 +104,7 @@
             "$ref": "#/components/responses/HostSearchFailure"
           }
         },
-        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/hosts\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"page\":1,\"docs_per_page\":20,\"simple_search_filters\":[{\"field\":\"port\",\"value\":\"443\"},{\"field\":\"products\",\"value\":\"nginx\"}]}'"
+        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/hosts\" \\\n  -H \"X-API-Key: YOUR_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"page\":1,\"docs_per_page\":20,\"simple_search_filters\":[{\"field\":\"port\",\"value\":\"443\"},{\"field\":\"products\",\"value\":\"nginx\"}]}'"
       }
     },
     "/api/v1/search/hosts/{host}": {
@@ -161,7 +165,7 @@
             "$ref": "#/components/responses/HostLookupFailure"
           }
         },
-        "x-apcosys-curl-example": "curl -sS \"https://api.apcosys.net/api/v1/search/hosts/203.0.113.10\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\""
+        "x-apcosys-curl-example": "curl -sS \"https://api.apcosys.net/api/v1/search/hosts/203.0.113.10\" \\\n  -H \"X-API-Key: YOUR_API_KEY\""
       }
     },
     "/api/v1/search/analytics": {
@@ -224,7 +228,7 @@
             "$ref": "#/components/responses/AuthenticationFailure"
           },
           "402": {
-            "$ref": "#/components/responses/PaymentOrRestrictionFailure"
+            "$ref": "#/components/responses/SearchPaymentOrRestrictionFailure"
           },
           "429": {
             "$ref": "#/components/responses/RateLimitFailure"
@@ -233,7 +237,7 @@
             "$ref": "#/components/responses/AnalyticsFailure"
           }
         },
-        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/analytics\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"simple_search_filters\":[{\"field\":\"country_code\",\"value\":\"DE\"}]}'"
+        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/analytics\" \\\n  -H \"X-API-Key: YOUR_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"simple_search_filters\":[{\"field\":\"country_code\",\"value\":\"DE\"}]}'"
       }
     },
     "/api/v1/search/buckets": {
@@ -304,7 +308,7 @@
             "$ref": "#/components/responses/BucketSearchFailure"
           }
         },
-        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/buckets\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"page\":1,\"docs_per_page\":20,\"host\":\"acct.blob.core.windows.net/public\",\"key_words\":[\"backup\"],\"extensions\":[\"sql\"],\"sort_field\":\"uts\",\"sort_direction\":\"desc\"}'"
+        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/buckets\" \\\n  -H \"X-API-Key: YOUR_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"page\":1,\"docs_per_page\":20,\"host\":\"acct.blob.core.windows.net/public\",\"key_words\":[\"backup\"],\"extensions\":[\"sql\"],\"sort_field\":\"uts\",\"sort_direction\":\"desc\"}'"
       }
     },
     "/api/v1/search/buckets/analytics": {
@@ -375,7 +379,7 @@
             "$ref": "#/components/responses/BucketAnalyticsFailure"
           }
         },
-        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/buckets/analytics\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"product_names\":[\"azureblobstorage\"],\"extensions\":[\"sql\"]}'"
+        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/buckets/analytics\" \\\n  -H \"X-API-Key: YOUR_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"product_names\":[\"azureblobstorage\"],\"extensions\":[\"sql\"]}'"
       }
     },
     "/api/v1/search/private/hosts": {
@@ -385,7 +389,7 @@
         "tags": [
           "Private search"
         ],
-        "description": "Query only scans owned by the API key's username; the server replaces any client user_name. Authorization/charging use public method names hosts or analytics, so Free is allowed. Non-empty task_ids limits private POST requests. Private host search does not use the public catalogue and is described as not cached; the relationship to the separate credit-reuse cache remains explicitly noted. Response shape and host page-size behavior match public host search.",
+        "description": "Query only scans owned by the API key's username; the server replaces any client user_name. Authorization and charging use the public method name hosts, so Free is allowed. Non-empty task_ids limits the rows to those scan tasks. Private host search does not use the public catalogue and is not cached. Response shape and host page-size behavior match public host search.",
         "x-apcosys-doc-id": "private-hosts",
         "x-apcosys-method-name": "hosts",
         "x-apcosys-plans": [
@@ -438,7 +442,7 @@
             "$ref": "#/components/responses/PrivateAuthenticationFailure"
           },
           "402": {
-            "$ref": "#/components/responses/PaymentOrRestrictionFailure"
+            "$ref": "#/components/responses/SearchPaymentOrRestrictionFailure"
           },
           "429": {
             "$ref": "#/components/responses/RateLimitFailure"
@@ -447,8 +451,8 @@
             "$ref": "#/components/responses/HostSearchFailure"
           }
         },
-        "x-contract-note": "The source states private host search is not cached, but also gives the same method/weight charging rules. Result caching must be distinguished from the 10-minute charge-reuse memo before claiming private requests are always charged.",
-        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/private/hosts\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"page\":1,\"docs_per_page\":20,\"task_ids\":[\"task_123\"],\"simple_search_filters\":[{\"field\":\"port\",\"value\":\"443\"}]}'"
+        "x-contract-note": "The document says private host search is not cached and also charges it as method hosts. Result caching and the 10-minute raw-body credit window are stated separately.",
+        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/private/hosts\" \\\n  -H \"X-API-Key: YOUR_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"page\":1,\"docs_per_page\":20,\"task_ids\":[\"task_123\"],\"simple_search_filters\":[{\"field\":\"port\",\"value\":\"443\"}]}'"
       }
     },
     "/api/v1/search/private/hosts/{host}": {
@@ -458,7 +462,7 @@
         "tags": [
           "Private search"
         ],
-        "description": "Look up one host in the API key username's private store. Same host path validation as public GET; no request body and task_ids is not read. Missing rows return 404 host not found. Closed ports are omitted. Private ports do not store TLS, headers, certificate domains, redirects, security.txt or robots.txt. protocol http gets http://host:port; protocol https has no link.",
+        "description": "Look up one host in the API key username's private store. Same host path validation as public GET; no request body and task_ids is not read. Missing rows return 404 host not found. Other lookup failures use failed to get host: ... . Closed ports are omitted. Private ports do not store TLS, headers, certificate domains, redirects, security.txt, or robots.txt. protocol http gets http://host:port; protocol https has no link. Weight is 1. GET uses method hosts and the effective body {}, so the 10-minute credit window is the same rule as other host lookups.",
         "x-apcosys-doc-id": "get-private-host",
         "x-apcosys-method-name": "hosts",
         "x-apcosys-plans": [
@@ -512,8 +516,8 @@
             "$ref": "#/components/responses/PrivateHostLookupFailure"
           }
         },
-        "x-contract-note": "The private section refers to public errors except for explicit 404 absence, but does not give the exact non-not-found private 500 wrapper. The response stays an unconstrained Error object, with no invented text or copied public-absence example.",
-        "x-apcosys-curl-example": "curl -sS \"https://api.apcosys.net/api/v1/search/private/hosts/203.0.113.10\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\""
+        "x-contract-note": "A missing private row is 404 host not found, not the public 500 failed to get host: no results found. Any other private lookup failure uses the public host lookup text failed to get host: ... .",
+        "x-apcosys-curl-example": "curl -sS \"https://api.apcosys.net/api/v1/search/private/hosts/203.0.113.10\" \\\n  -H \"X-API-Key: YOUR_API_KEY\""
       }
     },
     "/api/v1/search/private/analytics": {
@@ -523,7 +527,7 @@
         "tags": [
           "Private search"
         ],
-        "description": "Query only scans owned by the API key's username; the server replaces any client user_name. Authorization/charging use public method names hosts or analytics, so Free is allowed. Non-empty task_ids limits private POST requests. Private host search does not use the public catalogue and is described as not cached; the relationship to the separate credit-reuse cache remains explicitly noted. Facet counts for the same search object. page and docs_per_page are ignored. If full_text_search and simple_search_filters are empty, only type is returned—even if another body field is populated. Otherwise every enabled account facet is returned in account order; saved website analytics_settings replaces the default list, type is mandatory, disabled/unknown keys are dropped. Top buckets: type 3, status_code 10, others 100; type additionally appends results. Credit weight uses the configured enabled-facet count before the empty-query rule and integer division (count + 3) / 4.",
+        "description": "Query only scans owned by the API key's username; the server replaces any client user_name. Authorization and charging use the public method name analytics, so Free is allowed. Non-empty task_ids limits the rows to those scan tasks. Weight and the empty-analytics rule match the public analytics route. Facet counts for the same search object. page and docs_per_page are ignored. If full_text_search and simple_search_filters are empty, only type is returned—even if another body field is populated. Otherwise every enabled account facet is returned in account order; saved website analytics_settings replaces the default list, type is mandatory, disabled/unknown keys are dropped. Top buckets: type 3, status_code 10, others 100; type additionally appends results. Credit weight uses the configured enabled-facet count before the empty-query rule and integer division (count + 3) / 4.",
         "x-apcosys-doc-id": "private-analytics",
         "x-apcosys-method-name": "analytics",
         "x-apcosys-plans": [
@@ -576,7 +580,7 @@
             "$ref": "#/components/responses/PrivateAuthenticationFailure"
           },
           "402": {
-            "$ref": "#/components/responses/PaymentOrRestrictionFailure"
+            "$ref": "#/components/responses/SearchPaymentOrRestrictionFailure"
           },
           "429": {
             "$ref": "#/components/responses/RateLimitFailure"
@@ -585,7 +589,7 @@
             "$ref": "#/components/responses/AnalyticsFailure"
           }
         },
-        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/private/analytics\" \\\n  -H \"X-API-Key: $APCOSYS_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"simple_search_filters\":[{\"field\":\"country_code\",\"value\":\"DE\"}]}'"
+        "x-apcosys-curl-example": "curl -sS -X POST \"https://api.apcosys.net/api/v1/search/private/analytics\" \\\n  -H \"X-API-Key: YOUR_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"simple_search_filters\":[{\"field\":\"country_code\",\"value\":\"DE\"}]}'"
       }
     }
   },
@@ -743,7 +747,7 @@
         "properties": {
           "field": {
             "type": "string",
-            "description": "Inclusive range field. cts and port_count are host-only ranges; base_score remains host-index-only when the rest of the query stays on that index. status_code is ports-index; uts can apply on both indices.",
+            "description": "Inclusive range field. Supported values are uts, cts, port_count, base_score, and status_code. cts and port_count are host-index only; combining either with a ports-index query returns an error. base_score stays on the host index when the rest of the query stays there. status_code applies on the ports index. uts exists on both indexes, and a uts range selects the ports index because it is not cts, port_count, or base_score. Any other field returns unsupported range field: ...",
             "enum": [
               "uts",
               "cts",
@@ -946,7 +950,7 @@
           },
           "org": {
             "type": "string",
-            "description": "ASN organization."
+            "description": "ASN organisation."
           },
           "city_name": {
             "type": "string",
@@ -1013,10 +1017,13 @@
           }
         },
         "additionalProperties": true,
-        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-contract-note": "hosts is required: it is [] when nothing matches, and null is not used for an empty host list. total, page, and docs_per_page are documented response fields without a separate always-present sentence.",
         "x-apcosys-source-lines": [
           429,
           459
+        ],
+        "required": [
+          "hosts"
         ]
       },
       "ExposedData": {
@@ -1295,6 +1302,14 @@
             "type": "string",
             "description": "Protocol name, for example https."
           },
+          "protocol_version": {
+            "type": "string",
+            "description": "Protocol version. Omitted when empty."
+          },
+          "protocol_data": {
+            "type": "string",
+            "description": "Protocol payload. Omitted when empty."
+          },
           "banner": {
             "type": "string",
             "description": "Banner."
@@ -1526,7 +1541,7 @@
           },
           "org": {
             "type": "string",
-            "description": "AS organization."
+            "description": "AS organisation."
           },
           "cts": {
             "$ref": "#/components/schemas/UnixSeconds"
@@ -1598,7 +1613,7 @@
           },
           "org": {
             "type": "string",
-            "description": "AS organization."
+            "description": "AS organisation."
           },
           "cts": {
             "$ref": "#/components/schemas/UnixSeconds"
@@ -1675,7 +1690,7 @@
           }
         },
         "additionalProperties": true,
-        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-contract-note": "Each loaded facet has facet_name and facet_values. An empty loaded facet_values list is [], not null. port and status_code keys are strings.",
         "allOf": [
           {
             "if": {
@@ -1711,6 +1726,10 @@
         "x-apcosys-source-lines": [
           529,
           548
+        ],
+        "required": [
+          "facet_name",
+          "facet_values"
         ]
       },
       "AnalyticsResponse": {
@@ -1726,10 +1745,13 @@
           }
         },
         "additionalProperties": true,
-        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-contract-note": "facets is required. An empty facet list that was loaded is [], not null. There is no unique_hosts, code, or remaining-credit field.",
         "x-apcosys-source-lines": [
           523,
           570
+        ],
+        "required": [
+          "facets"
         ]
       },
       "BucketRequest": {
@@ -1774,7 +1796,7 @@
             "items": {
               "type": "string"
             },
-            "description": "File key must match at least one entry. Entries containing wildcard or regex metacharacters become case-insensitive wildcard matches; others are match queries on key."
+            "description": "A file key must match at least one entry. An entry that contains a wildcard or regex metacharacter is a case-insensitive wildcard; any other entry is a match on key."
           },
           "stop_words": {
             "type": "array",
@@ -1938,10 +1960,13 @@
           }
         },
         "additionalProperties": true,
-        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-contract-note": "result is required: a page past the end is [], and null is not used for an empty bucket list. result_count is documented without a separate always-present sentence.",
         "x-apcosys-source-lines": [
           615,
           637
+        ],
+        "required": [
+          "result"
         ]
       },
       "BucketAnalyticsRow": {
@@ -1985,10 +2010,13 @@
           }
         },
         "additionalProperties": true,
-        "x-contract-note": "The source lists these response fields but does not explicitly guarantee their presence. No required membership is inferred from an example. Empty optional fields can be omitted; array values shown here are not nullable.",
+        "x-contract-note": "result is required: null is not used for an empty bucket list. The server returns at most 5000 rows, ordered by file_count descending, then host, then container. result_count can be larger than result.",
         "x-apcosys-source-lines": [
           665,
           679
+        ],
+        "required": [
+          "result"
         ]
       },
       "Error": {
@@ -2133,7 +2161,34 @@
         }
       },
       "PaymentOrRestrictionFailure": {
-        "description": "Subscription, credit, or search-field/value restriction failure. Exact strings and templates, including the literal (402 Payment Required) prefix where present, are preserved in x-apcosys-error-catalog.",
+        "description": "HTTP 402 from subscription checks, the plan allow-list, or insufficient credits: subscription required; subscription has expired; access denied for this subscription; subscription expired, please renew your plan; not enough credits on team owner's account. Search-field and search-value restriction strings are for host and analytics POST bodies, not this operation.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "SubscriptionRequired": {
+                "$ref": "#/components/examples/SubscriptionRequired"
+              },
+              "SubscriptionExpired": {
+                "$ref": "#/components/examples/SubscriptionExpired"
+              },
+              "MethodDenied": {
+                "$ref": "#/components/examples/MethodDenied"
+              },
+              "BillingExpired": {
+                "$ref": "#/components/examples/BillingExpired"
+              },
+              "NoCredits": {
+                "$ref": "#/components/examples/NoCredits"
+              }
+            }
+          }
+        }
+      },
+      "SearchPaymentOrRestrictionFailure": {
+        "description": "HTTP 402 from subscription checks, the plan allow-list, insufficient credits, or search validation. Search-validation errors keep the literal (402 Payment Required) prefix where x-apcosys-error-catalog shows it, including empty filters, blocked fields and values, blocked ranges, and blocked exposed_data, security_body, robots_body, or size filters.",
         "content": {
           "application/json": {
             "schema": {
@@ -2256,7 +2311,7 @@
         }
       },
       "PrivateHostLookupFailure": {
-        "description": "Other private host lookup failures use the referenced public error family, but the exact non-not-found private 500 text is not specified. A missing private row is 404 host not found, never represented by this response.",
+        "description": "Private host lookup failed for a reason other than a missing row. The text is the public host lookup error failed to get host: ... . A missing private row is 404 host not found, not this response and not failed to get host: no results found.",
         "content": {
           "application/json": {
             "schema": {
@@ -2264,7 +2319,7 @@
             }
           }
         },
-        "x-contract-note": "No public missing-host 500 example is copied onto the private route."
+        "x-contract-note": "The private section includes the public host errors, then replaces a missing row with 404 host not found."
       }
     },
     "examples": {
@@ -2643,14 +2698,15 @@
     {
       "id": "C10",
       "source_lines": [
-        431,
-        459,
-        527,
-        738,
+        60,
+        436,
+        617,
+        666,
+        541,
         754,
         857
       ],
-      "note": "Response members are not made required merely because they appear in a table/example. Explicit required guarantees retained: HostCard labels_list/open_ports; SecurityTxt is_security_txt; error and 429 retry_after."
+      "note": "Response members are not made required merely because they appear in a table or example. Required where the document states the member is present, including empty lists as [] rather than null: HostSearchResponse.hosts; BucketSearchResponse.result; BucketAnalyticsResponse.result; AnalyticsResponse.facets; Facet.facet_name and facet_values; HostCard labels_list and open_ports; SecurityTxt is_security_txt; Error.error; RateLimitError.retry_after."
     },
     {
       "id": "C11",
@@ -2722,13 +2778,15 @@
     "default_burst": 10,
     "rate_environment_variable": "APCOSYS_HTTP_API_RATE_LIMIT",
     "burst_environment_variable": "APCOSYS_HTTP_API_RATE_BURST",
-    "pricing_api_rate_limit_used": false,
-    "pricing_api_rate_limit_values": {
-      "Free": 0,
-      "Plus": 1,
-      "Expert": 2,
-      "Business": 5
-    },
+    "api_rate_limit_field": "api_rate_limit",
+    "api_rate_limit_read": false,
+    "api_rate_limit_documented_values": [
+      0,
+      1,
+      2,
+      5
+    ],
+    "api_rate_limit_note": "The pricing field api_rate_limit (0, 1, 2, 5 by plan) is not read. The document lists those values and does not assign each one to a named plan.",
     "failure_mode": "allow request if limiter process cannot start or limit store is unreachable",
     "rejection": {
       "status": 429,
@@ -2876,9 +2934,20 @@
   },
   "x-apcosys-filter-catalog": [
     {
+      "field": "host",
+      "type": "ip or keyword",
+      "description": "An address is searched as ip. A domain name is searched as domain.",
+      "group": "Host and geo",
+      "indexes": [
+        "hosts",
+        "ports"
+      ],
+      "selects_ports_index": false
+    },
+    {
       "field": "ip",
       "type": "ip",
-      "description": "`203.0.113.10` or `203.0.113.0/24`",
+      "description": "`203.0.113.10` or `203.0.113.0/24`. A domain name is searched as domain.",
       "group": "Host and geo",
       "indexes": [
         "hosts",
@@ -3167,6 +3236,26 @@
         "ports"
       ],
       "selects_ports_index": false
+    },
+    {
+      "field": "protocol_version",
+      "type": "keyword",
+      "description": "`1.1`",
+      "group": "Port, HTTP, products",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
+    },
+    {
+      "field": "protocol_data",
+      "type": "keyword",
+      "description": "protocol payload",
+      "group": "Port, HTTP, products",
+      "indexes": [
+        "ports"
+      ],
+      "selects_ports_index": true
     },
     {
       "field": "transport",

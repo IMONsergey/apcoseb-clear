@@ -108,6 +108,23 @@ function LegalDocument({
             {contents}
           </aside>
           <div className="legal-reading">
+            {path === '/legal/cookie-policy' && (
+              <aside
+                className="legal-storage-note"
+                aria-label={t('Storage on this marketing website')}
+              >
+                <p>
+                  {t(
+                    'Browser storage on this marketing website supports theme and preferences. No optional analytics or advertising trackers are enabled here.',
+                  )}
+                </p>
+                <p>
+                  {t(
+                    'The published policy below describes apcosys.net and related Apcosys services. Preferences saved here apply only to this marketing website.',
+                  )}
+                </p>
+              </aside>
+            )}
             <div className="legal-copy" dangerouslySetInnerHTML={{ __html: html }} />
             <div className="legal-end">
               <a href="#document-top">{t('Back to top')}</a>

@@ -1,6 +1,5 @@
 import { useLocale } from '../../../i18n/context';
 import { businessPlan } from '../../../content/plans';
-import { formatApiRate } from '../../../lib/pricing';
 import { ApplicationGlyph as Glyph } from './ApplicationGlyph';
 import './application-api-scene.css';
 
@@ -26,7 +25,7 @@ function AccessSummary() {
         </div>
         <div>
           <dt>{t('API rate limit')}</dt>
-          <dd>{formatApiRate(businessPlan, t)}</dd>
+          <dd>{t('Account configuration')}</dd>
         </div>
       </dl>
       <span className="application-api__summary-link">
@@ -142,7 +141,7 @@ export function ApplicationApiScene() {
               </div>
               <div>
                 <dt>{t('API rate limit')}</dt>
-                <dd>{formatApiRate(businessPlan, t)}</dd>
+                <dd>{t('Account configuration')}</dd>
               </div>
               <div>
                 <dt>{t('API access')}</dt>

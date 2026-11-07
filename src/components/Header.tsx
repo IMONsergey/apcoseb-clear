@@ -6,11 +6,13 @@ import { productUrl } from '../config/site';
 import { siteHref } from '../app/paths';
 import { signInUrl } from '../config/site';
 import { DoubleButton } from './ui/DoubleButton';
+import { ProductHandoffLink } from './ui/ProductHandoffLink';
 import { Icon } from './ui/Icon';
 import { Modal } from './ui/Modal';
 import { LanguageBadge } from './ui/LanguageBadge';
 import { ThemeMenu, MobileThemeControl } from './ui/ThemeControl';
 import { Logo } from './ui/Logo';
+import { ProductLanguageNote } from './product/ProductLanguageNote';
 import { useScrollHeader } from '../hooks/useScrollHeader';
 export function Header({ forceVisible = false }: { forceVisible?: boolean }) {
   const { t } = useLocale();
@@ -160,9 +162,9 @@ export function Header({ forceVisible = false }: { forceVisible?: boolean }) {
               open={active === 'language'}
               onOpenChange={(open) => setActive(open ? 'language' : null)}
             />
-            <a href={signInUrl} className="plain-button header-signin">
+            <ProductHandoffLink href={signInUrl} className="plain-button header-signin">
               <LocaleText>{t('Sign In')}</LocaleText>
-            </a>
+            </ProductHandoffLink>
             <DoubleButton href={`${productUrl}/search`} compact className="header-signup">
               <LocaleText>{t('Try Search')}</LocaleText>
             </DoubleButton>
@@ -221,12 +223,13 @@ export function Header({ forceVisible = false }: { forceVisible?: boolean }) {
             <LocaleText>{t('Pricing')}</LocaleText>
             <Icon name="arrow" />
           </a>
+          <ProductLanguageNote />
           <DoubleButton href={`${productUrl}/search`}>
             <LocaleText>{t('Try Search')}</LocaleText>
           </DoubleButton>
-          <a className="plain-button" href={signInUrl}>
+          <ProductHandoffLink className="plain-button" href={signInUrl}>
             <LocaleText>{t('Sign In')}</LocaleText>
-          </a>
+          </ProductHandoffLink>
           <MobileThemeControl />
         </nav>
       </Modal>

@@ -568,12 +568,9 @@ export default {
   Plan: 'Тариф',
   'Plan billing options': 'Варианты оплаты тарифов',
   'Plan comparison': 'Сравнение тарифов',
-  'Plan rate limit': 'Частота запросов по тарифу',
   Plans: 'Тарифы',
   Platform: 'Платформа',
   PLUS: 'Plus',
-  'Plus, Expert and Business include API access. Choose a rate and allowance that fit the volume and pace of your workflow.':
-    'Тарифы Plus, Expert и Business включают доступ к API. Выберите скорость и лимит, которые соответствуют объему и темпу вашего рабочего процесса.',
   'Ports & Services': 'Порты и сервисы',
   'Ports, services and detected versions belong to one selected host.':
     'Порты, сервисы и обнаруженные версии относятся к выбранному хосту.',
@@ -1038,8 +1035,6 @@ export default {
   'United States': 'США',
   Version: 'Версия',
   'View all': 'Посмотреть все',
-  '{count} request/s': '{count} запрос/с',
-  '{count} requests/s': '{count} запросов/с',
   '301 response': 'Ответ 301',
   Contact: 'Связаться',
   'Contact team': 'Связаться с командой',
@@ -1095,10 +1090,6 @@ export default {
   'Search Tokens#few': 'поисковых токена',
   'Search Tokens#many': 'поисковых токенов',
   'Search Tokens#other': 'поискового токена',
-  '{count} requests/s#one': '{count} запрос/с',
-  '{count} requests/s#few': '{count} запроса/с',
-  '{count} requests/s#many': '{count} запросов/с',
-  '{count} requests/s#other': '{count} запроса/с',
   'Search hosts': 'Поиск хостов',
   'Host details': 'Сведения о хосте',
   'Read the query': 'Прочитайте запрос',
@@ -1298,24 +1289,15 @@ export default {
   'Host analytics & API access': 'Аналитика хостов и доступ к API',
   'Compare the tools and credit allowance first. HTTP API method costs and request-rate limits describe different parts of usage.':
     'Сначала сравните возможности и включённый объём кредитов. Стоимость методов HTTP API и ограничение частоты запросов — разные показатели использования.',
-  'HTTP API method costs': 'Стоимость методов HTTP API',
   'Host or bucket request': 'Запрос хостов или хранилищ',
   'Host search, host details, bucket search or bucket analytics.':
     'Поиск хостов, сведения о хосте, поиск хранилищ или аналитика хранилищ.',
   'Host analytics': 'Аналитика хостов',
   'Aggregated results for the same host-search filters.':
     'Агрегированные результаты с теми же фильтрами поиска хостов.',
-  'These are method-cost units against the public HTTP API rate allowance. They do not specify a debit in plan credits or Search Tokens.':
-    'В публичной документации HTTP API это единицы стоимости методов в рамках лимита API (rate allowance). Они не задают списание кредитов тарифа или поисковых токенов.',
   'What can I do with Plus?': 'Что можно сделать с Plus?',
-  'Example: search {domain}, then request analytics for the same filters. Two HTTP calls have a combined method cost of {cost} ({search} + {analytics}), returning host records and a breakdown to guide your next filter.':
-    'Пример: найдите {domain}, затем запросите аналитику с теми же фильтрами. Суммарная стоимость методов для двух HTTP-вызовов — {cost} ({search} + {analytics}). Вы получите записи хостов и сводку, которая поможет выбрать следующий фильтр.',
   'Credits, tokens and API costs': 'Кредиты, токены и стоимость API',
-  'Each plan includes a credit allowance. Search Token packages add capacity. HTTP API method costs apply to the API rate allowance. Contact our team to confirm credit usage for your workflow.':
-    'В каждый тариф входит определённое количество кредитов. Пакеты поисковых токенов увеличивают доступный объём. Стоимость методов HTTP API относится к лимиту API (rate allowance). Уточните у нашей команды расход кредитов для ваших задач.',
   'How do API rate limits work?': 'Как работает ограничение частоты запросов API?',
-  'Plus: {plus}. Expert: {expert}. Business: {business}. Requests above your plan’s rate receive HTTP 429. These limits control frequency, not the credit balance.':
-    'Plus: {plus}. Expert: {expert}. Business: {business}. При превышении частоты запросов тарифного плана API отвечает HTTP 429. Эти ограничения относятся к частоте, а не к балансу кредитов.',
   'Plus adds API access, CVE context and bucket search. Expert adds full filters and leak-data context; Business adds team access and private scanning.':
     'Plus добавляет доступ к API, контекст CVE и поиск хранилищ. Expert открывает полный набор фильтров и контекст данных утечек, а Business — командный доступ и приватное сканирование.',
   'Packages are additional purchases. Confirm which balance receives the tokens and when they expire before payment.':
@@ -1328,8 +1310,6 @@ export default {
   'Free includes {credits} credits for one person, with basic search for personal, non-commercial use. Plus adds API access, CVE context and bucket search.':
     'Free включает {credits} кредитов для одного человека и базовый поиск для личного некоммерческого использования. Plus добавляет доступ к API, контекст CVE и поиск хранилищ.',
   'How do credits and API costs differ?': 'Чем отличаются кредиты и стоимость API?',
-  'Credits are the allowance listed on each plan. HTTP API methods have separate published costs: {search} for host search and {analytics} for host analytics. Those costs do not specify the debit in credits or Search Tokens.':
-    'Кредиты — включённый в тариф лимит. Для методов HTTP API отдельно опубликована стоимость: {search} за поиск хостов и {analytics} за аналитику хостов. Эти значения не определяют списание кредитов или поисковых токенов.',
   'Compare usage units and API costs': 'Сравнить единицы и стоимость API',
   'Example response. total counts matches; hosts contains this page. uts is the last update in Unix seconds.':
     'Пример ответа. total — число совпадений, hosts — результаты текущей страницы. uts — время последнего обновления в секундах Unix.',
@@ -1355,8 +1335,6 @@ export default {
   'Search indexed storage records by host, extension or size. Review their file metadata and update time.':
     'Ищите индексированные записи хранилищ по хосту, расширению или размеру файла. Изучайте метаданные файлов и время обновления.',
   'POST /api/v1/search/buckets': 'POST /api/v1/search/buckets',
-  'Each HTTP API method has a cost against the rate allowance. The usage guide shows these costs separately from plan credits and Search Token packages.':
-    'У каждого метода HTTP API есть стоимость, учитываемая в лимите API (rate allowance). Руководство по использованию показывает эти значения отдельно от кредитов тарифа и пакетов поисковых токенов.',
   'Fields and values also depend on your plan. HTTP 402 identifies a restriction; HTTP 429 identifies an exceeded request rate.':
     'Доступные поля и значения также зависят от тарифа. HTTP 402 сообщает об ограничении доступа, HTTP 429 — о превышении частоты запросов.',
 
@@ -1628,8 +1606,6 @@ export default {
     'В примерах ответов используются синтетические записи и адреса для документации. Сохранённые наблюдения описывают момент сбора данных, а не состояние хоста прямо сейчас.',
   'Access and request limits.': 'Доступ и лимиты запросов.',
   'API access by plan': 'Доступ к API по тарифам',
-  'Method costs count against the HTTP rate allowance: host search uses 1 unit, analytics 3, bucket search 1 and bucket analytics 1. Other endpoints use 1 unit. These units do not define a conversion to plan credits or Search Tokens.':
-    'Вес метода учитывается в лимите частоты HTTP-запросов: поиск хостов — 1 единица, аналитика — 3, поиск в хранилищах — 1, аналитика хранилищ — 1. Остальные методы — 1. Эти единицы не задают курс пересчёта в кредиты тарифа или Search Tokens.',
   'Field and value restrictions also apply inside filters and ranges. A restricted field or value returns HTTP 402. Exceeding the request rate returns HTTP 429.':
     'Ограничения полей и значений действуют и внутри фильтров и диапазонов. Недоступное поле или значение возвращает HTTP 402. Превышение частоты запросов возвращает HTTP 429.',
   'Restricted search fields': 'Ограничения полей поиска',
@@ -1811,4 +1787,46 @@ export default {
   'Headers and TLS': 'Заголовки и TLS',
   'security.txt, robots.txt, exposed data': 'security.txt, robots.txt и открытые данные',
   'Index selection and host types': 'Выбор индекса и типы хостов',
+  'Your browser could not save this preference. Optional trackers remain disabled on this website.':
+    'Браузер не смог сохранить эту настройку. Необязательные средства отслеживания на этом сайте по-прежнему отключены.',
+  'Dismiss notification': 'Закрыть уведомление',
+  'These preferences apply only to this marketing website. They do not control storage in the separate Apcosys application.':
+    'Эти настройки действуют только на этом информационном сайте. Они не управляют хранилищем отдельного приложения Apcosys.',
+  'Storage on this marketing website': 'Хранилище этого информационного сайта',
+  'Browser storage on this marketing website supports theme and preferences. No optional analytics or advertising trackers are enabled here.':
+    'Хранилище браузера на этом информационном сайте сохраняет тему и настройки. Необязательная аналитика и рекламные средства отслеживания здесь не включены.',
+  'The published policy below describes apcosys.net and related Apcosys services. Preferences saved here apply only to this marketing website.':
+    'Опубликованная ниже политика описывает apcosys.net и связанные сервисы Apcosys. Сохранённые здесь настройки действуют только на этом информационном сайте.',
+  'See API documentation': 'См. документацию API',
+  'Account configuration': 'Настройки аккаунта',
+  'Limits apply per account and depend on the API configuration.':
+    'Лимиты действуют на аккаунт и зависят от конфигурации API.',
+  'Search-credit weights': 'Вес запросов в поисковых кредитах',
+  'Host analytics · default settings': 'Аналитика хостов · стандартные настройки',
+  'The default 12 enabled facets have a search-credit weight of 3.':
+    'При стандартных 12 включённых группах аналитики вес составляет 3 поисковых кредита.',
+  'These are search-credit weights, separate from request-rate limits. Host analytics uses the enabled facet count divided by 4, rounded up; its weight can change with your analytics settings.':
+    'Это вес запросов в поисковых кредитах, отдельно от ограничения частоты. Для аналитики хостов число включённых групп делится на 4 с округлением вверх; вес может меняться вместе с настройками аналитики.',
+  'With default analytics settings, a host search for {domain} and an analytics request have a combined search-credit weight of {cost} ({search} + {analytics}). Charge reuse and account access rules determine whether credits are deducted.':
+    'При стандартных настройках аналитики поиск хостов по {domain} и запрос аналитики имеют суммарный вес {cost} поисковых кредитов ({search} + {analytics}). Списание зависит от правил повторного использования списания и доступа аккаунта.',
+  'Each plan includes search credits. Search Token packages add search capacity. HTTP API requests can spend search credits; the rate limiter separately controls how quickly requests are accepted.':
+    'Тарифы включают поисковые кредиты. Пакеты Search Tokens увеличивают объём поиска. Запросы HTTP API могут расходовать поисковые кредиты; ограничитель частоты отдельно управляет темпом приёма запросов.',
+  'Request-rate limits apply per account and depend on API configuration. An exceeded limit returns HTTP 429. Review the API documentation before planning request throughput.':
+    'Ограничения частоты действуют на аккаунт и зависят от конфигурации API. При превышении возвращается HTTP 429. Перед планированием нагрузки изучите документацию API.',
+  'Plus, Expert and Business include API access. Compare capabilities and credit allowances; request-rate limits depend on account-level API configuration.':
+    'Plus, Expert и Business включают доступ к API. Сравнивайте возможности и объём кредитов; ограничения частоты зависят от конфигурации API для аккаунта.',
+  'HTTP API requests can consume search credits. Method weights and charge-reuse rules are documented separately from the account rate limiter.':
+    'Запросы HTTP API могут расходовать поисковые кредиты. Вес методов и правила повторного использования списания описаны отдельно от ограничителя частоты аккаунта.',
+  'The HTTP API has one rate limiter per account, separate from website WebSocket limits. The documented defaults are 100 tokens per second and a burst of 10. Deployment configuration can change these values; they are not plan-specific throughput guarantees.':
+    'HTTP API использует один ограничитель частоты на аккаунт, отдельно от лимитов WebSocket сайта. В документации указаны значения по умолчанию: 100 токенов в секунду и burst 10. Конфигурация развёртывания может менять эти значения; это не гарантия пропускной способности конкретного тарифа.',
+  'When this limit is exceeded, the API returns HTTP 429 with retry_after. Rate-limit tokens are separate from search credits.':
+    'При превышении этого лимита API возвращает HTTP 429 с retry_after. Токены ограничителя частоты учитываются отдельно от поисковых кредитов.',
+  'Host search and lookup, bucket search and bucket analytics have search-credit weight 1. Host analytics uses ceil(enabled facets / 4), which is 3 with the default 12 facets. This weight is calculated before the empty-query rule.':
+    'Поиск и просмотр хостов, поиск по хранилищам и их аналитика имеют вес 1 поисковый кредит. Аналитика хостов использует ceil(число включённых групп / 4): при стандартных 12 группах вес равен 3. Вес вычисляется до применения правила пустого запроса.',
+  "A charge can be reused for 600 seconds for the same account, method and raw body bytes. JSON formatting affects the match, and malformed JSON can still be charged. Team members spend the team owner's search credits; HTTP responses do not include the remaining balance.":
+    'Списание может повторно использоваться в течение 600 секунд для того же аккаунта, метода и точных байтов тела запроса. Форматирование JSON влияет на совпадение; некорректный JSON тоже может привести к списанию. Участники команды расходуют поисковые кредиты её владельца; HTTP-ответы не содержат остаток баланса.',
+  'Current HTTP API contract': 'Актуальный контракт HTTP API',
+  'Application interface: English.': 'Интерфейс приложения — на английском.',
+  'Loading cookie preferences…': 'Загрузка настроек cookie…',
+  'Cookie preferences could not load.': 'Не удалось загрузить настройки cookie.',
 } satisfies Record<string, string>;

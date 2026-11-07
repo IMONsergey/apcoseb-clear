@@ -402,7 +402,11 @@
   padding: var(--space-5) var(--space-4);
   vertical-align: middle;
   white-space: normal;
-  overflow-wrap: normal;
+  overflow-wrap: anywhere;
+}
+.site .inner-pages .stage-api-table td .stage-text-link {
+  display: inline;
+  margin-top: 0;
 }
 .site .inner-pages .stage-api-table :is(th, td):last-child {
   padding-right: 0;

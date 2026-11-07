@@ -59,7 +59,11 @@ for (const locale of ['', 'ru/', 'zh-hant/']) {
         const error = page.locator('.search-error');
         await expect(error).toBeVisible();
         await expect(input).toHaveAttribute('aria-invalid', 'true');
-        await expect(input).toHaveAttribute('aria-describedby', (await error.getAttribute('id'))!);
+        const languageId = (await input.getAttribute('id'))! + '-language';
+        const errorId = (await error.getAttribute('id'))!;
+        const describedBy = (await input.getAttribute('aria-describedby'))!.split(/\s+/);
+        expect(new Set(describedBy)).toEqual(new Set([languageId, errorId]));
+        await expect(page.locator('[id="' + languageId + '"]')).toBeVisible();
         const formBox = (await page.locator('.search-form').boundingBox())!;
         const errorBox = (await error.boundingBox())!;
         const examplesBox = (await page.locator('.search-examples').boundingBox())!;
@@ -69,6 +73,9 @@ for (const locale of ['', 'ru/', 'zh-hant/']) {
         await input.fill('example.com');
         await expect(error).toHaveCount(0);
         await expect(input).not.toHaveAttribute('aria-invalid', 'true');
+        const remainingDescriptions = (await input.getAttribute('aria-describedby'))!.split(/\s+/);
+        expect(remainingDescriptions).toContain(languageId);
+        expect(remainingDescriptions).not.toContain(errorId);
         await expect(page.locator('.search-examples button')).toHaveCount(3);
       });
     }
@@ -210,7 +217,7 @@ test('Russian pricing uses translated filters, plural units and an early compari
   const comparison = page.locator('.stage-plan-table');
   await expect(comparison).toContainText('Базовые');
   await expect(comparison).toContainText('Расширенные');
-  await expect(comparison).toContainText('5 запросов/с');
+  await expect(comparison).toContainText('См. документацию API');
   await expect(page.locator('.stage-token-grid')).toContainText('поисковых токенов');
   await expect(page.locator('.stage-token-grid > div').first()).toContainText('25 000');
   await expect(page.locator('.stage-token-grid > div').first()).toContainText('50 $');

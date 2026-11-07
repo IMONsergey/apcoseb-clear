@@ -12,7 +12,8 @@ export type PlanDefinition = {
   buckets: boolean;
   leakedData: boolean;
   privateScanner: boolean;
-} & ({ api: false; apiRequestsPerSecond: null } | { api: true; apiRequestsPerSecond: number });
+  api: boolean;
+};
 export const businessPlan = {
   id: 'business',
   name: 'BUSINESS',
@@ -22,7 +23,6 @@ export const businessPlan = {
   users: 5,
   action: 'Choose Business',
   api: true,
-  apiRequestsPerSecond: 5,
   searchFilters: 'Advanced · full filters',
   cveContext: true,
   buckets: true,
@@ -40,7 +40,6 @@ export const plans = [
     users: 1,
     action: 'Open Apcosys',
     api: false,
-    apiRequestsPerSecond: null,
     searchFilters: 'Basic',
     cveContext: false,
     buckets: false,
@@ -56,7 +55,6 @@ export const plans = [
     users: 1,
     action: 'Choose Plus',
     api: true,
-    apiRequestsPerSecond: 1,
     searchFilters: 'Extended',
     cveContext: true,
     buckets: true,
@@ -72,7 +70,6 @@ export const plans = [
     users: 1,
     action: 'Choose Expert',
     api: true,
-    apiRequestsPerSecond: 2,
     searchFilters: 'Advanced · full filters',
     cveContext: true,
     buckets: true,
@@ -84,13 +81,14 @@ export const plans = [
 
 export type Plan = (typeof plans)[number];
 
-/** Published HTTP API method costs (rate allowance), not a conversion to plan credits.
- * Source: https://apcosys.net/docs/api, verified 24 October 2026.
+/** Search-credit weights from the documented client HTTP API contract (2026-11-07-draft).
+ * Source: https://api.apcosys.net/api/v1/client.openapi.json
+ * Analytics is the default for 12 enabled facets; actual weight is ceil(enabled facets / 4).
+ * These weights do not describe the account's request-rate limiter.
  */
-export const httpApiMethodCosts = {
+export const httpApiCreditWeights = {
   hosts: 1,
   analytics: 3,
   buckets: 1,
   bucketAnalytics: 1,
-  other: 1,
 } as const;

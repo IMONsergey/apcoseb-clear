@@ -549,12 +549,9 @@ export default {
   Plan: '方案',
   'Plan billing options': '方案計費選項',
   'Plan comparison': '方案比較',
-  'Plan rate limit': '方案速率限制',
   Plans: '方案',
   Platform: '平台',
   PLUS: 'Plus',
-  'Plus, Expert and Business include API access. Choose a rate and allowance that fit the volume and pace of your workflow.':
-    'Plus、Expert 和 Business 方案包含 API 存取權限。選擇符合您工作流程數量和步調的速率與額度。',
   'Ports & Services': '連接埠與服務',
   'Ports, services and detected versions belong to one selected host.':
     '連接埠、服務及偵測到的版本皆屬於同一個選定的主機。',
@@ -1001,8 +998,6 @@ export default {
   'United States': '美國',
   Version: '版本',
   'View all': '查看全部',
-  '{count} request/s': '每秒 {count} 次請求',
-  '{count} requests/s': '每秒 {count} 次請求',
   '301 response': '301 回應',
   Contact: '聯絡',
   'Contact team': '聯絡團隊',
@@ -1057,10 +1052,6 @@ export default {
   'Search Tokens#few': '個搜尋權杖',
   'Search Tokens#many': '個搜尋權杖',
   'Search Tokens#other': '個搜尋權杖',
-  '{count} requests/s#one': '每秒 {count} 次請求',
-  '{count} requests/s#few': '每秒 {count} 次請求',
-  '{count} requests/s#many': '每秒 {count} 次請求',
-  '{count} requests/s#other': '每秒 {count} 次請求',
   'Search hosts': '搜尋主機',
   'Host details': '主機詳細資料',
   'Read the query': '閱讀查詢',
@@ -1257,23 +1248,14 @@ export default {
   'Host analytics & API access': '主機分析與 API 存取',
   'Compare the tools and credit allowance first. HTTP API method costs and request-rate limits describe different parts of usage.':
     '先比較功能與方案額度。HTTP API 方法成本和請求速率限制衡量的是不同的使用面向。',
-  'HTTP API method costs': 'HTTP API 方法成本',
   'Host or bucket request': '主機或儲存貯體請求',
   'Host search, host details, bucket search or bucket analytics.':
     '搜尋主機、查詢主機詳情、搜尋儲存貯體或取得儲存貯體分析。',
   'Host analytics': '主機分析',
   'Aggregated results for the same host-search filters.': '依相同主機搜尋條件取得彙總結果。',
-  'These are method-cost units against the public HTTP API rate allowance. They do not specify a debit in plan credits or Search Tokens.':
-    '這些是公開 HTTP API 以速率配額（rate allowance）計算的方法成本單位，並未說明方案額度或搜尋權杖的扣除量。',
   'What can I do with Plus?': 'Plus 可以用來做什麼？',
-  'Example: search {domain}, then request analytics for the same filters. Two HTTP calls have a combined method cost of {cost} ({search} + {analytics}), returning host records and a breakdown to guide your next filter.':
-    '例如：搜尋 {domain}，再用相同條件請求分析。這兩次 HTTP 呼叫的方法成本合計為 {cost}（{search} + {analytics}），可取得主機紀錄與彙總資訊，作為下一步篩選的依據。',
   'Credits, tokens and API costs': '額度、權杖與 API 成本',
-  'Each plan includes a credit allowance. Search Token packages add capacity. HTTP API method costs apply to the API rate allowance. Contact our team to confirm credit usage for your workflow.':
-    '每個方案都包含可用額度。加購搜尋權杖套件可擴充使用容量。HTTP API 的方法成本計入 API 速率配額（rate allowance）。請聯絡我們的團隊，確認您的工作流程所需的額度用量。',
   'How do API rate limits work?': 'API 速率限制如何運作？',
-  'Plus: {plus}. Expert: {expert}. Business: {business}. Requests above your plan’s rate receive HTTP 429. These limits control frequency, not the credit balance.':
-    'Plus：{plus}。Expert：{expert}。Business：{business}。超過方案請求速率時，API 會回傳 HTTP 429。這些限制規範請求頻率，並非額度餘額。',
   'Plus adds API access, CVE context and bucket search. Expert adds full filters and leak-data context; Business adds team access and private scanning.':
     'Plus 提供 API 存取、CVE 背景資訊與儲存貯體搜尋。Expert 再加入完整篩選器與外洩資料背景資訊；Business 則提供團隊存取與私人掃描。',
   'Packages are additional purchases. Confirm which balance receives the tokens and when they expire before payment.':
@@ -1286,8 +1268,6 @@ export default {
   'Free includes {credits} credits for one person, with basic search for personal, non-commercial use. Plus adds API access, CVE context and bucket search.':
     'Free 包含供一人使用的 {credits} 額度，提供個人非商業用途的基本搜尋。Plus 再加入 API 存取、CVE 背景資訊與儲存貯體搜尋。',
   'How do credits and API costs differ?': '額度與 API 成本有何不同？',
-  'Credits are the allowance listed on each plan. HTTP API methods have separate published costs: {search} for host search and {analytics} for host analytics. Those costs do not specify the debit in credits or Search Tokens.':
-    '各方案列有可用額度。HTTP API 方法另有公開成本：主機搜尋為 {search}，主機分析為 {analytics}。這些數值並未說明額度或搜尋權杖的扣除量。',
   'Compare usage units and API costs': '比較用量單位與 API 成本',
   'Example response. total counts matches; hosts contains this page. uts is the last update in Unix seconds.':
     '回應範例。total 是符合條件的總數；hosts 是此頁結果；uts 是以 Unix 秒數表示的最近更新時間。',
@@ -1313,8 +1293,6 @@ export default {
   'Search indexed storage records by host, extension or size. Review their file metadata and update time.':
     '依主機、副檔名或檔案大小搜尋已建立索引的儲存貯體記錄，並查看檔案中繼資料與更新時間。',
   'POST /api/v1/search/buckets': 'POST /api/v1/search/buckets',
-  'Each HTTP API method has a cost against the rate allowance. The usage guide shows these costs separately from plan credits and Search Token packages.':
-    '每個 HTTP API 方法都有計入速率配額（rate allowance）的成本。用量說明會將這些成本與方案額度及搜尋權杖套件分開列出。',
   'Fields and values also depend on your plan. HTTP 402 identifies a restriction; HTTP 429 identifies an exceeded request rate.':
     '可用欄位與值也取決於方案。HTTP 402 表示存取受限；HTTP 429 表示請求速率超過限制。',
 
@@ -1565,8 +1543,6 @@ export default {
     '範例回應使用合成記錄與文件專用位址。儲存的觀察資料反映蒐集當時的狀態，並非主機的即時檢查結果。',
   'Access and request limits.': '存取權與請求限制。',
   'API access by plan': '各方案的 API 存取權',
-  'Method costs count against the HTTP rate allowance: host search uses 1 unit, analytics 3, bucket search 1 and bucket analytics 1. Other endpoints use 1 unit. These units do not define a conversion to plan credits or Search Tokens.':
-    '方法的權重計入 HTTP 速率額度：主機搜尋為 1 單位、分析為 3、儲存空間搜尋為 1、儲存空間分析為 1；其他端點為 1。這些單位不代表方案額度或 Search Tokens 的換算比率。',
   'Field and value restrictions also apply inside filters and ranges. A restricted field or value returns HTTP 402. Exceeding the request rate returns HTTP 429.':
     '欄位與值的限制也適用於篩選條件及範圍。使用受限欄位或值會傳回 HTTP 402；超過請求速率則會傳回 HTTP 429。',
   'Restricted search fields': '受限的搜尋欄位',
@@ -1745,4 +1721,46 @@ export default {
   'Headers and TLS': '標頭與 TLS',
   'security.txt, robots.txt, exposed data': 'security.txt、robots.txt 與暴露資料',
   'Index selection and host types': '索引選擇與主機類型',
+  'Your browser could not save this preference. Optional trackers remain disabled on this website.':
+    '瀏覽器無法儲存此偏好設定。本網站仍未啟用非必要追蹤工具。',
+  'Dismiss notification': '關閉通知',
+  'These preferences apply only to this marketing website. They do not control storage in the separate Apcosys application.':
+    '這些偏好設定僅適用於本介紹網站，不會控制獨立 Apcosys 應用程式的儲存設定。',
+  'Storage on this marketing website': '本介紹網站的儲存設定',
+  'Browser storage on this marketing website supports theme and preferences. No optional analytics or advertising trackers are enabled here.':
+    '本介紹網站使用瀏覽器儲存空間保存主題與偏好設定，未啟用非必要的分析或廣告追蹤工具。',
+  'The published policy below describes apcosys.net and related Apcosys services. Preferences saved here apply only to this marketing website.':
+    '下方發布的政策描述 apcosys.net 及相關 Apcosys 服務。在此儲存的偏好設定僅適用於本介紹網站。',
+  'See API documentation': '查看 API 文件',
+  'Account configuration': '帳戶設定',
+  'Limits apply per account and depend on the API configuration.':
+    '限制以帳戶為單位，並取決於 API 的設定。',
+  'Search-credit weights': '搜尋額度權重',
+  'Host analytics · default settings': '主機分析 · 預設設定',
+  'The default 12 enabled facets have a search-credit weight of 3.':
+    '預設啟用 12 個分析面向，搜尋額度權重為 3。',
+  'These are search-credit weights, separate from request-rate limits. Host analytics uses the enabled facet count divided by 4, rounded up; its weight can change with your analytics settings.':
+    '這些是搜尋額度權重，與請求速率限制分開計算。主機分析的權重為啟用面向數除以 4 後無條件進位，會隨分析設定改變。',
+  'With default analytics settings, a host search for {domain} and an analytics request have a combined search-credit weight of {cost} ({search} + {analytics}). Charge reuse and account access rules determine whether credits are deducted.':
+    '採用預設分析設定時，搜尋 {domain} 的主機並請求分析，搜尋額度權重合計為 {cost}（{search} + {analytics}）。是否扣除額度取決於扣款重用規則與帳戶存取權。',
+  'Each plan includes search credits. Search Token packages add search capacity. HTTP API requests can spend search credits; the rate limiter separately controls how quickly requests are accepted.':
+    '各方案包含搜尋額度，Search Token 套件可增加搜尋容量。HTTP API 請求可能消耗搜尋額度；速率限制器則另外控制接受請求的速度。',
+  'Request-rate limits apply per account and depend on API configuration. An exceeded limit returns HTTP 429. Review the API documentation before planning request throughput.':
+    '請求速率限制以帳戶為單位，並取決於 API 設定。超過限制時會回傳 HTTP 429。規劃請求吞吐量前，請先閱讀 API 文件。',
+  'Plus, Expert and Business include API access. Compare capabilities and credit allowances; request-rate limits depend on account-level API configuration.':
+    'Plus、Expert 與 Business 包含 API 存取權。請比較功能與額度；請求速率限制取決於帳戶層級的 API 設定。',
+  'HTTP API requests can consume search credits. Method weights and charge-reuse rules are documented separately from the account rate limiter.':
+    'HTTP API 請求可能消耗搜尋額度。方法權重與扣款重用規則的說明，與帳戶速率限制器分開。',
+  'The HTTP API has one rate limiter per account, separate from website WebSocket limits. The documented defaults are 100 tokens per second and a burst of 10. Deployment configuration can change these values; they are not plan-specific throughput guarantees.':
+    'HTTP API 每個帳戶共用一個速率限制器，與網站 WebSocket 限制分開。文件中的預設值為每秒 100 個權杖、突發容量 10。部署設定可變更這些數值，因此它們不是特定方案的吞吐量保證。',
+  'When this limit is exceeded, the API returns HTTP 429 with retry_after. Rate-limit tokens are separate from search credits.':
+    '超過此限制時，API 會回傳 HTTP 429 與 retry_after。速率限制權杖與搜尋額度分開計算。',
+  'Host search and lookup, bucket search and bucket analytics have search-credit weight 1. Host analytics uses ceil(enabled facets / 4), which is 3 with the default 12 facets. This weight is calculated before the empty-query rule.':
+    '主機搜尋與查詢、儲存空間搜尋及其分析的搜尋額度權重為 1。主機分析使用 ceil(啟用面向數 / 4)；預設 12 個面向的權重為 3。此權重會在空查詢規則套用前計算。',
+  "A charge can be reused for 600 seconds for the same account, method and raw body bytes. JSON formatting affects the match, and malformed JSON can still be charged. Team members spend the team owner's search credits; HTTP responses do not include the remaining balance.":
+    '同一帳戶、方法及完全相同的原始本文位元組，可在 600 秒內重用一次扣款。JSON 格式會影響比對，格式錯誤的 JSON 仍可能被扣款。團隊成員使用團隊擁有者的搜尋額度；HTTP 回應不包含剩餘餘額。',
+  'Current HTTP API contract': '目前的 HTTP API 契約',
+  'Application interface: English.': '應用程式介面為英文。',
+  'Loading cookie preferences…': '正在載入 Cookie 偏好設定…',
+  'Cookie preferences could not load.': '無法載入 Cookie 偏好設定。',
 } satisfies Record<string, string>;

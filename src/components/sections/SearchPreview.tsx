@@ -1,3 +1,4 @@
+import { ProductHandoffLink } from '../ui/ProductHandoffLink';
 import { ProductEvidence, type EvidenceScenario } from '../product/ProductEvidence';
 import { demoScenarios } from '../../content/product-demo';
 import { LocaleText } from '../../i18n/LocaleText';
@@ -12,6 +13,7 @@ import { Icon } from '../ui/Icon';
 import { Visual } from '../visuals/Visual';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useSearchEntrance } from '../../hooks/useSearchEntrance';
+import { ProductLanguageNote } from '../product/ProductLanguageNote';
 
 function SearchForm({ className = '' }: { className?: string }) {
   const { t } = useLocale();
@@ -75,8 +77,9 @@ function SearchForm({ className = '' }: { className?: string }) {
           spellCheck={false}
           aria-invalid={error || undefined}
           aria-describedby={
-            [compact && !error && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') ||
-            undefined
+            [`${id}-language`, compact && !error && `${id}-hint`, error && `${id}-error`]
+              .filter(Boolean)
+              .join(' ') || undefined
           }
         />
         {!compact && !query && (
@@ -103,6 +106,7 @@ function SearchForm({ className = '' }: { className?: string }) {
           type="submit"
           className="search-submit"
           aria-label={t('Search Apcosys')}
+          aria-describedby={`${id}-language`}
           disabled={submitting}
         >
           {submitting ? (
@@ -117,6 +121,7 @@ function SearchForm({ className = '' }: { className?: string }) {
           </span>
         )}
       </form>
+      <ProductLanguageNote id={`${id}-language`} />
       {error && (
         <p className="search-error" id={`${id}-error`} role="alert">
           <LocaleText>{t('Enter a domain, IP or technical attribute.')}</LocaleText>
@@ -192,9 +197,9 @@ export function SearchPreview() {
             </div>
             <p className="search-scene__demo-note">
               <LocaleText>{t('Example results')}</LocaleText>{' '}
-              <a href={productUrl + '/search'}>
+              <ProductHandoffLink href={productUrl + '/search'}>
                 <LocaleText>{t('Open product search')}</LocaleText>
-              </a>
+              </ProductHandoffLink>
             </p>
           </div>
         </div>

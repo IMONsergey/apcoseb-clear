@@ -43,6 +43,8 @@ This is a bounded adapter for this product's public reference, **not** a general
 - standard JSON request/response schemas and examples, using bounded local `$ref` resolution;
 - the documented `x-apcosys-*` operation ids, method names, plan allow-lists, credit weights, filter catalog, error catalog and policy metadata.
 
+The current rate metadata profile explicitly names `api_rate_limit`, declares `api_rate_limit_read: false`, lists exactly `[0, 1, 2, 5]`, and supplies a bounded, nonempty source note. The adapter preserves the separate credit policy and requires `balance_returned_in_http_body: false`. Legacy-only or mixed legacy/current rate metadata is incompatible and falls back to the bundled document; it is not silently reinterpreted as plan throughput.
+
 Recursive `anyOf`, `allOf` property overrides and OpenAPI 3.1 type arrays are supported. Conditional refinements are not flattened into universal requirements. Unsupported breaking schema/authentication/operation changes fall back to the bundle instead of silently omitting methods. Update the adapter and its tests deliberately for a new documentation profile.
 
 All 12 existing section anchors remain stable. Canonical aliases such as `#get-host`, `#host-analytics`, `#private-hosts`, `#get-private-host` and `#private-analytics` also work. Locale, hosting-base, query and hash handling stay with the existing site router.

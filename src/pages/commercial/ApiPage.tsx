@@ -1,6 +1,6 @@
 import { Text } from '../../components/ui/Text';
 import { plans } from '../../content/plans';
-import { formatApiRate } from '../../lib/pricing';
+import { apiLimitLabel } from '../../lib/pricing';
 import { linkTo } from '../../components/layout/pageLinks';
 import { ApiExample } from '../../components/product/ApiExample';
 import { apiDocumentationPath } from '../../config/site';
@@ -104,7 +104,7 @@ export default function ApiPage() {
       <EditorialSection
         id="api-access"
         title="API access by plan."
-        intro="Plus, Expert and Business include API access. Choose a rate and allowance that fit the volume and pace of your workflow."
+        intro="Plus, Expert and Business include API access. Compare capabilities and credit allowances; request-rate limits depend on account-level API configuration."
         className="stage-api-limits"
       >
         <div className="api-access-layout editorial-pair">
@@ -123,7 +123,7 @@ export default function ApiPage() {
                   <tr>
                     <th scope="col">{t('Plan')}</th>
                     <th scope="col">{t('API access')}</th>
-                    <th scope="col">{t('Plan rate limit')}</th>
+                    <th scope="col">{t('API rate limits')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -135,7 +135,18 @@ export default function ApiPage() {
                           {t(plan.api ? 'Yes' : 'No')}
                         </span>
                       </td>
-                      <td>{formatApiRate(plan, t)}</td>
+                      <td>
+                        {plan.api ? (
+                          <a
+                            className="stage-text-link"
+                            href={siteHref(apiDocumentationPath) + '#access-limits'}
+                          >
+                            {apiLimitLabel(plan, t)}
+                          </a>
+                        ) : (
+                          '—'
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -150,8 +161,8 @@ export default function ApiPage() {
                 much capacity is available.
               </Text>
               <Text as="p">
-                Each HTTP API method has a cost against the rate allowance. The usage guide shows
-                these costs separately from plan credits and Search Token packages.
+                HTTP API requests can consume search credits. Method weights and charge-reuse rules
+                are documented separately from the account rate limiter.
               </Text>
               <a className="stage-text-link" href={siteHref('/pricing') + '#usage-guide'}>
                 {t('Understand usage and capacity')}

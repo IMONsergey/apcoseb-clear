@@ -60,7 +60,7 @@ test('canonical OpenAPI supplies eight ordered methods and the existing section 
   assert.equal(document.byId['get-host'].path, '/api/v1/search/hosts/{host}');
   assert.equal(
     document.filterCatalogue.reduce((sum, group) => sum + group.fields.length, 0),
-    67,
+    70,
   );
   assert.equal(
     document.errors.reduce((sum, group) => sum + group.rows.length, 0),
@@ -383,4 +383,206 @@ test('loopback HTTP is limited to explicit supported local development hosts', (
       publicApiSpecUrl('http://' + hostname + ':5191/client.json'),
       'http://' + hostname + ':5191/client.json',
     );
+});
+
+test('Nov7 rate metadata is explicit and configurable defaults are projected', () => {
+  const source = fixture();
+  const rate = record(source['x-apcosys-rate-limit']);
+  assert.equal(rate.api_rate_limit_field, 'api_rate_limit');
+  assert.equal(rate.api_rate_limit_read, false);
+  assert.deepEqual(rate.api_rate_limit_documented_values, [0, 1, 2, 5]);
+  assert.equal(Object.hasOwn(rate, 'pricing_api_rate_limit_used'), false);
+  assert.equal(record(source['x-apcosys-credit-policy']).balance_returned_in_http_body, false);
+  assert.ok(typeof rate.api_rate_limit_note === 'string' && rate.api_rate_limit_note.trim());
+  const sourceNote = 'Fixture note: named pricing values are not request rates.';
+  rate.api_rate_limit_note = sourceNote;
+  rate.default_tokens_per_second = 37;
+  rate.default_burst = 4;
+  const document = adaptPublicApiDocument(source);
+  assert.equal(document.rate.tokensPerSecond, 37);
+  assert.equal(document.rate.burst, 4);
+  assert.equal(document.rate.pricingFieldNote, sourceNote);
+  assert.equal(document.credits.reuseSeconds, 600);
+});
+
+const nov7RateProfileRejections: [string, (source: RecordValue) => void][] = [
+  [
+    'missing field identity',
+    (source) => {
+      delete record(source['x-apcosys-rate-limit']).api_rate_limit_field;
+    },
+  ],
+  [
+    'wrong field identity',
+    (source) => {
+      record(source['x-apcosys-rate-limit']).api_rate_limit_field = 'api_access';
+    },
+  ],
+  [
+    'missing read flag',
+    (source) => {
+      delete record(source['x-apcosys-rate-limit']).api_rate_limit_read;
+    },
+  ],
+  [
+    'pricing field claimed as read',
+    (source) => {
+      record(source['x-apcosys-rate-limit']).api_rate_limit_read = true;
+    },
+  ],
+  [
+    'string read flag',
+    (source) => {
+      record(source['x-apcosys-rate-limit']).api_rate_limit_read = 'false';
+    },
+  ],
+  [
+    'missing documented values',
+    (source) => {
+      delete record(source['x-apcosys-rate-limit']).api_rate_limit_documented_values;
+    },
+  ],
+  [
+    'different documented values',
+    (source) => {
+      record(source['x-apcosys-rate-limit']).api_rate_limit_documented_values = [0, 1, 2, 6];
+    },
+  ],
+  [
+    'different documented value order',
+    (source) => {
+      record(source['x-apcosys-rate-limit']).api_rate_limit_documented_values = [0, 2, 1, 5];
+    },
+  ],
+  [
+    'string documented value',
+    (source) => {
+      record(source['x-apcosys-rate-limit']).api_rate_limit_documented_values = [0, '1', 2, 5];
+    },
+  ],
+  [
+    'non-array documented values',
+    (source) => {
+      record(source['x-apcosys-rate-limit']).api_rate_limit_documented_values = '0,1,2,5';
+    },
+  ],
+  [
+    'additional documented value',
+    (source) => {
+      record(source['x-apcosys-rate-limit']).api_rate_limit_documented_values = [0, 1, 2, 5, 9];
+    },
+  ],
+  [
+    'missing explanatory note',
+    (source) => {
+      delete record(source['x-apcosys-rate-limit']).api_rate_limit_note;
+    },
+  ],
+  [
+    'blank explanatory note',
+    (source) => {
+      record(source['x-apcosys-rate-limit']).api_rate_limit_note = ' \t\r\n';
+    },
+  ],
+  [
+    'non-text explanatory note',
+    (source) => {
+      record(source['x-apcosys-rate-limit']).api_rate_limit_note = 100;
+    },
+  ],
+  [
+    'explanatory note beyond the existing bounded-text limit',
+    (source) => {
+      record(source['x-apcosys-rate-limit']).api_rate_limit_note = 'n'.repeat(20_001);
+    },
+  ],
+  [
+    'legacy and Nov7 hybrid even with false legacy flag',
+    (source) => {
+      record(source['x-apcosys-rate-limit']).pricing_api_rate_limit_used = false;
+    },
+  ],
+  [
+    'legacy-only profile',
+    (source) => {
+      const rate = record(source['x-apcosys-rate-limit']);
+      for (const key of [
+        'api_rate_limit_field',
+        'api_rate_limit_read',
+        'api_rate_limit_documented_values',
+        'api_rate_limit_note',
+      ])
+        delete rate[key];
+      rate.pricing_api_rate_limit_used = false;
+    },
+  ],
+  [
+    'credit balance claimed in the HTTP body',
+    (source) => {
+      record(source['x-apcosys-credit-policy']).balance_returned_in_http_body = true;
+    },
+  ],
+];
+
+for (const [label, mutate] of nov7RateProfileRejections) {
+  test('Nov7 documentation profile rejects ' + label, () => {
+    const source = fixture();
+    mutate(source);
+    assert.throws(() => adaptPublicApiDocument(source));
+  });
+}
+
+test('Nov7 exposes all seventy filter fields including the added host and protocol fields', () => {
+  const document = adaptPublicApiDocument(fixture());
+  const names = document.filterCatalogue.flatMap((group) => group.fields.map(([name]) => name));
+  assert.equal(names.length, 70);
+  assert.equal(new Set(names).size, 70);
+  for (const name of ['host', 'protocol_version', 'protocol_data']) {
+    assert.equal(names.filter((candidate) => candidate === name).length, 1, name);
+  }
+});
+
+test('Nov7 preserves the explicitly required response arrays and facet members', () => {
+  const document = adaptPublicApiDocument(fixture());
+  const requiredArrays = [
+    [document.byId['search-hosts'].responseFields, 'hosts'],
+    [document.byId['host-analytics'].responseFields, 'facets'],
+    [document.byId['search-buckets'].responseFields, 'result'],
+    [document.byId['bucket-analytics'].responseFields, 'result'],
+  ] as const;
+  for (const [fields, name] of requiredArrays) {
+    const field = fields.find((candidate) => candidate.name === name);
+    assert.ok(field, name + ' must be projected');
+    assert.equal(field.required, true, name);
+    assert.equal(field.type, 'object[]', name + ' is a non-null object array');
+  }
+  for (const name of ['facets[].facet_name', 'facets[].facet_values']) {
+    const field = document.analyticsFields.find((candidate) => candidate.name === name);
+    assert.ok(field, name + ' must be projected');
+    assert.equal(field.required, true, name);
+  }
+  const valueFields = document.analyticsFields.filter((field) =>
+    field.name.startsWith('facets[].facet_values[].'),
+  );
+  assert.ok(valueFields.length > 0);
+  assert.ok(
+    valueFields.every((field) => !field.required),
+    'Do not infer required facet-value members from examples',
+  );
+  assert.ok(
+    document.byId['get-host'].responseFields.every((field) => !field.required),
+    'Unchanged optional host members stay optional',
+  );
+});
+
+test('Nov7 protocol metadata is public port data and is not invented for private ports', () => {
+  const document = adaptPublicApiDocument(fixture());
+  for (const name of ['protocol_version', 'protocol_data']) {
+    assert.equal(document.portFields.filter((field) => field.name === name).length, 1, name);
+    assert.equal(
+      document.privatePortFields.some((field) => field.name === name),
+      false,
+      name,
+    );
+  }
 });

@@ -1,17 +1,39 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Modal } from './Modal';
 import { DoubleButton } from './DoubleButton';
-import { siteHref } from '../../app/paths';
+import { Icon } from './Icon';
 import { LocaleText } from '../../i18n/LocaleText';
 import { useLocale } from '../../i18n/context';
 
-const key = 'apcosys-cookie-preferences';
 export function CookiePreferences() {
   const { t } = useLocale();
   const [open, setOpen] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [Body, setBody] = useState<
+    typeof import('./CookiePreferencesBody').CookiePreferencesBody | null
+  >(null);
+  const [loadFailed, setLoadFailed] = useState(false);
+  useEffect(() => {
+    if (!open || Body) return;
+    let active = true;
+    import('./CookiePreferencesBody').then(
+      ({ CookiePreferencesBody }) => {
+        if (active) setBody(() => CookiePreferencesBody);
+      },
+      () => {
+        if (active) setLoadFailed(true);
+      },
+    );
+    return () => {
+      active = false;
+    };
+  }, [open, Body]);
+  const [feedback, setFeedback] = useState<'saved' | 'unavailable' | null>(null);
+  const pendingFeedback = useRef<'saved' | 'unavailable' | null>(null);
   useEffect(() => {
     function launch() {
+      pendingFeedback.current = null;
+      setFeedback(null);
+      setLoadFailed(false);
       setOpen(true);
     }
     window.addEventListener('apcosys:cookie-preferences', launch);
@@ -19,59 +41,70 @@ export function CookiePreferences() {
   }, []);
   return (
     <>
-      <button type="button" className="footer-cookie-trigger" onClick={() => setOpen(true)}>
+      <button
+        type="button"
+        className="footer-cookie-trigger"
+        onClick={() => {
+          pendingFeedback.current = null;
+          setFeedback(null);
+          setLoadFailed(false);
+          setOpen(true);
+        }}
+      >
         <LocaleText>{t('Cookie Preferences')}</LocaleText>
       </button>
-      <Modal open={open} onClose={() => setOpen(false)} title={t('Cookie Preferences')}>
-        <div className="stage-cookie-content">
-          <p>
-            <LocaleText>
-              {t(
-                'Essential browser storage supports the website theme and your saved preferences. No optional analytics or marketing trackers are enabled on this website.',
-              )}
-            </LocaleText>
-          </p>
-          <label className="stage-cookie-choice">
-            <span>
-              <strong>{t('Essential')}</strong>
-              <small>{t('Required for site preferences')}</small>
-            </span>
-            <input type="checkbox" checked readOnly disabled />
-          </label>
-          <label className="stage-cookie-choice">
-            <span>
-              <strong>{t('Analytics')}</strong>
-              <small>{t('Not enabled on this website')}</small>
-            </span>
-            <input type="checkbox" checked={false} readOnly disabled />
-          </label>
-          <p className="stage-helper">
-            <LocaleText>{t('For the current legal policy, see')}</LocaleText>{' '}
-            <a href={siteHref('/legal/cookie-policy')} onClick={() => setOpen(false)}>
-              <LocaleText>{t('Cookie Policy')}</LocaleText>
-            </a>
-            .
-          </p>
-          <DoubleButton
-            onClick={() => {
-              try {
-                localStorage.setItem(key, 'essential');
-              } catch {
-                /* Storage may be disabled. */
-              }
-              setSaved(true);
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        onAfterClose={() => {
+          // Announce only after the native modal has released its inert background.
+          const result = pendingFeedback.current;
+          pendingFeedback.current = null;
+          if (result) setFeedback(result);
+        }}
+        title={t('Cookie Preferences')}
+      >
+        {Body ? (
+          <Body
+            onClose={() => setOpen(false)}
+            onSave={(result) => {
+              pendingFeedback.current = result;
               setOpen(false);
             }}
-          >
-            <LocaleText>{t('Save Preferences')}</LocaleText>
-          </DoubleButton>
-          {saved && (
-            <span className="sr-only" role="status">
-              {t('Cookie preferences saved.')}
-            </span>
-          )}
-        </div>
+          />
+        ) : loadFailed ? (
+          <>
+            <p role="alert">{t('Cookie preferences could not load.')}</p>
+            <p>{t('Check your connection and reload the page to try again.')}</p>
+            <DoubleButton onClick={() => window.location.reload()}>
+              <LocaleText>{t('Reload page')}</LocaleText>
+            </DoubleButton>
+          </>
+        ) : (
+          <p role="status">{t('Loading cookie preferences…')}</p>
+        )}
       </Modal>
+      <div className="cookie-feedback" data-visible={feedback !== null}>
+        <p className="cookie-feedback__message" role="status" aria-live="polite" aria-atomic="true">
+          {feedback === 'saved'
+            ? t('Cookie preferences saved.')
+            : feedback === 'unavailable'
+              ? t(
+                  'Your browser could not save this preference. Optional trackers remain disabled on this website.',
+                )
+              : ''}
+        </p>
+        {feedback && (
+          <button
+            type="button"
+            className="icon-button"
+            aria-label={t('Dismiss notification')}
+            onClick={() => setFeedback(null)}
+          >
+            <Icon name="close" />
+          </button>
+        )}
+      </div>
     </>
   );
 }

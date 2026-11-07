@@ -4,6 +4,8 @@ import { readFile } from 'node:fs/promises';
 import { marked } from 'marked';
 import { legalRoutes } from '../../src/content/legal-routes';
 import { siteRoutes } from '../../src/content/routes';
+import ru from '../../src/i18n/translations/ru';
+import zhHant from '../../src/i18n/translations/zh-Hant';
 
 test('the subprocessor list reference provides an actionable existing contact', async ({
   page,
@@ -200,7 +202,7 @@ test('shell preserves the vector logo and uppercase text labels while content us
 test('printing preserves the complete document and removes interface controls', async ({
   page,
 }) => {
-  await page.goto('./legal/terms');
+  await page.goto('./legal/cookie-policy');
   await expect(page.locator('.legal-copy')).toBeVisible();
   const body = await page.locator('.legal-copy').textContent();
   await page.evaluate(() => {
@@ -214,9 +216,62 @@ test('printing preserves the complete document and removes interface controls', 
   await page.emulateMedia({ media: 'print' });
   await expect(page.locator('.header-spacer')).toBeHidden();
   await expect(page.locator('.legal-copy')).toHaveCSS('color', 'rgb(34, 34, 34)');
+  await expect(page.locator('.legal-storage-note')).toHaveCSS(
+    'background-color',
+    'rgba(0, 0, 0, 0)',
+  );
   await expect(page.locator('.site-header')).toBeHidden();
   await expect(page.locator('.footer')).toBeHidden();
   await expect(page.locator('.legal-tools')).toBeHidden();
   await expect(page.locator('.legal-copy')).toBeVisible();
   expect(await page.locator('.legal-copy').textContent()).toBe(body);
 });
+
+for (const prefix of ['', 'ru/', 'zh-hant/'] as const) {
+  for (const storageAvailable of [true, false]) {
+    test(`cookie save feedback stays visible outside the closed dialog: ${prefix || 'en'} / storage ${storageAvailable}`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: 390, height: 844 });
+      if (!storageAvailable) {
+        await page.addInitScript(() => {
+          const original = Storage.prototype.setItem;
+          Storage.prototype.setItem = function (key, value) {
+            if (key === 'apcosys-cookie-preferences')
+              throw new DOMException('Storage blocked', 'SecurityError');
+            return original.call(this, key, value);
+          };
+        });
+      }
+      await page.goto(`./${prefix}legal/cookie-policy`);
+      const trigger = page.locator('.legal-tools button').last();
+      await trigger.focus();
+      await page.keyboard.press('Enter');
+      const dialog = page.locator('dialog').filter({ has: page.locator('.stage-cookie-content') });
+      await expect(dialog).toBeVisible();
+      await dialog.locator('.double-button').focus();
+      await page.keyboard.press('Enter');
+      await expect(dialog).toBeHidden();
+      await expect(trigger).toBeFocused();
+      const notice = page.locator('.cookie-feedback [role="status"]');
+      await expect(notice).toBeVisible();
+      await expect(notice).toBeInViewport();
+      expect(await notice.evaluate((node) => node.closest('dialog'))).toBeNull();
+      const saved = await page.evaluate(() => localStorage.getItem('apcosys-cookie-preferences'));
+      expect(saved).toBe(storageAvailable ? 'essential' : null);
+      const expected = storageAvailable
+        ? 'Cookie preferences saved.'
+        : 'Your browser could not save this preference. Optional trackers remain disabled on this website.';
+      const catalogs: Record<string, Record<string, string>> = { 'ru/': ru, 'zh-hant/': zhHant };
+      await expect(notice).toHaveText(catalogs[prefix]?.[expected] ?? expected);
+      // Reopening clears the old result; saving again must produce a fresh visible status.
+      await trigger.click();
+      await expect(notice).toHaveText('');
+      await dialog.locator('.double-button').click();
+      await expect(dialog).toBeHidden();
+      await expect(notice).toHaveText(catalogs[prefix]?.[expected] ?? expected);
+      await page.locator('.cookie-feedback button').click();
+      await expect(notice).toHaveText('');
+    });
+  }
+}

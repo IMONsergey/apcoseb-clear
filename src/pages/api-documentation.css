@@ -379,3 +379,204 @@
     font-size: var(--font-size-32);
   }
 }
+
+/* Printable canonical reference: full examples and provenance, without site controls. */
+@media print {
+  @page apcosys-api-document {
+    margin: 18mm;
+  }
+
+  :root:has(article.api-docs) {
+    color-scheme: light;
+    --surface-page: #fff;
+    --surface-card: #fff;
+    --surface-elevated: #fff;
+    --text-primary: #111;
+    --color-text-body: #222;
+    --text-muted: #444;
+    --accent-text: #111;
+    --border-subtle: #bbb;
+  }
+
+  body:has(article.api-docs) {
+    page: apcosys-api-document;
+  }
+
+  body:has(article.api-docs),
+  body:has(article.api-docs) .site,
+  body:has(article.api-docs) main,
+  article.api-docs {
+    display: block;
+    min-height: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #222;
+    overflow: visible;
+  }
+
+  body:has(article.api-docs) :is(.site-header, .header-spacer, .footer, .skip-link),
+  .api-docs :is(.api-docs__sidebar, .api-docs__mobile-nav, .api-docs__back, .api-docs__closing),
+  .api-docs__code-heading button {
+    display: none !important;
+  }
+
+  .api-docs .container {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+
+  .api-docs__header {
+    container: none;
+    padding-block: 0 12pt;
+  }
+
+  .api-docs__header h1 {
+    font-size: 30pt;
+  }
+
+  .api-docs__layout,
+  .api-docs__reading {
+    display: block;
+    width: 100%;
+    max-width: none;
+    overflow: visible;
+  }
+
+  .api-docs__section {
+    padding-block: 12pt;
+    break-inside: auto;
+  }
+
+  .api-docs :is(h1, h2, h3, h4, caption),
+  .api-docs__code-heading,
+  .api-docs__disclosure > summary {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .api-docs :is(p, li) {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .api-docs a {
+    color: #111;
+    text-decoration: underline;
+  }
+
+  /* Keep long examples in the page flow; a PDF has no usable scrollbars. */
+  .api-docs__code {
+    break-inside: auto;
+    border-radius: 0;
+    background: #fff;
+  }
+
+  .api-docs__code-heading {
+    padding-block: 6pt;
+  }
+
+  .api-docs__code pre,
+  .api-docs__code pre code {
+    max-height: none;
+    height: auto;
+    overflow: visible;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    color: #111;
+    background: transparent;
+    break-inside: auto;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Restore real table layout even when a narrow print sheet matches mobile CSS.
+   * Avoid splitting ordinary rows, while allowing a long table to span pages.
+   */
+  .api-docs .api-docs__table {
+    display: table;
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    break-inside: auto;
+  }
+
+  .api-docs .api-docs__table thead {
+    display: table-header-group;
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
+
+  .api-docs .api-docs__table tbody {
+    display: table-row-group;
+  }
+
+  .api-docs .api-docs__table tr {
+    display: table-row;
+    width: auto;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .api-docs .api-docs__table :is(th, td) {
+    display: table-cell;
+    width: auto;
+    margin: 0;
+    padding: 6pt;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .api-docs .api-docs__errors tbody tr {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .api-docs .api-docs__errors td > div {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .api-docs .api-docs__fields th:first-child {
+    width: 36%;
+  }
+
+  .api-docs .api-docs__errors th:first-child {
+    width: 16%;
+  }
+
+  .api-docs__disclosure {
+    break-inside: auto;
+  }
+
+  .api-docs__disclosure > summary {
+    display: block;
+    list-style: none;
+    cursor: auto;
+  }
+
+  .api-docs__disclosure > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Emulated print can expose this slot without changing disclosure state.
+   * Native printing also expands/restores closed disclosures through print events.
+   */
+  @supports selector(details::details-content) {
+    .api-docs__disclosure::details-content {
+      display: block;
+      content-visibility: visible;
+      block-size: auto;
+      overflow: visible;
+    }
+  }
+}

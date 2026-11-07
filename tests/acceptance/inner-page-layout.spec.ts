@@ -47,6 +47,7 @@ for (const locale of ['', 'ru/', 'zh-hant/']) {
   for (const theme of ['light', 'dark']) {
     test(`${locale || 'en'} scanner fields and API access keep readable aligned columns in ${theme}`, async ({
       page,
+      baseURL,
     }, testInfo) => {
       test.setTimeout(90_000);
       await page.addInitScript((mode) => localStorage.setItem('apcosys-theme-mode', mode), theme);
@@ -161,10 +162,31 @@ for (const locale of ['', 'ru/', 'zh-hant/']) {
             ).toBeLessThanOrEqual(1);
             await expect(table.locator('thead th[scope="col"]')).toHaveCount(3);
             await expect(table.locator('tbody th[scope="row"]')).toHaveCount(4);
-            const rates = await table.locator('tbody tr td:last-child').allTextContents();
-            expect(rates[0], context).toBe('—');
-            for (const [index, rate] of [1, 2, 5].entries())
-              expect(rates[index + 1], context).toMatch(new RegExp(`(?:^|\\D)${rate}(?:\\D|$)`));
+            const documentationLabel =
+              locale === 'ru/'
+                ? 'См. документацию API'
+                : locale === 'zh-hant/'
+                  ? '查看 API 文件'
+                  : 'See API documentation';
+            const rateCells = table.locator('tbody tr td:last-child');
+            await expect(rateCells, context).toHaveText([
+              '—',
+              documentationLabel,
+              documentationLabel,
+              documentationLabel,
+            ]);
+            await expect(rateCells.first().getByRole('link')).toHaveCount(0);
+            const documentationLinks = table.getByRole('link', {
+              name: documentationLabel,
+              exact: true,
+            });
+            await expect(documentationLinks).toHaveCount(3);
+            const reference = new URL(
+              './' + locale + 'developers/api/docs#access-limits',
+              baseURL!,
+            );
+            for (const link of await documentationLinks.all())
+              await expect(link).toHaveAttribute('href', reference.pathname + reference.hash);
             const cells = await table.locator('th,td').evaluateAll((elements) =>
               elements.map((cell) => ({
                 heading: Boolean(cell.closest('thead')),

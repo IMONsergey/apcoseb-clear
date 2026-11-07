@@ -1,5 +1,7 @@
 import { businessPlan } from '../../content/plans';
 import { Text } from '../ui/Text';
+import { apiDocumentationPath } from '../../config/site';
+import { siteHref } from '../../app/paths';
 import { EditorialSection, ReadingRows, RelatedReading } from '../layout/PageSections';
 import { LocaleText } from '../../i18n/LocaleText';
 import { useLocale } from '../../i18n/context';
@@ -120,15 +122,20 @@ export function TeamOperations() {
             </span>
           </div>
           <div>
-            <strong>
-              {count.format(businessPlan.apiRequestsPerSecond)}
-              <span>/s</span>
-            </strong>
+            <strong>{t('API')}</strong>
             <span>
-              <LocaleText>{t('API request rate')}</LocaleText>
+              <a
+                className="stage-text-link"
+                href={siteHref(apiDocumentationPath) + '#access-limits'}
+              >
+                {t('See API documentation')}
+              </a>
             </span>
           </div>
         </div>
+        <Text as="p" className="editorial-note">
+          Limits apply per account and depend on the API configuration.
+        </Text>
         <Text as="p" className="editorial-note">
           Confirm Business access and commercial terms in your account before purchase.
         </Text>

@@ -1,6 +1,7 @@
 import { Text } from '../../components/ui/Text';
-import { formatApiRate, formatCredits, formatPrice, planComparison } from '../../lib/pricing';
+import { apiLimitLabel, formatCredits, formatPrice, planComparison } from '../../lib/pricing';
 import { siteHref } from '../../app/paths';
+import { apiDocumentationPath } from '../../config/site';
 import { primarySearch, linkTo } from '../../components/layout/pageLinks';
 import { PricingSection } from '../../components/sections/PricingSection';
 import { CreditsExplained } from '../../components/product/CreditsExplained';
@@ -49,8 +50,8 @@ function FullPlanComparison() {
                   <th scope="row">{t(row.label)}</th>
                   {plans.map((plan) => {
                     const value =
-                      row.label === 'API rate limit'
-                        ? formatApiRate(plan, t)
+                      row.label === 'API rate limits'
+                        ? apiLimitLabel(plan, t)
                         : row.label === 'Credits'
                           ? formatCredits(plan.credits, false, locale)
                           : row.value(plan);
@@ -62,13 +63,29 @@ function FullPlanComparison() {
                         : /[A-Za-z]/.test(value)
                           ? t(value)
                           : value;
-                    return <td key={plan.id}>{translated}</td>;
+                    return (
+                      <td key={plan.id}>
+                        {row.label === 'API rate limits' && plan.api ? (
+                          <a
+                            className="stage-text-link"
+                            href={siteHref(apiDocumentationPath) + '#access-limits'}
+                          >
+                            {translated}
+                          </a>
+                        ) : (
+                          translated
+                        )}
+                      </td>
+                    );
                   })}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        <Text as="p" className="stage-helper">
+          Limits apply per account and depend on the API configuration.
+        </Text>
         <Text as="p" className="stage-helper">
           Search reads the public index. Private scans are available by request for hosts you own,
           with consent and verified ownership; results are shared only with you.

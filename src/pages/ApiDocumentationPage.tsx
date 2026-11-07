@@ -155,6 +155,32 @@ function Method({ operation }: { operation: ApiOperationView }) {
 
 export default function ApiDocumentationPage() {
   const { t } = useLocale();
+  const printRoot = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const expanded = new Set<HTMLDetailsElement>();
+    const beforePrint = () => {
+      for (const disclosure of printRoot.current?.querySelectorAll<HTMLDetailsElement>(
+        'details.api-docs__disclosure',
+      ) ?? []) {
+        if (!disclosure.open) {
+          expanded.add(disclosure);
+          disclosure.open = true;
+        }
+      }
+    };
+    const afterPrint = () => {
+      for (const disclosure of expanded) disclosure.open = false;
+      expanded.clear();
+    };
+    window.addEventListener('beforeprint', beforePrint);
+    window.addEventListener('afterprint', afterPrint);
+    return () => {
+      window.removeEventListener('beforeprint', beforePrint);
+      window.removeEventListener('afterprint', afterPrint);
+      afterPrint();
+    };
+  }, []);
+
   const [loaded, setLoaded] = useState<PublicApiDocumentResult>({
     document: bundledApiDocumentation,
     source: 'bundled',
@@ -244,7 +270,7 @@ export default function ApiDocumentationPage() {
     </nav>
   );
   return (
-    <article className="api-docs">
+    <article className="api-docs" ref={printRoot}>
       <header className="api-docs__header container">
         <a className="api-docs__back" href={siteHref('/developers/api')}>
           <Icon name="previous" /> {t('API overview')}
@@ -369,6 +395,7 @@ export default function ApiDocumentationPage() {
             <p lang="en">
               {document.rate.scope}. {document.rate.failureMode}.
             </p>
+            <p lang="en">{document.rate.pricingFieldNote}</p>
             <Text as="p">
               {t('Credit reuse window: {seconds} seconds.', {
                 seconds: document.credits.reuseSeconds,

@@ -1,4 +1,5 @@
 import { Text } from '../ui/Text';
+import { ProductHandoffLink } from '../ui/ProductHandoffLink';
 import { CaseFragment } from './CompactFragments';
 import type { EvidenceScenario } from './ProductEvidence';
 import { productUrl } from '../../config/site';
@@ -100,7 +101,9 @@ function EvidenceJourney({ kind }: { kind: keyof typeof journeys }) {
         </div>
         <div className="stage-example-footer">
           <p>{t(item.caveat, item.caveatValues)}</p>
-          <a href={productUrl + (kind === 'technology' ? '/search?search_value=nginx' : '/search')}>
+          <ProductHandoffLink
+            href={productUrl + (kind === 'technology' ? '/search?search_value=nginx' : '/search')}
+          >
             <LocaleText>
               {t(
                 kind === 'scope'
@@ -110,7 +113,7 @@ function EvidenceJourney({ kind }: { kind: keyof typeof journeys }) {
                     : 'Look up an IP or domain',
               )}
             </LocaleText>{' '}
-          </a>
+          </ProductHandoffLink>
         </div>
       </div>
     </section>
