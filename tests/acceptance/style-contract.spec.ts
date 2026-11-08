@@ -80,10 +80,12 @@ for (const width of [320, 390, 600, 768, 900, 1000, 1280, 1440, 1920]) {
             })),
           ].filter((item) => item !== null);
           return Object.fromEntries(
-            visible.slice(1).map((item, index) => [
-              visible[index]!.label + ' → ' + item.label,
-              item.top - visible[index]!.bottom,
-            ]),
+            visible
+              .slice(1)
+              .map((item, index) => [
+                visible[index]!.label + ' → ' + item.label,
+                item.top - visible[index]!.bottom,
+              ]),
           );
         }),
       );
