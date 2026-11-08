@@ -402,11 +402,12 @@
   padding: var(--space-5) var(--space-4);
   vertical-align: middle;
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
 }
-.site .inner-pages .stage-api-table td .stage-text-link {
+.site .inner-pages :is(.stage-data-table, .business-allowance) .stage-text-link {
   display: inline;
   margin-top: 0;
+  padding-block: 0;
 }
 .site .inner-pages .stage-api-table :is(th, td):last-child {
   padding-right: 0;
@@ -796,6 +797,9 @@
   }
   .site .inner-pages .stage-api-table :is(th, td) {
     padding-inline: var(--space-1);
+  }
+  .site .inner-pages .stage-api-table thead th:nth-child(2) {
+    width: 20%;
   }
   .site .inner-pages .contact-topics {
     grid-template-columns: minmax(0, 1fr);

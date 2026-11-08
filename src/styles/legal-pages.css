@@ -222,7 +222,11 @@
     gap: var(--space-5);
     padding-bottom: var(--space-5);
   }
+  .legal-header__copy {
+    grid-template-rows: auto auto auto;
+  }
   .legal-description {
+    min-block-size: 0;
     margin-top: var(--space-4);
   }
   .legal-updated {
@@ -278,15 +282,6 @@
   }
   .legal-copy h2 {
     margin-block: var(--space-8) var(--space-5);
-  }
-}
-@media (max-width: 479px) {
-  .legal-description {
-    min-block-size: 6.4em;
-  }
-  .legal-tools {
-    min-block-size: 96px;
-    align-content: end;
   }
 }
 @media print {
