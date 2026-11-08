@@ -6,6 +6,7 @@ import { compilePublicApiDocument } from './src/lib/public-api-compile.ts';
 import react from '@vitejs/plugin-react';
 import { readPublicSettings } from './src/config/public-settings.ts';
 import { themeBootstrap } from './scripts/theme-bootstrap.ts';
+import { typografProfile } from './scripts/typograf-profile.ts';
 const sourceRoot = normalizePath(fileURLToPath(new URL('./src/', import.meta.url)));
 
 export default defineConfig(({ mode }) => {
@@ -26,6 +27,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       themeBootstrap(),
+      typografProfile(fileURLToPath(new URL('.', import.meta.url))),
       {
         name: 'apcosys-noscript-link',
         transformIndexHtml: {
