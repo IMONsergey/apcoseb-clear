@@ -520,6 +520,18 @@
     display: table-row-group;
   }
 
+  /* Keep a field table's caption and column headers with its first body row. */
+  .api-docs .api-docs__fields > thead {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .api-docs .api-docs__fields > tbody,
+  .api-docs .api-docs__fields > tbody > tr:first-child {
+    break-before: avoid;
+    page-break-before: avoid;
+  }
+
   .api-docs .api-docs__table tr {
     display: table-row;
     width: auto;
@@ -556,6 +568,11 @@
 
   .api-docs__disclosure {
     break-inside: auto;
+  }
+
+  #best-practices .api-docs__disclosure > p {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   .api-docs__disclosure > summary {
