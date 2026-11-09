@@ -1,4 +1,5 @@
 import { Text } from '../../components/ui/Text';
+import { Icon } from '../../components/ui/Icon';
 import { plans } from '../../content/plans';
 import { apiLimitLabel } from '../../lib/pricing';
 import { linkTo } from '../../components/layout/pageLinks';
@@ -44,7 +45,7 @@ function ApiSample() {
         <div>
           <ApiExample />
           <a className="stage-text-link" href={siteHref(apiDocumentationPath)}>
-            <Text as="span">Read the full API reference</Text> →
+            <Text as="span">Read the full API reference</Text> <Icon name="arrow" />
           </a>
         </div>
       </div>

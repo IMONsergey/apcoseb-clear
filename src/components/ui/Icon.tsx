@@ -10,6 +10,7 @@ export type IconName =
   | 'close'
   | 'menu'
   | 'previous'
+  | 'enter'
   | 'external'
   | 'focus'
   | 'database'
@@ -29,6 +30,7 @@ const paths: Record<IconName, string> = {
   close: 'm4 4 8 8M12 4l-8 8',
   menu: 'M2 4h12M2 8h12M2 12h12',
   previous: 'M13 8H3M8 3 3 8l5 5',
+  enter: 'M13 3v5H3m4-4L3 8l4 4',
   external: 'M4 12 12 4M4 4h8v8',
   focus: 'M1 5V1h4m6 0h4v4m0 6v4h-4m-6 0H1v-4',
   database: 'M2 4c0-3 12-3 12 0s-12 3-12 0v8c0 3 12 3 12 0V4M2 8c0 3 12 3 12 0',
@@ -55,5 +57,26 @@ export function Icon({ name, ...props }: SVGProps<SVGSVGElement> & { name: IconN
     >
       <path d={paths[name]} />
     </svg>
+  );
+}
+
+/** Keep translated transition text accessible while drawing its arrows as vectors. */
+export function ArrowText({ children }: { children: string }) {
+  if (!children.includes('→')) return children;
+  return (
+    <span role="img" aria-label={children}>
+      {children.split('→').flatMap((part, index) => [
+        index > 0 ? (
+          <Icon
+            key={index}
+            name="arrow"
+            width="1em"
+            height="1em"
+            style={{ display: 'inline-block', verticalAlign: '-0.125em' }}
+          />
+        ) : null,
+        part,
+      ])}
+    </span>
   );
 }

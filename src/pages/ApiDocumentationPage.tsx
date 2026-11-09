@@ -487,7 +487,7 @@ export default function ApiDocumentationPage() {
               </tbody>
             </table>
             <a className="api-docs__link" href={siteHref('/pricing')}>
-              {t('Compare plans')} →
+              {t('Compare plans')} <Icon name="arrow" />
             </a>
           </ApiDocsSection>
 

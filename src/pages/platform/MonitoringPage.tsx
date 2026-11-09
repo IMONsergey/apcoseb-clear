@@ -1,5 +1,6 @@
 import { Text } from '../../components/ui/Text';
-import { LocaleText } from '../../i18n/LocaleText';
+import { ArrowText } from '../../components/ui/Icon';
+import { useLocale } from '../../i18n/context';
 import { primaryContact, linkTo } from '../../components/layout/pageLinks';
 import { MonitoringConcept } from '../../components/product/MonitoringConcept';
 import { PageFrame } from '../../components/layout/PageFrame';
@@ -10,6 +11,7 @@ import {
 } from '../../components/layout/PageSections';
 
 export default function MonitoringPage() {
+  const { locale, t } = useLocale();
   return (
     <PageFrame
       artwork="monitoring"
@@ -66,7 +68,9 @@ export default function MonitoringPage() {
             <article key={title}>
               <Text as="h3">{title}</Text>
               <code>
-                <LocaleText>{change!}</LocaleText>
+                <span className="locale-text" lang={locale}>
+                  <ArrowText>{t(change!)}</ArrowText>
+                </span>
               </code>
               <Text as="h4">{question}</Text>
               <Text as="p">{text}</Text>
