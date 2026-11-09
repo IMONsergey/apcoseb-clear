@@ -450,6 +450,10 @@
     break-inside: auto;
   }
 
+  #best-practices {
+    padding-block-end: 0;
+  }
+
   .api-docs :is(h1, h2, h3, h4, caption),
   .api-docs__code-heading,
   .api-docs__disclosure > summary {
