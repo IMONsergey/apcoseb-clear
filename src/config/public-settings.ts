@@ -1,5 +1,13 @@
+import { publicApiSpecUrl } from '../lib/public-api-url';
+
 type PublicEnvironment = Partial<
-  Record<'VITE_APCO_PRODUCT_URL' | 'VITE_APCO_SUPPORT_EMAIL' | 'VITE_APCO_SIGN_IN_URL', string>
+  Record<
+    | 'VITE_APCO_PRODUCT_URL'
+    | 'VITE_APCO_SUPPORT_EMAIL'
+    | 'VITE_APCO_SIGN_IN_URL'
+    | 'VITE_APCO_API_SPEC_URL',
+    string
+  >
 >;
 
 function httpUrl(input: string, setting: string) {
@@ -44,7 +52,19 @@ export function readPublicSettings(env: PublicEnvironment) {
   if (signInUrl && signInUrl.origin !== product.origin) {
     throw new Error('VITE_APCO_SIGN_IN_URL must stay on the product origin.');
   }
+  const apiSpec = env.VITE_APCO_API_SPEC_URL?.trim();
+  let apiSpecUrl: string | undefined;
+  if (apiSpec) {
+    try {
+      apiSpecUrl = publicApiSpecUrl(apiSpec);
+    } catch {
+      throw new Error(
+        'VITE_APCO_API_SPEC_URL must be a public HTTPS JSON URL without credentials or a fragment.',
+      );
+    }
+  }
   return {
+    ...(apiSpecUrl ? { apiSpecUrl } : {}),
     productUrl: product.origin,
     supportEmail,
     signInUrl: signInUrl?.href ?? new URL('/login', product).href,

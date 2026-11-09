@@ -44,25 +44,17 @@ export const formatCredits = (value: number, compact = false, locale = 'en') => 
   const formatted = getPricingFormatters(locale).count.format(value);
   return compact && locale === 'en' ? formatted.replaceAll(',', '\u00a0') : formatted;
 };
-export const formatApiRate = (
+export const apiLimitLabel = (
   plan: Plan,
-  translate: (source: string, values?: Record<string, string | number>) => string = (
-    source,
-    values = {},
-  ) => source.replace(/\{(\w+)\}/g, (token, name: string) => String(values[name] ?? token)),
-) =>
-  plan.apiRequestsPerSecond === null
-    ? '—'
-    : translate(plan.apiRequestsPerSecond === 1 ? '{count} request/s' : '{count} requests/s', {
-        count: plan.apiRequestsPerSecond,
-      });
+  translate: (source: string) => string = (source) => source,
+) => (plan.api ? translate('See API documentation') : '—');
 const included = (value: boolean) => (value ? 'Included' : 'Not included');
 export const planComparison = [
   { label: 'Credits', value: (plan: Plan) => formatCredits(plan.credits) },
   { label: 'Users', value: (plan: Plan) => String(plan.users) },
   { label: 'Search & filters', value: (plan: Plan) => plan.searchFilters },
   { label: 'API access', value: (plan: Plan) => included(plan.api) },
-  { label: 'API rate limit', value: formatApiRate },
+  { label: 'API rate limits', value: apiLimitLabel },
   { label: 'CVE context', value: (plan: Plan) => included(plan.cveContext) },
   { label: 'Buckets', value: (plan: Plan) => included(plan.buckets) },
   { label: 'Leaked Data', value: (plan: Plan) => included(plan.leakedData) },

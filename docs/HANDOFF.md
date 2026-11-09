@@ -31,7 +31,7 @@ This repository contains the Apcosys marketing website and its informational pag
 
 The six product/API scenes use React HTML, shared vector assets and native browser animation. Preserve the remaining asset notices and integrity checks. Synthetic demonstrations must remain clearly labelled, and animation failure must not hide readable content.
 
-Commercial decisions still include the mapping between Free/Plus/Expert/Business plans and the license's Personal/Free and Business/Enterprise categories. No additional usage rights are inferred for Plus or Expert. Published sources also do not define a conversion between plan credits, Search Tokens and HTTP API method-cost units, or annual credit renewal, expiry and rollover. Keep these boundaries until the owner provides the actual rules; do not calculate request capacity from an assumed conversion. See [Product integrations](reference/PRODUCT-INTEGRATIONS.md) for the dated source chain and confirmed values. A future automatic checkout handoff, direct Contact delivery, final public domain and indexing policy also require their actual receiving systems or owner decisions.
+Commercial decisions still include the mapping between Free/Plus/Expert/Business plans and the license's Personal/Free and Business/Enterprise categories. No additional usage rights are inferred for Plus or Expert. The supplied client HTTP contract now defines its credit weights, raw-body charge reuse and separate server token-bucket rate limits in the canonical OpenAPI snapshot. Do not substitute the marketing pricing-table API rates or apply the client rules to website-session/WebSocket methods. Annual credit renewal, expiry, rollover and any remaining Search Token conversion still require their actual rules; do not calculate request capacity from an assumed conversion. See [Product integrations](reference/PRODUCT-INTEGRATIONS.md) for the dated source chain and confirmed values. A future automatic checkout handoff, direct Contact delivery, final public domain and indexing policy also require their actual receiving systems or owner decisions.
 
 ## Configuration
 
@@ -41,12 +41,13 @@ Copy `.env.example` to a local `.env` only when overriding defaults. `VITE_*` va
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `VITE_APCO_PRODUCT_URL`   | `https://apcosys.net`; an origin without a path, query or fragment                                                                         |
 | `VITE_APCO_SIGN_IN_URL`   | `/login` on the product origin; an override must stay on that origin                                                                       |
+| `VITE_APCO_API_SPEC_URL`  | Optional public OpenAPI 3.1.1 JSON URL; no remote default; invalid/unavailable documents use the bundled reference                         |
 | `VITE_APCO_SUPPORT_EMAIL` | `info@apcosys.net`                                                                                                                         |
 | `APCO_PUBLIC_SITE_ORIGIN` | Optional locally; GitHub workflows default to the repository owner's Pages origin; controls static canonical/OG/alternate URLs and sitemap |
 | `APCO_SITE_INDEXABLE`     | `false` by default; `true` requires a valid HTTPS marketing origin                                                                         |
 | `APCO_SITE_BASE`          | GitHub workflow destination path; local builds use the `--base` option                                                                     |
 
-Documentation links use the localized page at `/developers/api/docs`, including the hosting base path. The legacy `/developers/api#documentation` anchor still opens the overview’s short first-request section, with a link to the full reference. Investor enquiries use `/docs/investors` and the dedicated `rk@apcosys.net` address.
+Documentation links use the localized page at `/developers/api/docs`, including the hosting base path. The full client HTTP reference is derived from `public/api/client.openapi.json`, optionally replaced by a validated anonymous document fetch. See [Public API documentation source](PUBLIC-API-DOCUMENTATION.md) for replacement, fallback, profile and test requirements. The legacy `/developers/api#documentation` anchor still opens the overview’s short first-request section, with a link to the full reference. Investor enquiries use `/docs/investors` and the dedicated `rk@apcosys.net` address.
 
 Changing the support email updates site UI, not the preserved legal document bodies. Legal amendments require review. See [Deployment](DEPLOYMENT.md) for origin, indexing and host configuration.
 
@@ -56,7 +57,7 @@ Changing the support email updates site UI, not the preserved legal document bod
 - Import URL helpers from `src/app/paths.ts`; keep router lifecycle code out of page components.
 - Page implementations live in `src/pages/<group>/`; shared frames and editorial components live in `src/components/layout/`. `npm run verify:architecture` enforces their dependency direction.
 - Reuse `DoubleButton`, `Modal`, `AnimatedDetails`, `MorphPanel`, `PageFrame` and `EditorialSection`. Use `Text` for ordinary authored text; it preserves the semantic tag and applies typography rules.
-- Edit subscription allowances only in `src/content/plans.ts`; comparison, API and Business summaries derive from that record. Its separate `httpApiMethodCosts` record describes API rate-allowance units, not plan credits. Keep HTTP API examples separate from the authenticated application's session/WebSocket protocol.
+- Edit marketing subscription allowances only in `src/content/plans.ts`; comparison, overview and Business summaries derive from that record. The full public client HTTP reference instead derives from `public/api/client.openapi.json`. Its credit weights and server token-bucket limits are separate from marketing pricing data. Keep client HTTP examples separate from the authenticated application's session/WebSocket protocol.
 - Update `src/content/metrics.ts` only from an identified statistics response, keeping its timestamp and source together. Do not turn fields into claims about unique systems or vulnerable hosts without a verified definition.
 - Preserve shared container edges, readable line lengths, natural content height, keyboard access and reduced-motion support.
 - Use paired illustration assets; do not derive the dark edition with CSS inversion.

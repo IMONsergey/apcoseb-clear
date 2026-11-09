@@ -1,3 +1,4 @@
+import { ProductHandoffLink } from '../ui/ProductHandoffLink';
 import { useEffect, useReducer, useRef } from 'react';
 import { Text } from '../ui/Text';
 import { productUrl } from '../../config/site';
@@ -132,9 +133,9 @@ export function InvestigationWorkbench({ story = 'search' }: { story?: Investiga
           </Text>
         </div>
         <div className="stage-workbench__bottom">
-          <a href={productUrl + '/search'}>
+          <ProductHandoffLink href={productUrl + '/search'}>
             <LocaleText>{t('Try Search')}</LocaleText>
-          </a>
+          </ProductHandoffLink>
           <a href={siteHref('/platform/data-methodology')}>
             <LocaleText>{t('Data & Methodology')}</LocaleText>
           </a>

@@ -1,0 +1,10 @@
+.product-language-note {
+  margin-block: var(--space-3);
+  color: var(--text-muted);
+  font: var(--type-small);
+}
+@media print {
+  .product-language-note {
+    display: none;
+  }
+}

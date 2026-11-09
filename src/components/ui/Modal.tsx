@@ -10,9 +10,18 @@ type Props = {
   children: ReactNode;
   className?: string;
   fallbackFocus?: RefObject<HTMLElement | null>;
+  onAfterClose?: () => void;
 };
 /** Native dialog retains focus containment during both opening and closing transitions. */
-export function Modal({ open, onClose, title, children, className = '', fallbackFocus }: Props) {
+export function Modal({
+  open,
+  onClose,
+  title,
+  children,
+  className = '',
+  fallbackFocus,
+  onAfterClose,
+}: Props) {
   const { t } = useLocale();
   const ref = useRef<HTMLDialogElement>(null);
   const session = useRef<{ trigger: HTMLElement | null; overflow: string } | null>(null);
@@ -168,6 +177,9 @@ export function Modal({ open, onClose, title, children, className = '', fallback
       className={`modal ${className}`}
       data-scroll-cue={canScroll || undefined}
       aria-labelledby={titleId}
+      onClose={(event) => {
+        if (!event.currentTarget.open) onAfterClose?.();
+      }}
       onKeyDown={(event) => {
         if (event.key !== 'Tab' || !event.currentTarget.classList.contains('mobile-navigation'))
           return;

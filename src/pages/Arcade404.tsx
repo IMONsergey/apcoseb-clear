@@ -394,8 +394,7 @@ function readPalette(element: HTMLElement): Palette {
   };
 }
 
-function powerUpGlyph(type: PowerUpType) {
-  if (type === 'wide') return '↔';
+function powerUpGlyph(type: Exclude<PowerUpType, 'wide'>) {
   if (type === 'multi') return '×3';
   if (type === 'shield') return '◇';
   return '½';
@@ -481,10 +480,30 @@ export default function Arcade404() {
       context.fillStyle = palette.accent;
       context.fillRect(powerUp.x - 18, powerUp.y - 10, 36, 20);
       context.fillStyle = palette.card;
-      context.font = "600 11px 'IBM Plex Mono', monospace";
-      context.textAlign = 'center';
-      context.fillText(powerUpGlyph(powerUp.type), powerUp.x, powerUp.y + 1);
-      context.textAlign = 'left';
+      if (powerUp.type === 'wide') {
+        context.save();
+        context.translate(powerUp.x, powerUp.y);
+        context.strokeStyle = palette.card;
+        context.lineWidth = 1.5;
+        context.lineCap = 'round';
+        context.lineJoin = 'round';
+        context.beginPath();
+        context.moveTo(-7, 0);
+        context.lineTo(7, 0);
+        context.moveTo(-3, -4);
+        context.lineTo(-7, 0);
+        context.lineTo(-3, 4);
+        context.moveTo(3, -4);
+        context.lineTo(7, 0);
+        context.lineTo(3, 4);
+        context.stroke();
+        context.restore();
+      } else {
+        context.font = "600 11px 'IBM Plex Mono', monospace";
+        context.textAlign = 'center';
+        context.fillText(powerUpGlyph(powerUp.type), powerUp.x, powerUp.y + 1);
+        context.textAlign = 'left';
+      }
     });
 
     if (!reducedMotionRef.current) {

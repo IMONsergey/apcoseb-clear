@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 import { deploymentSettings } from '../helpers/public-settings';
 
 test('Hero keeps one real search and immediately visible connected examples', async ({ page }) => {
@@ -201,16 +201,18 @@ test('Pricing explains units before comparison without changing the original car
     'Host analytics & API access',
   );
   await expect(page.locator('.request-costs > div > strong')).toHaveText(['1', '3']);
-  await expect(page.locator('.request-costs')).toContainText('HTTP API method costs');
+  await expect(page.locator('.request-costs')).toContainText('Search-credit weights');
   await expect(page.locator('.request-costs')).toContainText(
-    'They do not specify a debit in plan credits or Search Tokens.',
-  );
-  await expect(page.locator('.stage-usage-guide')).toContainText('Search Tokens');
-  await expect(page.locator('.stage-usage-guide')).toContainText(
-    'Two HTTP calls have a combined method cost of 4 (1 + 3)',
+    'These are search-credit weights, separate from request-rate limits.',
   );
   await expect(page.locator('.stage-usage-guide')).toContainText(
-    'Contact our team to confirm credit usage for your workflow.',
+    'Search Token packages add search capacity.',
+  );
+  await expect(page.locator('.stage-usage-guide')).toContainText(
+    'a host search for example.com and an analytics request have a combined search-credit weight of 4 (1 + 3)',
+  );
+  await expect(page.locator('.stage-usage-guide')).toContainText(
+    'Charge reuse and account access rules determine whether credits are deducted.',
   );
   await expect(page.locator('.stage-usage-guide')).toContainText('HTTP 429');
   await expect(page.locator('#billing-questions')).toContainText('When do credits renew?');
@@ -312,3 +314,124 @@ test('mobile plan handoff retains one action and the complete annual price', asy
   expect(rect!.x).toBeGreaterThanOrEqual(0);
   expect(rect!.x + rect!.width).toBeLessThanOrEqual(320);
 });
+
+const applicationHandoffLocales = [
+  { prefix: '', description: 'Application interface: English.' },
+  { prefix: 'ru/', description: 'Интерфейс приложения — на английском.' },
+  { prefix: 'zh-hant/', description: '應用程式介面為英文。' },
+] as const;
+
+async function expectApplicationHandoff(link: Locator, href: string, description: string) {
+  await link.scrollIntoViewIfNeeded();
+  await expect(link).toHaveAttribute('href', href);
+  await expect(link).toHaveAccessibleDescription(description);
+  await expect(link.getByText('EN', { exact: true })).toBeVisible();
+  await expect(link.locator('a, button, input')).toHaveCount(0);
+}
+
+for (const locale of applicationHandoffLocales) {
+  for (const width of [320, 390, 1440]) {
+    test(
+      'application language is visible before handoff: ' + (locale.prefix || 'en') + width,
+      async ({ page }) => {
+        await page.setViewportSize({ width, height: 900 });
+        const search = deploymentSettings.productUrl + '/search';
+        const query = search + '?search_value=nginx';
+        const requests: string[] = [];
+        page.on('request', (request) => {
+          if (new URL(request.url()).origin === new URL(deploymentSettings.productUrl).origin)
+            requests.push(request.url());
+        });
+        await page.goto('./' + locale.prefix);
+        await expectApplicationHandoff(
+          page.locator('.hero-actions a[href="' + search + '"]'),
+          search,
+          locale.description,
+        );
+        const internal = page.locator('.hero-actions a[href="#how-it-works"]');
+        await expect(internal.getByText('EN', { exact: true })).toHaveCount(0);
+
+        await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
+        if (width >= 1200) {
+          await expectApplicationHandoff(
+            page.locator('.header-signup'),
+            search,
+            locale.description,
+          );
+          await expectApplicationHandoff(
+            page.locator('.header-signin'),
+            deploymentSettings.signInUrl,
+            locale.description,
+          );
+        } else {
+          await page.locator('.menu-toggle').click();
+          const menu = page.locator('dialog.mobile-navigation');
+          await expect(menu.locator('.product-language-note')).toHaveText(locale.description);
+          await expectApplicationHandoff(
+            menu.locator('a[href="' + search + '"]'),
+            search,
+            locale.description,
+          );
+          await expectApplicationHandoff(
+            menu.locator('a[href="' + deploymentSettings.signInUrl + '"]'),
+            deploymentSettings.signInUrl,
+            locale.description,
+          );
+          await page.keyboard.press('Escape');
+          await expect(menu).toBeHidden();
+        }
+
+        await expectApplicationHandoff(
+          page.locator('.search-scene__demo-note a'),
+          search,
+          locale.description,
+        );
+        await expectApplicationHandoff(
+          page.locator('#plan-free a.plan-button'),
+          deploymentSettings.signInUrl,
+          locale.description,
+        );
+        await page.locator('#plan-plus .plan-button').click();
+        const dialog = page.getByRole('dialog');
+        const plan = dialog.locator('.plan-handoff a');
+        await expect(plan).toHaveAttribute('href', deploymentSettings.signInUrl);
+        await expect(plan.getByText('EN', { exact: true })).toBeVisible();
+        const descriptionId = await plan
+          .locator('.product-language-description')
+          .getAttribute('id');
+        expect((await plan.getAttribute('aria-describedby'))?.split(/\s+/)).toEqual([
+          'plan-handoff-note',
+          'plan-handoff-tab-hint',
+          descriptionId,
+        ]);
+        await expect(plan).toHaveAccessibleDescription(
+          new RegExp(locale.description.replace(/\./g, '\\.').replace(/\s+/g, '\\s+') + '$'),
+        );
+        await page.keyboard.press('Escape');
+        await expect(dialog).toBeHidden();
+
+        await page.goto('./' + locale.prefix + 'platform/search-investigation');
+        await expectApplicationHandoff(
+          page.locator('.stage-workbench__bottom a[href="' + search + '"]'),
+          search,
+          locale.description,
+        );
+        await page.goto('./' + locale.prefix + 'use-cases/vulnerability-research');
+        await expectApplicationHandoff(
+          page.locator('.stage-page-hero a[href="' + query + '"]'),
+          query,
+          locale.description,
+        );
+        await expectApplicationHandoff(
+          page.locator('.stage-example-footer a'),
+          query,
+          locale.description,
+        );
+        expect(
+          await page.evaluate(() => document.documentElement.scrollWidth - innerWidth),
+        ).toBeLessThanOrEqual(1);
+        expect(requests).toEqual([]);
+      },
+    );
+  }
+}

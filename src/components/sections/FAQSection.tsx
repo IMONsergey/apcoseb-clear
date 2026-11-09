@@ -3,7 +3,7 @@ import { useLocale } from '../../i18n/context';
 import { supportEmail, apiDocumentationPath } from '../../config/site';
 import { siteHref } from '../../app/paths';
 import { AnimatedDetails } from '../ui/AnimatedDetails';
-import { httpApiMethodCosts, plans } from '../../content/plans';
+import { plans } from '../../content/plans';
 import { formatCredits } from '../../lib/pricing';
 export function FAQSection() {
   const { locale, t } = useLocale();
@@ -36,11 +36,7 @@ export function FAQSection() {
             <p>
               <LocaleText>
                 {t(
-                  'Credits are the allowance listed on each plan. HTTP API methods have separate published costs: {search} for host search and {analytics} for host analytics. Those costs do not specify the debit in credits or Search Tokens.',
-                  {
-                    search: httpApiMethodCosts.hosts,
-                    analytics: httpApiMethodCosts.analytics,
-                  },
+                  'Each plan includes search credits. Search Token packages add search capacity. HTTP API requests can spend search credits; the rate limiter separately controls how quickly requests are accepted.',
                 )}
               </LocaleText>{' '}
               <a href={siteHref('/pricing') + '#usage-guide'}>

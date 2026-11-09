@@ -114,7 +114,9 @@ export function SearchFragment() {
       <div className="query-fragment__input">
         <Icon name="search" />
         <code>{query}</code>
-        <span>↵</span>
+        <span>
+          <Icon name="enter" />
+        </span>
       </div>
       <p>{t('Start with an attribute you already know.')}</p>
       <div className="query-fragment__options">

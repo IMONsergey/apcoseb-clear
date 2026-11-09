@@ -1,3 +1,4 @@
+import { ProductHandoffLink } from '../ui/ProductHandoffLink';
 import './PricingSection.css';
 import '../../styles/billing-dock.css';
 import { siteHref } from '../../app/paths';
@@ -8,6 +9,7 @@ import { MobileBillingDock } from './MobileBillingDock';
 import { plans, type Plan } from '../../content/plans';
 import { signInUrl } from '../../config/site';
 import { PlanHandoff } from './PlanHandoff';
+import { ProductLanguageNote } from '../product/ProductLanguageNote';
 import { DoubleButton } from '../ui/DoubleButton';
 import { Modal } from '../ui/Modal';
 import { Visual } from '../visuals/Visual';
@@ -143,9 +145,9 @@ export function PricingSection({
                 </dl>
                 <div className="plan-actions">
                   {plan.id === 'free' ? (
-                    <a className="plan-button" href={signInUrl}>
+                    <ProductHandoffLink className="plan-button" href={signInUrl}>
                       <LocaleText>{t(plan.action)}</LocaleText>
-                    </a>
+                    </ProductHandoffLink>
                   ) : (
                     <button
                       type="button"
@@ -292,6 +294,7 @@ export function PricingSection({
             )}
           </LocaleText>
         </p>
+        <ProductLanguageNote />
         <DoubleButton href={signInUrl}>
           <LocaleText>{t('Continue in Apcosys')}</LocaleText>
         </DoubleButton>

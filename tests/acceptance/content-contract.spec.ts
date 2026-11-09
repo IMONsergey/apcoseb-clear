@@ -6,7 +6,7 @@ import { plans, businessPlan } from '../../src/content/plans';
 import { languageOptions } from '../../src/i18n/language-options';
 import {
   calculatePrice,
-  formatApiRate,
+  apiLimitLabel,
   formatCredits,
   planComparison,
 } from '../../src/lib/pricing';
@@ -63,12 +63,11 @@ test('pricing comparison and API limits use the same product allowances', () => 
   expect(new Set(plans.map((plan) => plan.id)).size).toBe(plans.length);
   expect(plans.find((plan) => plan.id === 'business')).toBe(businessPlan);
   for (const plan of plans) {
-    expect(plan.api).toBe(plan.apiRequestsPerSecond !== null);
     expect(planComparison.find((row) => row.label === 'Credits')!.value(plan)).toBe(
       formatCredits(plan.credits),
     );
-    expect(planComparison.find((row) => row.label === 'API rate limit')!.value(plan)).toBe(
-      formatApiRate(plan),
+    expect(planComparison.find((row) => row.label === 'API rate limits')!.value(plan)).toBe(
+      apiLimitLabel(plan),
     );
     expect(Number.isInteger(plan.credits) && plan.credits > 0).toBe(true);
     expect(Number.isInteger(plan.users) && plan.users > 0).toBe(true);

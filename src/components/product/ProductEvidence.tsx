@@ -1,3 +1,4 @@
+import { ProductHandoffLink } from '../ui/ProductHandoffLink';
 import '../../styles/product-evidence.css';
 import '../../styles/product-motion.css';
 import { useId, useRef, useState } from 'react';
@@ -276,9 +277,9 @@ export function ProductEvidence({
                 ? t(demoNotice)
                 : t('Observation, detection, association: different levels of certainty.')}
             </span>
-            <a href={productUrl + '/search'}>
+            <ProductHandoffLink href={productUrl + '/search'}>
               <LocaleText>{t('Open Apcosys Search')}</LocaleText>
-            </a>
+            </ProductHandoffLink>
           </div>
         )}
         {compact && (

@@ -49,7 +49,7 @@
   font-size: var(--font-size-14);
 }
 .footer-meta p {
-  font: 400 var(--font-size-14)/1.5 var(--font-mono);
+  font: var(--type-code);
   color: var(--text-muted);
 }
 @media (max-width: 1199px) {
@@ -191,22 +191,29 @@
 .footer-cookie-trigger:hover {
   text-decoration: underline;
 }
-.stage-cookie-content {
+/* Feedback also stays visible when preferences open from the document header. */
+.cookie-feedback {
+  position: fixed;
+  inset-inline: var(--space-5);
+  bottom: var(--space-5);
+  z-index: 100;
   display: grid;
-  gap: var(--space-5);
-}
-.stage-cookie-choice {
-  display: flex;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--space-3);
+  max-width: 560px;
+  margin-inline: auto;
+  pointer-events: none;
+}
+.cookie-feedback[data-visible='true'] {
   padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
   background: var(--surface-elevated);
-  gap: var(--space-7);
+  pointer-events: auto;
 }
-.stage-cookie-choice span {
-  display: grid;
-  gap: var(--space-2);
-}
-.stage-cookie-choice small {
-  color: var(--text-muted);
+.footer .cookie-feedback__message {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
 }

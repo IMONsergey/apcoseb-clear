@@ -1,4 +1,5 @@
 import { Text } from '../ui/Text';
+import { ArrowText } from '../ui/Icon';
 import { observeViewportActivity } from '../../lib/visibility';
 import { EditorialHeading } from '../layout/PageSections';
 import { useEffect, useRef, useState } from 'react';
@@ -223,7 +224,9 @@ export function TeamWorkflow() {
                 <Text as="p">{item.text}</Text>
               </div>
               <div className="team-workflow__record">
-                <code>{t(item.record)}</code>
+                <code>
+                  <ArrowText>{t(item.record)}</ArrowText>
+                </code>
                 <dl>
                   {teamRecords[selected]!.map(([label, value]) => (
                     <div key={label}>

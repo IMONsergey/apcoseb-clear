@@ -404,6 +404,11 @@
   white-space: normal;
   overflow-wrap: normal;
 }
+.site .inner-pages :is(.stage-data-table, .business-allowance) .stage-text-link {
+  display: inline;
+  margin-top: 0;
+  padding-block: 0;
+}
 .site .inner-pages .stage-api-table :is(th, td):last-child {
   padding-right: 0;
 }
@@ -791,7 +796,10 @@
     grid-template-rows: auto 1fr;
   }
   .site .inner-pages .stage-api-table :is(th, td) {
-    padding-inline: var(--space-2);
+    padding-inline: var(--space-1);
+  }
+  .site .inner-pages .stage-api-table thead th:nth-child(2) {
+    width: 20%;
   }
   .site .inner-pages .contact-topics {
     grid-template-columns: minmax(0, 1fr);

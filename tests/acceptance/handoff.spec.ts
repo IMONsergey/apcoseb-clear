@@ -116,7 +116,10 @@ test('canonical and Open Graph URL follow client navigation', async ({ page }) =
   );
 });
 
-test('all rendered internal links and section anchors have destinations', async ({ page }) => {
+test('all rendered internal links and section anchors have destinations', async ({
+  page,
+  request,
+}) => {
   test.setTimeout(90_000);
   const pages = new Map<string, Set<string>>();
   const links: Array<{ from: string; url: string }> = [];
@@ -132,9 +135,30 @@ test('all rendered internal links and section anchors have destinations', async 
     pages.set(route.path, new Set(data.ids));
     links.push(...data.urls.map((url) => ({ from: route.path, url })));
   }
+  const openApiUrl = new URL('api/client.openapi.json', base).href;
+  const checkedAssets = new Set<string>();
   for (const link of links) {
     const url = new URL(link.url);
     if (url.origin !== base.origin || !url.pathname.startsWith(base.pathname)) continue;
+    // This exact published document is a static asset, not a React route.
+    // Other paths, query variants and fragment links retain the strict checks.
+    if (url.href === openApiUrl) {
+      if (!checkedAssets.has(url.href)) {
+        const context = `${link.from} → ${url.pathname}`;
+        const response = await request.get(url.href);
+        expect(response.status(), context).toBe(200);
+        expect(response.headers()['content-type'], context).toMatch(
+          /^application\/json(?:\s*;|$)/i,
+        );
+        const specification = await response.json();
+        expect(specification, context).toMatchObject({ openapi: '3.1.1' });
+        expect(specification.paths, context).toEqual(expect.any(Object));
+        expect(Array.isArray(specification.paths), context).toBe(false);
+        expect(Object.keys(specification.paths), context).not.toHaveLength(0);
+        checkedAssets.add(url.href);
+      }
+      continue;
+    }
     const route = '/' + url.pathname.slice(base.pathname.length).replace(/\/$/, '');
     expect(pages.has(route), `${link.from} → ${url.pathname}`).toBe(true);
     if (url.hash)

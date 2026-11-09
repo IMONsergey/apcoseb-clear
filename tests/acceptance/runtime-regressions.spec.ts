@@ -53,11 +53,25 @@ for (const locale of ['ru', 'zh-Hant'] as const) {
 
   test(`${locale} monitoring translates human-readable change states`, async ({ page }) => {
     await page.goto(`./${prefix(locale)}platform/monitoring`);
-    await expect(page.locator('.change-ledger code')).toHaveText([
+    const changes = [
       '443 → 443 + 22',
       localized(locale, 'Version A → Version B'),
       localized(locale, 'Observed → Not observed'),
-    ]);
+    ];
+    const codes = page.locator('.change-ledger code');
+    await expect(codes).toHaveText(changes.map((change) => change.replaceAll('→', '')));
+    for (const [index, change] of changes.entries()) {
+      const code = codes.nth(index);
+      await expect(code.locator('.locale-text')).toHaveAttribute('lang', locale);
+      const transition = code.getByRole('img', { name: change, exact: true });
+      await expect(transition).toHaveCount(1);
+      await expect(transition).toHaveAccessibleName(change);
+      const arrow = transition.locator('svg');
+      await expect(arrow).toHaveCount(1);
+      await expect(arrow).toBeVisible();
+      await expect(arrow).toHaveAttribute('aria-hidden', 'true');
+      await expect(arrow).toHaveAttribute('focusable', 'false');
+    }
   });
 }
 
