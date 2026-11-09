@@ -65,18 +65,20 @@ export function ArrowText({ children }: { children: string }) {
   if (!children.includes('→')) return children;
   return (
     <span role="img" aria-label={children}>
-      {children.split('→').flatMap((part, index) => [
-        index > 0 ? (
-          <Icon
-            key={index}
-            name="arrow"
-            width="1em"
-            height="1em"
-            style={{ display: 'inline-block', verticalAlign: '-0.125em' }}
-          />
-        ) : null,
-        part,
-      ])}
+      {children
+        .split('→')
+        .flatMap((part, index) => [
+          index > 0 ? (
+            <Icon
+              key={index}
+              name="arrow"
+              width="1em"
+              height="1em"
+              style={{ display: 'inline-block', verticalAlign: '-0.125em' }}
+            />
+          ) : null,
+          part,
+        ])}
     </span>
   );
 }
