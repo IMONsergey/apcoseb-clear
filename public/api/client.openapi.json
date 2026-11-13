@@ -3681,14 +3681,9 @@
         "meaning": "Wildcard `*` and `?`"
       },
       {
-        "form": "`80,443`",
-        "fields": "keyword, integer, long, float",
-        "meaning": "Any of the values"
-      },
-      {
-        "form": "`nginx,apache`",
-        "fields": "array keyword (`products`, `vendors`, `labels`, `task_ids`, `exposed_data.field_headers`)",
-        "meaning": "Any of the values. A single value is still a terms query"
+        "form": "one value",
+        "fields": "every field",
+        "meaning": "The whole string is one value. A comma stays in the value. Several alternatives use an OR group with one leaf per value."
       },
       {
         "form": "`true` / `false`",
