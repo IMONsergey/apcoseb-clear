@@ -325,14 +325,27 @@ async function expectApplicationHandoff(link: Locator, href: string, description
   await link.scrollIntoViewIfNeeded();
   await expect(link).toHaveAttribute('href', href);
   await expect(link).toHaveAccessibleDescription(description);
-  await expect(link.getByText('EN', { exact: true })).toBeVisible();
+  await expect(link.getByText('EN', { exact: true })).toHaveCount(0);
+  await expect(link.locator('.product-language-description')).toBeHidden();
+  const icon = link.locator('.double-button__icon');
+  if (await icon.count()) {
+    await expect(icon).toHaveText('');
+    await expect(icon.locator('svg')).toHaveCount(1);
+    const bounds = await icon.boundingBox();
+    const arrow = await icon.locator('svg').boundingBox();
+    expect(bounds).not.toBeNull();
+    expect(arrow).not.toBeNull();
+    expect(Math.abs(bounds!.y + bounds!.height / 2 - arrow!.y - arrow!.height / 2)).toBeLessThan(1);
+  }
   await expect(link.locator('a, button, input')).toHaveCount(0);
 }
 
 for (const locale of applicationHandoffLocales) {
   for (const width of [320, 390, 1440]) {
     test(
-      'application language is visible before handoff: ' + (locale.prefix || 'en') + width,
+      'application language stays accessible without inline CTA badges: ' +
+        (locale.prefix || 'en') +
+        width,
       async ({ page }) => {
         await page.setViewportSize({ width, height: 900 });
         const search = deploymentSettings.productUrl + '/search';
@@ -395,7 +408,7 @@ for (const locale of applicationHandoffLocales) {
         const dialog = page.getByRole('dialog');
         const plan = dialog.locator('.plan-handoff a');
         await expect(plan).toHaveAttribute('href', deploymentSettings.signInUrl);
-        await expect(plan.getByText('EN', { exact: true })).toBeVisible();
+        await expect(plan.getByText('EN', { exact: true })).toHaveCount(0);
         const descriptionId = await plan
           .locator('.product-language-description')
           .getAttribute('id');

@@ -1,7 +1,7 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
 import { Icon, type IconName } from './Icon';
 import { useProductLanguage } from '../../hooks/useProductLanguage';
-import { ProductLanguageMarker } from './ProductHandoffLink';
+import { ProductLanguageDescription } from './ProductHandoffLink';
 type Shared = {
   children: ReactNode;
   variant?: 'primary' | 'secondary' | 'inverse' | 'dark';
@@ -32,16 +32,15 @@ export function DoubleButton({
   const content = (
     <>
       <span className="double-button__label">{children}</span>
-      <span
-        className={
-          'double-button__icon' + (language.isProductHref ? ' double-button__icon--product' : '')
-        }
-      >
-        {language.isProductHref && (
-          <ProductLanguageMarker id={language.descriptionId} description={language.description} />
-        )}
+      <span className="double-button__icon">
         <Icon name={icon} />
       </span>
+      {language.isProductHref && (
+        <ProductLanguageDescription
+          id={language.descriptionId}
+          description={language.description}
+        />
+      )}
     </>
   );
   if ('href' in rest && rest.href)

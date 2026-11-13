@@ -1,21 +1,21 @@
 import type { AnchorHTMLAttributes } from 'react';
 import { useProductLanguage } from '../../hooks/useProductLanguage';
-import './ProductHandoffLink.css';
 
-export function ProductLanguageMarker({ id, description }: { id: string; description: string }) {
+export function ProductLanguageDescription({
+  id,
+  description,
+}: {
+  id: string;
+  description: string;
+}) {
   return (
-    <>
-      <span className="product-language-marker" aria-hidden="true" lang="en" title={description}>
-        EN
-      </span>
-      <span className="product-language-description" id={id} hidden>
-        {description}
-      </span>
-    </>
+    <span className="product-language-description" id={id} hidden>
+      {description}
+    </span>
   );
 }
 
-/** One native link and one keyboard stop, with visible and accessible language context. */
+/** One native link and one keyboard stop, with accessible language context. */
 export function ProductHandoffLink({
   children,
   href,
@@ -32,7 +32,10 @@ export function ProductHandoffLink({
     >
       {children}
       {language.isProductHref && (
-        <ProductLanguageMarker id={language.descriptionId} description={language.description} />
+        <ProductLanguageDescription
+          id={language.descriptionId}
+          description={language.description}
+        />
       )}
     </a>
   );
